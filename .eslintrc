@@ -1,0 +1,27 @@
+/*
+ * @Author: early-autumn
+ * @Date: 2020-03-06 20:35:23
+ * @LastEditors: early-autumn
+ * @LastEditTime: 2020-04-05 14:17:08
+ */
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-namespace": "off"
+  }
+}
