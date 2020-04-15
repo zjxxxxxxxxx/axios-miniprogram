@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 20:00:08
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-14 19:17:53
+ * @LastEditTime: 2020-04-15 17:29:07
  */
 import { CancelToken, CancelAction, CancelExecutor, CancelTokenSource } from '../types';
 import Cancel from './Cancel';
@@ -31,7 +31,7 @@ export default class CancelTokenStatic implements CancelToken {
     executor(action);
   }
 
-  throwIfRequested() {
+  throwIfRequested(): void {
     if (this.reason) {
       throw this.reason;
     }

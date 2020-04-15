@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-14 23:07:28
+ * @LastEditTime: 2020-04-15 11:54:36
  */
 import { Params } from '../types';
 import { isPlainObject, isDate } from './utils';
@@ -26,8 +26,8 @@ function encode(str: string): string {
 /**
  * 拼接 URL 和 参数
  *
- * @param url    URL
- * @param params 参数
+ * @param url       请求地址
+ * @param paramsStr 请求参数
  */
 function joinURL(url: string, paramsStr: string): string {
   // 移除 hash
@@ -46,8 +46,8 @@ function joinURL(url: string, paramsStr: string): string {
 /**
  * 处理 URL 参数
  *
- * @param url    URL
- * @param params 参数
+ * @param url    请求地址
+ * @param params 请求参数
  */
 export default function processURL(url: string, params?: Params): string {
   if (params === undefined) {
