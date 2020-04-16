@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 23:48:48
+ * @LastEditTime: 2020-04-17 00:06:34
  */
 import 'miniprogram-api-typings';
 
@@ -32,9 +32,79 @@ export declare type Params = AnyObject;
 export declare type Data = WechatMiniprogram.RequestOption['data'];
 
 /**
+ * Axios 请求头
+ */
+export interface Headers {
+  /**
+   * 通用配置
+   */
+  common?: Record<string, string>;
+
+  /**
+   * options 配置
+   */
+  options?: Record<string, string>;
+
+  /**
+   * get 配置
+   */
+  get?: Record<string, string>;
+
+  /**
+   * head 配置
+   */
+  head?: Record<string, string>;
+
+  /**
+   * post 配置
+   */
+  post?: Record<string, string>;
+
+  /**
+   * put 配置
+   */
+  put?: Record<string, string>;
+
+  /**
+   * delete 配置
+   */
+  delete?: Record<string, string>;
+
+  /**
+   * trace 配置
+   */
+  trace?: Record<string, string>;
+
+  /**
+   * connect 配置
+   */
+  connect?: Record<string, string>;
+
+  /**
+   * 自定义配置
+   */
+  [x: string]: string | Record<string, string> | undefined;
+}
+
+export interface TransformData {
+  (data: Data, headers?: Headers): Data;
+}
+
+/**
  * 请求配置
  */
-export type AxiosRequest = Omit<WechatMiniprogram.RequestOption, 'method' | 'success' | 'fail' | 'complete'> & {
+export declare interface AxiosRequestConfig
+  extends Pick<WechatMiniprogram.RequestOption, 'dataType' | 'responseType' | 'timeout'> {
+  /**
+   * 基础地址
+   */
+  baseURL?: string;
+
+  /**
+   * 开发者服务器接口地址
+   */
+  url?: string;
+
   /** HTTP 请求方法
    *
    * 可选值：
@@ -68,6 +138,21 @@ export type AxiosRequest = Omit<WechatMiniprogram.RequestOption, 'method' | 'suc
   data?: Data;
 
   /**
+   * 请求头配置
+   */
+  headers?: Headers;
+
+  /**
+   * 转换请求数据
+   */
+  transformRequest?: TransformData | TransformData[];
+
+  /**
+   * 转换响应数据
+   */
+  transformResponse?: TransformData | TransformData[];
+
+  /**
    * 开启 http2
    */
   enableHttp2?: boolean;
@@ -86,58 +171,17 @@ export type AxiosRequest = Omit<WechatMiniprogram.RequestOption, 'method' | 'suc
    * 取消令牌
    */
   cancelToken?: CancelToken;
-};
 
-/**
- * 请求默认配置
- */
-export declare type AxiosRequestDefault = Omit<AxiosRequest, 'url' | 'header' | 'cancelToken'> & {
   /**
-   * 基础地址
+   * 自定义合法状态码
    */
-  baseURL?: string;
+  validateStatus?: (status: number) => boolean;
+
   /**
-   * 请求头
+   * 自定义参数序列化
    */
-  header?: {
-    /**
-     * 公共请求头
-     */
-    common?: AnyObject;
-    /**
-     * options 请求头
-     */
-    options?: AnyObject;
-    /**
-     * get 请求头
-     */
-    get?: AnyObject;
-    /**
-     * head 请求头
-     */
-    head?: AnyObject;
-    /**
-     * post 请求头
-     */
-    post?: AnyObject;
-    /**
-     * put 请求头
-     */
-    put?: AnyObject;
-    /**
-     * delete 请求头
-     */
-    delete?: AnyObject;
-    /**
-     * trace 请求头
-     */
-    trace?: AnyObject;
-    /**
-     * connect 请求头
-     */
-    connect?: AnyObject;
-  };
-};
+  paramsSerializer?: (params: AnyObject) => string;
+}
 
 /**
  * 服务端响应数据
@@ -148,16 +192,21 @@ export declare type ResponseData = WechatMiniprogram.RequestSuccessCallbackResul
  * 请求响应体
  */
 export interface AxiosResponse<T extends ResponseData = ResponseData>
-  extends WechatMiniprogram.RequestSuccessCallbackResult {
+  extends Omit<WechatMiniprogram.RequestSuccessCallbackResult, 'header'> {
   /**
    * 开发者服务器返回的数据
    */
   data: T;
 
   /**
+   * 开发者服务器返回的 HTTP Response Headers
+   */
+  headers: Headers;
+
+  /**
    * 请求配置
    */
-  config: AxiosRequest;
+  config: AxiosRequestConfig;
 }
 
 /**
@@ -177,7 +226,7 @@ export interface InterceptorRejected {
 /**
  * 拦截器
  */
-export declare type Interceptor<T = any> = {
+export interface Interceptor<T = any> {
   /**
    * 拦截器成功的回调函数
    */
@@ -186,7 +235,7 @@ export declare type Interceptor<T = any> = {
    * 拦截器失败的回调函数
    */
   rejected: InterceptorRejected;
-};
+}
 
 /**
  * 拦截器执行器
@@ -230,19 +279,13 @@ export interface Interceptors {
   /**
    * request 请求前置拦截器
    */
-  request: InterceptorManager<AxiosRequest>;
+  request: InterceptorManager<AxiosRequestConfig>;
 
   /**
    * response 请求后置拦截器
    */
   response: InterceptorManager<AxiosResponse>;
 }
-
-/**
- * Axios 请求方法别名额外配置类型
- */
-export type AxiosMethodConfig = Omit<AxiosRequest, 'url'>;
-
 /**
  * Axios
  */
@@ -250,7 +293,7 @@ export interface Axios {
   /**
    * 默认配置
    */
-  defaults: AxiosRequestDefault;
+  defaults: AxiosRequestConfig;
 
   /**
    * Axios 拦截器
@@ -258,11 +301,18 @@ export interface Axios {
   interceptors: Interceptors;
 
   /**
+   * baseURL + url + params 得到完整请求地址
+   *
+   * @param config 请求配置
+   */
+  getUri(config: AxiosRequestConfig): string;
+
+  /**
    * 发送 HTTP 请求
    *
    * @param config 请求配置
    */
-  request<T extends ResponseData>(config: AxiosRequest): Promise<AxiosResponse<T>>;
+  request<T extends ResponseData>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 OPTIONS
@@ -271,7 +321,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  options<T extends ResponseData>(url: string, params?: Params, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  options<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 GET
@@ -280,7 +330,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  get<T extends ResponseData>(url: string, params?: Params, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  get<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 HEAD
@@ -289,7 +339,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  head<T extends ResponseData>(url: string, params?: Params, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  head<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 POST
@@ -298,7 +348,7 @@ export interface Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  post<T extends ResponseData>(url: string, data?: Data, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  post<T extends ResponseData>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 PUT
@@ -307,7 +357,7 @@ export interface Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  put<T extends ResponseData>(url: string, data?: Data, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  put<T extends ResponseData>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 DELETE
@@ -316,7 +366,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  delete<T extends ResponseData>(url: string, params?: Params, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  delete<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 TRACE
@@ -325,7 +375,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  trace<T extends ResponseData>(url: string, params?: Data, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  trace<T extends ResponseData>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 CONNECT
@@ -334,29 +384,14 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  connect<T extends ResponseData>(url: string, params?: Data, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+  connect<T extends ResponseData>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 }
 
 /**
- * axios 增强函数
- *
- * 支持两种调用方式, 并含有 Axios 实例的所有属性和方法
+ * Axios 类接口
  */
-export interface AxiosInstance extends Axios {
-  /**
-   * 调用方式一
-   *
-   * @param config 请求配置
-   */
-  <T extends ResponseData>(config: AxiosRequest): Promise<AxiosResponse<T>>;
-
-  /**
-   * 调用方式二
-   *
-   * @param url    请求地址
-   * @param config 额外配置
-   */
-  <T extends ResponseData>(url: string, config?: AxiosMethodConfig): Promise<AxiosResponse<T>>;
+export interface AxiosConstructor {
+  new (config: AxiosRequestConfig): Axios;
 }
 
 /**
@@ -371,7 +406,7 @@ export interface AxiosError extends Error {
   /**
    * 请求配置
    */
-  config: AxiosRequest;
+  config: AxiosRequestConfig;
 
   /**
    * 请求响应体
@@ -429,6 +464,26 @@ export interface CancelToken {
 }
 
 /**
+ * 取消令牌类接口
+ */
+
+export interface CancelTokenConstructor {
+  new (executor: CancelExecutor): CancelToken;
+  /**
+   * 返回一个 CancelTokenSource
+   *
+   * CancelTokenSource.token 是一个 CancelToken 对象
+   *
+   * CancelTokenSource.cancel 是一个 CancelAction 函数
+   *
+   * 调用 CancelTokenSource.cancel('这里可以填写您的错误信息')
+   *
+   * 取消 CancelTokenSource.token
+   */
+  source(): CancelTokenSource;
+}
+
+/**
  * 取消令牌 source
  */
 export interface CancelTokenSource {
@@ -441,4 +496,55 @@ export interface CancelTokenSource {
    * 取消操作
    */
   cancel: CancelAction;
+}
+
+/**
+ * axios 增强函数
+ *
+ * 支持两种调用方式, 并含有 Axios 实例的所有属性和方法
+ */
+export interface AxiosInstance extends Axios {
+  /**
+   * 调用方式一
+   *
+   * @param config 请求配置
+   */
+  <T extends ResponseData>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
+   * 调用方式二
+   *
+   * @param url    请求地址
+   * @param config 额外配置
+   */
+  <T extends ResponseData>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
+   * Axios 类
+   */
+  Axios: AxiosConstructor;
+
+  /**
+   * 创建 Axios 实例
+   *
+   * @param config 全局配置
+   */
+  create(config: AxiosRequestConfig): Axios;
+
+  /**
+   * Cancel 类
+   */
+  Cancel: Cancel;
+
+  /**
+   * CancelToken 类
+   */
+  CancelToken: CancelTokenConstructor;
+
+  /**
+   * 是不是一个取消对象
+   *
+   * @param value 判断的值
+   */
+  isCancel: (value: any) => boolean;
 }

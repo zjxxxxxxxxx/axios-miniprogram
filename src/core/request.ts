@@ -1,70 +1,34 @@
 /*
  * @Author: early-autumn
- * @Date: 2020-04-13 18:01:16
+ * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 23:19:04
+ * @LastEditTime: 2020-04-16 15:22:40
  */
-import { MethodType, AxiosRequest, AxiosResponse } from '../types';
-import createError from './createError';
+
+let request = wx?.request;
 
 /**
- * 发送请求
+ * #### 非微信小程序中使用 axios 前需要先调用此函数重新设置请求方法
  *
- * @param config 请求配置
+ * 假设在 uniapp 中使用:
+ *
+ * ```typescript
+ * import axios, { setRequest } from 'axios-miniprogram';
+ *
+ * // 先设置 request
+ * setRequest(uni.request);
+ *
+ * // 现在可以正常发送请求了
+ * axios('/test')
+ * ```
+ *
+ * * 使用 `javascript` 开发忽略, 使用 `typescript` 开发注意: `axios 类型系统`是基于`微信小程序内置类型`定义的, 在其他平台使用类型可能存在不兼容的情况
+ *
+ * @param r 需要设置的请求方法
+ *
  */
-export default function request(config: AxiosRequest): Promise<AxiosResponse> {
-  return new Promise((resolve, reject) => {
-    const { cancelToken, method, ...options } = config;
-    // method 转为全大写
-    const methodType = method?.toUpperCase() as MethodType;
-
-    /**
-     * 抛出异常
-     *
-     * @param param0   错误信息
-     * @param response 请求响应体
-     */
-    function catchError({ errMsg }: { errMsg: string }, response?: AxiosResponse): void {
-      reject(createError(errMsg, config, response));
-    }
-
-    /**
-     * 检查请求结果的状态码
-     *
-     * @param result 请求结果
-     */
-    function checkStatusCode(result: WechatMiniprogram.RequestSuccessCallbackResult): void {
-      const response = { ...result, config };
-      const { statusCode, errMsg } = response;
-
-      // 成功
-      if (statusCode >= 200 && statusCode < 300) {
-        resolve(response);
-      }
-      // 失败
-      else {
-        // `Request failed with status code ${statusCode}`
-        catchError({ errMsg }, response);
-      }
-    }
-
-    // 发送请求
-    // 替换 options 中的 success fail complete
-    const request = wx.request({
-      ...options,
-      method: methodType,
-      success: checkStatusCode,
-      fail: catchError,
-      complete: undefined,
-    });
-
-    // 如果存在取消令牌
-    // 则调用取消令牌里的 listener 监听用户的取消操作
-    if (cancelToken !== undefined) {
-      cancelToken.listener.then(function onCanceled(reason): void {
-        request.abort();
-        reject(reason);
-      });
-    }
-  });
+export function setRequest(r: any): void {
+  request = r;
 }
+
+export default request;

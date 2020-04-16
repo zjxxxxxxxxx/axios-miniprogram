@@ -2,26 +2,16 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-16 00:11:53
+ * @LastEditTime: 2020-04-17 00:10:39
  */
-import {
-  Method,
-  Params,
-  Data,
-  Interceptors,
-  AxiosRequest,
-  AxiosRequestDefault,
-  AxiosMethodConfig,
-  ResponseData,
-  AxiosResponse,
-  Axios,
-} from '../types';
+import { Method, Params, Data, Interceptors, AxiosRequestConfig, ResponseData, AxiosResponse, Axios } from '../types';
+import transformURL from '../helper/transformURL';
+import mergeConfig from '../helper/mergeConfig';
 import InterceptorManager from './InterceptorManager';
-import mergeConfig from './mergeConfig';
 import dispatchRequest from './dispatchRequest';
 
 interface PromiseCatch {
-  request: Promise<AxiosRequest>;
+  request: Promise<AxiosRequestConfig>;
   response?: Promise<AxiosResponse>;
 }
 
@@ -29,19 +19,28 @@ export default class AxiosStatic implements Axios {
   /**
    * 默认配置
    */
-  defaults: AxiosRequestDefault;
+  defaults: AxiosRequestConfig;
 
   /**
    *  Axios 拦截器
    */
   public interceptors: Interceptors;
 
-  constructor(config: AxiosRequestDefault) {
+  constructor(config: AxiosRequestConfig) {
     this.defaults = config;
     this.interceptors = {
-      request: new InterceptorManager<AxiosRequest>(),
+      request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>(),
     };
+  }
+
+  /**
+   * baseURL + url + params 得到完整请求地址
+   *
+   * @param config 请求配置
+   */
+  public getUri(config: AxiosRequestConfig): string {
+    return transformURL(mergeConfig(this.defaults, config));
   }
 
   /**
@@ -49,7 +48,7 @@ export default class AxiosStatic implements Axios {
    *
    * @param config 请求配置
    */
-  public request<T extends ResponseData>(config: AxiosRequest): Promise<AxiosResponse<T>> {
+  public request<T extends ResponseData>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
     config = mergeConfig(this.defaults, config);
 
     const promise: PromiseCatch = {
@@ -57,7 +56,7 @@ export default class AxiosStatic implements Axios {
     };
 
     // 执行前置拦截器
-    this.interceptors.request.forEach(({ resolved, rejected }) => {
+    this.interceptors.request.forEach(function executor({ resolved, rejected }) {
       promise.request = promise.request.then(resolved, rejected);
     }, 'reverse');
 
@@ -67,7 +66,7 @@ export default class AxiosStatic implements Axios {
     });
 
     // 执行后置拦截器
-    this.interceptors.response.forEach(({ resolved, rejected }) => {
+    this.interceptors.response.forEach(function executor({ resolved, rejected }) {
       promise.response = promise.response?.then(resolved, rejected);
     });
 
@@ -84,7 +83,7 @@ export default class AxiosStatic implements Axios {
   public options<T extends ResponseData>(
     url: string,
     params?: Params,
-    config?: AxiosMethodConfig
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('options', url, params, config);
   }
@@ -99,7 +98,7 @@ export default class AxiosStatic implements Axios {
   public get<T extends ResponseData>(
     url: string,
     params?: Params,
-    config?: AxiosMethodConfig
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('get', url, params, config);
   }
@@ -114,7 +113,7 @@ export default class AxiosStatic implements Axios {
   public head<T extends ResponseData>(
     url: string,
     params?: Params,
-    config?: AxiosMethodConfig
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('head', url, params, config);
   }
@@ -126,7 +125,11 @@ export default class AxiosStatic implements Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  public post<T extends ResponseData>(url: string, data?: Data, config?: AxiosMethodConfig): Promise<AxiosResponse<T>> {
+  public post<T extends ResponseData>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutData<T>('post', url, data, config);
   }
 
@@ -137,7 +140,7 @@ export default class AxiosStatic implements Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  public put<T extends ResponseData>(url: string, data?: Data, config?: AxiosMethodConfig): Promise<AxiosResponse<T>> {
+  public put<T extends ResponseData>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutData<T>('put', url, data, config);
   }
 
@@ -151,7 +154,7 @@ export default class AxiosStatic implements Axios {
   public delete<T extends ResponseData>(
     url: string,
     params?: Params,
-    config?: AxiosMethodConfig
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('delete', url, params, config);
   }
@@ -166,7 +169,7 @@ export default class AxiosStatic implements Axios {
   public trace<T extends ResponseData>(
     url: string,
     params?: Params,
-    config?: AxiosMethodConfig
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('trace', url, params, config);
   }
@@ -181,7 +184,7 @@ export default class AxiosStatic implements Axios {
   public connect<T extends ResponseData>(
     url: string,
     params?: Params,
-    config?: AxiosMethodConfig
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('connect', url, params, config);
   }
@@ -198,7 +201,7 @@ export default class AxiosStatic implements Axios {
     method: Method,
     url: string,
     params?: Params,
-    config: AxiosMethodConfig = {}
+    config: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {
     return this.request<T>({
       ...config,
@@ -220,7 +223,7 @@ export default class AxiosStatic implements Axios {
     method: Method,
     url: string,
     data?: Data,
-    config: AxiosMethodConfig = {}
+    config: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {
     return this.request<T>({
       ...config,

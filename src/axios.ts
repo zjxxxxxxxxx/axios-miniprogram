@@ -2,17 +2,14 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 22:45:22
+ * @LastEditTime: 2020-04-16 23:29:26
  */
-import {
-  AxiosRequest,
-  AxiosRequestDefault,
-  AxiosMethodConfig,
-  ResponseData,
-  AxiosResponse,
-  AxiosInstance,
-} from './types';
+import { AxiosRequestConfig, ResponseData, AxiosResponse, AxiosInstance } from './types';
 import Axios from './core/Axios';
+import Cancel from './cancel/Cancel';
+import CancelToken from './cancel/CancelToken';
+import isCancel from './cancel/isCancel';
+import mergeConfig from './helper/mergeConfig';
 import defaults from './helper/defaults';
 
 /**
@@ -20,7 +17,7 @@ import defaults from './helper/defaults';
  *
  * 返回一个 axios 增强函数
  */
-function createInstance(config: AxiosRequestDefault): AxiosInstance {
+function createInstance(config: AxiosRequestConfig): AxiosInstance {
   const instance = new Axios(config);
 
   /**
@@ -37,10 +34,10 @@ function createInstance(config: AxiosRequestDefault): AxiosInstance {
    * @param config 调用方式二: 额外配置
    */
   function axios<T extends ResponseData>(
-    url: AxiosRequest | string,
-    config: AxiosMethodConfig = {}
+    url: AxiosRequestConfig | string,
+    config: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {
-    let requestConfig: AxiosRequest;
+    let requestConfig: AxiosRequestConfig;
 
     // 调用方式一处理请求配置
     if (typeof url !== 'string') {
@@ -60,4 +57,19 @@ function createInstance(config: AxiosRequestDefault): AxiosInstance {
   return axios as AxiosInstance;
 }
 
-export default createInstance(defaults);
+const axios = createInstance(defaults);
+
+// 添加 Axios 类
+axios.Axios = Axios;
+
+// 添加 create 工厂方法
+axios.create = function create(config: AxiosRequestConfig) {
+  return createInstance(mergeConfig(axios.defaults, config));
+};
+
+// 添加取消相关
+axios.Cancel = Cancel;
+axios.CancelToken = CancelToken;
+axios.isCancel = isCancel;
+
+export default axios;

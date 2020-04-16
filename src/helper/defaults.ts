@@ -2,13 +2,14 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:09:38
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 23:20:30
+ * @LastEditTime: 2020-04-16 21:39:21
  */
-import { AxiosRequestDefault } from '../types';
+import { AxiosRequestConfig } from '../types';
 
-const defaults: AxiosRequestDefault = {
+const defaults: AxiosRequestConfig = {
   method: 'get',
-  header: {
+  timeout: 0,
+  headers: {
     common: {
       Accept: 'application/json, test/plain, */*',
     },
@@ -24,6 +25,9 @@ const defaults: AxiosRequestDefault = {
     delete: {},
     trace: {},
     connect: {},
+  },
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
   },
 };
 

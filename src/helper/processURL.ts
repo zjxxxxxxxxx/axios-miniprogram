@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 11:54:36
+ * @LastEditTime: 2020-04-16 21:55:26
  */
 import { Params } from '../types';
 import { isPlainObject, isDate } from './utils';
@@ -24,36 +24,35 @@ function encode(str: string): string {
 }
 
 /**
- * 拼接 URL 和 参数
+ * 拼接 URL 和 序列化参数
  *
- * @param url       请求地址
- * @param paramsStr 请求参数
+ * @param url              请求地址
+ * @param serializedParams 序列化参数
  */
-function joinURL(url: string, paramsStr: string): string {
+function joinURL(url: string, serializedParams: string): string {
+  if (serializedParams === '') {
+    return url;
+  }
+
   // 移除 hash
-  const hashIndex = paramsStr.indexOf('#');
+  const hashIndex = serializedParams.indexOf('#');
   if (hashIndex !== -1) {
-    paramsStr = paramsStr.slice(0, hashIndex);
+    serializedParams = serializedParams.slice(0, hashIndex);
   }
 
   // 拼接前缀
   const prefix = url.indexOf('?') === -1 ? '?' : '&';
-  paramsStr = `${prefix}${paramsStr}`;
+  serializedParams = `${prefix}${serializedParams}`;
 
-  return `${url}${paramsStr}`;
+  return `${url}${serializedParams}`;
 }
 
 /**
- * 处理 URL 参数
+ * 默认参数序列化
  *
- * @param url    请求地址
  * @param params 请求参数
  */
-export default function processURL(url: string, params?: Params): string {
-  if (params === undefined) {
-    return url;
-  }
-
+function paramsSerializerDefault(params: AnyObject): string {
   const parts: string[] = [];
 
   Object.entries(params).forEach(([key, value]): void => {
@@ -80,9 +79,32 @@ export default function processURL(url: string, params?: Params): string {
     });
   });
 
-  if (parts.length !== 0) {
-    url = joinURL(url, parts.join('&'));
+  return parts.join('&');
+}
+
+/**
+ * 处理 URL 参数
+ *
+ * @param url              请求地址
+ * @param params           请求参数
+ * @param paramsSerializer 自定义参数序列化
+ */
+export default function processURL(
+  url: string,
+  params?: Params,
+  paramsSerializer?: (params: AnyObject) => string
+): string {
+  if (params === undefined) {
+    return url;
   }
 
-  return url;
+  let serializedParams = '';
+
+  if (paramsSerializer !== undefined) {
+    serializedParams = paramsSerializer(params);
+  } else {
+    serializedParams = paramsSerializerDefault(params);
+  }
+
+  return joinURL(url, serializedParams);
 }

@@ -2,9 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 22:23:39
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 15:50:18
+ * @LastEditTime: 2020-04-16 20:17:51
  */
-import { AxiosRequest, AxiosResponse } from '../types';
+import { AxiosRequestConfig, AxiosResponse } from '../types';
 
 /**
  * AxiosError 继承自 Error
@@ -13,19 +13,22 @@ class AxiosError extends Error {
   /**
    * 是 Axios 错误
    */
-  isAxiosError = true;
+  isAxiosError: boolean;
+
   /**
    * 请求配置
    */
-  config: AxiosRequest;
+  config: AxiosRequestConfig;
+
   /**
    * 请求响应体
    */
   response?: AxiosResponse;
 
-  constructor(message: string, config: AxiosRequest, response?: AxiosResponse) {
+  constructor(message: string, config: AxiosRequestConfig, response?: AxiosResponse) {
     super(message);
 
+    this.isAxiosError = true;
     this.config = config;
     this.response = response;
 
@@ -43,6 +46,6 @@ class AxiosError extends Error {
  * @param config   请求配置
  * @param response 请求响应体
  */
-export default function createError(message: string, config: AxiosRequest, response?: AxiosResponse): AxiosError {
+export default function createError(message: string, config: AxiosRequestConfig, response?: AxiosResponse): AxiosError {
   return new AxiosError(message, config, response);
 }
