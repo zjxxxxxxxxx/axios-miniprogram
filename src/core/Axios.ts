@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 13:46:53
+ * @LastEditTime: 2020-04-17 19:14:14
  */
 import { AxiosMethod, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import transformURL from '../helper/transformURL';
@@ -61,9 +61,7 @@ export default class AxiosStatic implements Axios {
     }, 'reverse');
 
     // 发送请求
-    promise.response = promise.request.then(dispatchRequest, (err: any) => {
-      throw err;
-    });
+    promise.response = promise.request.then(dispatchRequest, (err: any) => Promise.reject(err));
 
     // 执行后置拦截器
     this.interceptors.response.forEach(function executor({ resolved, rejected }) {
@@ -80,8 +78,30 @@ export default class AxiosStatic implements Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  public options<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('options', url, params, config);
+  public options<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this._requestMethodWithoutData<T>('options', url, undefined, config);
+  }
+
+  /**
+   * 发送 HTTP TRACE 请求
+   *
+   * @param url    请求地址
+   * @param params 请求参数
+   * @param config 额外配置
+   */
+  public trace<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this._requestMethodWithoutData<T>('options', url, undefined, config);
+  }
+
+  /**
+   * 发送 HTTP CONNECT 请求
+   *
+   * @param url    请求地址
+   * @param params 请求参数
+   * @param config 额外配置
+   */
+  public connect<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this._requestMethodWithoutData<T>('options', url, undefined, config);
   }
 
   /**
@@ -107,6 +127,17 @@ export default class AxiosStatic implements Axios {
   }
 
   /**
+   * 发送 HTTP DELETE 请求
+   *
+   * @param url    请求地址
+   * @param params 请求参数
+   * @param config 额外配置
+   */
+  public delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this._requestMethodWithoutParams<T>('delete', url, params, config);
+  }
+
+  /**
    * 发送 HTTP POST 请求
    *
    * @param url    请求地址
@@ -126,39 +157,6 @@ export default class AxiosStatic implements Axios {
    */
   public put<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutData<T>('put', url, data, config);
-  }
-
-  /**
-   * 发送 HTTP DELETE 请求
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  public delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('delete', url, params, config);
-  }
-
-  /**
-   * 发送 HTTP TRACE 请求
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  public trace<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('trace', url, params, config);
-  }
-
-  /**
-   * 发送 HTTP CONNECT 请求
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  public connect<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('connect', url, params, config);
   }
 
   /**

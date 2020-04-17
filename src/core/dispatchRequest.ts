@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 14:10:20
+ * @LastEditTime: 2020-04-17 19:29:07
  */
 import { Method, AxiosRequestConfig, AxiosResponse, Data } from '../types';
 import { merge } from '../helper/utils';
@@ -39,12 +39,13 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
     headers
   );
 
+  // 转换请求数据
   config.data = transformData(data, config.headers, config.transformResponse);
 
   function onResolved(response: AxiosResponse): AxiosResponse {
     throwIfCancellationRequested(config);
 
-    // Transform response data
+    // 转换响应数据
     response.data = transformData(response.data, response.headers, config.transformResponse) as Data;
 
     return response;

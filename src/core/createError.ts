@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 22:23:39
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 15:17:25
+ * @LastEditTime: 2020-04-17 15:57:29
  */
 import { AxiosRequestConfig, PlatformRequestConfig, AxiosResponse } from '../types';
 
@@ -16,12 +16,12 @@ class AxiosError extends Error {
   isAxiosError: boolean;
 
   /**
-   * 请求配置
+   * Axios 请求配置
    */
   config: AxiosRequestConfig;
 
   /**
-   * 请求体
+   * 各大平台通用请求配置
    */
   request: PlatformRequestConfig;
 
@@ -49,8 +49,9 @@ class AxiosError extends Error {
  * 返回一个新的 AxiosError 对象
  *
  * @param message  错误信息
- * @param config   请求配置
- * @param response 请求响应体
+ * @param config   Axios 请求配置
+ * @param request  各大平台通用请求配置
+ * @param response 响应体
  */
 export default function createError(
   message: string,

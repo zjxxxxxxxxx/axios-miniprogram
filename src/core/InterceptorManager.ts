@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 17:50:50
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 09:32:24
+ * @LastEditTime: 2020-04-17 16:11:54
  */
 import {
   InterceptorResolved,
@@ -37,12 +37,7 @@ export default class InterceptorManagerStatic<T> implements InterceptorManager<T
    * @param resolved 成功的回调函数
    * @param rejected 失败的回调函数
    */
-  public use(
-    resolved: InterceptorResolved<T>,
-    rejected: InterceptorRejected = (err) => {
-      throw err;
-    }
-  ) {
+  public use(resolved: InterceptorResolved<T>, rejected: InterceptorRejected = (err: any) => Promise.reject(err)) {
     this.interceptors.set(this.id++, {
       resolved,
       rejected,

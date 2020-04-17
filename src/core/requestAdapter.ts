@@ -2,13 +2,13 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 15:26:01
+ * @LastEditTime: 2020-04-17 16:23:41
  */
 
 import { AxiosRequestConfig, AxiosResponse, PlatformResponse } from '../types';
 import transformRequest from '../helper/transformRequest';
 import transformResponse from '../helper/transformResponse';
-import request1 from '../adapter/request';
+import autoAdapter from '../adapter/autoAdapter';
 import createError from './createError';
 
 /**
@@ -18,8 +18,8 @@ import createError from './createError';
  */
 export default function requestAdapter(config: AxiosRequestConfig): Promise<AxiosResponse> {
   return new Promise(function dispatchRequestAdapter(resolve, reject): void {
-    const { adapter = request1, cancelToken } = config;
-    const request = transformRequest(config);
+    const { adapter = autoAdapter, cancelToken } = config;
+    const requestConfig = transformRequest(config);
 
     /**
      * 抛出异常
@@ -32,7 +32,7 @@ export default function requestAdapter(config: AxiosRequestConfig): Promise<Axio
         message = '网络错误';
       }
 
-      reject(createError(message, config, request, response));
+      reject(createError(message, config, requestConfig, response));
     }
 
     if (adapter === undefined) {
@@ -58,7 +58,7 @@ export default function requestAdapter(config: AxiosRequestConfig): Promise<Axio
 
     // 发送请求
     const requestTask = adapter({
-      ...request,
+      ...requestConfig,
       success: checkStatusCode,
       fail: catchError,
       complete: undefined,

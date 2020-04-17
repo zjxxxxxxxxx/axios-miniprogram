@@ -1,7 +1,7 @@
 {
   "name": "axios-miniprogram",
   "version": "1.0.1",
-  "description": "小程序平台专用请求库。",
+  "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
   "main": "package/index.js",
   "miniprogram": "package",
   "types": "types/index.d.ts",

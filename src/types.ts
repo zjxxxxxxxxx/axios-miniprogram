@@ -2,15 +2,22 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 15:39:04
+ * @LastEditTime: 2020-04-17 19:13:21
  */
 import 'miniprogram-api-typings';
+
+export interface RequestTask {
+  /**
+   * 取消当前请求
+   */
+  abort(): void;
+}
 
 /**
  * 当前平台请求函数
  */
 export interface Request {
-  (option: WechatMiniprogram.RequestOption): WechatMiniprogram.RequestTask;
+  (config: PlatformRequestConfig): RequestTask;
 }
 
 /**
@@ -252,20 +259,20 @@ export interface PlatformRequestConfig extends AxiosRequestConfig {
    */
   header?: AnyObject;
 
-  // /**
-  //  * 成功的响应函数
-  //  */
-  // success?: (res: PlatformResponse) => void;
+  /**
+   * 成功的响应函数
+   */
+  success?: (res: PlatformResponse) => void;
 
-  // /**
-  //  * 失败的响应函数
-  //  */
-  // fail?: (err: any) => void;
+  /**
+   * 失败的响应函数
+   */
+  fail?: (err: any) => void;
 
-  // /**
-  //  * 无条件执行的响应函数
-  //  */
-  // complete?: () => void;
+  /**
+   * 无条件执行的响应函数
+   */
+  complete?: undefined;
 }
 
 /**
@@ -461,7 +468,25 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  options<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  options<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
+   * 发送 HTTP 请求 TRACE
+   *
+   * @param url    请求地址
+   * @param params 请求参数
+   * @param config 额外配置
+   */
+  trace<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
+   * 发送 HTTP 请求 CONNECT
+   *
+   * @param url    请求地址
+   * @param params 请求参数
+   * @param config 额外配置
+   */
+  connect<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 GET
@@ -482,6 +507,15 @@ export interface Axios {
   head<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
+   * 发送 HTTP 请求 DELETE
+   *
+   * @param url    请求地址
+   * @param params 请求参数
+   * @param config 额外配置
+   */
+  delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
    * 发送 HTTP 请求 POST
    *
    * @param url    请求地址
@@ -498,33 +532,6 @@ export interface Axios {
    * @param config 额外配置
    */
   put<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
-
-  /**
-   * 发送 HTTP 请求 DELETE
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
-
-  /**
-   * 发送 HTTP 请求 TRACE
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  trace<T extends Data>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
-
-  /**
-   * 发送 HTTP 请求 CONNECT
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  connect<T extends Data>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 }
 
 /**
@@ -549,7 +556,7 @@ export interface AxiosError extends Error {
   config: AxiosRequestConfig;
 
   /**
-   * 请求体
+   * 各大平台通用请求配置
    */
   request: PlatformRequestConfig;
 
