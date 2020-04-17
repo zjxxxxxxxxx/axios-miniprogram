@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 16:23:41
+ * @LastEditTime: 2020-04-17 22:18:07
  */
 
 import { AxiosRequestConfig, AxiosResponse, PlatformResponse } from '../types';
@@ -61,7 +61,6 @@ export default function requestAdapter(config: AxiosRequestConfig): Promise<Axio
       ...requestConfig,
       success: checkStatusCode,
       fail: catchError,
-      complete: undefined,
     });
 
     // 如果存在取消令牌

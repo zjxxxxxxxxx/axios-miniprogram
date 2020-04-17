@@ -33,78 +33,176 @@ npm i axios-miniprogram
 
 ## API
 
-可以通过将相关配置传递给 `axios` 来发送请求。
+可以通过将相关配置传递给`axios`来发送请求。
 
 ### `axios(config)`
 
 ```typescript
-  // 默认发送 GET 请求
-  axios({
-    url: '/test',
-    params: { test: 1 }
-  });
+// 默认发送 GET 请求
+axios({
+  url: '/test',
+  params: { test: 1 }
+});
 
-  // 发送 POST 请求
-  axios({
-    url: '/test',
-    method: 'post',
-    data: { test: 1 }
-  });
+// 发送 POST 请求
+axios({
+  url: '/test',
+  method: 'post',
+  data: { test: 1 }
+});
 ```
 
-也可以通过直接把 `url` 传给 `axios` 来发送请求。
+也可以通过直接把`url`传给`axios`来发送请求。
 
 ### `axios(url, config?)`
 
 ```typescript
-  // 默认发送 GET 请求
-  axios('/test/xxx');
+// 默认发送 GET 请求
+axios('/test/xxx');
 
-  // 发送 POST 请求
-  axios('/test/xxx', { method: 'post' });
+// 发送 POST 请求
+axios('/test/xxx', { method: 'post' });
 ```
 
-也可以使用请求方法别名来简化请求
+还可以使用请求方法别名来简化请求
 
-##### axios.request(config)
-
-##### axios.options(url, config?)
-##### axios.trace(url, config?)
-##### axios.connect(url, config?) 
-
-##### axios.get(url, params?, config?)
-##### axios.head(url, params?, config?)
-##### axios.delete(url, params?, config?)
-
-##### axios.post(url, data?, config?)
-##### axios.put(url, data?, config?)
+* ##### axios.request(config)
+* ##### axios.options(url, config?)
+* ##### axios.trace(url, config?)
+* ##### axios.connect(url, config?) 
+* ##### axios.get(url, params?, config?)
+* ##### axios.head(url, params?, config?)
+* ##### axios.delete(url, params?, config?)
+* ##### axios.post(url, data?, config?)
+* ##### axios.put(url, data?, config?)
 
 常用例子，其他同理：
 
 ```typescript
-  // 发送 GET 请求
-  axios.get('/test');
+// 发送 GET 请求
+axios.get('/test');
 
-  // 携带参数
-  axios.get('/test', { test: 1 });
+// 携带参数
+axios.get('/test', { test: 1 });
 
-  // 携带额外配置
-  axios.get('/test', { test: 1 }, { 
-    headers: {
-      'content-type': 'application/json; charset=utf-8'
+// 携带额外配置
+axios.get('/test', { test: 1 }, { 
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8'
+  }
+});
+
+// 发送 POST 请求
+axios.post('/test');
+
+// 携带数据
+axios.post('/test', { test: 1 });
+
+// 携带额外配置
+axios.post('/test', { test: 1 }, { 
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8'
+  }
+});
+```
+
+### 默认配置
+
+##### 全局默认配置`axios.defaults`
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+axios.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+```
+
+##### 自定义实例默认配置
+
+```typescript
+// 可以创建时传入
+const instance = axios.create({
+  baseURL: 'https://www.xxx.com',
+  headers: {
+    common: {
+      'Accept': 'application/json, test/plain, */*'
+    },
+    post: {
+      'Content-Type': 'application/x-www-form-urlencoded'
     }
-  });
+  }
+});
 
-  // 发送  POST 请求
-  axios.post('/test');
+// 也可以创建后修改
+instance.defaults.baseURL = 'https://www.xxx.com';
+instance.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+```
 
-  // 携带数据
-  axios.post('/test', { test: 1 });
+##### 配置优先顺序
 
-  // 携带额外配置
-  axios.post('/test', { test: 1 }, { 
-    headers: {
-      'content-type': 'application/json; charset=utf-8'
-    }
-  });
+发送请求时，会使用默认配置`defaults`和自定义配置`config` 合并出请求配置，具体合并策略参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/mergeConfig.ts)，多数情况下，后者优先于前者
+
+
+
+### `axios.getUri(config)`
+
+根据传入的配置生成完整的`URL`。
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+
+// uri === 'https://www.xxx.com/test?id=1'
+const uri = axios.getUri({
+  url: '/test',
+  params: { id: 1 }
+});
+
+// uri2 === 'https://www.yyy.com/test?id=1'
+const uri2 = axios.getUri({
+  baseURL: 'https://www.yyy.com',
+  url: '/test',
+  params: { id: 1 }
+});
+```
+
+### `axios.create(config)`
+
+创建一个`自定义实例`，传入的自定义配置会和`axios`的默认配置合并成`自定义实例`的默认配置。
+
+`自定义实例`拥有和`axios`相同的调用方式和请求方法别名。
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+
+const instance = axios.create({
+  params: {
+    id: 1
+  }
+});
+
+// 最终请求的 URL 是这样的 => https://www.xxx.com/test?id=1
+// https://www.xxx.com 来自 axios.defaults.baseURL
+// /test 来自传入的 '/test'
+// id=1 来自 instance.defaults.params
+instance('/test');
+instance.get('/test');
+```
+
+### `axios.Axios`
+
+`axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的`axios.create(config)`创建的也是`axios.Axios`的实例。
+
+直接实例化`axios.Axios`可以得到一个`纯净的实例`，不能当函数调用，传入的自定义配置就是`纯净的实例`的默认配置，而不会像`axios.create(config)`一样去合并`axios`中的默认配置。
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+
+const instance = new axios.Axios({ 
+  params: { value: '零污染' }
+});
+
+// 最终请求的 URL 是这样的 => /test?value=零污染
+// /test 来自传入的 '/test'
+// value=零污染 来自 instance.defaults.params
+instance.get('/test');
 ```

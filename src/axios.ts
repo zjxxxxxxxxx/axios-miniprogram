@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 09:42:16
+ * @LastEditTime: 2020-04-17 21:49:05
  */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
@@ -62,13 +62,13 @@ function createInstance(config: AxiosRequestConfig): AxiosInstance {
  */
 const axios = createInstance(defaults);
 
-// 添加 Axios 类
-axios.Axios = Axios;
-
 // 添加 create 工厂方法
 axios.create = function create(config: AxiosRequestConfig): AxiosBaseInstance {
   return createInstance(mergeConfig(axios.defaults, config));
 };
+
+// 添加 Axios 类
+axios.Axios = Axios;
 
 // 添加取消相关
 axios.Cancel = Cancel;

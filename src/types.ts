@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 19:13:21
+ * @LastEditTime: 2020-04-17 22:22:16
  */
 import 'miniprogram-api-typings';
 
@@ -268,11 +268,6 @@ export interface PlatformRequestConfig extends AxiosRequestConfig {
    * 失败的响应函数
    */
   fail?: (err: any) => void;
-
-  /**
-   * 无条件执行的响应函数
-   */
-  complete?: undefined;
 }
 
 /**
