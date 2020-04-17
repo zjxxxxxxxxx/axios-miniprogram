@@ -16,7 +16,7 @@ export default function transformResponse(response: PlatformResponse, config: Ax
   const { status, statusCode, headers, header, ...attrPoint } = response;
   const responseStatus = status ?? statusCode;
   const responseHeaders = headers ?? header;
-  const responseStatusText = responseStatus === 200 ? 'OK' : responseStatus === 400 ? 'Bad Request' : '';
+  const responseStatusText = responseStatus === 200 ? 'OK' : responseStatus === 400 ? 'Bad PlatformRequest' : '';
 
   return {
     ...attrPoint,

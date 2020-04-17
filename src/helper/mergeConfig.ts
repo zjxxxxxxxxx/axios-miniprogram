@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:48:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 23:18:41
+ * @LastEditTime: 2020-04-18 00:03:08
  */
 import { AxiosRequestConfig } from '../types';
 import { isPlainObject, deepMerge } from './utils';
@@ -29,7 +29,7 @@ function onlyFromConfig1(keys: ['adapter'], config: AxiosRequestConfig, config1:
  * @param config
  * @param config2
  */
-function onlyFromConfig2(keys: ['url', 'method', 'data'], config: AxiosRequestConfig, config2: AxiosRequestConfig) {
+function onlyFromConfig2(keys: ['url', 'data'], config: AxiosRequestConfig, config2: AxiosRequestConfig) {
   keys.forEach((key) => {
     if (config2[key] !== undefined) {
       config[key] = config2[key] as any;
@@ -51,8 +51,8 @@ function priorityFromConfig2(
     'method',
     'transformRequest',
     'transformResponse',
-    'validateStatus',
     'paramsSerializer',
+    'validateStatus',
     'cancelToken',
     'dataType',
     'responseType',
@@ -112,15 +112,15 @@ export default function mergeConfig(config1: AxiosRequestConfig, config2: AxiosR
   const config: AxiosRequestConfig = {};
 
   onlyFromConfig1(['adapter'], config, config1);
-  onlyFromConfig2(['url', 'method', 'data'], config, config2);
+  onlyFromConfig2(['url', 'data'], config, config2);
   priorityFromConfig2(
     [
       'baseURL',
       'method',
       'transformRequest',
       'transformResponse',
-      'validateStatus',
       'paramsSerializer',
+      'validateStatus',
       'cancelToken',
       'dataType',
       'responseType',

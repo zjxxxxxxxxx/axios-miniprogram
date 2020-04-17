@@ -2,11 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 22:22:16
+ * @LastEditTime: 2020-04-18 00:02:38
  */
-import 'miniprogram-api-typings';
+// import 'miniprogram-api-typings';
 
-export interface RequestTask {
+export interface PlatformRequestTask {
   /**
    * 取消当前请求
    */
@@ -16,8 +16,8 @@ export interface RequestTask {
 /**
  * 当前平台请求函数
  */
-export interface Request {
-  (config: PlatformRequestConfig): RequestTask;
+export interface PlatformRequest {
+  (config: PlatformRequestConfig): PlatformRequestTask;
 }
 
 /**
@@ -50,44 +50,44 @@ export interface Headers {
   common?: Record<string, string>;
 
   /**
-   * options 配置
+   * options 请求专用
    */
   options?: Record<string, string>;
 
   /**
-   * get 配置
-   */
-  get?: Record<string, string>;
-
-  /**
-   * head 配置
-   */
-  head?: Record<string, string>;
-
-  /**
-   * post 配置
-   */
-  post?: Record<string, string>;
-
-  /**
-   * put 配置
-   */
-  put?: Record<string, string>;
-
-  /**
-   * delete 配置
-   */
-  delete?: Record<string, string>;
-
-  /**
-   * trace 配置
+   * trace 请求专用
    */
   trace?: Record<string, string>;
 
   /**
-   * connect 配置
+   * connect 请求专用
    */
   connect?: Record<string, string>;
+
+  /**
+   * get 请求专用
+   */
+  get?: Record<string, string>;
+
+  /**
+   * head 请求专用
+   */
+  head?: Record<string, string>;
+
+  /**
+   * delete 请求专用
+   */
+  delete?: Record<string, string>;
+
+  /**
+   * post 请求专用
+   */
+  post?: Record<string, string>;
+
+  /**
+   * put 请求专用
+   */
+  put?: Record<string, string>;
 
   /**
    * 自定义配置
@@ -112,7 +112,7 @@ export declare type AxiosMethod = 'options' | 'get' | 'head' | 'post' | 'put' | 
  */
 export declare interface AxiosRequestConfig {
   /**
-   * 平台适配器, 默认支持微信小程序
+   * 自定义平台适配器
    *
    * 适配 uniapp 示例:
    *
@@ -124,20 +124,9 @@ export declare interface AxiosRequestConfig {
    *
    *  // 现在可以正常发送请求了
    *  axios('/test')
-   *
-   *  // 或者使用工厂方法进行适配
-   *  const instance = axios.create({
-   *    adapter: uni.request
-   *  });
-   *
-   *  // 现在可以正常发送请求了
-   *  instance('/test')
    * ```
-   *
-   * * 使用 `javascript` 开发忽略, 使用 `typescript` 开发注意: `axios 类型系统`是基于`微信小程序内置类型`定义的, 在其他平台使用类型可能存在不兼容的情况
-   *
    */
-  adapter?: Request;
+  adapter?: PlatformRequest;
 
   /**
    * 基础地址
@@ -180,14 +169,14 @@ export declare interface AxiosRequestConfig {
   transformResponse?: TransformData | TransformData[];
 
   /**
-   * 自定义合法状态码
-   */
-  validateStatus?: (status: number) => boolean;
-
-  /**
    * 自定义参数序列化
    */
   paramsSerializer?: (params: AnyObject) => string;
+
+  /**
+   * 自定义合法状态码
+   */
+  validateStatus?: (status: number) => boolean;
 
   /**
    * 取消令牌

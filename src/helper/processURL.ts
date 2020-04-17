@@ -2,9 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-16 21:55:26
+ * @LastEditTime: 2020-04-17 23:54:41
  */
-import { Params } from '../types';
+import { AnyObject, Params } from '../types';
 import { isPlainObject, isDate } from './utils';
 
 /**

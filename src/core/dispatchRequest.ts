@@ -2,9 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 19:29:07
+ * @LastEditTime: 2020-04-17 23:52:47
  */
-import { Method, AxiosRequestConfig, AxiosResponse, Data } from '../types';
+import { AnyObject, Method, AxiosRequestConfig, AxiosResponse, Data } from '../types';
 import { merge } from '../helper/utils';
 import transformData from '../helper/transformData';
 import isCancel from '../cancel/isCancel';
