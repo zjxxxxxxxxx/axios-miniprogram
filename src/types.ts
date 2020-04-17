@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 00:06:34
+ * @LastEditTime: 2020-04-17 11:54:18
  */
 import 'miniprogram-api-typings';
 
@@ -96,6 +96,34 @@ export interface TransformData {
 export declare interface AxiosRequestConfig
   extends Pick<WechatMiniprogram.RequestOption, 'dataType' | 'responseType' | 'timeout'> {
   /**
+   * 平台适配器, 默认支持微信小程序
+   *
+   * 适配 uniapp 示例:
+   *
+   * ```typescript
+   *  import axios from 'axios-miniprogram';
+   *
+   *  // 使用全局默认配置进行适配
+   *  axios.defaults.adapter = uni.request;
+   *
+   *  // 现在可以正常发送请求了
+   *  axios('/test')
+   *
+   *  // 或者使用工厂方法进行适配
+   *  const instance = axios.create({
+   *    adapter: uni.request
+   *  });
+   *
+   *  // 现在可以正常发送请求了
+   *  instance('/test')
+   * ```
+   *
+   * * 使用 `javascript` 开发忽略, 使用 `typescript` 开发注意: `axios 类型系统`是基于`微信小程序内置类型`定义的, 在其他平台使用类型可能存在不兼容的情况
+   *
+   */
+  adapter?: (option: WechatMiniprogram.RequestOption) => WechatMiniprogram.RequestTask;
+
+  /**
    * 基础地址
    */
   baseURL?: string;
@@ -138,7 +166,7 @@ export declare interface AxiosRequestConfig
   data?: Data;
 
   /**
-   * 请求头配置
+   * 请求头
    */
   headers?: Headers;
 
@@ -184,12 +212,12 @@ export declare interface AxiosRequestConfig
 }
 
 /**
- * 服务端响应数据
+ * 响应数据
  */
 export declare type ResponseData = WechatMiniprogram.RequestSuccessCallbackResult['data'];
 
 /**
- * 请求响应体
+ * 响应体
  */
 export interface AxiosResponse<T extends ResponseData = ResponseData>
   extends Omit<WechatMiniprogram.RequestSuccessCallbackResult, 'header'> {
@@ -286,8 +314,9 @@ export interface Interceptors {
    */
   response: InterceptorManager<AxiosResponse>;
 }
+
 /**
- * Axios
+ * Axios 原始实例
  */
 export interface Axios {
   /**
@@ -409,13 +438,13 @@ export interface AxiosError extends Error {
   config: AxiosRequestConfig;
 
   /**
-   * 请求响应体
+   * 响应体
    */
   response?: AxiosResponse;
 }
 
 /**
- * 取消对象
+ * 取消请求
  */
 export interface Cancel {
   /**
@@ -427,6 +456,13 @@ export interface Cancel {
    * 序列化
    */
   toString(): string;
+}
+
+/**
+ * 取消请求类接口
+ */
+export interface CancelConstructor {
+  new (message?: string): Cancel;
 }
 
 /**
@@ -448,7 +484,7 @@ export interface CancelExecutor {
  */
 export interface CancelToken {
   /**
-   * 取消对象
+   * 取消请求
    */
   reason?: Cancel;
 
@@ -461,26 +497,6 @@ export interface CancelToken {
    * 如果已经取消, 则抛出取消对象
    */
   throwIfRequested(): void;
-}
-
-/**
- * 取消令牌类接口
- */
-
-export interface CancelTokenConstructor {
-  new (executor: CancelExecutor): CancelToken;
-  /**
-   * 返回一个 CancelTokenSource
-   *
-   * CancelTokenSource.token 是一个 CancelToken 对象
-   *
-   * CancelTokenSource.cancel 是一个 CancelAction 函数
-   *
-   * 调用 CancelTokenSource.cancel('这里可以填写您的错误信息')
-   *
-   * 取消 CancelTokenSource.token
-   */
-  source(): CancelTokenSource;
 }
 
 /**
@@ -499,11 +515,31 @@ export interface CancelTokenSource {
 }
 
 /**
- * axios 增强函数
- *
- * 支持两种调用方式, 并含有 Axios 实例的所有属性和方法
+ * 取消令牌类接口
  */
-export interface AxiosInstance extends Axios {
+export interface CancelTokenConstructor {
+  new (executor: CancelExecutor): CancelToken;
+
+  /**
+   * 返回一个 CancelTokenSource
+   *
+   * CancelTokenSource.token 是一个 CancelToken 对象
+   *
+   * CancelTokenSource.cancel 是一个 CancelAction 函数
+   *
+   * 调用 CancelTokenSource.cancel('这里可以填写您的错误信息')
+   *
+   * 取消请求 CancelTokenSource.token
+   */
+  source(): CancelTokenSource;
+}
+
+/**
+ * Axios 实例基础增强
+ *
+ * * 支持两种函数调用方式
+ */
+export interface AxiosBaseInstance extends Axios {
   /**
    * 调用方式一
    *
@@ -518,7 +554,16 @@ export interface AxiosInstance extends Axios {
    * @param config 额外配置
    */
   <T extends ResponseData>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+}
 
+/**
+ * Axios 实例增强
+ *
+ * * 支持两种函数调用方式
+ *
+ * * 同时拓展了一些静态属性和方法
+ */
+export interface AxiosInstance extends AxiosBaseInstance {
   /**
    * Axios 类
    */
@@ -529,12 +574,12 @@ export interface AxiosInstance extends Axios {
    *
    * @param config 全局配置
    */
-  create(config: AxiosRequestConfig): Axios;
+  create(config: AxiosRequestConfig): AxiosBaseInstance;
 
   /**
    * Cancel 类
    */
-  Cancel: Cancel;
+  Cancel: CancelConstructor;
 
   /**
    * CancelToken 类
@@ -542,7 +587,7 @@ export interface AxiosInstance extends Axios {
   CancelToken: CancelTokenConstructor;
 
   /**
-   * 是不是一个取消对象
+   * 是否是取消请求实例
    *
    * @param value 判断的值
    */

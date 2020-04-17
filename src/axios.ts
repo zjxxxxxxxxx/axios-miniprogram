@@ -2,9 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-16 23:29:26
+ * @LastEditTime: 2020-04-17 09:42:16
  */
-import { AxiosRequestConfig, ResponseData, AxiosResponse, AxiosInstance } from './types';
+import { AxiosRequestConfig, ResponseData, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
 import Cancel from './cancel/Cancel';
 import CancelToken from './cancel/CancelToken';
@@ -15,7 +15,7 @@ import defaults from './helper/defaults';
 /**
  * 创建一个新的 Axios 实例
  *
- * 返回一个 axios 增强函数
+ * 返回一个 Axios 实例增强
  */
 function createInstance(config: AxiosRequestConfig): AxiosInstance {
   const instance = new Axios(config);
@@ -57,13 +57,16 @@ function createInstance(config: AxiosRequestConfig): AxiosInstance {
   return axios as AxiosInstance;
 }
 
+/**
+ * Axios 实例增强
+ */
 const axios = createInstance(defaults);
 
 // 添加 Axios 类
 axios.Axios = Axios;
 
 // 添加 create 工厂方法
-axios.create = function create(config: AxiosRequestConfig) {
+axios.create = function create(config: AxiosRequestConfig): AxiosBaseInstance {
   return createInstance(mergeConfig(axios.defaults, config));
 };
 

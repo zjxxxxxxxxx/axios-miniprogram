@@ -46,7 +46,7 @@ export default class CancelTokenStatic implements CancelToken {
    *
    * 调用 CancelTokenSource.cancel('这里可以填写您的错误信息')
    *
-   * 取消 CancelTokenSource.token
+   * 取消请求 CancelTokenSource.token
    */
   static source(): CancelTokenSource {
     let cancel!: CancelAction;

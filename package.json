@@ -1,7 +1,7 @@
 {
   "name": "axios-miniprogram",
-  "version": "1.0.0",
-  "description": "微信小程序专用请求库。",
+  "version": "1.0.1",
+  "description": "微信小程序平台专用请求库。",
   "main": "package/index.js",
   "miniprogram": "package",
   "types": "types/index.d.ts",
@@ -35,8 +35,11 @@
     "type": "git",
     "url": "git+https://github.com/early-autumn/axios-miniprogram.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "axios",
+    "miniprogram"
+  ],
+  "author": "early-autumn",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/early-autumn/axios-miniprogram/issues"

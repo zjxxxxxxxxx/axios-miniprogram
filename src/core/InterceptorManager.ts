@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 17:50:50
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 23:41:22
+ * @LastEditTime: 2020-04-17 09:32:24
  */
 import {
   InterceptorResolved,
@@ -43,12 +43,12 @@ export default class InterceptorManagerStatic<T> implements InterceptorManager<T
       throw err;
     }
   ) {
-    this.interceptors.set(this.id, {
+    this.interceptors.set(this.id++, {
       resolved,
       rejected,
     });
 
-    return ++this.id;
+    return this.id;
   }
 
   /**
