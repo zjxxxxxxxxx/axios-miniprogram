@@ -2,9 +2,16 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 11:54:18
+ * @LastEditTime: 2020-04-17 15:39:04
  */
 import 'miniprogram-api-typings';
+
+/**
+ * 当前平台请求函数
+ */
+export interface Request {
+  (option: WechatMiniprogram.RequestOption): WechatMiniprogram.RequestTask;
+}
 
 /**
  * 任意值对象
@@ -12,14 +19,9 @@ import 'miniprogram-api-typings';
 export declare type AnyObject = Record<string, any>;
 
 /**
- * 微信小程序请求方法
+ * Axios 请求方法 和 响应方法 类型
  */
-export declare type MethodType = WechatMiniprogram.RequestOption['method'];
-
-/**
- * Axios 请求方法
- */
-export declare type Method = 'options' | 'get' | 'head' | 'post' | 'put' | 'delete' | 'trace' | 'connect' | MethodType;
+export declare type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
 
 /**
  * Axios 请求参数
@@ -27,12 +29,12 @@ export declare type Method = 'options' | 'get' | 'head' | 'post' | 'put' | 'dele
 export declare type Params = AnyObject;
 
 /**
- * Axios 请求数据
+ * Axios 请求数据 和 响应数据 类型
  */
-export declare type Data = WechatMiniprogram.RequestOption['data'];
+export declare type Data = string | AnyObject | ArrayBuffer;
 
 /**
- * Axios 请求头
+ * Axios 请求头 和 响应头 类型
  */
 export interface Headers {
   /**
@@ -86,15 +88,22 @@ export interface Headers {
   [x: string]: string | Record<string, string> | undefined;
 }
 
+/**
+ * 转换请求数据和响应数据函数 类型
+ */
 export interface TransformData {
-  (data: Data, headers?: Headers): Data;
+  (data: Data, headers: Headers): Data;
 }
+
+/**
+ * Axios 请求配置方法 类型
+ */
+export declare type AxiosMethod = 'options' | 'get' | 'head' | 'post' | 'put' | 'delete' | 'trace' | 'connect' | Method;
 
 /**
  * 请求配置
  */
-export declare interface AxiosRequestConfig
-  extends Pick<WechatMiniprogram.RequestOption, 'dataType' | 'responseType' | 'timeout'> {
+export declare interface AxiosRequestConfig {
   /**
    * 平台适配器, 默认支持微信小程序
    *
@@ -121,7 +130,7 @@ export declare interface AxiosRequestConfig
    * * 使用 `javascript` 开发忽略, 使用 `typescript` 开发注意: `axios 类型系统`是基于`微信小程序内置类型`定义的, 在其他平台使用类型可能存在不兼容的情况
    *
    */
-  adapter?: (option: WechatMiniprogram.RequestOption) => WechatMiniprogram.RequestTask;
+  adapter?: Request;
 
   /**
    * 基础地址
@@ -129,31 +138,14 @@ export declare interface AxiosRequestConfig
   baseURL?: string;
 
   /**
-   * 开发者服务器接口地址
+   * 接口地址
    */
   url?: string;
 
-  /** HTTP 请求方法
-   *
-   * 可选值：
-   * - 'options': HTTP 请求 OPTIONS;
-   * - 'get':     HTTP 请求 GET;
-   * - 'head':    HTTP 请求 HEAD;
-   * - 'post':    HTTP 请求 POST;
-   * - 'put':     HTTP 请求 PUT;
-   * - 'delete':  HTTP 请求 DELETE;
-   * - 'trace':   HTTP 请求 TRACE;
-   * - 'connect': HTTP 请求 CONNECT;
-   * - 'OPTIONS': HTTP 请求 OPTIONS;
-   * - 'GET':     HTTP 请求 GET;
-   * - 'HEAD':    HTTP 请求 HEAD;
-   * - 'POST':    HTTP 请求 POST;
-   * - 'PUT':     HTTP 请求 PUT;
-   * - 'DELETE':  HTTP 请求 DELETE;
-   * - 'TRACE':   HTTP 请求 TRACE;
-   * - 'CONNECT': HTTP 请求 CONNECT;
+  /**
+   * HTTP 请求方法
    */
-  method?: Method;
+  method?: AxiosMethod;
 
   /**
    * 请求参数
@@ -181,26 +173,6 @@ export declare interface AxiosRequestConfig
   transformResponse?: TransformData | TransformData[];
 
   /**
-   * 开启 http2
-   */
-  enableHttp2?: boolean;
-
-  /**
-   * 开启 quic
-   */
-  enableQuic?: boolean;
-
-  /**
-   * 开启 cache
-   */
-  enableCache?: boolean;
-
-  /**
-   * 取消令牌
-   */
-  cancelToken?: CancelToken;
-
-  /**
    * 自定义合法状态码
    */
   validateStatus?: (status: number) => boolean;
@@ -209,25 +181,114 @@ export declare interface AxiosRequestConfig
    * 自定义参数序列化
    */
   paramsSerializer?: (params: AnyObject) => string;
+
+  /**
+   * 取消令牌
+   */
+  cancelToken?: CancelToken;
+
+  /**
+   * 返回的数据格式
+   */
+  dataType?: 'json' | '其他';
+
+  /**
+   * 响应的数据类型
+   */
+  responseType?: 'text' | 'arraybuffer';
+
+  /**
+   * 超时时间，单位为毫秒
+   */
+  timeout?: number;
+
+  //===以下属性均在指定平台有效===//
+
+  /**
+   * wx
+   *
+   * 开启 http2
+   */
+  enableHttp2?: boolean;
+
+  /**
+   * wx
+   *
+   * 开启 quic
+   */
+  enableQuic?: boolean;
+
+  /**
+   * wx
+   *
+   * 开启 cache
+   */
+  enableCache?: boolean;
+
+  /**
+   * uniapp
+   *
+   * 验证 ssl 证书
+   */
+  sslVerify?: boolean;
 }
 
 /**
- * 响应数据
+ * 各大平台通用请求配置
  */
-export declare type ResponseData = WechatMiniprogram.RequestSuccessCallbackResult['data'];
+export interface PlatformRequestConfig extends AxiosRequestConfig {
+  /**
+   * 带参地址
+   */
+  url: string;
+
+  /**
+   * 全大写 method
+   */
+  method: Method;
+
+  /**
+   * headers 的副本
+   */
+  header?: AnyObject;
+
+  // /**
+  //  * 成功的响应函数
+  //  */
+  // success?: (res: PlatformResponse) => void;
+
+  // /**
+  //  * 失败的响应函数
+  //  */
+  // fail?: (err: any) => void;
+
+  // /**
+  //  * 无条件执行的响应函数
+  //  */
+  // complete?: () => void;
+}
 
 /**
  * 响应体
  */
-export interface AxiosResponse<T extends ResponseData = ResponseData>
-  extends Omit<WechatMiniprogram.RequestSuccessCallbackResult, 'header'> {
+export interface AxiosResponse<T extends Data = Data> {
   /**
-   * 开发者服务器返回的数据
+   * 响应状态码
+   */
+  status: number;
+
+  /**
+   * 响应状态文本
+   */
+  statusText: string;
+
+  /**
+   * 响应数据
    */
   data: T;
 
   /**
-   * 开发者服务器返回的 HTTP Response Headers
+   * 响应头 Headers
    */
   headers: Headers;
 
@@ -235,6 +296,56 @@ export interface AxiosResponse<T extends ResponseData = ResponseData>
    * 请求配置
    */
   config: AxiosRequestConfig;
+
+  /**
+   * 开发者服务器返回的 cookies，格式为字符串数组
+   */
+  cookies?: string[];
+
+  /**
+   * 网络请求过程中一些关键时间点的耗时信息
+   */
+  profile?: AnyObject;
+}
+
+/**
+ * 各大平台通用响应体
+ */
+export interface PlatformResponse {
+  /**
+   * 响应状态码
+   */
+  statusCode: number;
+
+  /**
+   * 响应头 Headers
+   */
+  header: AnyObject;
+
+  /**
+   * 响应状态码
+   */
+  status?: number;
+
+  /**
+   * 响应头 Headers
+   */
+  headers?: Headers;
+
+  /**
+   * 响应数据
+   */
+  data: Data;
+
+  /**
+   * 开发者服务器返回的 cookies，格式为字符串数组
+   */
+  cookies?: string[];
+
+  /**
+   * 网络请求过程中一些关键时间点的耗时信息
+   */
+  profile?: AnyObject;
 }
 
 /**
@@ -341,7 +452,7 @@ export interface Axios {
    *
    * @param config 请求配置
    */
-  request<T extends ResponseData>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  request<T extends Data>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 OPTIONS
@@ -350,7 +461,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  options<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  options<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 GET
@@ -359,7 +470,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  get<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  get<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 HEAD
@@ -368,7 +479,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  head<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  head<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 POST
@@ -377,7 +488,7 @@ export interface Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  post<T extends ResponseData>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  post<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 PUT
@@ -386,7 +497,7 @@ export interface Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  put<T extends ResponseData>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  put<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 DELETE
@@ -395,7 +506,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  delete<T extends ResponseData>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 TRACE
@@ -404,7 +515,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  trace<T extends ResponseData>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  trace<T extends Data>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 CONNECT
@@ -413,7 +524,7 @@ export interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  connect<T extends ResponseData>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  connect<T extends Data>(url: string, params?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 }
 
 /**
@@ -436,6 +547,11 @@ export interface AxiosError extends Error {
    * 请求配置
    */
   config: AxiosRequestConfig;
+
+  /**
+   * 请求体
+   */
+  request: PlatformRequestConfig;
 
   /**
    * 响应体
@@ -545,7 +661,7 @@ export interface AxiosBaseInstance extends Axios {
    *
    * @param config 请求配置
    */
-  <T extends ResponseData>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  <T extends Data>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 调用方式二
@@ -553,7 +669,7 @@ export interface AxiosBaseInstance extends Axios {
    * @param url    请求地址
    * @param config 额外配置
    */
-  <T extends ResponseData>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  <T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 }
 
 /**

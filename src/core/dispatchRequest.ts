@@ -2,9 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 11:36:45
+ * @LastEditTime: 2020-04-17 14:10:20
  */
-import { MethodType, AxiosRequestConfig, AxiosResponse, ResponseData } from '../types';
+import { Method, AxiosRequestConfig, AxiosResponse, Data } from '../types';
 import { merge } from '../helper/utils';
 import transformData from '../helper/transformData';
 import isCancel from '../cancel/isCancel';
@@ -27,10 +27,10 @@ function throwIfCancellationRequested(config: AxiosRequestConfig) {
 export default function dispatchRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
   throwIfCancellationRequested(config);
 
-  const { method = 'GET', headers = {} } = config;
+  const { method = 'GET', data = {}, headers = {} } = config;
 
   // 把方法转成全大写
-  config.method = method.toUpperCase() as MethodType;
+  config.method = method.toUpperCase() as Method;
 
   // 合并 headers
   config.headers = merge(
@@ -39,13 +39,13 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
     headers
   );
 
-  config.data = transformData(config.data, config.headers, config.transformResponse);
+  config.data = transformData(data, config.headers, config.transformResponse);
 
   function onResolved(response: AxiosResponse): AxiosResponse {
     throwIfCancellationRequested(config);
 
     // Transform response data
-    response.data = transformData(response.data, response.headers, config.transformResponse) as ResponseData;
+    response.data = transformData(response.data, response.headers, config.transformResponse) as Data;
 
     return response;
   }
@@ -60,7 +60,7 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
           reason.response.data,
           reason.response.headers,
           config.transformResponse
-        ) as ResponseData;
+        ) as Data;
       }
     }
 

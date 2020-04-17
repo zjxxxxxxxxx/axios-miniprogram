@@ -2,9 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 22:23:39
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 09:48:30
+ * @LastEditTime: 2020-04-17 15:17:25
  */
-import { AxiosRequestConfig, AxiosResponse } from '../types';
+import { AxiosRequestConfig, PlatformRequestConfig, AxiosResponse } from '../types';
 
 /**
  * AxiosError 继承自 Error
@@ -21,15 +21,21 @@ class AxiosError extends Error {
   config: AxiosRequestConfig;
 
   /**
+   * 请求体
+   */
+  request: PlatformRequestConfig;
+
+  /**
    * 响应体
    */
   response?: AxiosResponse;
 
-  constructor(message: string, config: AxiosRequestConfig, response?: AxiosResponse) {
+  constructor(message: string, config: AxiosRequestConfig, request: PlatformRequestConfig, response?: AxiosResponse) {
     super(message);
 
     this.isAxiosError = true;
     this.config = config;
+    this.request = request;
     this.response = response;
 
     // 修复继承系统自带类 prototype 设置失败的问题
@@ -46,6 +52,11 @@ class AxiosError extends Error {
  * @param config   请求配置
  * @param response 请求响应体
  */
-export default function createError(message: string, config: AxiosRequestConfig, response?: AxiosResponse): AxiosError {
-  return new AxiosError(message, config, response);
+export default function createError(
+  message: string,
+  config: AxiosRequestConfig,
+  request: PlatformRequestConfig,
+  response?: AxiosResponse
+): AxiosError {
+  return new AxiosError(message, config, request, response);
 }

@@ -1,7 +1,7 @@
 {
   "name": "axios-miniprogram",
   "version": "1.0.1",
-  "description": "微信小程序平台专用请求库。",
+  "description": "小程序平台专用请求库。",
   "main": "package/index.js",
   "miniprogram": "package",
   "types": "types/index.d.ts",

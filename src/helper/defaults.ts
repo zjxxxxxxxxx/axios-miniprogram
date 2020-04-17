@@ -2,12 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:09:38
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 11:11:28
+ * @LastEditTime: 2020-04-17 12:18:57
  */
 import { AxiosRequestConfig } from '../types';
 
 const defaults: AxiosRequestConfig = {
-  adapter: wx?.request,
   method: 'get',
   timeout: 0,
   headers: {

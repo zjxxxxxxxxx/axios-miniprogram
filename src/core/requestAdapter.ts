@@ -2,11 +2,13 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 11:43:25
+ * @LastEditTime: 2020-04-17 15:26:01
  */
 
-import { MethodType, AxiosRequestConfig, AxiosResponse } from '../types';
-import transformURL from '../helper/transformURL';
+import { AxiosRequestConfig, AxiosResponse, PlatformResponse } from '../types';
+import transformRequest from '../helper/transformRequest';
+import transformResponse from '../helper/transformResponse';
+import request1 from '../adapter/request';
 import createError from './createError';
 
 /**
@@ -16,7 +18,8 @@ import createError from './createError';
  */
 export default function requestAdapter(config: AxiosRequestConfig): Promise<AxiosResponse> {
   return new Promise(function dispatchRequestAdapter(resolve, reject): void {
-    const { adapter, cancelToken } = config;
+    const { adapter = request1, cancelToken } = config;
+    const request = transformRequest(config);
 
     /**
      * 抛出异常
@@ -24,12 +27,16 @@ export default function requestAdapter(config: AxiosRequestConfig): Promise<Axio
      * @param param0   错误信息
      * @param response 请求响应体
      */
-    function catchError({ errMsg }: { errMsg: string }, response?: AxiosResponse): void {
-      reject(createError(errMsg, config, response));
+    function catchError(message: any, response?: AxiosResponse): void {
+      if (typeof message !== 'string') {
+        message = '网络错误';
+      }
+
+      reject(createError(message, config, request, response));
     }
 
     if (adapter === undefined) {
-      catchError({ errMsg: '请求失败，适配器未定义' });
+      catchError('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
 
       return;
     }
@@ -39,23 +46,19 @@ export default function requestAdapter(config: AxiosRequestConfig): Promise<Axio
      *
      * @param result 请求结果
      */
-    function checkStatusCode(result: WechatMiniprogram.RequestSuccessCallbackResult): void {
-      const { statusCode, header: headers, ...baseResponse } = result;
-      const response = { ...baseResponse, statusCode, headers, config };
+    function checkStatusCode(result: PlatformResponse): void {
+      const response = transformResponse(result, config);
 
-      if (config.validateStatus === undefined || config.validateStatus(statusCode)) {
+      if (config.validateStatus === undefined || config.validateStatus(response.status)) {
         resolve(response);
       } else {
-        catchError({ errMsg: `请求失败，状态码为 ${statusCode}` }, response);
+        catchError(`请求失败，状态码为 ${status}`, response);
       }
     }
 
     // 发送请求
     const requestTask = adapter({
-      ...config,
-      url: transformURL(config),
-      method: config.method as MethodType,
-      header: config.headers,
+      ...request,
       success: checkStatusCode,
       fail: catchError,
       complete: undefined,

@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 23:22:52
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 11:00:55
+ * @LastEditTime: 2020-04-17 15:41:23
  */
 import axios from './axios';
 
@@ -10,15 +10,14 @@ import axios from './axios';
  * 导出 typescript 类型
  */
 export {
+  AxiosMethod,
   AxiosRequestConfig,
   AxiosResponse,
   Axios,
   AxiosBaseInstance,
   AxiosInstance,
   AxiosError,
-  Cancel,
   CancelAction,
-  CancelExecutor,
   CancelTokenSource,
   CancelToken,
 } from './types';

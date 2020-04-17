@@ -4,7 +4,7 @@
  * @LastEditors: early-autumn
  * @LastEditTime: 2020-04-17 09:42:16
  */
-import { AxiosRequestConfig, ResponseData, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
+import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
 import Cancel from './cancel/Cancel';
 import CancelToken from './cancel/CancelToken';
@@ -33,7 +33,7 @@ function createInstance(config: AxiosRequestConfig): AxiosInstance {
    * @param url    调用方式二: 请求地址
    * @param config 调用方式二: 额外配置
    */
-  function axios<T extends ResponseData>(
+  function axios<T extends Data>(
     url: AxiosRequestConfig | string,
     config: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {
