@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 17:00:57
+ * @LastEditTime: 2020-04-18 23:00:43
  */
 /**
  * 任意值对象
@@ -109,12 +109,12 @@ export interface RequestConfig {
   data: Data;
 
   /**
-   * 响应头 Header 同 headers
+   * 请求头 同 headers
    */
   header: AnyObject;
 
   /**
-   * 响应头 Headers 同 header
+   * 请求头 同 header
    */
   headers: AnyObject;
 
@@ -129,7 +129,7 @@ export interface RequestConfig {
   responseType?: 'text' | 'arraybuffer';
 
   /**
-   * 超时时间，单位为毫秒
+   * 超时时间
    */
   timeout?: number;
 
@@ -308,7 +308,7 @@ export declare interface AxiosRequestConfig {
   cancelToken?: CancelToken;
 
   /**
-   * 超时时间，单位为毫秒
+   * 超时时间
    */
   timeout?: number;
 

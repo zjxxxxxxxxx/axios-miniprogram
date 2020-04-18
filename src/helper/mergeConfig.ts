@@ -2,25 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:48:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 14:56:44
+ * @LastEditTime: 2020-04-18 22:58:05
  */
 import { AxiosRequestConfig } from '../types';
 import { isPlainObject, deepMerge } from './utils';
-
-/**
- * 只取 config1 中的配置
- *
- * @param keys
- * @param config
- * @param config1
- */
-function onlyFromConfig1(keys: ['adapter'], config: AxiosRequestConfig, config1: AxiosRequestConfig) {
-  keys.forEach((key) => {
-    if (config1[key] !== undefined) {
-      config[key] = config1[key] as any;
-    }
-  });
-}
 
 /**
  * 只取 config2 中的配置
@@ -47,6 +32,7 @@ function onlyFromConfig2(keys: ['url', 'data'], config: AxiosRequestConfig, conf
  */
 function priorityFromConfig2(
   keys: [
+    'adapter',
     'baseURL',
     'method',
     'validateStatus',
@@ -111,11 +97,10 @@ function deepMergeConfig(
 export default function mergeConfig(config1: AxiosRequestConfig, config2: AxiosRequestConfig): AxiosRequestConfig {
   const config: AxiosRequestConfig = {};
 
-  onlyFromConfig1(['adapter'], config, config1);
   onlyFromConfig2(['url', 'data'], config, config2);
-  deepMergeConfig(['headers', 'params'], config, config1, config2);
   priorityFromConfig2(
     [
+      'adapter',
       'baseURL',
       'method',
       'validateStatus',
@@ -135,6 +120,7 @@ export default function mergeConfig(config1: AxiosRequestConfig, config2: AxiosR
     config1,
     config2
   );
+  deepMergeConfig(['headers', 'params'], config, config1, config2);
 
   return config;
 }

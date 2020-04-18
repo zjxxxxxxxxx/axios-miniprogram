@@ -31,7 +31,204 @@ npm i axios-miniprogram
 * 支持 自定义转换数据。
 * 支持 自定义平台适配器
 
-## 使用
+### `config`配置项
+
+非全平台兼容的配置只会在平台支持的情况下生效。
+
+|参数|类型|默认值|说明|全平台兼容|
+|:-|:-|:-|:-|:-|:-|
+|adapter|Function||自定义适配器|是|
+|baseURL|String||基础地址|是|
+|url|String||请求地址|是|
+|method|String|get|请求方法|
+|params|Object||请求参数|是|
+|data|String/Object/ArrayBuffer||请求数据|是|
+|headers|Object|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L11)|请求头|是|
+|validateStatus|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L28)|自定义合法状态码|是|
+|paramsSerializer|Function||自定义参数序列化|是|
+|transformRequest|Function/Array<.Function>||自定义转换请求数据|是|
+|transformResponse|Function/Array<.Function>||自定义转换响应数据|是|
+|cancelToken|Object||取消令牌|是|
+|timeout|Number|0|超时时间|
+|dataType|String|json|响应数据格式|是|
+|responseType|String|text|响应数据类型|是|
+|enableHttp2|Boolean|false|开启 http2|
+|enableQuic|Boolean|false|开启 quic|
+|enableCache|Boolean|false|开启 cache|
+|sslVerify|Boolean|true|验证 ssl 证书|
+
+##### `config.method`的合法值
+
+`method`对大小写不敏感，可以使用大写，也可以使用小写。
+
+|值|说明|全平台兼容|
+|:-|:-|:-|
+|OPTIONS|
+|GET||是|
+|HEAD|
+|POST||是|
+|PUT||是|
+|DELETE||是|
+|TRACE|
+|CONNECT|
+
+##### `config.dataType`的合法值
+
+|值|说明|全平台兼容|
+|:-|:-|:-|
+|json|返回的数据为 JSON，返回后会对返回的数据进行一次 JSON.parse|是|
+|其他|不对返回的内容进行 JSON.parse|是|
+
+##### `config.responseType`的合法值                                                                                              
+
+|值|说明|全平台兼容|
+|:-|:-|:-|
+|text|响应的数据为文本|是|
+|arraybuffer|响应的数据为 ArrayBuffer|是| 
+
+##### `config.validateStatus`自定义合法状态码
+
+可以让请求按照您的要求成功或者失败。
+
+```typescript
+axios('/test', {
+  validateStatus: function validateStatus(status) {
+    // 这样，状态码在 100 到 400 之间都是请求成功
+    return status >= 200 && status < 300;
+  }
+});
+```
+
+##### `config.paramsSerializer`自定义参数序列化
+
+可以使用自己的规则去序列化参数。
+
+```typescript
+axios('/test', {
+  paramsSerializer: function paramsSerializer(params) {
+    return qs.stringify(params, {arrayFormat: 'brackets'});
+  }
+});
+```
+
+##### 自定义转换数据
+
+可以在请求发出之前转换请求数据，在请求成功之后转换响应数据。
+
+```typescript
+axios('/test', {
+  transformRequest: [function (data, headers) {
+    // 转换请求数据
+    return data;
+  }],
+  transformResponse: [function (data) {
+    // 转换响应数据
+    return data;
+  }],
+});
+```
+
+##### `config.adapter`自定义平台适配器
+
+您可以自己适配您所在的平台
+
+```typescript
+axios.defaults.adapter = function adapter(adapterConfig) {
+  const {
+    // 接口地址
+    url,
+    // HTTP 请求方法
+    method,
+    // 请求数据
+    data,
+    // 请求头 同 headers
+    header,
+    // 请求头 同 header
+    headers,
+    // 返回的数据格式
+    dataType,
+    // 响应的数据类型
+    responseType,
+    // 超时时间
+    timeout,
+    // 开启 http2
+    enableHttp2,
+    // 开启 quic
+    enableQuic,
+    // 开启 cache
+    enableCache,
+    // 验证 ssl 证书
+    sslVerify,
+    // 成功的响应函数
+    success,
+    // 失败的响应函数
+    fail
+  } = adapterConfig;
+
+  // 在 adapterConfig 中选择您需要的参数发送请求
+  wx.request({
+    url,
+    method,
+    data,
+    header,
+    success,
+    fail
+  });
+}
+```
+
+### `defaults`默认配置
+
+##### 全局默认配置`axios.defaults`
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+axios.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+```
+
+##### 自定义实例默认配置
+
+```typescript
+// 可以创建时传入
+const instance = axios.create({
+  baseURL: 'https://www.xxx.com',
+  headers: {
+    common: {
+      'Accept': 'application/json, test/plain, */*'
+    },
+    post: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }
+});
+
+// 也可以创建后修改
+instance.defaults.baseURL = 'https://www.xxx.com';
+instance.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+```
+
+##### 配置优先顺序
+
+发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/mergeConfig.ts) 的实现。
+
+### `response`响应体
+
+|属性|类型|说明|全平台兼容|
+|:-|:-|:-|:-|
+|status|Number|状态码|是|
+|statusText|String|状态文本|是|
+|data|String/Object/ArrayBuffer|开发者服务器返回的数据|是|
+|headers|Object|响应头|是|
+|response|Object|通用响应体|是|
+|request|Object|通用请求配置|是|
+|config|Object|Axios 请求配置|是|
+|cookies|Array<.String>|开发者服务器返回的 cookies，格式为字符串数组|
+|profile|Object|网络请求过程中一些关键时间点的耗时信息|
+
+
+## API
 
 可以通过将相关配置传递给`axios`来发送请求。
 
@@ -107,80 +304,6 @@ axios.post('/test', { test: 1 }, {
 });
 ```
 
-## 配置
-
-|参数|类型|默认值|说明|平台差异
-|:-|:-|:-|:-|:-|:-|:-|
-|adapter|Function||
-|baseURL|String||
-|url|String||
-|method|String|get|
-|params|Object||
-|data|String/Object/ArrayBuffer||
-|headers|Object|[查看]()|
-|validateStatus|Function||
-|paramsSerializer|Function||
-|transformRequest|Function/Array|
-|transformResponse|Function/Array|
-|cancelToken|Object|
-|timeout|Number|0|
-|dataType|String|json|
-|responseType|String|text|
-|enableHttp2|Boolean|false|
-|enableQuic|Boolean|false|
-|enableCache|Boolean|false|
-|sslVerify|Boolean|false|
-
-### 默认配置
-
-##### 全局默认配置`axios.defaults`
-
-```typescript
-axios.defaults.baseURL = 'https://www.xxx.com';
-axios.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-```
-
-##### 自定义实例默认配置
-
-```typescript
-// 可以创建时传入
-const instance = axios.create({
-  baseURL: 'https://www.xxx.com',
-  headers: {
-    common: {
-      'Accept': 'application/json, test/plain, */*'
-    },
-    post: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }
-});
-
-// 也可以创建后修改
-instance.defaults.baseURL = 'https://www.xxx.com';
-instance.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-```
-
-##### 配置优先顺序
-
-发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/mergeConfig.ts) 的实现。
-
-
-
-### `axios.getUri(config)`
-
-根据配置中的`url`和`params`生成一个`URI`。
-
-```typescript 
-// uri === '/test?id=1'
-const uri = axios.getUri({
-  url: '/test',
-  params: { id: 1 }
-});
-```
-
 ### `axios.create(config)`
 
 创建一个`自定义实例`，传入的自定义配置`config`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
@@ -204,7 +327,93 @@ instance('/test');
 instance.get('/test');
 ```
 
-### `axios.Axios`
+### `axios.interceptors`拦截器
+
+可以先拦截请求或响应，然后再由then或catch处理。
+
+```typescript
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  console.log('request');
+  return config;
+}, function (error) {
+  //处理请求错误
+  return Promise.reject(error);
+});
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+  // 请求成功后做些什么
+  console.log('response');
+  return response;
+}, function (error) {
+  // 处理响应错误
+  return Promise.reject(error);
+});
+
+axios('/test').then(function (response){
+  console.log('ok');
+});
+
+// log 'request' 'response' 'ok'
+```
+
+如果以后需要删除拦截器，则可以。
+
+```typescript
+const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
+axios.interceptors.request.eject(myInterceptor);
+```
+
+还可以将拦截器添加到`axios`的`自定义实例`中。
+
+```typescript
+const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
+axios.interceptors.request.eject(myInterceptor);
+```
+
+### `axios.CancelToken`取消令牌
+
+可以使用`CancelToken`取消已经发出的请求。
+
+```typescript
+let cancel;
+
+axios('/test', {
+  cancelToken: new axios.CancelToken(function (c){
+    cancel = c;
+  })
+});
+
+cancel('请求被取消了');
+```
+
+还可以使用`CancelToken.source`工厂方法创建`CancelToken`。
+
+```typescript
+const source = axios.CancelToken.source()
+
+axios('/test', {
+  cancelToken: source.token
+});
+
+source.cancel('请求被取消了');
+```
+
+### `axios.getUri(config)`
+
+根据配置中的`url`和`params`生成一个`URI`。
+
+```typescript 
+// uri === '/test?id=1'
+const uri = axios.getUri({
+  url: '/test',
+  params: { id: 1 }
+});
+```
+
+### `axios.Axios`类
 
 `axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的，`axios.create(config)`创建的也是`axios.Axios`的实例。
 
@@ -222,3 +431,4 @@ const instance = new axios.Axios({
 // value=零污染 来自 instance.defaults.params
 instance.get('/test');
 ```
+

@@ -2,11 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 15:56:12
+ * @LastEditTime: 2020-04-18 20:32:56
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import createError from '../core/createError';
-import requestAdapter from '../adapter/request';
 import requestConfigAdapter from '../adapter/requestConfig';
 import responseAdapter from '../adapter/response';
 
@@ -17,7 +16,7 @@ import responseAdapter from '../adapter/response';
  */
 export default function request(config: AxiosRequestConfig): Promise<AxiosResponse> {
   return new Promise(function dispatchAdapter(resolve, reject): void {
-    const { adapter = requestAdapter, cancelToken } = config;
+    const { adapter, cancelToken } = config;
     const request = requestConfigAdapter(config);
 
     /**
