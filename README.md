@@ -40,7 +40,7 @@ npm i axios-miniprogram
 |adapter|Function||自定义适配器|是|
 |baseURL|String||基础地址|是|
 |url|String||请求地址|是|
-|method|String|get|请求方法|
+|method|String|get|请求方法||
 |params|Object||请求参数|是|
 |data|String/Object/ArrayBuffer||请求数据|是|
 |headers|Object|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L11)|请求头|是|
@@ -49,13 +49,13 @@ npm i axios-miniprogram
 |transformRequest|Function/Array<.Function>||自定义转换请求数据|是|
 |transformResponse|Function/Array<.Function>||自定义转换响应数据|是|
 |cancelToken|Object||取消令牌|是|
-|timeout|Number|0|超时时间|
+|timeout|Number|0|超时时间||
 |dataType|String|json|响应数据格式|是|
 |responseType|String|text|响应数据类型|是|
-|enableHttp2|Boolean|false|开启 http2|
-|enableQuic|Boolean|false|开启 quic|
-|enableCache|Boolean|false|开启 cache|
-|sslVerify|Boolean|true|验证 ssl 证书|
+|enableHttp2|Boolean|false|开启 http2||
+|enableQuic|Boolean|false|开启 quic||
+|enableCache|Boolean|false|开启 cache||
+|sslVerify|Boolean|true|验证 ssl 证书||
 
 ##### `config.method`的合法值
 
