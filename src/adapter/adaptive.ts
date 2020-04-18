@@ -2,17 +2,16 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 20:34:02
+ * @LastEditTime: 2020-04-19 01:15:42
  */
 import { Adapter, Platform } from '../types';
 
-/* eslint-disable no-var */
-var wx: Platform;
-var swan: Platform;
-var my: Platform;
-var tt: Platform;
-var qq: Platform;
-var uni: Platform;
+declare let wx: Platform;
+declare let my: Platform;
+declare let swan: Platform;
+declare let tt: Platform;
+declare let qq: Platform;
+declare let uni: Platform;
 
 /**
  * 设置当前平台适配器

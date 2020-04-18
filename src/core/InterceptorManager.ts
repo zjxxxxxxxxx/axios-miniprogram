@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 17:50:50
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 16:11:54
+ * @LastEditTime: 2020-04-19 02:22:28
  */
 import {
   InterceptorResolved,
@@ -24,11 +24,11 @@ export default class InterceptorManagerStatic<T> implements InterceptorManager<T
   /**
    * 拦截器集合
    */
-  private interceptors: Map<number, Interceptor<T>>;
+  private interceptors: Record<string, Interceptor<T>>;
 
   constructor() {
     this.id = 0;
-    this.interceptors = new Map();
+    this.interceptors = {};
   }
 
   /**
@@ -38,10 +38,10 @@ export default class InterceptorManagerStatic<T> implements InterceptorManager<T
    * @param rejected 失败的回调函数
    */
   public use(resolved: InterceptorResolved<T>, rejected: InterceptorRejected = (err: any) => Promise.reject(err)) {
-    this.interceptors.set(this.id++, {
+    this.interceptors[this.id++] = {
       resolved,
       rejected,
-    });
+    };
 
     return this.id;
   }
@@ -52,7 +52,7 @@ export default class InterceptorManagerStatic<T> implements InterceptorManager<T
    * @param id 拦截器 id
    */
   public eject(id: number): void {
-    this.interceptors.delete(id);
+    delete this.interceptors[id];
   }
 
   /**
@@ -62,7 +62,7 @@ export default class InterceptorManagerStatic<T> implements InterceptorManager<T
    * @param reverse  是否倒序遍历
    */
   public forEach(executor: InterceptorExecutor<T>, reverse?: 'reverse'): void {
-    let interceptors: Interceptor<T>[] = [...this.interceptors.values()];
+    let interceptors: Interceptor<T>[] = [...Object.values(this.interceptors)];
 
     if (reverse === 'reverse') {
       interceptors = interceptors.reverse();

@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:55:40
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 09:29:19
+ * @LastEditTime: 2020-04-19 01:56:21
  */
 const _toString = Object.prototype.toString;
 
@@ -94,6 +94,9 @@ export function deepMerge(...objs: Record<string, any>[]): Record<string, any> {
   }
 
   objs.forEach((obj: Record<string, any>): void => {
+    if (obj === undefined) {
+      return;
+    }
     Object.entries(obj).forEach(([key, value]) => assignValue(key, value));
   });
 

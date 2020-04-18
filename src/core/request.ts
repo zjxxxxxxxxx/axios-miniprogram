@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 20:32:56
+ * @LastEditTime: 2020-04-19 01:56:59
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import createError from '../core/createError';
@@ -50,7 +50,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
       if (config.validateStatus === undefined || config.validateStatus(response.status)) {
         resolve(response);
       } else {
-        catchError(`请求失败，状态码为 ${status}`, response);
+        catchError(`请求失败，状态码为 ${response.status}`, response);
       }
     }
 

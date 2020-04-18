@@ -38,24 +38,24 @@ npm i axios-miniprogram
 |参数|类型|默认值|说明|全平台兼容|
 |:-|:-|:-|:-|:-|
 |adapter|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L11)|自定义适配器|是|
-|baseURL|String||基础地址|是|
-|url|String||请求地址|是|
-|method|String|get|请求方法||
-|params|Object||请求参数|是|
-|data|String/Object/ArrayBuffer||请求数据|是|
+|baseURL|String| |基础地址|是|
+|url|String| |请求地址|是|
+|method|String|get|请求方法| |
+|params|Object| |请求参数|是|
+|data|String/Object/ArrayBuffer| |请求数据|是|
 |headers|Object|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L13)|请求头|是|
 |validateStatus|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L30)|自定义合法状态码|是|
-|paramsSerializer|Function||自定义参数序列化|是|
-|transformRequest|Function/Array<.Function>||自定义转换请求数据|是|
-|transformResponse|Function/Array<.Function>||自定义转换响应数据|是|
-|cancelToken|Object||取消令牌|是|
-|timeout|Number|0|超时时间||
+|paramsSerializer|Function| |自定义参数序列化|是|
+|transformRequest|Function/Array<.Function>| |自定义转换请求数据|是|
+|transformResponse|Function/Array<.Function>| |自定义转换响应数据|是|
+|cancelToken|Object| |取消令牌|是|
+|timeout|Number|0|超时时间| |
 |dataType|String|json|响应数据格式|是|
 |responseType|String|text|响应数据类型|是|
-|enableHttp2|Boolean|false|开启 http2||
-|enableQuic|Boolean|false|开启 quic||
-|enableCache|Boolean|false|开启 cache||
-|sslVerify|Boolean|true|验证 ssl 证书||
+|enableHttp2|Boolean|false|开启 http2| |
+|enableQuic|Boolean|false|开启 quic| |
+|enableCache|Boolean|false|开启 cache| |
+|sslVerify|Boolean|true|验证 ssl 证书| |
 
 ##### `config.method`的合法值
 
@@ -63,14 +63,14 @@ npm i axios-miniprogram
 
 |值|说明|全平台兼容|
 |:-|:-|:-|
-|OPTIONS|
-|GET||是|
-|HEAD|
-|POST||是|
-|PUT||是|
-|DELETE||是|
-|TRACE|
-|CONNECT|
+|OPTIONS| | |
+|GET| |是|
+|HEAD| | |
+|POST| |是|
+|PUT| |是|
+|DELETE| |是|
+|TRACE| | |
+|CONNECT| | |
 
 ##### `config.dataType`的合法值
 
@@ -84,7 +84,7 @@ npm i axios-miniprogram
 |值|说明|全平台兼容|
 |:-|:-|:-|
 |text|响应的数据为文本|是|
-|arraybuffer|响应的数据为 ArrayBuffer|是| 
+|arraybuffer|响应的数据为 ArrayBuffer|是|
 
 ##### `config.validateStatus`自定义合法状态码
 
@@ -227,8 +227,8 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 |response|Object|通用响应体|是|
 |request|Object|通用请求配置|是|
 |config|Object|Axios 请求配置|是|
-|cookies|Array<.String>|开发者服务器返回的 cookies，格式为字符串数组|
-|profile|Object|网络请求过程中一些关键时间点的耗时信息|
+|cookies|Array<.String>|开发者服务器返回的 cookies，格式为字符串数组| |
+|profile|Object|网络请求过程中一些关键时间点的耗时信息| |
 
 
 ## API

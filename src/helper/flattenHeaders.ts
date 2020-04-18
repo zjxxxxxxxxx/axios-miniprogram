@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-18 12:00:01
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 15:40:23
+ * @LastEditTime: 2020-04-19 02:32:15
  */
 import { AliasMethod, Headers, AxiosRequestConfig } from '../types';
 import { merge } from './utils';
@@ -18,7 +18,7 @@ export default function flattenHeaders(config: AxiosRequestConfig): Headers {
 
   headers = merge(headers.common ?? {}, headers[method] ?? {}, headers);
 
-  ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'].forEach((key: string) => {
+  ['common', 'options', 'delete', 'get', 'head', 'post', 'put', 'trace', 'connect'].forEach((key: string) => {
     delete headers[key];
   });
 
