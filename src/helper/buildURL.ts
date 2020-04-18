@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 16:12:10
+ * @LastEditTime: 2020-04-18 23:56:50
  */
 import { AnyObject, Params } from '../types';
 import { isPlainObject, isDate } from './utils';
@@ -52,7 +52,7 @@ function joinURL(url: string, serializedParams: string): string {
  *
  * @param params 请求参数
  */
-function paramsSerializerDefault(params: AnyObject): string {
+function paramsSerialization(params: AnyObject): string {
   const parts: string[] = [];
 
   Object.entries(params).forEach(([key, value]): void => {
@@ -87,24 +87,12 @@ function paramsSerializerDefault(params: AnyObject): string {
  *
  * @param url              请求地址
  * @param params           请求参数
- * @param paramsSerializer 自定义参数序列化
+ * @param paramsSerialized 自定义参数序列化
  */
-export default function buildURL(
-  url: string,
-  params?: Params,
-  paramsSerializer?: (params: AnyObject) => string
-): string {
+export default function buildURL(url: string, params?: Params, paramsSerializer = paramsSerialization): string {
   if (params === undefined) {
     return url;
   }
 
-  let serializedParams = '';
-
-  if (paramsSerializer !== undefined) {
-    serializedParams = paramsSerializer(params);
-  } else {
-    serializedParams = paramsSerializerDefault(params);
-  }
-
-  return joinURL(url, serializedParams);
+  return joinURL(url, paramsSerializer(params));
 }
