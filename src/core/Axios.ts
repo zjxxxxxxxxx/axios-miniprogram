@@ -2,18 +2,13 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 19:14:14
+ * @LastEditTime: 2020-04-18 16:17:08
  */
-import { AxiosMethod, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
-import transformURL from '../helper/transformURL';
+import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
+import buildURL from '../helper/buildURL';
 import mergeConfig from '../helper/mergeConfig';
 import InterceptorManager from './InterceptorManager';
 import dispatchRequest from './dispatchRequest';
-
-interface PromiseCatch {
-  request: Promise<AxiosRequestConfig>;
-  response?: Promise<AxiosResponse>;
-}
 
 export default class AxiosStatic implements Axios {
   /**
@@ -26,7 +21,7 @@ export default class AxiosStatic implements Axios {
    */
   public interceptors: Interceptors;
 
-  constructor(config: AxiosRequestConfig) {
+  constructor(config: AxiosRequestConfig = {}) {
     this.defaults = config;
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
@@ -35,40 +30,42 @@ export default class AxiosStatic implements Axios {
   }
 
   /**
-   * baseURL + url + params 得到完整请求地址
+   * 根据配置中的 url 和 params 生成一个 URI
    *
-   * @param config 请求配置
+   * @param config Axios 请求配置
    */
   public getUri(config: AxiosRequestConfig): string {
-    return transformURL(mergeConfig(this.defaults, config));
+    config = mergeConfig(this.defaults, config);
+
+    return buildURL((config.url = ''), config.params, config.paramsSerializer).replace(/^\?/, '');
   }
 
   /**
    * 发送 HTTP 请求
    *
-   * @param config 请求配置
+   * @param config Axios 请求配置
    */
   public request<T extends Data>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
     config = mergeConfig(this.defaults, config);
 
-    const promise: PromiseCatch = {
-      request: Promise.resolve(config),
-    };
+    let promiseRequest = Promise.resolve(config);
 
     // 执行前置拦截器
     this.interceptors.request.forEach(function executor({ resolved, rejected }) {
-      promise.request = promise.request.then(resolved, rejected);
+      promiseRequest = promiseRequest.then(resolved, rejected);
     }, 'reverse');
 
     // 发送请求
-    promise.response = promise.request.then(dispatchRequest, (err: any) => Promise.reject(err));
+    let promisePesponse = promiseRequest.then(dispatchRequest, (err: any) => Promise.reject(err)) as Promise<
+      AxiosResponse<T>
+    >;
 
     // 执行后置拦截器
     this.interceptors.response.forEach(function executor({ resolved, rejected }) {
-      promise.response = promise.response?.then(resolved, rejected);
+      promisePesponse = promisePesponse.then(resolved, rejected);
     });
 
-    return promise.response as Promise<AxiosResponse<T>>;
+    return promisePesponse;
   }
 
   /**
@@ -168,7 +165,7 @@ export default class AxiosStatic implements Axios {
    * @param config 额外配置
    */
   private _requestMethodWithoutParams<T extends Data>(
-    method: AxiosMethod,
+    method: Method,
     url: string,
     params?: Params,
     config: AxiosRequestConfig = {}
@@ -190,7 +187,7 @@ export default class AxiosStatic implements Axios {
    * @param config 额外配置
    */
   private _requestMethodWithoutData<T extends Data>(
-    method: AxiosMethod,
+    method: Method,
     url: string,
     data?: Data,
     config: AxiosRequestConfig = {}

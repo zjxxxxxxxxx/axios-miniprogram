@@ -2,46 +2,40 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 00:02:38
+ * @LastEditTime: 2020-04-18 17:00:57
  */
-// import 'miniprogram-api-typings';
-
-export interface PlatformRequestTask {
-  /**
-   * 取消当前请求
-   */
-  abort(): void;
-}
-
-/**
- * 当前平台请求函数
- */
-export interface PlatformRequest {
-  (config: PlatformRequestConfig): PlatformRequestTask;
-}
-
 /**
  * 任意值对象
  */
 export declare type AnyObject = Record<string, any>;
 
 /**
- * Axios 请求方法 和 响应方法 类型
+ * 请求方法
  */
-export declare type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
+export declare type AdapterMethod = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
 
 /**
- * Axios 请求参数
+ * 请求方法别名
+ */
+export declare type AliasMethod = 'options' | 'get' | 'head' | 'post' | 'put' | 'delete' | 'trace' | 'connect';
+
+/**
+ * Axios 请求方法
+ */
+export declare type Method = AliasMethod | AdapterMethod;
+
+/**
+ * Axios 参数
  */
 export declare type Params = AnyObject;
 
 /**
- * Axios 请求数据 和 响应数据 类型
+ * Axios 数据
  */
 export declare type Data = string | AnyObject | ArrayBuffer;
 
 /**
- * Axios 请求头 和 响应头 类型
+ * Axios 头
  */
 export interface Headers {
   /**
@@ -92,41 +86,171 @@ export interface Headers {
   /**
    * 自定义配置
    */
-  [x: string]: string | Record<string, string> | undefined;
+  [x: string]: Record<string, string> | string | undefined;
 }
 
 /**
- * 转换请求数据和响应数据函数 类型
+ * 通用请求配置
+ */
+export interface RequestConfig {
+  /**
+   * 接口地址
+   */
+  url: string;
+
+  /**
+   * HTTP 请求方法
+   */
+  method: AdapterMethod;
+
+  /**
+   * 请求数据
+   */
+  data: Data;
+
+  /**
+   * 响应头 Header 同 headers
+   */
+  header: AnyObject;
+
+  /**
+   * 响应头 Headers 同 header
+   */
+  headers: AnyObject;
+
+  /**
+   * 返回的数据格式
+   */
+  dataType?: 'json' | '其他';
+
+  /**
+   * 响应的数据类型
+   */
+  responseType?: 'text' | 'arraybuffer';
+
+  /**
+   * 超时时间，单位为毫秒
+   */
+  timeout?: number;
+
+  /**
+   * 开启 http2
+   */
+  enableHttp2?: boolean;
+
+  /**
+   * 开启 quic
+   */
+  enableQuic?: boolean;
+
+  /**
+   * 开启 cache
+   */
+  enableCache?: boolean;
+
+  /**
+   * 验证 ssl 证书
+   */
+  sslVerify?: boolean;
+}
+
+/**
+ * 通用响应体
+ */
+export interface Response {
+  /**
+   * 响应状态码
+   */
+  statusCode: number;
+
+  /**
+   * 响应头 Headers
+   */
+  header: AnyObject;
+
+  /**
+   * 响应状态码
+   */
+  status: number;
+
+  /**
+   * 响应头 Headers
+   */
+  headers: Headers;
+
+  /**
+   * 响应数据
+   */
+  data: Data;
+
+  /**
+   * 开发者服务器返回的 cookies，格式为字符串数组
+   */
+  cookies?: string[];
+
+  /**
+   * 网络请求过程中一些关键时间点的耗时信息
+   */
+  profile?: AnyObject;
+}
+
+/**
+ * 适配器请求配置
+ */
+export interface AdapterRequestConfig extends RequestConfig {
+  /**
+   * 成功的响应函数
+   */
+  success: (res: Response) => void;
+
+  /**
+   * 失败的响应函数
+   */
+  fail: (err: unknown) => void;
+}
+
+/**
+ * 适配器请求任务
+ */
+export interface AdapterRequestTask {
+  /**
+   * 取消请求
+   */
+  abort(): void;
+}
+
+/**
+ * 适配器
+ */
+export interface Adapter {
+  (config: AdapterRequestConfig): AdapterRequestTask;
+}
+
+/**
+ * 平台
+ */
+export interface Platform {
+  // 请求函数
+  request?: Adapter;
+  // 兼容支付宝小程序
+  httpRequest?: Adapter;
+}
+
+/**
+ * 转换数据函数
  */
 export interface TransformData {
   (data: Data, headers: Headers): Data;
 }
 
 /**
- * Axios 请求配置方法 类型
- */
-export declare type AxiosMethod = 'options' | 'get' | 'head' | 'post' | 'put' | 'delete' | 'trace' | 'connect' | Method;
-
-/**
- * 请求配置
+ * Axios 请求配置
  */
 export declare interface AxiosRequestConfig {
   /**
-   * 自定义平台适配器
-   *
-   * 适配 uniapp 示例:
-   *
-   * ```typescript
-   *  import axios from 'axios-miniprogram';
-   *
-   *  // 使用全局默认配置进行适配
-   *  axios.defaults.adapter = uni.request;
-   *
-   *  // 现在可以正常发送请求了
-   *  axios('/test')
-   * ```
+   * 自定义适配器
    */
-  adapter?: PlatformRequest;
+  adapter?: Adapter;
 
   /**
    * 基础地址
@@ -134,14 +258,14 @@ export declare interface AxiosRequestConfig {
   baseURL?: string;
 
   /**
-   * 接口地址
+   * 请求地址
    */
   url?: string;
 
   /**
-   * HTTP 请求方法
+   * 请求方法
    */
-  method?: AxiosMethod;
+  method?: Method;
 
   /**
    * 请求参数
@@ -159,6 +283,16 @@ export declare interface AxiosRequestConfig {
   headers?: Headers;
 
   /**
+   * 自定义合法状态码
+   */
+  validateStatus?: (status: number) => boolean;
+
+  /**
+   * 自定义参数序列化
+   */
+  paramsSerializer?: (params: AnyObject) => string;
+
+  /**
    * 转换请求数据
    */
   transformRequest?: TransformData | TransformData[];
@@ -169,164 +303,84 @@ export declare interface AxiosRequestConfig {
   transformResponse?: TransformData | TransformData[];
 
   /**
-   * 自定义参数序列化
-   */
-  paramsSerializer?: (params: AnyObject) => string;
-
-  /**
-   * 自定义合法状态码
-   */
-  validateStatus?: (status: number) => boolean;
-
-  /**
    * 取消令牌
    */
   cancelToken?: CancelToken;
-
-  /**
-   * 返回的数据格式
-   */
-  dataType?: 'json' | '其他';
-
-  /**
-   * 响应的数据类型
-   */
-  responseType?: 'text' | 'arraybuffer';
 
   /**
    * 超时时间，单位为毫秒
    */
   timeout?: number;
 
-  //===以下属性均在指定平台有效===//
+  /**
+   * 响应数据格式
+   */
+  dataType?: 'json' | '其他';
 
   /**
-   * wx
-   *
+   * 响应数据类型
+   */
+  responseType?: 'text' | 'arraybuffer';
+
+  /**
    * 开启 http2
    */
   enableHttp2?: boolean;
 
   /**
-   * wx
-   *
    * 开启 quic
    */
   enableQuic?: boolean;
 
   /**
-   * wx
-   *
    * 开启 cache
    */
   enableCache?: boolean;
 
   /**
-   * uniapp
-   *
    * 验证 ssl 证书
    */
   sslVerify?: boolean;
 }
 
 /**
- * 各大平台通用请求配置
- */
-export interface PlatformRequestConfig extends AxiosRequestConfig {
-  /**
-   * 带参地址
-   */
-  url: string;
-
-  /**
-   * 全大写 method
-   */
-  method: Method;
-
-  /**
-   * headers 的副本
-   */
-  header?: AnyObject;
-
-  /**
-   * 成功的响应函数
-   */
-  success?: (res: PlatformResponse) => void;
-
-  /**
-   * 失败的响应函数
-   */
-  fail?: (err: any) => void;
-}
-
-/**
- * 响应体
+ * Axios 响应体
  */
 export interface AxiosResponse<T extends Data = Data> {
   /**
-   * 响应状态码
+   * 状态码
    */
   status: number;
 
   /**
-   * 响应状态文本
+   * 状态文本
    */
   statusText: string;
 
   /**
-   * 响应数据
+   * 服务端返回的数据
    */
   data: T;
 
   /**
-   * 响应头 Headers
+   * 响应头
    */
   headers: Headers;
 
   /**
-   * 请求配置
+   * 通用响应体
+   */
+  response: Response;
+
+  /**
+   * 通用请求配置
+   */
+  request: RequestConfig;
+
+  /**
+   * Axios 请求配置
    */
   config: AxiosRequestConfig;
-
-  /**
-   * 开发者服务器返回的 cookies，格式为字符串数组
-   */
-  cookies?: string[];
-
-  /**
-   * 网络请求过程中一些关键时间点的耗时信息
-   */
-  profile?: AnyObject;
-}
-
-/**
- * 各大平台通用响应体
- */
-export interface PlatformResponse {
-  /**
-   * 响应状态码
-   */
-  statusCode: number;
-
-  /**
-   * 响应头 Headers
-   */
-  header: AnyObject;
-
-  /**
-   * 响应状态码
-   */
-  status?: number;
-
-  /**
-   * 响应头 Headers
-   */
-  headers?: Headers;
-
-  /**
-   * 响应数据
-   */
-  data: Data;
 
   /**
    * 开发者服务器返回的 cookies，格式为字符串数组
@@ -418,7 +472,7 @@ export interface Interceptors {
 }
 
 /**
- * Axios 原始实例
+ * Axios 实例
  */
 export interface Axios {
   /**
@@ -432,7 +486,7 @@ export interface Axios {
   interceptors: Interceptors;
 
   /**
-   * baseURL + url + params 得到完整请求地址
+   * 根据配置中的 url 和 params 生成一个 URI
    *
    * @param config 请求配置
    */
@@ -540,9 +594,9 @@ export interface AxiosError extends Error {
   config: AxiosRequestConfig;
 
   /**
-   * 各大平台通用请求配置
+   * 通用请求配置
    */
-  request: PlatformRequestConfig;
+  request: RequestConfig;
 
   /**
    * 响应体
@@ -672,29 +726,24 @@ export interface AxiosBaseInstance extends Axios {
  */
 export interface AxiosInstance extends AxiosBaseInstance {
   /**
+   * 创建 Axios 实例基础增强
+   *
+   * @param config 全局配置
+   */
+  create(config?: AxiosRequestConfig): AxiosBaseInstance;
+
+  /**
    * Axios 类
    */
   Axios: AxiosConstructor;
 
   /**
-   * 创建 Axios 实例
-   *
-   * @param config 全局配置
-   */
-  create(config: AxiosRequestConfig): AxiosBaseInstance;
-
-  /**
-   * Cancel 类
-   */
-  Cancel: CancelConstructor;
-
-  /**
-   * CancelToken 类
+   * 取消令牌 类
    */
   CancelToken: CancelTokenConstructor;
 
   /**
-   * 是否是取消请求实例
+   * 检查一个错误是不是取消错误
    *
    * @param value 判断的值
    */

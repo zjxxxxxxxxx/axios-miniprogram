@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:48:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 00:03:08
+ * @LastEditTime: 2020-04-18 14:56:44
  */
 import { AxiosRequestConfig } from '../types';
 import { isPlainObject, deepMerge } from './utils';
@@ -49,10 +49,10 @@ function priorityFromConfig2(
   keys: [
     'baseURL',
     'method',
+    'validateStatus',
+    'paramsSerializer',
     'transformRequest',
     'transformResponse',
-    'paramsSerializer',
-    'validateStatus',
     'cancelToken',
     'dataType',
     'responseType',
@@ -103,24 +103,25 @@ function deepMergeConfig(
 }
 
 /**
- * 合并配置
+ * 合并 Axios 请求配置
  *
- * @param config1 配置 1
- * @param config2 配置 2
+ * @param config1 Axios 请求配置1
+ * @param config2 Axios 请求配置2
  */
 export default function mergeConfig(config1: AxiosRequestConfig, config2: AxiosRequestConfig): AxiosRequestConfig {
   const config: AxiosRequestConfig = {};
 
   onlyFromConfig1(['adapter'], config, config1);
   onlyFromConfig2(['url', 'data'], config, config2);
+  deepMergeConfig(['headers', 'params'], config, config1, config2);
   priorityFromConfig2(
     [
       'baseURL',
       'method',
+      'validateStatus',
+      'paramsSerializer',
       'transformRequest',
       'transformResponse',
-      'paramsSerializer',
-      'validateStatus',
       'cancelToken',
       'dataType',
       'responseType',
@@ -134,7 +135,6 @@ export default function mergeConfig(config1: AxiosRequestConfig, config2: AxiosR
     config1,
     config2
   );
-  deepMergeConfig(['headers', 'params'], config, config1, config2);
 
   return config;
 }

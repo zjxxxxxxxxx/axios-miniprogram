@@ -26,28 +26,29 @@ npm i axios-miniprogram
 * 支持 `Promise`。
 * 支持 拦截器。
 * 支持 取消请求。
+* 支持 自定义合法状态码。
 * 支持 自定义参数序列化。
 * 支持 自定义转换数据。
-* 支持 自定义成功状态码。
 * 支持 自定义平台适配器
 
-## API
+## 使用
 
 可以通过将相关配置传递给`axios`来发送请求。
 
 ### `axios(config)`
 
 ```typescript
-// 默认发送 GET 请求
+// 发送 GET 请求
 axios({
+  method: 'get',
   url: '/test',
   params: { test: 1 }
 });
 
 // 发送 POST 请求
 axios({
-  url: '/test',
   method: 'post',
+  url: '/test',
   data: { test: 1 }
 });
 ```
@@ -64,7 +65,7 @@ axios('/test/xxx');
 axios('/test/xxx', { method: 'post' });
 ```
 
-还可以使用请求方法别名来简化请求
+还可以使用请求方法的别名来简化请求。
 
 * ##### axios.request(config)
 * ##### axios.options(url, config?)
@@ -106,6 +107,30 @@ axios.post('/test', { test: 1 }, {
 });
 ```
 
+## 配置
+
+|参数|类型|默认值|说明|平台差异
+|:-|:-|:-|:-|:-|:-|:-|
+|adapter|Function||
+|baseURL|String||
+|url|String||
+|method|String|get|
+|params|Object||
+|data|String/Object/ArrayBuffer||
+|headers|Object|[查看]()|
+|validateStatus|Function||
+|paramsSerializer|Function||
+|transformRequest|Function/Array|
+|transformResponse|Function/Array|
+|cancelToken|Object|
+|timeout|Number|0|
+|dataType|String|json|
+|responseType|String|text|
+|enableHttp2|Boolean|false|
+|enableQuic|Boolean|false|
+|enableCache|Boolean|false|
+|sslVerify|Boolean|false|
+
 ### 默认配置
 
 ##### 全局默认配置`axios.defaults`
@@ -140,26 +165,17 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 
 ##### 配置优先顺序
 
-发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/mergeConfig.ts) 的实现。
+发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/mergeConfig.ts) 的实现。
 
 
 
 ### `axios.getUri(config)`
 
-根据传入的配置生成完整的`URL`。
+根据配置中的`url`和`params`生成一个`URI`。
 
-```typescript
-axios.defaults.baseURL = 'https://www.xxx.com';
-
-// uri === 'https://www.xxx.com/test?id=1'
+```typescript 
+// uri === '/test?id=1'
 const uri = axios.getUri({
-  url: '/test',
-  params: { id: 1 }
-});
-
-// uri2 === 'https://www.yyy.com/test?id=1'
-const uri2 = axios.getUri({
-  baseURL: 'https://www.yyy.com',
   url: '/test',
   params: { id: 1 }
 });
@@ -169,7 +185,7 @@ const uri2 = axios.getUri({
 
 创建一个`自定义实例`，传入的自定义配置`config`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
 
-`自定义实例`拥有和`axios`相同的调用方式和请求方法别名。
+`自定义实例`拥有和`axios`相同的调用方式和请求方法的别名。
 
 ```typescript
 axios.defaults.baseURL = 'https://www.xxx.com';

@@ -2,16 +2,18 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 23:52:47
+ * @LastEditTime: 2020-04-18 15:53:05
  */
-import { AnyObject, Method, AxiosRequestConfig, AxiosResponse, Data } from '../types';
-import { merge } from '../helper/utils';
+import { AxiosRequestConfig, AxiosResponse } from '../types';
+import flattenHeaders from '../helper/flattenHeaders';
 import transformData from '../helper/transformData';
 import isCancel from '../cancel/isCancel';
-import requestAdapter from './requestAdapter';
+import request from './request';
 
 /**
- * 如果已经取消, 则抛出取消
+ * 如果已经取消, 则抛出取消对象
+ *
+ * @param config Axios 请求配置
  */
 function throwIfCancellationRequested(config: AxiosRequestConfig) {
   if (config.cancelToken) {
@@ -22,31 +24,23 @@ function throwIfCancellationRequested(config: AxiosRequestConfig) {
 /**
  * 发送请求
  *
- * @param config 请求配置
+ * @param config Axios 请求配置
  */
 export default function dispatchRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
   throwIfCancellationRequested(config);
 
-  const { method = 'GET', data = {}, headers = {} } = config;
+  if (config.method === undefined) {
+    config.method = 'get';
+  }
 
-  // 把方法转成全大写
-  config.method = method.toUpperCase() as Method;
+  config.headers = flattenHeaders(config);
 
-  // 合并 headers
-  config.headers = merge(
-    headers.common ?? {},
-    (headers[(config.method as string).toLowerCase()] ?? {}) as AnyObject,
-    headers
-  );
-
-  // 转换请求数据
-  config.data = transformData(data, config.headers, config.transformResponse);
+  config.data = transformData(config.data ?? {}, config.headers, config.transformRequest);
 
   function onResolved(response: AxiosResponse): AxiosResponse {
     throwIfCancellationRequested(config);
 
-    // 转换响应数据
-    response.data = transformData(response.data, response.headers, config.transformResponse) as Data;
+    response.data = transformData(response.data, response.headers, config.transformResponse);
 
     return response;
   }
@@ -55,18 +49,13 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
     if (!isCancel(reason)) {
       throwIfCancellationRequested(config);
 
-      // Transform response data
-      if (reason && reason.response !== undefined) {
-        reason.response.data = transformData(
-          reason.response.data,
-          reason.response.headers,
-          config.transformResponse
-        ) as Data;
+      if (reason.response !== undefined) {
+        reason.response.data = transformData(reason.response.data, reason.response.headers, config.transformResponse);
       }
     }
 
     return Promise.reject(reason);
   }
 
-  return requestAdapter(config).then(onResolved, onRejected);
+  return request(config).then(onResolved, onRejected);
 }

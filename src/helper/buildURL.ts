@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 23:54:41
+ * @LastEditTime: 2020-04-18 16:12:10
  */
 import { AnyObject, Params } from '../types';
 import { isPlainObject, isDate } from './utils';
@@ -89,7 +89,7 @@ function paramsSerializerDefault(params: AnyObject): string {
  * @param params           请求参数
  * @param paramsSerializer 自定义参数序列化
  */
-export default function processURL(
+export default function buildURL(
   url: string,
   params?: Params,
   paramsSerializer?: (params: AnyObject) => string

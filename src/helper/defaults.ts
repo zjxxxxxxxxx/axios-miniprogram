@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:09:38
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-17 23:45:11
+ * @LastEditTime: 2020-04-18 17:00:38
  */
 import { AxiosRequestConfig } from '../types';
 
@@ -29,6 +29,12 @@ const defaults: AxiosRequestConfig = {
     return status >= 200 && status < 300;
   },
   timeout: 0,
+  dataType: 'json',
+  responseType: 'text',
+  enableHttp2: false,
+  enableQuic: false,
+  enableCache: false,
+  sslVerify: false,
 };
 
 export default defaults;
