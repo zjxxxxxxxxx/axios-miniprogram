@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 02:06:24
+ * @LastEditTime: 2020-04-19 14:10:56
  */
 /**
  * 任意值对象
@@ -366,16 +366,6 @@ export interface AxiosResponse<T extends Data = Data> {
    * 响应头
    */
   headers: Headers;
-
-  /**
-   * 通用响应体
-   */
-  response: Response;
-
-  /**
-   * 通用请求配置
-   */
-  request: RequestConfig;
 
   /**
    * Axios 请求配置

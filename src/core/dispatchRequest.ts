@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 15:53:05
+ * @LastEditTime: 2020-04-19 14:52:28
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types';
 import flattenHeaders from '../helper/flattenHeaders';

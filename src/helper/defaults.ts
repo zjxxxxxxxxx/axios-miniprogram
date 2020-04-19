@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:09:38
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 20:34:41
+ * @LastEditTime: 2020-04-19 14:47:18
  */
 import { AxiosRequestConfig } from '../types';
 import adaptive from '../adapter/adaptive';
@@ -21,10 +21,10 @@ const defaults: AxiosRequestConfig = {
     head: {},
     delete: {},
     post: {
-      'Context-Type': 'application/x-www-form-urlencoded',
+      'Context-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
     put: {
-      'Context-Type': 'application/x-www-form-urlencoded',
+      'Context-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
   },
   validateStatus: function validateStatus(status) {

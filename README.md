@@ -93,8 +93,8 @@ npm i axios-miniprogram
 ```typescript
 axios('/test', {
   validateStatus: function validateStatus(status) {
-    // 这样，状态码在 100 到 400 之间都是请求成功
-    return status >= 200 && status < 300;
+    // 这样，状态码在 200 到 400 之间都是请求成功
+    return status >= 200 && status <  400;
   }
 });
 ```
@@ -130,7 +130,7 @@ axios('/test', {
 
 ##### `config.adapter`自定义平台适配器
 
-您可以自己适配您所在的平台
+您可以手动适配当前所处的平台
 
 ```typescript
 axios.defaults.adapter = function adapter(adapterConfig) {
@@ -166,7 +166,7 @@ axios.defaults.adapter = function adapter(adapterConfig) {
   } = adapterConfig;
 
   // 在 adapterConfig 中选择您需要的参数发送请求
-  wx.request({
+  return wx.request({
     url,
     method,
     data,
@@ -187,7 +187,7 @@ axios.defaults.adapter = wx.request;
 ```typescript
 axios.defaults.baseURL = 'https://www.xxx.com';
 axios.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
 ```
 
 ##### 自定义实例默认配置
@@ -209,7 +209,7 @@ const instance = axios.create({
 // 也可以创建后修改
 instance.defaults.baseURL = 'https://www.xxx.com';
 instance.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
 ```
 
 ##### 配置优先顺序
@@ -224,8 +224,6 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 |statusText|String|状态文本|是|
 |data|String/Object/ArrayBuffer|开发者服务器返回的数据|是|
 |headers|Object|响应头|是|
-|response|Object|通用响应体|是|
-|request|Object|通用请求配置|是|
 |config|Object|Axios 请求配置|是|
 |cookies|Array<.String>|开发者服务器返回的 cookies，格式为字符串数组| |
 |profile|Object|网络请求过程中一些关键时间点的耗时信息| |

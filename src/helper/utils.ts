@@ -2,8 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:55:40
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 01:56:21
+ * @LastEditTime: 2020-04-19 16:08:40
  */
+import { AnyObject } from '../types';
+
 const _toString = Object.prototype.toString;
 
 /**
@@ -45,29 +47,6 @@ export function combineURL(baseURL: string, url: string): string {
 }
 
 /**
- * 浅合并多个对象
- *
- * @param objs n 个对象
- */
-export function merge(...objs: Record<string, any>[]): Record<string, any> {
-  const result: Record<string, any> = {};
-
-  function assignValue(key: string, val: any): void {
-    if (isPlainObject(result[key]) && isPlainObject(val)) {
-      result[key] = merge(result[key], val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  objs.forEach((obj: Record<string, any>): void => {
-    Object.entries(obj).forEach(([key, value]) => assignValue(key, value));
-  });
-
-  return result;
-}
-
-/**
  * 深度合并多个对象
  *
  * @param objs n 个对象
@@ -101,4 +80,32 @@ export function deepMerge(...objs: Record<string, any>[]): Record<string, any> {
   });
 
   return result;
+}
+
+/**
+ * 从对象中提取一部分属性
+ *
+ * @param obj  源对象
+ * @param keys 需要提取的 key
+ */
+export function pick<T extends AnyObject, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
+  const _pick: Partial<T> = {};
+
+  keys.forEach((key: K) => (_pick[key] = obj[key]));
+
+  return _pick as Pick<T, K>;
+}
+
+/**
+ * 从对象中剔除一部分属性
+ *
+ * @param obj  源对象
+ * @param keys 需要剔除的 key
+ */
+export function omit<T extends AnyObject, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+  const _omit = { ...obj };
+
+  keys.forEach((key: K) => delete _omit[key]);
+
+  return _omit;
 }

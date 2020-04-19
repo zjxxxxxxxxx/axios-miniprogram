@@ -2,9 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 14:09:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 16:03:37
+ * @LastEditTime: 2020-04-19 15:47:36
  */
-import { RequestConfig, AxiosRequestConfig, AxiosResponse, Response } from '../types';
+import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
+import { pick } from '../helper/utils';
 
 /**
  * 各大平台通用响应体转成 Axios 响应体
@@ -15,27 +16,16 @@ import { RequestConfig, AxiosRequestConfig, AxiosResponse, Response } from '../t
  * @param request  通用请求配置
  * @param config   Axios 请求配置
  */
-
-export default function responseOk(
-  response: Response,
-  request: RequestConfig,
-  config: AxiosRequestConfig
-): AxiosResponse {
-  response.status = response.status ?? response.statusCode;
-  response.headers = response.headers ?? response.header;
-
-  const { status, headers, data, cookies, profile } = response;
+export default function responseOk(response: Response, config: AxiosRequestConfig): AxiosResponse {
+  const status = response.status ?? response.statusCode;
+  const headers = response.headers ?? response.header;
   const statusText = status === 200 ? 'OK' : status === 400 ? 'Bad Adapter' : '';
 
   return {
     status,
     statusText,
     headers,
-    data,
-    response,
-    request,
     config,
-    cookies,
-    profile,
+    ...pick<Response, 'data' | 'cookies' | 'profile'>(response, 'data', 'cookies', 'profile'),
   };
 }

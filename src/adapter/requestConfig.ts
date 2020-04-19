@@ -2,9 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 15:05:43
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 15:51:02
+ * @LastEditTime: 2020-04-19 15:53:36
  */
 import { Method, Data, Headers, AdapterMethod, AxiosRequestConfig, RequestConfig } from '../types';
+import { pick } from '../helper/utils';
 import transformURL from '../helper/transformURL';
 
 /**
@@ -24,7 +25,7 @@ function methodUppercase(config: AxiosRequestConfig): AdapterMethod {
  * @param config Axios 请求配置
  */
 export default function requestConfigOk(config: AxiosRequestConfig): RequestConfig {
-  const { headers, data, dataType, responseType, timeout, enableHttp2, enableQuic, enableCache, sslVerify } = config;
+  const { headers, data } = config;
   const url = transformURL(config);
   const method = methodUppercase(config);
 
@@ -34,12 +35,9 @@ export default function requestConfigOk(config: AxiosRequestConfig): RequestConf
     header: headers as Headers,
     headers: headers as Headers,
     data: data as Data,
-    dataType,
-    responseType,
-    timeout,
-    enableHttp2,
-    enableQuic,
-    enableCache,
-    sslVerify,
+    ...pick<
+      AxiosRequestConfig,
+      'dataType' | 'responseType' | 'timeout' | 'enableHttp2' | 'enableQuic' | 'enableCache' | 'sslVerify'
+    >(config, 'dataType', 'responseType', 'timeout', 'enableHttp2', 'enableQuic', 'enableCache', 'sslVerify'),
   };
 }
