@@ -2,12 +2,12 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 14:52:28
+ * @LastEditTime: 2020-04-20 00:54:32
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types';
-import flattenHeaders from '../helper/flattenHeaders';
-import transformData from '../helper/transformData';
 import isCancel from '../cancel/isCancel';
+import flattenHeaders from './flattenHeaders';
+import transformData from './transformData';
 import request from './request';
 
 /**
@@ -29,9 +29,7 @@ function throwIfCancellationRequested(config: AxiosRequestConfig) {
 export default function dispatchRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
   throwIfCancellationRequested(config);
 
-  if (config.method === undefined) {
-    config.method = 'get';
-  }
+  config.method = config.method ?? 'get';
 
   config.headers = flattenHeaders(config);
 

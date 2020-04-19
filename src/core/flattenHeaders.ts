@@ -2,10 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-18 12:00:01
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 15:20:17
+ * @LastEditTime: 2020-04-20 00:41:57
  */
 import { AliasMethod, Headers, AxiosRequestConfig } from '../types';
-import { omit } from './utils';
+import { omit } from '../helpers/utils';
 
 /**
  * 拉平请求头
@@ -24,6 +24,6 @@ export default function flattenHeaders(config: AxiosRequestConfig): Headers {
   return {
     ...(headers.common ?? {}),
     ...(headers[method] ?? {}),
-    ...omit(headers, 'common', 'options', 'delete', 'get', 'head', 'post', 'put', 'trace', 'connect'),
+    ...omit(headers, 'common', 'options', 'get', 'head', 'post', 'put', 'delete', 'trace', 'connect'),
   };
 }

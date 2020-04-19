@@ -2,10 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:09:38
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 14:47:18
+ * @LastEditTime: 2020-04-20 01:14:00
  */
 import { AxiosRequestConfig } from '../types';
-import adaptive from '../adapter/adaptive';
+import adaptive from '../adaptive';
 
 const defaults: AxiosRequestConfig = {
   adapter: adaptive(),

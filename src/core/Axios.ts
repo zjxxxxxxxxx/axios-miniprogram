@@ -2,11 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 18:42:04
+ * @LastEditTime: 2020-04-19 22:12:04
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
-import buildURL from '../helper/buildURL';
-import mergeConfig from '../helper/mergeConfig';
+import buildURL from '../helpers/buildURL';
+import mergeConfig from '../helpers/mergeConfig';
 import InterceptorManager from './InterceptorManager';
 import dispatchRequest from './dispatchRequest';
 
@@ -37,7 +37,7 @@ export default class AxiosStatic implements Axios {
   public getUri(config: AxiosRequestConfig): string {
     config = mergeConfig(this.defaults, config);
 
-    return buildURL((config.url = ''), config.params, config.paramsSerializer).replace(/^\?/, '');
+    return buildURL(config.url ?? '', config.params, config.paramsSerializer).replace(/^\?/, '');
   }
 
   /**

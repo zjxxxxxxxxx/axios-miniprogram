@@ -8,8 +8,8 @@ import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstan
 import Axios from './core/Axios';
 import CancelToken from './cancel/CancelToken';
 import isCancel from './cancel/isCancel';
-import mergeConfig from './helper/mergeConfig';
-import defaults from './helper/defaults';
+import mergeConfig from './helpers/mergeConfig';
+import defaults from './helpers/defaults';
 
 /**
  * 创建一个新的 Axios 实例

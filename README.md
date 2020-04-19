@@ -7,15 +7,15 @@
 
 ## 安装
 
-`
-yarn add axios-miniprogram
-`
+```bash
+$ yarn add axios-miniprogram
+```
 
 或者
 
-`
-npm i axios-miniprogram
-`
+```bash
+$ npm i axios-miniprogram
+```
 
 ## 简介
 
@@ -30,8 +30,6 @@ npm i axios-miniprogram
 * 支持 自定义参数序列化。
 * 支持 自定义转换数据。
 * 支持 自定义平台适配器
-
-> 目前只支持请求数据的功能，上传文件的功能下一个版本开发。
 
 ## 使用
 
@@ -132,14 +130,14 @@ axios.post('/test', { test: 1 }, {
 
 |参数|类型|默认值|说明|全平台兼容|
 |:-|:-|:-|:-|:-|
-|adapter|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L11)|自定义适配器|是|
+|adapter|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helpers/defaults.ts#L11)|自定义适配器|是|
 |baseURL|String| |基础地址|是|
 |url|String| |请求地址|是|
 |method|String|get|请求方法| |
 |params|Object| |请求参数|是|
 |data|String/Object/ArrayBuffer| |请求数据|是|
-|headers|Object|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L13)|请求头|是|
-|validateStatus|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/defaults.ts#L30)|自定义合法状态码|是|
+|headers|Object|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helpers/defaults.ts#L13)|请求头|是|
+|validateStatus|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helpers/defaults.ts#L30)|自定义合法状态码|是|
 |paramsSerializer|Function| |自定义参数序列化|是|
 |transformRequest|Function/Array<.Function>| |自定义转换请求数据|是|
 |transformResponse|Function/Array<.Function>| |自定义转换响应数据|是|
@@ -313,7 +311,7 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 
 ##### 配置优先顺序
 
-发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/mergeConfig.ts) 的实现。
+发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helpers/mergeConfig.ts) 的实现。
 
 ## 响应体`response`
 

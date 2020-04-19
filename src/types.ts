@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 18:49:27
+ * @LastEditTime: 2020-04-19 23:30:07
  */
 /**
  * 任意值对象
@@ -290,7 +290,7 @@ export declare interface AxiosRequestConfig {
   /**
    * 自定义参数序列化
    */
-  paramsSerializer?: (params: AnyObject) => string;
+  paramsSerializer?: (params?: AnyObject) => string;
 
   /**
    * 转换请求数据

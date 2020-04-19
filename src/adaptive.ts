@@ -2,9 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 01:15:42
+ * @LastEditTime: 2020-04-20 01:14:16
  */
-import { Adapter, Platform } from '../types';
+import { Adapter, Platform } from './types';
+import warning from './helpers/warning';
 
 declare let wx: Platform;
 declare let my: Platform;
@@ -37,7 +38,7 @@ function adaptive(): Adapter | undefined {
     case uni !== undefined:
       return uni.request;
     default:
-      throw new Error('暂未适配此平台，您需要参阅文档使用自定义适配器手动适配当前平台');
+      warning('暂未适配此平台，您需要参阅文档使用自定义适配器手动适配当前平台');
   }
 }
 

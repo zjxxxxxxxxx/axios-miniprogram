@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 23:56:50
+ * @LastEditTime: 2020-04-19 23:30:42
  */
 import { AnyObject, Params } from '../types';
 import { isPlainObject, isDate } from './utils';
@@ -24,20 +24,20 @@ function encode(str: string): string {
 }
 
 /**
- * 拼接 URL 和 序列化参数
+ * 通过请求地址和序列化参数生成新的请求地址
  *
  * @param url              请求地址
  * @param serializedParams 序列化参数
  */
-function joinURL(url: string, serializedParams: string): string {
-  if (serializedParams === '') {
-    return url;
+function generateURL(url: string, serializedParams: string): string {
+  // 移除 hash
+  const hashIndex = url.indexOf('#');
+  if (hashIndex !== -1) {
+    url = url.slice(0, hashIndex);
   }
 
-  // 移除 hash
-  const hashIndex = serializedParams.indexOf('#');
-  if (hashIndex !== -1) {
-    serializedParams = serializedParams.slice(0, hashIndex);
+  if (serializedParams === '') {
+    return url;
   }
 
   // 拼接前缀
@@ -89,10 +89,6 @@ function paramsSerialization(params: AnyObject): string {
  * @param params           请求参数
  * @param paramsSerialized 自定义参数序列化
  */
-export default function buildURL(url: string, params?: Params, paramsSerializer = paramsSerialization): string {
-  if (params === undefined) {
-    return url;
-  }
-
-  return joinURL(url, paramsSerializer(params));
+export default function buildURL(url: string, params: Params = {}, paramsSerializer = paramsSerialization): string {
+  return generateURL(url, paramsSerializer(params));
 }

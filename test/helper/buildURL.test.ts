@@ -2,11 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-19 14:34:13
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 14:40:57
+ * @LastEditTime: 2020-04-19 23:16:55
  */
-import buildURL from '../../src/helper/buildURL';
+import buildURL from '../../src/helpers/buildURL';
 
-describe('测试 /helper/buildURL.ts', () => {
+describe('测试 /helpers/buildURL.ts', () => {
   it('url', () => {
     expect(buildURL('/test')).toBe('/test');
     expect(buildURL('/test?id=1')).toBe('/test?id=1');
@@ -44,5 +44,9 @@ describe('测试 /helper/buildURL.ts', () => {
         () => 'paramsSerializer=ok'
       )
     ).toBe('/test?id=1&paramsSerializer=ok');
+  });
+
+  it('delete hash', () => {
+    expect(buildURL('/test#192929')).toBe('/test');
   });
 });

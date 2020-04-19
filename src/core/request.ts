@@ -2,12 +2,13 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 01:56:59
+ * @LastEditTime: 2020-04-20 01:12:12
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
-import createError from '../core/createError';
-import requestConfigAdapter from '../adapter/requestConfig';
-import responseAdapter from '../adapter/response';
+import warning from '../helpers/warning';
+import transformRequest from './transformRequest';
+import transformResponse from './transformResponse';
+import createError from './createError';
 
 /**
  * 请求函数
@@ -17,7 +18,7 @@ import responseAdapter from '../adapter/response';
 export default function request(config: AxiosRequestConfig): Promise<AxiosResponse> {
   return new Promise(function dispatchAdapter(resolve, reject): void {
     const { adapter, cancelToken } = config;
-    const request = requestConfigAdapter(config);
+    const request = transformRequest(config);
 
     /**
      * 捕获错误
@@ -34,7 +35,8 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
     }
 
     if (adapter === undefined) {
-      catchError('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
+      catchError('暂未适配此平台，您需要参阅文档使用自定义适配器手动适配当前平台');
+      warning('暂未适配此平台，您需要参阅文档使用自定义适配器手动适配当前平台');
 
       return;
     }
@@ -45,7 +47,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
      * @param res 请求结果
      */
     function validateStatus(res: Response): void {
-      const response = responseAdapter(res, request, config);
+      const response = transformResponse(res, config);
 
       if (config.validateStatus === undefined || config.validateStatus(response.status)) {
         resolve(response);
