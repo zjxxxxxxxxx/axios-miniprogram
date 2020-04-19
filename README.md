@@ -19,7 +19,7 @@ npm i axios-miniprogram
 
 ## 简介
 
-小程序平台专用请求库，实现了 [axios](https://github.com/axios/axios) 大部分功能，用法存在微小差异。
+小程序平台专用请求库，实现了 [axios](https://github.com/axios/axios) 大部分功能，用法只存在少许差异，如果您是 [axios](https://github.com/axios/axios) 的老用户，那么不需要学习就可以直接上手使用。
 
 * 支持 微信小程序、支付宝小程序、百度小程序、字节跳动小程序、QQ 小程序、uniapp。
 * 支持 `Typescript`，健全的类型系统，智能的 `IDE` 提示。
@@ -31,9 +31,104 @@ npm i axios-miniprogram
 * 支持 自定义转换数据。
 * 支持 自定义平台适配器
 
-### `config`配置项
+> 目前只支持请求数据的功能，上传文件的功能下一个版本开发。
 
-非全平台兼容的配置只会在平台支持的情况下生效。
+## 使用
+
+可以通过将相关配置传递给`axios`来发送请求。
+
+### `axios(config)`
+
+```typescript
+// 发送 GET 请求
+axios({
+  method: 'get',
+  url: '/test',
+  params: { test: 1 }
+}).then((response) => {
+  // 请求成功后做些什么
+}).catch((error) => {
+  // 请求失败后做些什么
+});
+
+// 发送 POST 请求
+axios({
+  method: 'post',
+  url: '/test',
+  data: { test: 1 }
+}).then((response) => {
+  // 请求成功后做些什么
+}).catch((error) => {
+  // 请求失败后做些什么
+});
+```
+
+也可以通过直接把`url`传给`axios`来发送请求。
+
+### `axios(url, config?)`
+
+```typescript
+// 默认发送 GET 请求
+axios('/test/xxx').then((response) => {
+  // 请求成功后做些什么
+}).catch((error) => {
+  // 请求失败后做些什么
+});
+
+// 发送 POST 请求
+axios('/test/xxx', { method: 'post' }).then((response) => {
+  // 请求成功后做些什么
+}).catch((error) => {
+  // 请求失败后做些什么
+});
+```
+
+还可以使用请求方法的别名来简化请求。
+
+* ##### axios.request(config)
+* ##### axios.options(url, config?)
+* ##### axios.get(url, params?, config?)
+* ##### axios.head(url, params?, config?)
+* ##### axios.post(url, data?, config?)
+* ##### axios.put(url, data?, config?)
+* ##### axios.delete(url, params?, config?)
+* ##### axios.trace(url, config?)
+* ##### axios.connect(url, config?) 
+
+
+常用例子，其他同理：
+
+```typescript
+// 发送 GET 请求
+axios.get('/test');
+
+// 携带参数
+axios.get('/test', { test: 1 });
+
+// 携带额外配置
+axios.get('/test', { test: 1 }, { 
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8'
+  }
+});
+
+// 发送 POST 请求
+axios.post('/test');
+
+// 携带数据
+axios.post('/test', { test: 1 });
+
+// 携带额外配置
+axios.post('/test', { test: 1 }, { 
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8'
+  }
+});
+```
+
+## 配置`config`
+
+非全平台兼容的属性只会在平台支持的情况下生效。
 
 |参数|类型|默认值|说明|全平台兼容|
 |:-|:-|:-|:-|:-|
@@ -48,7 +143,7 @@ npm i axios-miniprogram
 |paramsSerializer|Function| |自定义参数序列化|是|
 |transformRequest|Function/Array<.Function>| |自定义转换请求数据|是|
 |transformResponse|Function/Array<.Function>| |自定义转换响应数据|是|
-|cancelToken|Object| |取消令牌|是|
+|cancelToken|Object| |取消令牌| |
 |timeout|Number|0|超时时间| |
 |dataType|String|json|响应数据格式|是|
 |responseType|String|text|响应数据类型|是|
@@ -57,9 +152,9 @@ npm i axios-miniprogram
 |enableCache|Boolean|false|开启 cache| |
 |sslVerify|Boolean|true|验证 ssl 证书| |
 
-##### `config.method`的合法值
+#### `config.method`的合法值
 
-`method`对大小写不敏感，可以使用大写，也可以使用小写。
+可以使用大写，也可以使用小写。
 
 |值|说明|全平台兼容|
 |:-|:-|:-|
@@ -72,21 +167,21 @@ npm i axios-miniprogram
 |TRACE| | |
 |CONNECT| | |
 
-##### `config.dataType`的合法值
+#### `config.dataType`的合法值
 
 |值|说明|全平台兼容|
 |:-|:-|:-|
 |json|返回的数据为 JSON，返回后会对返回的数据进行一次 JSON.parse|是|
 |其他|不对返回的内容进行 JSON.parse|是|
 
-##### `config.responseType`的合法值                                                                                              
+#### `config.responseType`的合法值                                                                                              
 
 |值|说明|全平台兼容|
 |:-|:-|:-|
 |text|响应的数据为文本|是|
 |arraybuffer|响应的数据为 ArrayBuffer|是|
 
-##### `config.validateStatus`自定义合法状态码
+#### 自定义合法状态码`config.validateStatus`
 
 可以让请求按照您的要求成功或者失败。
 
@@ -99,7 +194,7 @@ axios('/test', {
 });
 ```
 
-##### `config.paramsSerializer`自定义参数序列化
+#### 自定义参数序列化`config.paramsSerializer`
 
 可以使用自己的规则去序列化参数。
 
@@ -111,24 +206,24 @@ axios('/test', {
 });
 ```
 
-##### 自定义转换数据
+#### 自定义转换数据
 
 可以在请求发出之前转换请求数据，在请求成功之后转换响应数据。
 
 ```typescript
 axios('/test', {
-  transformRequest: [function (data, headers) {
+  transformRequest: [function transformRequest(data, headers) {
     // 转换请求数据
     return data;
   }],
-  transformResponse: [function (data) {
+  transformResponse: [function transformResponse(data) {
     // 转换响应数据
     return data;
   }],
 });
 ```
 
-##### `config.adapter`自定义平台适配器
+#### 自定义平台适配器`config.adapter`
 
 您可以手动适配当前所处的平台
 
@@ -180,7 +275,7 @@ axios.defaults.adapter = function adapter(adapterConfig) {
 axios.defaults.adapter = wx.request;
 ```
 
-### `defaults`默认配置
+#### 默认配置`defaults`
 
 ##### 全局默认配置`axios.defaults`
 
@@ -192,8 +287,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 ##### 自定义实例默认配置
 
+可以创建时传入
+
 ```typescript
-// 可以创建时传入
 const instance = axios.create({
   baseURL: 'https://www.xxx.com',
   headers: {
@@ -201,12 +297,15 @@ const instance = axios.create({
       'Accept': 'application/json, test/plain, */*'
     },
     post: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
     }
   }
 });
+```
 
-// 也可以创建后修改
+也可以创建后修改
+
+```typescript
 instance.defaults.baseURL = 'https://www.xxx.com';
 instance.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
@@ -216,7 +315,9 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 
 发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helper/mergeConfig.ts) 的实现。
 
-### `response`响应体
+## 响应体`response`
+
+非全平台兼容的属性只会在平台支持的情况下生效。
 
 |属性|类型|说明|全平台兼容|
 |:-|:-|:-|:-|
@@ -230,80 +331,6 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 
 
 ## API
-
-可以通过将相关配置传递给`axios`来发送请求。
-
-### `axios(config)`
-
-```typescript
-// 发送 GET 请求
-axios({
-  method: 'get',
-  url: '/test',
-  params: { test: 1 }
-});
-
-// 发送 POST 请求
-axios({
-  method: 'post',
-  url: '/test',
-  data: { test: 1 }
-});
-```
-
-也可以通过直接把`url`传给`axios`来发送请求。
-
-### `axios(url, config?)`
-
-```typescript
-// 默认发送 GET 请求
-axios('/test/xxx');
-
-// 发送 POST 请求
-axios('/test/xxx', { method: 'post' });
-```
-
-还可以使用请求方法的别名来简化请求。
-
-* ##### axios.request(config)
-* ##### axios.options(url, config?)
-* ##### axios.trace(url, config?)
-* ##### axios.connect(url, config?) 
-* ##### axios.get(url, params?, config?)
-* ##### axios.head(url, params?, config?)
-* ##### axios.delete(url, params?, config?)
-* ##### axios.post(url, data?, config?)
-* ##### axios.put(url, data?, config?)
-
-常用例子，其他同理：
-
-```typescript
-// 发送 GET 请求
-axios.get('/test');
-
-// 携带参数
-axios.get('/test', { test: 1 });
-
-// 携带额外配置
-axios.get('/test', { test: 1 }, { 
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8'
-  }
-});
-
-// 发送 POST 请求
-axios.post('/test');
-
-// 携带数据
-axios.post('/test', { test: 1 });
-
-// 携带额外配置
-axios.post('/test', { test: 1 }, { 
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8'
-  }
-});
-```
 
 ### `axios.create(config)`
 
@@ -328,7 +355,7 @@ instance('/test');
 instance.get('/test');
 ```
 
-### `axios.interceptors`拦截器
+### `axios.interceptors`
 
 可以先拦截请求或响应，然后再由then或catch处理。
 
@@ -374,7 +401,7 @@ const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
 axios.interceptors.request.eject(myInterceptor);
 ```
 
-### `axios.CancelToken`取消令牌
+### `axios.CancelToken`
 
 可以使用`CancelToken`取消已经发出的请求。
 
@@ -393,7 +420,7 @@ cancel('请求被取消了');
 还可以使用`CancelToken.source`工厂方法创建`CancelToken`。
 
 ```typescript
-const source = axios.CancelToken.source()
+const source = axios.CancelToken.source();
 
 axios('/test', {
   cancelToken: source.token
@@ -414,7 +441,7 @@ const uri = axios.getUri({
 });
 ```
 
-### `axios.Axios`类
+### `axios.Axios`
 
 `axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的，`axios.create(config)`创建的也是`axios.Axios`的实例。
 

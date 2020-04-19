@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 14:10:56
+ * @LastEditTime: 2020-04-19 18:49:27
  */
 /**
  * 任意值对象
@@ -493,28 +493,9 @@ export interface Axios {
    * 发送 HTTP 请求 OPTIONS
    *
    * @param url    请求地址
-   * @param params 请求参数
    * @param config 额外配置
    */
   options<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
-
-  /**
-   * 发送 HTTP 请求 TRACE
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  trace<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
-
-  /**
-   * 发送 HTTP 请求 CONNECT
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  connect<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 GET
@@ -535,15 +516,6 @@ export interface Axios {
   head<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
-   * 发送 HTTP 请求 DELETE
-   *
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
-
-  /**
    * 发送 HTTP 请求 POST
    *
    * @param url    请求地址
@@ -560,6 +532,31 @@ export interface Axios {
    * @param config 额外配置
    */
   put<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
+   * 发送 HTTP 请求 DELETE
+   *
+   * @param url    请求地址
+   * @param params 请求参数
+   * @param config 额外配置
+   */
+  delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
+   * 发送 HTTP 请求 TRACE
+   *
+   * @param url    请求地址
+   * @param config 额外配置
+   */
+  trace<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+
+  /**
+   * 发送 HTTP 请求 CONNECT
+   *
+   * @param url    请求地址
+   * @param config 额外配置
+   */
+  connect<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 }
 
 /**
@@ -589,7 +586,7 @@ export interface AxiosError extends Error {
   request: RequestConfig;
 
   /**
-   * 响应体
+   * Axios 响应体
    */
   response?: AxiosResponse;
 }

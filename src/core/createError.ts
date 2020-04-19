@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 22:23:39
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 14:20:08
+ * @LastEditTime: 2020-04-19 18:49:43
  */
 import { AxiosRequestConfig, RequestConfig, AxiosResponse } from '../types';
 
@@ -26,7 +26,7 @@ class AxiosError extends Error {
   request: RequestConfig;
 
   /**
-   * 响应体
+   * Axios 响应体
    */
   response?: AxiosResponse;
 
