@@ -2,10 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:48:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-18 22:58:05
+ * @LastEditTime: 2020-04-20 10:32:06
  */
-import { AxiosRequestConfig } from '../types';
-import { isPlainObject, deepMerge } from './utils';
+import { AnyObject, AxiosRequestConfig } from '../types';
+import { isPlainObject, deepMerge } from '../helpers/utils';
 
 /**
  * 只取 config2 中的配置
@@ -23,7 +23,7 @@ function onlyFromConfig2(keys: ['url', 'data'], config: AxiosRequestConfig, conf
 }
 
 /**
- * 优先取 config2 中的配置
+ * 优先取 config2 中的配置, config2 中没有就取 config1
  *
  * @param keys
  * @param config
@@ -77,11 +77,11 @@ function deepMergeConfig(
 ) {
   keys.forEach((key) => {
     if (isPlainObject(config2[key])) {
-      config[key] = deepMerge(config1[key] as any, config2[key] as any);
+      config[key] = deepMerge(config1[key] ?? {}, config2[key] as AnyObject);
     } else if (config2[key] !== undefined) {
       config[key] = config2[key];
     } else if (isPlainObject(config1[key])) {
-      config[key] = deepMerge(config1[key] as any);
+      config[key] = deepMerge(config1[key] as AnyObject);
     } else if (config1[key] !== undefined) {
       config[key] = config1[key];
     }
@@ -94,7 +94,10 @@ function deepMergeConfig(
  * @param config1 Axios 请求配置1
  * @param config2 Axios 请求配置2
  */
-export default function mergeConfig(config1: AxiosRequestConfig, config2: AxiosRequestConfig): AxiosRequestConfig {
+export default function mergeConfig(
+  config1: AxiosRequestConfig = {},
+  config2: AxiosRequestConfig = {}
+): AxiosRequestConfig {
   const config: AxiosRequestConfig = {};
 
   onlyFromConfig2(['url', 'data'], config, config2);

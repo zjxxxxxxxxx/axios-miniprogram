@@ -2,11 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-19 22:30:24
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 22:45:00
+ * @LastEditTime: 2020-04-20 09:49:35
  */
 
 /**
- * 如果出错就抛出异常
+ * 不中断程序的报错
  *
  * @param message 错误信息
  */

@@ -2,26 +2,10 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 23:30:42
+ * @LastEditTime: 2020-04-20 09:35:48
  */
 import { AnyObject, Params } from '../types';
-import { isPlainObject, isDate } from './utils';
-
-/**
- * 对字符串进行编码转换
- *
- * @param str 字符串
- */
-function encode(str: string): string {
-  return encodeURIComponent(str)
-    .replace(/%40/g, '@')
-    .replace(/%3A/gi, ':')
-    .replace(/%24/g, '$')
-    .replace(/%2C/gi, ',')
-    .replace(/%20/g, '+')
-    .replace(/%5B/gi, '[')
-    .replace(/%5D/gi, ']');
-}
+import { encode, isPlainObject, isDate } from './utils';
 
 /**
  * 通过请求地址和序列化参数生成新的请求地址

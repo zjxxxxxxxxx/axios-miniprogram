@@ -2,11 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 22:12:04
+ * @LastEditTime: 2020-04-20 09:12:46
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import buildURL from '../helpers/buildURL';
-import mergeConfig from '../helpers/mergeConfig';
+import mergeConfig from './mergeConfig';
 import InterceptorManager from './InterceptorManager';
 import dispatchRequest from './dispatchRequest';
 

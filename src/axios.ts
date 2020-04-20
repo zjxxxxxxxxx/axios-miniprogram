@@ -2,14 +2,14 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 01:40:54
+ * @LastEditTime: 2020-04-20 09:27:03
  */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
+import mergeConfig from './core/mergeConfig';
 import CancelToken from './cancel/CancelToken';
 import isCancel from './cancel/isCancel';
-import mergeConfig from './helpers/mergeConfig';
-import defaults from './helpers/defaults';
+import defaults from './defaults';
 
 /**
  * 创建一个新的 Axios 实例

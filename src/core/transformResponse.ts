@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 14:09:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 01:06:39
+ * @LastEditTime: 2020-04-20 09:05:01
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import { pick } from '../helpers/utils';
@@ -17,8 +17,8 @@ import { pick } from '../helpers/utils';
  * @param config   Axios 请求配置
  */
 export default function transformResponse(response: Response, config: AxiosRequestConfig): AxiosResponse {
-  const status = response.status ?? response.statusCode;
-  const headers = response.headers ?? response.header;
+  const status = response.statusCode ?? response.status ?? 400;
+  const headers = response.header ?? response.headers ?? {};
   const statusText = status === 200 ? 'OK' : status === 400 ? 'Bad Adapter' : '';
   const pickResponse = pick<Response, 'data' | 'cookies' | 'profile'>(response, 'data', 'cookies', 'profile');
 

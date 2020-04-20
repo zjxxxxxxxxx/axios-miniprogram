@@ -2,11 +2,27 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:55:40
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 16:08:40
+ * @LastEditTime: 2020-04-20 10:24:00
  */
 import { AnyObject } from '../types';
 
 const _toString = Object.prototype.toString;
+
+/**
+ * 对字符串进行编码转换
+ *
+ * @param str 字符串
+ */
+export function encode(str: string): string {
+  return encodeURIComponent(str)
+    .replace(/%40/gi, '@')
+    .replace(/%3A/gi, ':')
+    .replace(/%24/g, '$')
+    .replace(/%2C/gi, ',')
+    .replace(/%20/g, '+')
+    .replace(/%5B/gi, '[')
+    .replace(/%5D/gi, ']');
+}
 
 /**
  * 是不是一个日期对象
@@ -24,26 +40,6 @@ export function isDate(date: any): date is Date {
  */
 export function isPlainObject(obj: any): obj is object {
   return _toString.call(obj) === '[object Object]';
-}
-
-/**
- * 检查是否是一个绝对 URL
- *
- * xxx:// 或者 "//" 开头,  视为绝对地址
- *
- * @param url 需要检查的 URL
- */
-export function isAbsoluteURL(url: string): boolean {
-  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
-}
-
-/**
- * 拼接 baseURL 和 url 获得完整的 URL
- *
- * combineURL('1/2///','////3/4') => '1/2/3/4'
- */
-export function combineURL(baseURL: string, url: string): string {
-  return `${baseURL.replace(/\/*$/, '')}/${url.replace(/^\/*/, '')}`;
 }
 
 /**
@@ -73,9 +69,6 @@ export function deepMerge(...objs: Record<string, any>[]): Record<string, any> {
   }
 
   objs.forEach((obj: Record<string, any>): void => {
-    if (obj === undefined) {
-      return;
-    }
     Object.entries(obj).forEach(([key, value]) => assignValue(key, value));
   });
 
@@ -91,7 +84,9 @@ export function deepMerge(...objs: Record<string, any>[]): Record<string, any> {
 export function pick<T extends AnyObject, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const _pick: Partial<T> = {};
 
-  keys.forEach((key: K) => (_pick[key] = obj[key]));
+  keys.forEach(function pickKey(key: K) {
+    _pick[key] = obj[key];
+  });
 
   return _pick as Pick<T, K>;
 }
@@ -105,7 +100,9 @@ export function pick<T extends AnyObject, K extends keyof T>(obj: T, ...keys: K[
 export function omit<T extends AnyObject, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
   const _omit = { ...obj };
 
-  keys.forEach((key: K) => delete _omit[key]);
+  keys.forEach(function omitKey(key: K) {
+    delete _omit[key];
+  });
 
   return _omit;
 }

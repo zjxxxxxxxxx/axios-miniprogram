@@ -311,7 +311,7 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 
 ##### 配置优先顺序
 
-发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/helpers/mergeConfig.ts) 的实现。
+发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/core/mergeConfig.ts) 的实现。
 
 ## 响应体`response`
 

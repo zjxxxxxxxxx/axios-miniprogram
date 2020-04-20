@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 23:30:07
+ * @LastEditTime: 2020-04-20 10:32:48
  */
 /**
  * 任意值对象
@@ -161,17 +161,17 @@ export interface Response {
   /**
    * 响应状态码
    */
-  statusCode: number;
-
-  /**
-   * 响应头 Headers
-   */
-  header: AnyObject;
+  statusCode?: number;
 
   /**
    * 响应状态码
    */
-  status: number;
+  status?: number;
+
+  /**
+   * 响应头 Headers
+   */
+  header?: AnyObject;
 
   /**
    * 响应头 Headers

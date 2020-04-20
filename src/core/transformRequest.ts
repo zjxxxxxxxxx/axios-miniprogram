@@ -2,10 +2,12 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 15:05:43
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 01:08:23
+ * @LastEditTime: 2020-04-20 09:19:49
  */
 import { AdapterMethod, AxiosRequestConfig, RequestConfig } from '../types';
-import { isAbsoluteURL, combineURL, pick } from '../helpers/utils';
+import { pick } from '../helpers/utils';
+import isAbsoluteURL from '../helpers/isAbsoluteURL';
+import combineURL from '../helpers/combineURL';
 import buildURL from '../helpers/buildURL';
 
 type PickKeys = 'dataType' | 'responseType' | 'timeout' | 'enableHttp2' | 'enableQuic' | 'enableCache' | 'sslVerify';
@@ -41,7 +43,7 @@ function transformURL(config: AxiosRequestConfig): string {
 export default function transformRequest(config: AxiosRequestConfig): RequestConfig {
   const url = transformURL(config);
   const method = methodUppercase(config);
-  const pickConfig = pick<AxiosRequestConfig, PickKeys>(
+  const pickRequest = pick<AxiosRequestConfig, PickKeys>(
     config,
     'dataType',
     'responseType',
@@ -56,6 +58,6 @@ export default function transformRequest(config: AxiosRequestConfig): RequestCon
     url,
     method,
     header: config.headers,
-    ...pickConfig,
+    ...pickRequest,
   } as RequestConfig;
 }
