@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 13:36:32
+ * @LastEditTime: 2020-04-20 23:23:29
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types';
 import isCancel from '../cancel/isCancel';
