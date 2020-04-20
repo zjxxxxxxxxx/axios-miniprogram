@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:48:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 10:32:06
+ * @LastEditTime: 2020-04-20 20:27:37
  */
 import { AnyObject, AxiosRequestConfig } from '../types';
 import { isPlainObject, deepMerge } from '../helpers/utils';
@@ -78,12 +78,8 @@ function deepMergeConfig(
   keys.forEach((key) => {
     if (isPlainObject(config2[key])) {
       config[key] = deepMerge(config1[key] ?? {}, config2[key] as AnyObject);
-    } else if (config2[key] !== undefined) {
-      config[key] = config2[key];
     } else if (isPlainObject(config1[key])) {
       config[key] = deepMerge(config1[key] as AnyObject);
-    } else if (config1[key] !== undefined) {
-      config[key] = config1[key];
     }
   });
 }

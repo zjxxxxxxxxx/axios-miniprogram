@@ -33,9 +33,9 @@ $ npm i axios-miniprogram
 
 ## 使用
 
-可以通过将相关配置传递给`axios`来发送请求。
-
 ### `axios(config)`
+
+可以通过将相关配置传递给`axios`来发送请求。
 
 ```typescript
 // 发送 GET 请求
@@ -61,9 +61,9 @@ axios({
 });
 ```
 
-也可以通过直接把`url`传给`axios`来发送请求。
-
 ### `axios(url, config?)`
+
+也可以通过直接把`url`传给`axios`来发送请求。
 
 ```typescript
 // 默认发送 GET 请求

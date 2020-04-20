@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 10:32:48
+ * @LastEditTime: 2020-04-20 21:28:26
  */
 /**
  * 任意值对象
@@ -176,7 +176,7 @@ export interface Response {
   /**
    * 响应头 Headers
    */
-  headers: Headers;
+  headers?: Headers;
 
   /**
    * 响应数据
@@ -230,10 +230,7 @@ export interface Adapter {
  * 平台
  */
 export interface Platform {
-  // 请求函数
-  request?: Adapter;
-  // 兼容支付宝小程序
-  httpRequest?: Adapter;
+  request: Adapter;
 }
 
 /**
@@ -387,7 +384,7 @@ export interface AxiosResponse<T extends Data = Data> {
  * 拦截器成功的回调函数
  */
 export interface InterceptorResolved<T = any> {
-  (value: T): Promise<T>;
+  (value: T): T | Promise<T>;
 }
 
 /**

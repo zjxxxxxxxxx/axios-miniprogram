@@ -2,43 +2,58 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 01:14:16
+ * @LastEditTime: 2020-04-20 21:51:02
  */
 import { Adapter, Platform } from './types';
-import warning from './helpers/warning';
 
+// 微信小程序
 declare let wx: Platform;
+// 支付宝小程序
 declare let my: Platform;
+// 百度小程序
 declare let swan: Platform;
+// 字节跳动小程序
 declare let tt: Platform;
+// QQ 小程序
 declare let qq: Platform;
+// uniapp
 declare let uni: Platform;
+
+const platformList = [
+  () => wx.request,
+  () => my.request,
+  () => swan.request,
+  () => tt.request,
+  () => qq.request,
+  () => uni.request,
+];
 
 /**
  * 设置当前平台适配器
+ *
+ * 使用 try + catch递归 的方式实现平台的查找, 解决 typescript 开发时, wx,my,... 等全局变量未定义可能会报错导致程序被中止的问题
+ *
+ * 比如 ReferenceError: wx is not defined
  */
-function adaptive(): Adapter | undefined {
-  switch (true) {
-    // 微信小程序
-    case wx !== undefined:
-      return wx.request;
-    // 支付宝小程序
-    case my !== undefined:
-      return my.request ?? my.httpRequest;
-    // 百度小程序
-    case swan !== undefined:
-      return swan.request;
-    // 字节跳动小程序
-    case tt !== undefined:
-      return tt.request;
-    // QQ 小程序
-    case qq !== undefined:
-      return qq.request;
-    // uniapp
-    case uni !== undefined:
-      return uni.request;
-    default:
-      warning('暂未适配此平台，您需要参阅文档使用自定义适配器手动适配当前平台');
+function adaptive(adapter?: Adapter): Adapter | undefined {
+  if (adapter !== undefined) {
+    return adapter;
+  }
+
+  let request: Adapter | undefined;
+
+  try {
+    const platform = platformList.shift();
+
+    if (platform === undefined) {
+      return;
+    }
+
+    request = platform();
+
+    throw 'next';
+  } catch (err) {
+    return adaptive(request);
   }
 }
 

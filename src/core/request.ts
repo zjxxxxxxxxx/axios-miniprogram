@@ -2,10 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 01:12:12
+ * @LastEditTime: 2020-04-20 14:24:07
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
-import warning from '../helpers/warning';
 import transformRequest from './transformRequest';
 import transformResponse from './transformResponse';
 import createError from './createError';
@@ -35,8 +34,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
     }
 
     if (adapter === undefined) {
-      catchError('暂未适配此平台，您需要参阅文档使用自定义适配器手动适配当前平台');
-      warning('暂未适配此平台，您需要参阅文档使用自定义适配器手动适配当前平台');
+      catchError('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
 
       return;
     }

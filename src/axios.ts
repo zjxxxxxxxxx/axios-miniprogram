@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 09:27:03
+ * @LastEditTime: 2020-04-20 14:48:03
  */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
@@ -50,8 +50,10 @@ function createInstance(config: AxiosRequestConfig): AxiosInstance {
     return instance.request(requestConfig);
   }
 
-  // Axios 实例的所有属性和方法合并至 axios 函数
-  Object.assign(axios, instance, Object.getPrototypeOf(instance));
+  // instance 的属性设置到 axios 函数中
+  Object.assign(axios, instance);
+  // instance 的方法设置到 axios 函数中
+  Object.setPrototypeOf(axios, Object.getPrototypeOf(instance));
 
   return axios as AxiosInstance;
 }

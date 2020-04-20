@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 09:12:46
+ * @LastEditTime: 2020-04-20 13:21:44
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import buildURL from '../helpers/buildURL';
@@ -14,7 +14,7 @@ export default class AxiosStatic implements Axios {
   /**
    * 默认配置
    */
-  defaults: AxiosRequestConfig;
+  public defaults: AxiosRequestConfig;
 
   /**
    *  Axios 拦截器
@@ -35,9 +35,9 @@ export default class AxiosStatic implements Axios {
    * @param config Axios 请求配置
    */
   public getUri(config: AxiosRequestConfig): string {
-    config = mergeConfig(this.defaults, config);
+    const { url = '', params, paramsSerializer } = mergeConfig(this.defaults, config);
 
-    return buildURL(config.url ?? '', config.params, config.paramsSerializer).replace(/^\?/, '');
+    return buildURL(url, params, paramsSerializer).replace(/^\?/, '');
   }
 
   /**
@@ -46,9 +46,7 @@ export default class AxiosStatic implements Axios {
    * @param config Axios 请求配置
    */
   public request<T extends Data>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    config = mergeConfig(this.defaults, config);
-
-    let promiseRequest = Promise.resolve(config);
+    let promiseRequest = Promise.resolve(mergeConfig(this.defaults, config));
 
     // 执行请求拦截器
     this.interceptors.request.forEach(function executor({ resolved, rejected }) {

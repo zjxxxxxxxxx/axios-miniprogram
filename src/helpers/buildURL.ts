@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 09:35:48
+ * @LastEditTime: 2020-04-20 21:21:23
  */
 import { AnyObject, Params } from '../types';
 import { encode, isPlainObject, isDate } from './utils';
@@ -28,7 +28,7 @@ function generateURL(url: string, serializedParams: string): string {
   const prefix = url.indexOf('?') === -1 ? '?' : '&';
   serializedParams = `${prefix}${serializedParams}`;
 
-  return `${url}${serializedParams}`;
+  return `${url.replace(/\/*$/, '')}${serializedParams}`;
 }
 
 /**

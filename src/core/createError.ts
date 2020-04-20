@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 22:23:39
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-19 18:49:43
+ * @LastEditTime: 2020-04-20 13:23:04
  */
 import { AxiosRequestConfig, RequestConfig, AxiosResponse } from '../types';
 
@@ -13,22 +13,22 @@ class AxiosError extends Error {
   /**
    * 是 Axios 错误
    */
-  isAxiosError: boolean;
+  public isAxiosError: boolean;
 
   /**
    * Axios 请求配置
    */
-  config: AxiosRequestConfig;
+  public config: AxiosRequestConfig;
 
   /**
    * 通用请求配置
    */
-  request: RequestConfig;
+  public request: RequestConfig;
 
   /**
    * Axios 响应体
    */
-  response?: AxiosResponse;
+  public response?: AxiosResponse;
 
   constructor(message: string, config: AxiosRequestConfig, request: RequestConfig, response?: AxiosResponse) {
     super(message);

@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 00:54:32
+ * @LastEditTime: 2020-04-20 13:36:32
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types';
 import isCancel from '../cancel/isCancel';
@@ -28,8 +28,6 @@ function throwIfCancellationRequested(config: AxiosRequestConfig) {
  */
 export default function dispatchRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
   throwIfCancellationRequested(config);
-
-  config.method = config.method ?? 'get';
 
   config.headers = flattenHeaders(config);
 

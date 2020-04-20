@@ -2,10 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-18 12:00:01
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 00:41:57
+ * @LastEditTime: 2020-04-20 13:44:26
  */
-import { AliasMethod, Headers, AxiosRequestConfig } from '../types';
+import { Headers, AxiosRequestConfig } from '../types';
 import { omit } from '../helpers/utils';
+import { methodToLowercase } from './transformMethod';
 
 /**
  * 拉平请求头
@@ -19,7 +20,7 @@ export default function flattenHeaders(config: AxiosRequestConfig): Headers {
     return {};
   }
 
-  const method = (config.method as string).toLowerCase() as AliasMethod;
+  const method = methodToLowercase(config.method);
 
   return {
     ...(headers.common ?? {}),
