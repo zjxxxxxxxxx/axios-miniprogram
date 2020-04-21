@@ -361,48 +361,6 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 
 ## API
 
-### `axios.create(config)`
-
-创建一个`自定义实例`，传入的自定义配置`config`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
-
-`自定义实例`拥有和`axios`相同的调用方式和请求方法的别名。
-
-```typescript
-axios.defaults.baseURL = 'https://www.xxx.com';
-
-const instance = axios.create({
-  params: {
-    id: 1
-  }
-});
-
-// 最终请求的 URL 是这样的 => https://www.xxx.com/test?id=1
-// https://www.xxx.com 来自 axios.defaults.baseURL
-// /test 来自传入的 '/test'
-// id=1 来自 instance.defaults.params
-instance('/test');
-instance.get('/test');
-```
-
-### `axios.Axios`
-
-`axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的，`axios.create(config)`创建的也是`axios.Axios`的实例。
-
-直接实例化`axios.Axios`可以得到一个`纯净的实例`，不能当函数调用，传入的自定义配置就是`纯净的实例`的默认配置，而不会像`axios.create(config)`一样去合并`axios`中的默认配置。
-
-```typescript
-axios.defaults.baseURL = 'https://www.xxx.com';
-
-const instance = new axios.Axios({ 
-  params: { value: '零污染' }
-});
-
-// 最终请求的 URL 是这样的 => /test?value=零污染
-// /test 来自传入的 '/test'
-// value=零污染 来自 instance.defaults.params
-instance.get('/test');
-```
-
 ### `axios.interceptors`
 
 可以先拦截请求或响应，然后再由then或catch处理。
@@ -500,3 +458,47 @@ const uri = axios.getUri({
   params: { id: 1 }
 });
 ```
+
+### `axios.create(config)`
+
+创建一个`自定义实例`，传入的自定义配置`config`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
+
+`自定义实例`拥有和`axios`相同的调用方式和请求方法的别名。
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+
+const instance = axios.create({
+  params: {
+    id: 1
+  }
+});
+
+// 最终请求的 URL 是这样的 => https://www.xxx.com/test?id=1
+// https://www.xxx.com 来自 axios.defaults.baseURL
+// /test 来自传入的 '/test'
+// id=1 来自 instance.defaults.params
+instance('/test');
+instance.get('/test');
+```
+
+### `axios.Axios`
+
+`axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的，`axios.create(config)`创建的也是`axios.Axios`的实例。
+
+直接实例化`axios.Axios`可以得到一个`纯净的实例`，不能当函数调用，传入的自定义配置就是`纯净的实例`的默认配置，而不会像`axios.create(config)`一样去合并`axios`中的默认配置。
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+
+const instance = new axios.Axios({ 
+  params: { value: '零污染' }
+});
+
+// 最终请求的 URL 是这样的 => /test?value=零污染
+// /test 来自传入的 '/test'
+// value=零污染 来自 instance.defaults.params
+instance.get('/test');
+```
+
+
