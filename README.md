@@ -223,7 +223,7 @@ axios('/test', {
 });
 ```
 
-### 自定义错误处理`config.errorHandler`
+#### 自定义错误处理`config.errorHandler`
 
 可以添加到默认配置中，统一处理错误
 
@@ -489,3 +489,14 @@ const instance = new axios.Axios({
 instance.get('/test');
 ```
 
+### `axios.isCancel`
+
+可以用来判断当前错误是否来自取消请求
+
+```typescript
+axios('/test').catch((error) => {
+  if(axios.isCancel(error)){
+    // 请求被取消
+  }
+});
+```
