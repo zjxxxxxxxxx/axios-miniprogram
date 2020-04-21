@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 13:21:44
+ * @LastEditTime: 2020-04-21 11:10:19
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import buildURL from '../helpers/buildURL';
@@ -54,9 +54,7 @@ export default class AxiosStatic implements Axios {
     }, 'reverse');
 
     // 发送请求
-    let promisePesponse = promiseRequest.then(dispatchRequest, (err: any) => Promise.reject(err)) as Promise<
-      AxiosResponse<T>
-    >;
+    let promisePesponse = promiseRequest.then(dispatchRequest) as Promise<AxiosResponse<T>>;
 
     // 执行响应拦截器
     this.interceptors.response.forEach(function executor({ resolved, rejected }) {

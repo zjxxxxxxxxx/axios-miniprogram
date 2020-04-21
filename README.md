@@ -29,6 +29,7 @@ $ npm i axios-miniprogram
 * 支持 自定义合法状态码。
 * 支持 自定义参数序列化。
 * 支持 自定义转换数据。
+* 支持 自定义错误处理。
 * 支持 自定义平台适配器
 
 ## 使用
@@ -130,19 +131,20 @@ axios.post('/test', { test: 1 }, {
 
 |参数|类型|默认值|说明|全平台兼容|
 |:-|:-|:-|:-|:-|
-|adapter|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts#L11)|自定义适配器|是|
+|adapter|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts)|自定义适配器|是|
 |baseURL|String| |基础地址|是|
 |url|String| |请求地址|是|
 |method|String|get|请求方法| |
 |params|Object| |请求参数|是|
 |data|String/Object/ArrayBuffer| |请求数据|是|
-|headers|Object|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts#L13)|请求头|是|
-|validateStatus|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts#L30)|自定义合法状态码|是|
+|headers|Object|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts)|请求头|是|
+|validateStatus|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts)|自定义合法状态码|是|
 |paramsSerializer|Function| |自定义参数序列化|是|
 |transformRequest|Function/Array<.Function>| |自定义转换请求数据|是|
 |transformResponse|Function/Array<.Function>| |自定义转换响应数据|是|
+|errorHandler|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts)|自定义错误处理|是|
 |cancelToken|Object|是|取消令牌| |
-|timeout|Number|0|超时时间| |
+|timeout|Number|10000|超时时间| |
 |dataType|String|json|响应数据格式|是|
 |responseType|String|text|响应数据类型|是|
 |enableHttp2|Boolean|false|开启 http2| |
@@ -218,6 +220,35 @@ axios('/test', {
     // 转换响应数据
     return data;
   }],
+});
+```
+
+### 自定义错误处理`config.errorHandler`
+
+可以添加到默认配置，统一处理错误。
+
+```typescript
+axios.defaults.errorHandler = function errorHandler(error) {
+  // 做一些想做的事情
+  return Promise.reject(error);
+}
+
+const instance = axios.create({
+  errorHandler: function errorHandler(error) {
+    // 做一些想做的事情
+    return Promise.reject(error);
+  }
+});
+```
+
+也可以添加到自定义配置中。
+
+```typescript
+axios('/test', {
+  errorHandler: function errorHandler(error) {
+    // 做一些想做的事情
+    return Promise.reject(error);
+  }
 });
 ```
 

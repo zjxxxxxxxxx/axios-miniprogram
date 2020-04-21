@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 23:23:29
+ * @LastEditTime: 2020-04-21 11:44:53
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types';
 import isCancel from '../cancel/isCancel';
@@ -41,7 +41,7 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
     return response;
   }
 
-  function onRejected(reason: any): any {
+  function onRejected(reason: any): Promise<any> {
     if (!isCancel(reason)) {
       throwIfCancellationRequested(config);
 
@@ -50,7 +50,7 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
       }
     }
 
-    return Promise.reject(reason);
+    return typeof config.errorHandler === 'function' ? config.errorHandler(reason) : Promise.reject(reason);
   }
 
   return request(config).then(onResolved, onRejected);

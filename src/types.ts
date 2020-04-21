@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 10:00:50
+ * @LastEditTime: 2020-04-21 11:35:21
  */
 /**
  * 任意值对象
@@ -241,6 +241,13 @@ export interface TransformData {
 }
 
 /**
+ * 错误处理程序
+ */
+export interface ErrorHandler {
+  (error: any): Promise<any> | any;
+}
+
+/**
  * Axios 请求配置
  */
 export declare interface AxiosRequestConfig {
@@ -298,6 +305,11 @@ export declare interface AxiosRequestConfig {
    * 转换响应数据
    */
   transformResponse?: TransformData | TransformData[];
+
+  /**
+   * 自定义错误处理
+   */
+  errorHandler?: ErrorHandler;
 
   /**
    * 取消令牌
@@ -384,14 +396,14 @@ export interface AxiosResponse<T extends Data = Data> {
  * 拦截器成功的回调函数
  */
 export interface InterceptorResolved<T = any> {
-  (value: T): T | Promise<T>;
+  (value: T): Promise<T> | T;
 }
 
 /**
  * 拦截器失败的回调函数
  */
 export interface InterceptorRejected {
-  (err: any): any;
+  (error: any): Promise<any> | any;
 }
 
 /**

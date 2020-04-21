@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:48:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 20:27:37
+ * @LastEditTime: 2020-04-21 10:43:39
  */
 import { AnyObject, AxiosRequestConfig } from '../types';
 import { isPlainObject, deepMerge } from '../helpers/utils';
@@ -39,6 +39,7 @@ function priorityFromConfig2(
     'paramsSerializer',
     'transformRequest',
     'transformResponse',
+    'errorHandler',
     'cancelToken',
     'dataType',
     'responseType',
@@ -106,6 +107,7 @@ export default function mergeConfig(
       'paramsSerializer',
       'transformRequest',
       'transformResponse',
+      'errorHandler',
       'cancelToken',
       'dataType',
       'responseType',
