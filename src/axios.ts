@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 14:48:03
+ * @LastEditTime: 2020-04-21 14:38:43
  */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
@@ -50,9 +50,9 @@ function createInstance(config: AxiosRequestConfig): AxiosInstance {
     return instance.request(requestConfig);
   }
 
-  // instance 的属性设置到 axios 函数中
+  // instance 的属性合并到 axios 函数中
   Object.assign(axios, instance);
-  // instance 的方法设置到 axios 函数中
+  // instance 的方法合并到 axios 函数中
   Object.setPrototypeOf(axios, Object.getPrototypeOf(instance));
 
   return axios as AxiosInstance;
@@ -74,7 +74,7 @@ axios.Axios = Axios;
 // 添加 CancelToken 类
 axios.CancelToken = CancelToken;
 
-// 添加判断取消方法
+// 添加 判断取消请求 方法
 axios.isCancel = isCancel;
 
 export default axios;
