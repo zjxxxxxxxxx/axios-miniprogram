@@ -2,43 +2,30 @@
  * @Author: early-autumn
  * @Date: 2020-04-20 13:58:00
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 22:32:14
+ * @LastEditTime: 2020-04-21 09:33:06
  */
 import axios from '../src/axios';
 
-const task = { abort: jest.fn() };
-
 describe('测试 src/axios.ts', () => {
-  it('default', (done) => {
-    axios('/test').catch((error) => {
+  it('default', () => {
+    axios('/test').then(undefined, (error) => {
       expect(error.isAxiosError).toBe(true);
       expect(error.message).toBe('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
-      done();
     });
   });
 
   it('axios call', async () => {
-    axios.defaults.adapter = jest.fn((config) => {
-      expect(config.method).toBe('GET');
-      expect(config.url).toBe('/test');
-
-      config.success({ status: 200, data: '{"a":0}', headers: {} });
-
-      return task;
-    });
-
-    await axios({ url: '/test' });
-    await axios('/test');
-    await axios.request({ url: '/test' });
-
-    axios.defaults.adapter = jest.fn((config) => {
-      expect(config.method).toBe(config.url.toUpperCase().replace('/', ''));
-
+    axios.defaults.adapter = (config): any => {
       config.success({ status: 200, data: {}, headers: {} });
 
-      return task;
-    });
+      expect(config.method).toBe(config.url.toUpperCase().replace('/', ''));
 
+      return 'task';
+    };
+
+    await axios({ url: '/get' });
+    await axios('/get');
+    await axios.request({ url: '/get' });
     await axios.options('options');
     await axios.get('get');
     await axios.head('head');
@@ -55,13 +42,13 @@ describe('测试 src/axios.ts', () => {
       id: 1,
     };
 
-    axios.defaults.adapter = (config) => {
+    axios.defaults.adapter = (config): any => {
+      config.success({ status: 200, data: {}, headers: {} });
+
       expect(config.method).toBe('GET');
       expect(config.url).toBe('/test?id=1');
 
-      config.success({ status: 200, data: '', headers: {} });
-
-      return task;
+      return 'task';
     };
 
     await axios({
@@ -79,14 +66,14 @@ describe('测试 src/axios.ts', () => {
     const data = {
       id: 1,
     };
-    axios.defaults.adapter = (config) => {
+    axios.defaults.adapter = (config): any => {
+      config.success({ status: 200, data: '', headers: {} });
+
       expect(config.method).toBe('POST');
       expect(config.url).toBe(url);
       expect(config.data).toEqual(data);
 
-      config.success({ status: 200, data: '', headers: {} });
-
-      return task;
+      return 'task';
     };
 
     await axios({

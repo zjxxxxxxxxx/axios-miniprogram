@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 21:28:26
+ * @LastEditTime: 2020-04-21 10:00:50
  */
 /**
  * 任意值对象
@@ -223,7 +223,7 @@ export interface AdapterRequestTask {
  * 适配器
  */
 export interface Adapter {
-  (config: AdapterRequestConfig): AdapterRequestTask;
+  (config: AdapterRequestConfig): AdapterRequestTask | void;
 }
 
 /**

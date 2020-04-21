@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 14:24:07
+ * @LastEditTime: 2020-04-21 09:49:45
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import transformRequest from './transformRequest';
@@ -44,7 +44,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
      *
      * @param res 请求结果
      */
-    function validateStatus(res: Response): void {
+    function handleResponse(res: Response): void {
       const response = transformResponse(res, config);
 
       if (config.validateStatus === undefined || config.validateStatus(response.status)) {
@@ -57,7 +57,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
     // 使用适配器发送请求
     const task = adapter({
       ...request,
-      success: validateStatus,
+      success: handleResponse,
       fail: catchError,
     });
 
@@ -65,7 +65,10 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
     // 则调用取消令牌里的 listener 监听用户的取消操作
     if (cancelToken !== undefined) {
       cancelToken.listener.then(function onCanceled(reason): void {
-        task.abort();
+        if (task !== undefined) {
+          task.abort();
+        }
+
         reject(reason);
       });
     }

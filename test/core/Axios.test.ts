@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-20 20:47:09
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 22:17:18
+ * @LastEditTime: 2020-04-21 09:34:14
  */
 import Axios from '../../src/core/Axios';
 
@@ -20,13 +20,13 @@ describe('测试 src/core/Axios.ts', () => {
     expect(instance.getUri({ url: '/test', params: { id: 1 } })).toEqual('/test?id=1');
   });
 
-  it('interceptors 成功', async () => {
-    instance.defaults.adapter = function adapter({ data, success }) {
+  it('interceptors 成功', () => {
+    instance.defaults.adapter = function adapter({ data, success }): any {
       expect(data).toBe('interceptors_request');
 
       success({ data: 'data', headers: {} });
 
-      return { abort: jest.fn() };
+      return 'task';
     };
 
     instance.interceptors.request.use(function(config) {
@@ -39,7 +39,7 @@ describe('测试 src/core/Axios.ts', () => {
       return response;
     });
 
-    await instance
+    instance
       .request({
         method: 'post',
         data: '',
@@ -47,27 +47,23 @@ describe('测试 src/core/Axios.ts', () => {
       .then(({ data }) => expect(data).toBe('interceptors_response'));
   });
 
-  it('interceptors 失败', async () => {
-    instance.interceptors.response.use(function(response) {
-      throw response;
-    });
+  it('interceptors 失败', () => {
+    instance.interceptors.response.use((response) => Promise.reject(response));
 
-    await instance
+    instance
       .request({
         method: 'post',
         data: '',
       })
-      .catch((error) => expect(error.data).toBe('interceptors_response'));
+      .then(undefined, (error) => expect(error.data).toBe('interceptors_response'));
 
-    instance.interceptors.request.use(function(config) {
-      throw config;
-    });
+    instance.interceptors.request.use((config) => Promise.reject(config));
 
-    await instance
+    instance
       .request({
         method: 'post',
         data: '',
       })
-      .catch((error) => expect(error.method).toBe('post'));
+      .then(undefined, (error) => expect(error.method).toBe('post'));
   });
 });
