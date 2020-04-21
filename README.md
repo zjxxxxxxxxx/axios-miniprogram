@@ -491,7 +491,7 @@ instance.get('/test');
 
 ### `axios.isCancel`
 
-可以用来判断当前错误是否来自取消请求
+可以判断当前错误是否来自取消请求
 
 ```typescript
 axios('/test').catch((error) => {
