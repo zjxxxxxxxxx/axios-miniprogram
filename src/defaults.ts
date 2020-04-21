@@ -2,9 +2,9 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:09:38
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 12:12:06
+ * @LastEditTime: 2020-04-21 19:21:38
  */
-import { Data, AxiosRequestConfig } from './types';
+import { AxiosRequestConfig } from './types';
 import adaptive from './adaptive';
 
 const defaults: AxiosRequestConfig = {
@@ -46,27 +46,6 @@ const defaults: AxiosRequestConfig = {
    */
   validateStatus: function validateStatus(status: number): boolean {
     return status >= 200 && status < 300;
-  },
-
-  /**
-   * 响应数据转换
-   */
-  transformResponse: [
-    function transformResponse(data: Data): Data {
-      if (typeof data === 'string') {
-        try {
-          data = JSON.parse(data);
-        } catch (e) {}
-      }
-      return data;
-    },
-  ],
-
-  /**
-   * 错误处理
-   */
-  errorHandler: function errorHandler(err: any): Promise<any> {
-    return Promise.reject(err);
   },
 
   /**

@@ -142,7 +142,7 @@ axios.post('/test', { test: 1 }, {
 |paramsSerializer|Function| |自定义参数序列化|是|
 |transformRequest|Function/Array<.Function>| |自定义转换请求数据|是|
 |transformResponse|Function/Array<.Function>| |自定义转换响应数据|是|
-|errorHandler|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts)|自定义错误处理|是|
+|errorHandler|Function| |自定义错误处理|是|
 |cancelToken|Object| |取消令牌|是|
 |timeout|Number|10000|超时时间| |
 |dataType|String|json|响应数据格式|是|
