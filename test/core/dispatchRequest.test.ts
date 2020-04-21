@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-20 22:42:46
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 09:57:39
+ * @LastEditTime: 2020-04-21 19:38:53
  */
 import { CancelAction } from '../../src/types';
 import dispatchRequest from '../../src/core/dispatchRequest';
@@ -27,6 +27,20 @@ describe('测试 src/core/dispatchRequest.ts', () => {
         return status === -1;
       },
     }).then(undefined, (err) => expect(err.response.status).toBe(200));
+  });
+
+  it('自定义错误处理', () => {
+    dispatchRequest({
+      adapter({ fail }): any {
+        fail({});
+
+        return 'task';
+      },
+      errorHandler(error) {
+        error.errorHandler = true;
+        return error;
+      },
+    }).then(undefined, (error) => expect(error.errorHandler).toBe(true));
   });
 
   it('取消请求', () => {
