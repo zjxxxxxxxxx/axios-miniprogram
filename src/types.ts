@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 11:35:21
+ * @LastEditTime: 2020-04-21 12:13:49
  */
 /**
  * 任意值对象
@@ -49,16 +49,6 @@ export interface Headers {
   options?: Record<string, string>;
 
   /**
-   * trace 请求专用
-   */
-  trace?: Record<string, string>;
-
-  /**
-   * connect 请求专用
-   */
-  connect?: Record<string, string>;
-
-  /**
    * get 请求专用
    */
   get?: Record<string, string>;
@@ -69,11 +59,6 @@ export interface Headers {
   head?: Record<string, string>;
 
   /**
-   * delete 请求专用
-   */
-  delete?: Record<string, string>;
-
-  /**
    * post 请求专用
    */
   post?: Record<string, string>;
@@ -82,6 +67,21 @@ export interface Headers {
    * put 请求专用
    */
   put?: Record<string, string>;
+
+  /**
+   * delete 请求专用
+   */
+  delete?: Record<string, string>;
+
+  /**
+   * trace 请求专用
+   */
+  trace?: Record<string, string>;
+
+  /**
+   * connect 请求专用
+   */
+  connect?: Record<string, string>;
 
   /**
    * 自定义配置

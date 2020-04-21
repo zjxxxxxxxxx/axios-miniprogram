@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 21:51:02
+ * @LastEditTime: 2020-04-21 12:33:20
  */
 import { Adapter, Platform } from './types';
 
@@ -20,12 +20,12 @@ declare let qq: Platform;
 declare let uni: Platform;
 
 const platformList = [
+  () => uni.request,
   () => wx.request,
   () => my.request,
   () => swan.request,
   () => tt.request,
   () => qq.request,
-  () => uni.request,
 ];
 
 /**
@@ -40,8 +40,6 @@ function adaptive(adapter?: Adapter): Adapter | undefined {
     return adapter;
   }
 
-  let request: Adapter | undefined;
-
   try {
     const platform = platformList.shift();
 
@@ -49,11 +47,11 @@ function adaptive(adapter?: Adapter): Adapter | undefined {
       return;
     }
 
-    request = platform();
+    adapter = platform();
 
     throw 'next';
   } catch (err) {
-    return adaptive(request);
+    return adaptive(adapter);
   }
 }
 

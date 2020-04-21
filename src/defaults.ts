@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:09:38
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 11:41:10
+ * @LastEditTime: 2020-04-21 12:12:06
  */
 import { Data, AxiosRequestConfig } from './types';
 import adaptive from './adaptive';
@@ -26,17 +26,17 @@ const defaults: AxiosRequestConfig = {
       Accept: 'application/json, test/plain, */*',
     },
     options: {},
-    trace: {},
-    connect: {},
     get: {},
     head: {},
-    delete: {},
     post: {
       'Context-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
     put: {
       'Context-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
+    delete: {},
+    trace: {},
+    connect: {},
   },
 
   /**
