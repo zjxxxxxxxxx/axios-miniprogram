@@ -143,7 +143,7 @@ axios.post('/test', { test: 1 }, {
 |transformRequest|Function/Array<.Function>| |自定义转换请求数据|是|
 |transformResponse|Function/Array<.Function>| |自定义转换响应数据|是|
 |errorHandler|Function|[查看](https://github.com/early-autumn/axios-miniprogram/blob/master/src/defaults.ts)|自定义错误处理|是|
-|cancelToken|Object|是|取消令牌| |
+|cancelToken|Object|是|取消令牌|是|
 |timeout|Number|10000|超时时间| |
 |dataType|String|json|响应数据格式|是|
 |responseType|String|text|响应数据类型|是|
@@ -225,7 +225,7 @@ axios('/test', {
 
 ### 自定义错误处理`config.errorHandler`
 
-可以添加到默认配置，统一处理错误。
+可以添加到默认配置中，统一处理错误
 
 ```typescript
 axios.defaults.errorHandler = function errorHandler(error) {
@@ -241,7 +241,7 @@ const instance = axios.create({
 });
 ```
 
-也可以添加到自定义配置中。
+也可以发送请求时通过自定义配置传入
 
 ```typescript
 axios('/test', {
