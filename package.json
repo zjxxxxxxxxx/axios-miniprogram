@@ -20,7 +20,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && yarn prettier && yarn test && git add ."
+      "pre-commit": "yarn lint && yarn prettier && yarn test:cov && git add ."
     }
   },
   "jest": {
