@@ -181,6 +181,46 @@ axios.post('/test', { test: 1 }, {
 |text|响应的数据为文本|是|
 |arraybuffer|响应的数据为 ArrayBuffer|是|
 
+#### 默认配置`defaults`
+
+##### 全局默认配置`axios.defaults`
+
+```typescript
+axios.defaults.baseURL = 'https://www.xxx.com';
+axios.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+```
+
+##### 自定义实例默认配置
+
+可以创建时传入
+
+```typescript
+const instance = axios.create({
+  baseURL: 'https://www.xxx.com',
+  headers: {
+    common: {
+      'Accept': 'application/json, test/plain, */*'
+    },
+    post: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    }
+  }
+});
+```
+
+也可以创建后修改
+
+```typescript
+instance.defaults.baseURL = 'https://www.xxx.com';
+instance.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+```
+
+##### 配置优先顺序
+
+发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/core/mergeConfig.ts) 的实现。
+
 #### 自定义合法状态码`config.validateStatus`
 
 可以让请求按照您的要求成功或者失败。
@@ -303,46 +343,6 @@ axios.defaults.adapter = function adapter(adapterConfig) {
 // 如果 adapterConfig 的数据结构适用于当前平台，则可以。
 axios.defaults.adapter = wx.request;
 ```
-
-#### 默认配置`defaults`
-
-##### 全局默认配置`axios.defaults`
-
-```typescript
-axios.defaults.baseURL = 'https://www.xxx.com';
-axios.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
-```
-
-##### 自定义实例默认配置
-
-可以创建时传入
-
-```typescript
-const instance = axios.create({
-  baseURL: 'https://www.xxx.com',
-  headers: {
-    common: {
-      'Accept': 'application/json, test/plain, */*'
-    },
-    post: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-    }
-  }
-});
-```
-
-也可以创建后修改
-
-```typescript
-instance.defaults.baseURL = 'https://www.xxx.com';
-instance.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
-```
-
-##### 配置优先顺序
-
-发送请求时，会使用默认配置`defaults`和自定义配置`config`合并出请求配置`requestConfig`，然后用合并出的请求配置`requestConfig`去发送请求，多数情况下，后者优先级要高于前者，具体合并策略可以参考 [mergeConfig.ts](https://github.com/early-autumn/axios-miniprogram/blob/master/src/core/mergeConfig.ts) 的实现。
 
 ## 响应体`response`
 
