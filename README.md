@@ -443,7 +443,7 @@ axios('/test', {
   })
 });
 
-cancel('请求被取消了');
+cancel('取消请求');
 ```
 
 还可以使用`CancelToken.source`工厂方法创建`CancelToken`。
@@ -455,7 +455,19 @@ axios('/test', {
   cancelToken: source.token
 });
 
-source.cancel('请求被取消了');
+source.cancel('取消请求');
+```
+
+### `axios.isCancel`
+
+可以判断当前错误是否来自取消请求
+
+```typescript
+axios('/test').catch((error) => {
+  if(axios.isCancel(error)){
+    // 请求被取消了
+  }
+});
 ```
 
 ### `axios.getUri(config)`
@@ -487,16 +499,4 @@ const instance = new axios.Axios({
 // /test 来自传入的 '/test'
 // value=零污染 来自 instance.defaults.params
 instance.get('/test');
-```
-
-### `axios.isCancel`
-
-可以判断当前错误是否来自取消请求
-
-```typescript
-axios('/test').catch((error) => {
-  if(axios.isCancel(error)){
-    // 请求被取消
-  }
-});
 ```
