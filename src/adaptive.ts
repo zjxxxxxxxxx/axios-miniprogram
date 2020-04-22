@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 09:25:03
+ * @LastEditTime: 2020-04-22 09:37:49
  */
 import { Adapter, Platform } from './types';
 
@@ -34,14 +34,13 @@ const stack = [
 function adaptive(): Adapter | undefined {
   let adapter: Adapter | undefined;
 
+  const platform = stack.shift();
+
+  if (platform === undefined) {
+    return;
+  }
+
   try {
-    const platform = stack.shift();
-
-    if (platform === undefined) {
-      return;
-    }
-
-    // platform() 可能会导致程序进入 catch
     adapter = platform();
   } catch (err) {}
 
