@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-03-06 20:40:30
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-13 15:24:07
+ * @LastEditTime: 2020-04-22 09:50:55
  */
 import fs from 'fs';
 import path from 'path';
@@ -33,13 +33,9 @@ export default function() {
       indent: false,
     },
     plugins: [
-      nodeResolve({
-        extensions: ['.ts'],
-      }),
+      nodeResolve({ extensions: ['.ts'] }),
       typescript({ useTsconfigDeclarationDir: true }),
-      babel({
-        extensions: ['.ts'],
-      }),
+      babel({ extensions: ['.ts'] }),
     ],
   };
 }
