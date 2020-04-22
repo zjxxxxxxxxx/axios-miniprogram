@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-20 21:08:23
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 21:17:31
+ * @LastEditTime: 2020-04-22 15:51:48
  */
 import transformRequest from '../../src/core/transformRequest';
 
@@ -36,7 +36,7 @@ describe('测试 src/core/transformRequest.ts', () => {
     const request2 = transformRequest({
       baseURL: 'https://www.xxx.com',
       method: 'get',
-      url: 'https://www.yyy.com/test/',
+      url: 'https://www.yyy.com/test',
       params: {
         id: 1,
       },

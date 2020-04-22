@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 14:09:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 09:05:01
+ * @LastEditTime: 2020-04-22 13:06:27
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import { pick } from '../helpers/utils';
@@ -20,13 +20,12 @@ export default function transformResponse(response: Response, config: AxiosReque
   const status = response.statusCode ?? response.status ?? 400;
   const headers = response.header ?? response.headers ?? {};
   const statusText = status === 200 ? 'OK' : status === 400 ? 'Bad Adapter' : '';
-  const pickResponse = pick<Response, 'data' | 'cookies' | 'profile'>(response, 'data', 'cookies', 'profile');
 
   return {
     status,
     statusText,
     headers,
     config,
-    ...pickResponse,
+    ...pick<Response, 'data' | 'cookies' | 'profile'>(response, 'data', 'cookies', 'profile'),
   };
 }

@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 09:49:45
+ * @LastEditTime: 2020-04-22 16:02:22
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import transformRequest from './transformRequest';

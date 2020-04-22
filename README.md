@@ -501,4 +501,18 @@ const instance = new axios.Axios({
 instance.get('/test');
 ```
 
+## 执行流程
 
+```typescript
+axios('/test').then().catch();
+
+// 请求成功
+// axios => axios.interceptors.request => config.transformRequest => config.paramsSerializer => config.adapter => config.validateStatus => config.transformResponse => axios.interceptors.response => then
+
+// 请求失败
+// axios => axios.interceptors.request => config.transformRequest => config.paramsSerializer => config.adapter => config.validateStatus => config.transformResponse => config.errorHandler => axios.interceptors.response => catch
+```
+
+## Typescript
+
+![avatar](http://chuantu.xyz/t6/730/1587543726x1700338641.jpg)

@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:45:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 21:21:23
+ * @LastEditTime: 2020-04-22 15:51:28
  */
 import { AnyObject, Params } from '../types';
 import { encode, isPlainObject, isDate } from './utils';
@@ -16,6 +16,7 @@ import { encode, isPlainObject, isDate } from './utils';
 function generateURL(url: string, serializedParams: string): string {
   // 移除 hash
   const hashIndex = url.indexOf('#');
+
   if (hashIndex !== -1) {
     url = url.slice(0, hashIndex);
   }
@@ -26,9 +27,10 @@ function generateURL(url: string, serializedParams: string): string {
 
   // 拼接前缀
   const prefix = url.indexOf('?') === -1 ? '?' : '&';
+
   serializedParams = `${prefix}${serializedParams}`;
 
-  return `${url.replace(/\/*$/, '')}${serializedParams}`;
+  return `${url}${serializedParams}`;
 }
 
 /**
@@ -39,7 +41,7 @@ function generateURL(url: string, serializedParams: string): string {
 function paramsSerialization(params: AnyObject): string {
   const parts: string[] = [];
 
-  Object.entries(params).forEach(([key, value]): void => {
+  Object.entries(params).forEach(function encodeKeyValue([key, value]): void {
     if (value === null || value === undefined || value !== value) {
       return;
     }

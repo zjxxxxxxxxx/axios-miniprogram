@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 09:37:49
+ * @LastEditTime: 2020-04-22 13:24:28
  */
 import { Adapter, Platform } from './types';
 
@@ -34,21 +34,13 @@ const stack = [
 function adaptive(): Adapter | undefined {
   let adapter: Adapter | undefined;
 
-  const platform = stack.shift();
-
-  if (platform === undefined) {
-    return;
+  while (stack.length !== 0 && adapter === undefined) {
+    try {
+      adapter = (stack.shift() as () => Adapter | undefined)();
+    } catch (err) {}
   }
 
-  try {
-    adapter = platform();
-  } catch (err) {}
-
-  if (adapter !== undefined) {
-    return adapter;
-  }
-
-  return adaptive();
+  return adapter;
 }
 
 export default adaptive;

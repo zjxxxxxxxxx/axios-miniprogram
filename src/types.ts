@@ -2,8 +2,11 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 14:38:31
+ * @LastEditTime: 2020-04-22 16:08:07
  */
+
+import axios from './axios';
+
 /**
  * 任意值对象
  */
@@ -37,7 +40,7 @@ export declare type Data = string | AnyObject | ArrayBuffer;
 /**
  * Axios 头
  */
-export interface Headers {
+export declare interface Headers {
   /**
    * 通用配置
    */
@@ -92,7 +95,7 @@ export interface Headers {
 /**
  * 通用请求配置
  */
-export interface RequestConfig {
+export declare interface RequestConfig {
   /**
    * 接口地址
    */
@@ -157,7 +160,7 @@ export interface RequestConfig {
 /**
  * 通用响应体
  */
-export interface Response {
+export declare interface Response {
   /**
    * 响应状态码
    */
@@ -197,7 +200,7 @@ export interface Response {
 /**
  * 适配器请求配置
  */
-export interface AdapterRequestConfig extends RequestConfig {
+export declare interface AdapterRequestConfig extends RequestConfig {
   /**
    * 成功的响应函数
    */
@@ -212,7 +215,7 @@ export interface AdapterRequestConfig extends RequestConfig {
 /**
  * 适配器请求任务
  */
-export interface AdapterRequestTask {
+export declare interface AdapterRequestTask {
   /**
    * 取消请求
    */
@@ -222,28 +225,28 @@ export interface AdapterRequestTask {
 /**
  * 适配器
  */
-export interface Adapter {
+export declare interface Adapter {
   (config: AdapterRequestConfig): AdapterRequestTask | void;
 }
 
 /**
  * 平台
  */
-export interface Platform {
+export declare interface Platform {
   request: Adapter;
 }
 
 /**
  * 转换数据函数
  */
-export interface TransformData {
+export declare interface TransformData {
   (data: Data, headers: Headers): Data;
 }
 
 /**
  * 错误处理程序
  */
-export interface ErrorHandler {
+export declare interface ErrorHandler {
   (error: any): Promise<any> | any;
 }
 
@@ -355,7 +358,7 @@ export declare interface AxiosRequestConfig {
 /**
  * Axios 响应体
  */
-export interface AxiosResponse<T extends Data = Data> {
+export declare interface AxiosResponse<T extends Data = Data> {
   /**
    * 状态码
    */
@@ -395,21 +398,21 @@ export interface AxiosResponse<T extends Data = Data> {
 /**
  * 拦截器成功的回调函数
  */
-export interface InterceptorResolved<T = any> {
+export declare interface InterceptorResolved<T = any> {
   (value: T): Promise<T> | T;
 }
 
 /**
  * 拦截器失败的回调函数
  */
-export interface InterceptorRejected {
+export declare interface InterceptorRejected {
   (error: any): Promise<any> | any;
 }
 
 /**
  * 拦截器
  */
-export interface Interceptor<T = any> {
+export declare interface Interceptor<T = any> {
   /**
    * 拦截器成功的回调函数
    */
@@ -423,14 +426,14 @@ export interface Interceptor<T = any> {
 /**
  * 拦截器执行器
  */
-export interface InterceptorExecutor<T = any> {
+export declare interface InterceptorExecutor<T = any> {
   (interceptor: Interceptor<T>): void;
 }
 
 /**
  * 拦截器管理器
  */
-export interface InterceptorManager<T = any> {
+export declare interface InterceptorManager<T = any> {
   /**
    * 添加拦截器
    *
@@ -458,7 +461,7 @@ export interface InterceptorManager<T = any> {
 /**
  * Axios 拦截器
  */
-export interface Interceptors {
+export declare interface Interceptors {
   /**
    * request 请求前置拦截器
    */
@@ -473,7 +476,7 @@ export interface Interceptors {
 /**
  * Axios 实例
  */
-export interface Axios {
+export declare interface Axios {
   /**
    * 默认配置
    */
@@ -571,14 +574,14 @@ export interface Axios {
 /**
  * Axios 类接口
  */
-export interface AxiosConstructor {
+export declare interface AxiosConstructor {
   new (config: AxiosRequestConfig): Axios;
 }
 
 /**
  * AxiosError 类继承自 Error
  */
-export interface AxiosError extends Error {
+export declare interface AxiosError extends Error {
   /**
    * 是 Axios 错误
    */
@@ -603,7 +606,7 @@ export interface AxiosError extends Error {
 /**
  * 取消请求
  */
-export interface Cancel {
+export declare interface Cancel {
   /**
    * 取消信息
    */
@@ -618,28 +621,28 @@ export interface Cancel {
 /**
  * 取消请求类接口
  */
-export interface CancelConstructor {
+export declare interface CancelConstructor {
   new (message?: string): Cancel;
 }
 
 /**
  * 取消操作
  */
-export interface CancelAction {
+export declare interface CancelAction {
   (message?: string): void;
 }
 
 /**
  * 取消操作执行器
  */
-export interface CancelExecutor {
+export declare interface CancelExecutor {
   (cancel: CancelAction): void;
 }
 
 /**
  * 取消令牌
  */
-export interface CancelToken {
+export declare interface CancelToken {
   /**
    * 取消请求
    */
@@ -659,7 +662,7 @@ export interface CancelToken {
 /**
  * 取消令牌 source
  */
-export interface CancelTokenSource {
+export declare interface CancelTokenSource {
   /**
    * 取消令牌
    */
@@ -674,7 +677,7 @@ export interface CancelTokenSource {
 /**
  * 取消令牌类接口
  */
-export interface CancelTokenConstructor {
+export declare interface CancelTokenConstructor {
   new (executor: CancelExecutor): CancelToken;
 
   /**
@@ -696,7 +699,7 @@ export interface CancelTokenConstructor {
  *
  * * 支持两种函数调用方式
  */
-export interface AxiosBaseInstance extends Axios {
+export declare interface AxiosBaseInstance extends Axios {
   /**
    * 调用方式一
    *
@@ -720,7 +723,7 @@ export interface AxiosBaseInstance extends Axios {
  *
  * * 同时拓展了一些静态属性和方法
  */
-export interface AxiosInstance extends AxiosBaseInstance {
+export declare interface AxiosInstance extends AxiosBaseInstance {
   /**
    * 创建 Axios 实例基础增强
    *
@@ -744,4 +747,6 @@ export interface AxiosInstance extends AxiosBaseInstance {
    * @param value 判断的值
    */
   isCancel: (value: any) => boolean;
+
+  // extractData: <T extends Data>(response: Promise<AxiosResponse<T>>) => Promise<T>;
 }

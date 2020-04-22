@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 14:38:43
+ * @LastEditTime: 2020-04-22 16:07:56
  */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
@@ -78,3 +78,19 @@ axios.CancelToken = CancelToken;
 axios.isCancel = isCancel;
 
 export default axios;
+
+// axios
+//   .extractData<{}>(
+//     axios.get(
+//       '/test',
+//       {
+//         id: 1,
+//       },
+//       {
+//         headers: { aaa: 'aaa' },
+//       }
+//     )
+//   )
+//   .then((data) => {
+//     console.log(data);
+//   });

@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 20:19:49
+ * @LastEditTime: 2020-04-22 15:59:22
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import buildURL from '../helpers/buildURL';

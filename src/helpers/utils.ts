@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 21:55:40
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 10:24:00
+ * @LastEditTime: 2020-04-22 13:02:06
  */
 import { AnyObject } from '../types';
 
@@ -68,8 +68,10 @@ export function deepMerge(...objs: Record<string, any>[]): Record<string, any> {
     }
   }
 
-  objs.forEach((obj: Record<string, any>): void => {
-    Object.entries(obj).forEach(([key, value]) => assignValue(key, value));
+  objs.forEach(function assignObj(obj: Record<string, any>): void {
+    Object.entries(obj).forEach(function assignKey([key, value]) {
+      assignValue(key, value);
+    });
   });
 
   return result;
