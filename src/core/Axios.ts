@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 15:59:22
+ * @LastEditTime: 2020-04-23 10:12:56
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import buildURL from '../helpers/buildURL';
@@ -21,6 +21,9 @@ export default class AxiosStatic implements Axios {
    */
   public interceptors: Interceptors;
 
+  /**
+   * @param config 自定义默认配置
+   */
   constructor(config: AxiosRequestConfig = {}) {
     this.defaults = config;
     this.interceptors = {
@@ -46,7 +49,9 @@ export default class AxiosStatic implements Axios {
    * @param config Axios 请求配置
    */
   public request<T extends Data>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    let promiseRequest = Promise.resolve(mergeConfig(this.defaults, config));
+    const requestConfig = mergeConfig(this.defaults, config);
+
+    let promiseRequest = Promise.resolve(requestConfig);
 
     // 执行请求拦截器
     this.interceptors.request.forEach(function executor({ resolved, rejected }) {

@@ -2,15 +2,18 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 20:00:08
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-15 17:29:07
+ * @LastEditTime: 2020-04-22 17:39:44
  */
 import { CancelToken, CancelAction, CancelExecutor, CancelTokenSource } from '../types';
 import Cancel from './Cancel';
 
 export default class CancelTokenStatic implements CancelToken {
-  reason?: Cancel;
+  /**
+   * 取消请求
+   */
+  private _reason?: Cancel;
 
-  listener: Promise<Cancel>;
+  public listener: Promise<Cancel>;
 
   constructor(executor: CancelExecutor) {
     let action!: CancelAction;
@@ -18,22 +21,22 @@ export default class CancelTokenStatic implements CancelToken {
     this.listener = new Promise<Cancel>((resolve) => {
       action = (message) => {
         // 防止重复取消
-        if (this.reason) {
+        if (this._reason) {
           return;
         }
 
-        this.reason = new Cancel(message);
+        this._reason = new Cancel(message);
 
-        resolve(this.reason);
+        resolve(this._reason);
       };
     });
 
     executor(action);
   }
 
-  throwIfRequested(): void {
-    if (this.reason) {
-      throw this.reason;
+  public throwIfRequested(): void {
+    if (this._reason) {
+      throw this._reason;
     }
   }
 

@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 16:07:56
+ * @LastEditTime: 2020-04-23 10:44:18
  */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
@@ -21,16 +21,6 @@ function createInstance(config: AxiosRequestConfig): AxiosInstance {
 
   /**
    * 支持重载的 axios 函数
-   *
-   * @调用方式一
-   *
-   * @param url    调用方式一: 请求配置
-   * @param config 调用方式一: 空
-   *
-   * @调用方式二
-   *
-   * @param url    调用方式二: 请求地址
-   * @param config 调用方式二: 额外配置
    */
   function axios<T extends Data>(
     url: AxiosRequestConfig | string,
@@ -59,7 +49,7 @@ function createInstance(config: AxiosRequestConfig): AxiosInstance {
 }
 
 /**
- * Axios 实例增强
+ * Axios 实例拓展
  */
 const axios = createInstance(defaults);
 
@@ -74,23 +64,7 @@ axios.Axios = Axios;
 // 添加 CancelToken 类
 axios.CancelToken = CancelToken;
 
-// 添加 判断取消请求 方法
+// 添加 检查错误是否来自取消请求 方法
 axios.isCancel = isCancel;
 
 export default axios;
-
-// axios
-//   .extractData<{}>(
-//     axios.get(
-//       '/test',
-//       {
-//         id: 1,
-//       },
-//       {
-//         headers: { aaa: 'aaa' },
-//       }
-//     )
-//   )
-//   .then((data) => {
-//     console.log(data);
-//   });

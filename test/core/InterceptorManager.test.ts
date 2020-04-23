@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-20 15:40:44
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 22:05:48
+ * @LastEditTime: 2020-04-23 09:29:17
  */
 import InterceptorManager from '../../src/core/InterceptorManager';
 
@@ -54,8 +54,14 @@ describe('测试 src/core/InterceptorManager.ts', () => {
   it('异常', () => {
     const interceptor = new InterceptorManager();
 
-    interceptor.use(() => undefined);
+    interceptor.use(
+      () => undefined,
+      (error: any) => {
+        expect(error).toBe('error');
+        return Promise.reject(error);
+      }
+    );
 
-    interceptor.forEach(({ rejected }) => rejected('error'));
+    interceptor.forEach(({ rejected }) => rejected?.('error'));
   });
 });

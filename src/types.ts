@@ -2,15 +2,13 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 16:08:07
+ * @LastEditTime: 2020-04-23 10:43:58
  */
-
-import axios from './axios';
 
 /**
  * 任意值对象
  */
-export declare type AnyObject = Record<string, any>;
+export declare type AnyObject<T extends any = any> = Record<string, T>;
 
 /**
  * 请求方法
@@ -44,52 +42,52 @@ export declare interface Headers {
   /**
    * 通用配置
    */
-  common?: Record<string, string>;
+  common?: AnyObject<string>;
 
   /**
    * options 请求专用
    */
-  options?: Record<string, string>;
+  options?: AnyObject<string>;
 
   /**
    * get 请求专用
    */
-  get?: Record<string, string>;
+  get?: AnyObject<string>;
 
   /**
    * head 请求专用
    */
-  head?: Record<string, string>;
+  head?: AnyObject<string>;
 
   /**
    * post 请求专用
    */
-  post?: Record<string, string>;
+  post?: AnyObject<string>;
 
   /**
    * put 请求专用
    */
-  put?: Record<string, string>;
+  put?: AnyObject<string>;
 
   /**
    * delete 请求专用
    */
-  delete?: Record<string, string>;
+  delete?: AnyObject<string>;
 
   /**
    * trace 请求专用
    */
-  trace?: Record<string, string>;
+  trace?: AnyObject<string>;
 
   /**
    * connect 请求专用
    */
-  connect?: Record<string, string>;
+  connect?: AnyObject<string>;
 
   /**
    * 自定义配置
    */
-  [x: string]: Record<string, string> | string | undefined;
+  [x: string]: AnyObject<string> | string | undefined;
 }
 
 /**
@@ -406,7 +404,7 @@ export declare interface InterceptorResolved<T = any> {
  * 拦截器失败的回调函数
  */
 export declare interface InterceptorRejected {
-  (error: any): Promise<any> | any;
+  (error: any): any;
 }
 
 /**
@@ -417,10 +415,11 @@ export declare interface Interceptor<T = any> {
    * 拦截器成功的回调函数
    */
   resolved: InterceptorResolved<T>;
+
   /**
    * 拦截器失败的回调函数
    */
-  rejected: InterceptorRejected;
+  rejected?: InterceptorRejected;
 }
 
 /**
@@ -575,7 +574,7 @@ export declare interface Axios {
  * Axios 类接口
  */
 export declare interface AxiosConstructor {
-  new (config: AxiosRequestConfig): Axios;
+  new (config?: AxiosRequestConfig): Axios;
 }
 
 /**
@@ -644,11 +643,6 @@ export declare interface CancelExecutor {
  */
 export declare interface CancelToken {
   /**
-   * 取消请求
-   */
-  reason?: Cancel;
-
-  /**
    * 取消时被触发
    */
   listener: Promise<Cancel>;
@@ -695,12 +689,14 @@ export declare interface CancelTokenConstructor {
 }
 
 /**
- * Axios 实例基础增强
+ * Axios 实例基础拓展
  *
  * * 支持两种函数调用方式
  */
 export declare interface AxiosBaseInstance extends Axios {
   /**
+   * 发送 HTTP 请求
+   *
    * 调用方式一
    *
    * @param config 请求配置
@@ -708,6 +704,8 @@ export declare interface AxiosBaseInstance extends Axios {
   <T extends Data>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 
   /**
+   * 发送 HTTP 请求
+   *
    * 调用方式二
    *
    * @param url    请求地址
@@ -717,7 +715,7 @@ export declare interface AxiosBaseInstance extends Axios {
 }
 
 /**
- * Axios 实例增强
+ * Axios 实例拓展
  *
  * * 支持两种函数调用方式
  *
@@ -725,9 +723,9 @@ export declare interface AxiosBaseInstance extends Axios {
  */
 export declare interface AxiosInstance extends AxiosBaseInstance {
   /**
-   * 创建 Axios 实例基础增强
+   * 创建 Axios 实例基础拓展
    *
-   * @param config 全局配置
+   * @param config 自定义默认配置
    */
   create(config?: AxiosRequestConfig): AxiosBaseInstance;
 
@@ -742,11 +740,9 @@ export declare interface AxiosInstance extends AxiosBaseInstance {
   CancelToken: CancelTokenConstructor;
 
   /**
-   * 检查一个错误是不是取消错误
+   * 检查错误是否来自取消请求
    *
    * @param value 判断的值
    */
   isCancel: (value: any) => boolean;
-
-  // extractData: <T extends Data>(response: Promise<AxiosResponse<T>>) => Promise<T>;
 }

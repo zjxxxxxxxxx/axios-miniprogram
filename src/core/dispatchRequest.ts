@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:01:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 11:44:53
+ * @LastEditTime: 2020-04-23 09:31:00
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types';
 import isCancel from '../cancel/isCancel';
@@ -50,7 +50,7 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
       }
     }
 
-    return typeof config.errorHandler === 'function' ? config.errorHandler(reason) : Promise.reject(reason);
+    return config.errorHandler !== undefined ? config.errorHandler(reason) : Promise.reject(reason);
   }
 
   return request(config).then(onResolved, onRejected);
