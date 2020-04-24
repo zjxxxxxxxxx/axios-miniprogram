@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 12:45:18
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-24 09:16:56
+ * @LastEditTime: 2020-04-24 09:26:03
  */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
@@ -16,7 +16,7 @@ import defaults from './defaults';
  *
  * 返回一个 Axios 实例增强
  */
-function createInstance(defaults: AxiosRequestConfig = {}): AxiosInstance {
+function createInstance(defaults: AxiosRequestConfig): AxiosInstance {
   const instance = new Axios(defaults);
 
   /**
@@ -66,11 +66,3 @@ axios.CancelToken = CancelToken;
 axios.isCancel = isCancel;
 
 export default axios;
-
-export type En<T, U> = T extends U ? never : T;
-
-export type Enn = En<number | string, string>;
-
-export type Eni<T, U> = T extends U ? T : never;
-
-export type Enni = Eni<number | string, string>;
