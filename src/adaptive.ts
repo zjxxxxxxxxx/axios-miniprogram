@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 13:24:28
+ * @LastEditTime: 2020-04-23 10:53:50
  */
 import { Adapter, Platform } from './types';
 
@@ -19,24 +19,24 @@ declare let tt: Platform;
 // QQ 小程序
 declare let qq: Platform;
 
-const stack = [
-  () => uni.request,
-  () => wx.request,
-  () => my.request,
-  () => swan.request,
-  () => tt.request,
-  () => qq.request,
-];
-
 /**
  * 自适应当前平台
  */
 function adaptive(): Adapter | undefined {
+  const stack = [
+    () => uni.request,
+    () => wx.request,
+    () => my.request,
+    () => swan.request,
+    () => tt.request,
+    () => qq.request,
+  ];
+
   let adapter: Adapter | undefined;
 
   while (stack.length !== 0 && adapter === undefined) {
     try {
-      adapter = (stack.shift() as () => Adapter | undefined)();
+      adapter = stack.shift()?.();
     } catch (err) {}
   }
 

@@ -2,13 +2,15 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 10:43:58
+ * @LastEditTime: 2020-04-24 09:00:02
  */
 
 /**
  * 任意值对象
  */
-export declare type AnyObject<T extends any = any> = Record<string, T>;
+export declare interface AnyObject<T extends any = any> {
+  [x: string]: T;
+}
 
 /**
  * 请求方法
@@ -38,52 +40,7 @@ export declare type Data = string | AnyObject | ArrayBuffer;
 /**
  * Axios 头
  */
-export declare interface Headers {
-  /**
-   * 通用配置
-   */
-  common?: AnyObject<string>;
-
-  /**
-   * options 请求专用
-   */
-  options?: AnyObject<string>;
-
-  /**
-   * get 请求专用
-   */
-  get?: AnyObject<string>;
-
-  /**
-   * head 请求专用
-   */
-  head?: AnyObject<string>;
-
-  /**
-   * post 请求专用
-   */
-  post?: AnyObject<string>;
-
-  /**
-   * put 请求专用
-   */
-  put?: AnyObject<string>;
-
-  /**
-   * delete 请求专用
-   */
-  delete?: AnyObject<string>;
-
-  /**
-   * trace 请求专用
-   */
-  trace?: AnyObject<string>;
-
-  /**
-   * connect 请求专用
-   */
-  connect?: AnyObject<string>;
-
+export declare interface Headers extends Partial<Record<'common' | AliasMethod, AnyObject<string>>> {
   /**
    * 自定义配置
    */
@@ -727,7 +684,7 @@ export declare interface AxiosInstance extends AxiosBaseInstance {
    *
    * @param config 自定义默认配置
    */
-  create(config?: AxiosRequestConfig): AxiosBaseInstance;
+  create(defaults?: AxiosRequestConfig): AxiosBaseInstance;
 
   /**
    * Axios 类

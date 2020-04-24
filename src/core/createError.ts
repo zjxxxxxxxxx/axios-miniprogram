@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 22:23:39
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 10:34:18
+ * @LastEditTime: 2020-04-23 23:47:26
  */
 import { AxiosRequestConfig, RequestConfig, AxiosResponse } from '../types';
 
@@ -13,22 +13,7 @@ class AxiosError extends Error {
   /**
    * 是 Axios 错误
    */
-  public isAxiosError: boolean;
-
-  /**
-   * Axios 请求配置
-   */
-  public config: AxiosRequestConfig;
-
-  /**
-   * 通用请求配置
-   */
-  public request: RequestConfig;
-
-  /**
-   * Axios 响应体
-   */
-  public response?: AxiosResponse;
+  public isAxiosError = true;
 
   /**
    * @param message  错误信息
@@ -36,13 +21,13 @@ class AxiosError extends Error {
    * @param request  通用请求配置
    * @param response Axios 响应体
    */
-  constructor(message: string, config: AxiosRequestConfig, request: RequestConfig, response?: AxiosResponse) {
+  constructor(
+    message: string,
+    public config: AxiosRequestConfig,
+    public request: RequestConfig,
+    public response?: AxiosResponse
+  ) {
     super(message);
-
-    this.isAxiosError = true;
-    this.config = config;
-    this.request = request;
-    this.response = response;
 
     // 修复继承系统自带类 prototype 设置失败的问题
     Object.setPrototypeOf(this, AxiosError.prototype);

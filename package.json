@@ -37,7 +37,9 @@
   },
   "keywords": [
     "axios",
-    "miniprogram"
+    "miniprogram",
+    "request",
+    "promise"
   ],
   "author": "early-autumn",
   "license": "MIT",

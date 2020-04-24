@@ -2,10 +2,30 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 22:48:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 10:43:39
+ * @LastEditTime: 2020-04-23 23:55:19
  */
 import { AnyObject, AxiosRequestConfig } from '../types';
 import { isPlainObject, deepMerge } from '../helpers/utils';
+
+type OnlyFromConfig2Key = 'url' | 'data';
+type PriorityFromConfig2Key =
+  | 'adapter'
+  | 'baseURL'
+  | 'method'
+  | 'validateStatus'
+  | 'paramsSerializer'
+  | 'transformRequest'
+  | 'transformResponse'
+  | 'errorHandler'
+  | 'cancelToken'
+  | 'dataType'
+  | 'responseType'
+  | 'timeout'
+  | 'enableHttp2'
+  | 'enableQuic'
+  | 'enableCache'
+  | 'sslVerify';
+type DeepMergeConfigKey = 'params' | 'headers';
 
 /**
  * 只取 config2 中的配置
@@ -14,7 +34,7 @@ import { isPlainObject, deepMerge } from '../helpers/utils';
  * @param config
  * @param config2
  */
-function onlyFromConfig2(keys: ['url', 'data'], config: AxiosRequestConfig, config2: AxiosRequestConfig) {
+function onlyFromConfig2(keys: OnlyFromConfig2Key[], config: AxiosRequestConfig, config2: AxiosRequestConfig) {
   keys.forEach((key) => {
     if (config2[key] !== undefined) {
       config[key] = config2[key] as any;
@@ -31,24 +51,7 @@ function onlyFromConfig2(keys: ['url', 'data'], config: AxiosRequestConfig, conf
  * @param config2
  */
 function priorityFromConfig2(
-  keys: [
-    'adapter',
-    'baseURL',
-    'method',
-    'validateStatus',
-    'paramsSerializer',
-    'transformRequest',
-    'transformResponse',
-    'errorHandler',
-    'cancelToken',
-    'dataType',
-    'responseType',
-    'timeout',
-    'enableHttp2',
-    'enableQuic',
-    'enableCache',
-    'sslVerify'
-  ],
+  keys: PriorityFromConfig2Key[],
   config: AxiosRequestConfig,
   config1: AxiosRequestConfig,
   config2: AxiosRequestConfig
@@ -71,7 +74,7 @@ function priorityFromConfig2(
  * @param config2
  */
 function deepMergeConfig(
-  keys: ['headers', 'params'],
+  keys: DeepMergeConfigKey[],
   config: AxiosRequestConfig,
   config1: AxiosRequestConfig,
   config2: AxiosRequestConfig
@@ -96,32 +99,30 @@ export default function mergeConfig(
   config2: AxiosRequestConfig = {}
 ): AxiosRequestConfig {
   const config: AxiosRequestConfig = {};
+  const onlyFromConfig2Keys: OnlyFromConfig2Key[] = ['url', 'data'];
+  const priorityFromConfig2Keys: PriorityFromConfig2Key[] = [
+    'adapter',
+    'baseURL',
+    'method',
+    'validateStatus',
+    'paramsSerializer',
+    'transformRequest',
+    'transformResponse',
+    'errorHandler',
+    'cancelToken',
+    'dataType',
+    'responseType',
+    'timeout',
+    'enableHttp2',
+    'enableQuic',
+    'enableCache',
+    'sslVerify',
+  ];
+  const deepMergeConfigKeys: DeepMergeConfigKey[] = ['headers', 'params'];
 
-  onlyFromConfig2(['url', 'data'], config, config2);
-  priorityFromConfig2(
-    [
-      'adapter',
-      'baseURL',
-      'method',
-      'validateStatus',
-      'paramsSerializer',
-      'transformRequest',
-      'transformResponse',
-      'errorHandler',
-      'cancelToken',
-      'dataType',
-      'responseType',
-      'timeout',
-      'enableHttp2',
-      'enableQuic',
-      'enableCache',
-      'sslVerify',
-    ],
-    config,
-    config1,
-    config2
-  );
-  deepMergeConfig(['headers', 'params'], config, config1, config2);
+  onlyFromConfig2(onlyFromConfig2Keys, config, config2);
+  priorityFromConfig2(priorityFromConfig2Keys, config, config1, config2);
+  deepMergeConfig(deepMergeConfigKeys, config, config1, config2);
 
   return config;
 }

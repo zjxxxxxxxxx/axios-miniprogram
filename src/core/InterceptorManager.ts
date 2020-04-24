@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 17:50:50
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 09:16:23
+ * @LastEditTime: 2020-04-23 20:54:24
  */
 import {
   InterceptorResolved,
@@ -19,17 +19,12 @@ export default class InterceptorManagerStatic<T> implements InterceptorManager<T
   /**
    * 生成拦截器 id
    */
-  private _id: number;
+  private _id = 0;
 
   /**
    * 拦截器集合
    */
-  private _interceptors: Record<number, Interceptor<T>>;
-
-  constructor() {
-    this._id = 0;
-    this._interceptors = {};
-  }
+  private _interceptors: Record<number, Interceptor<T>> = {};
 
   /**
    * 添加拦截器

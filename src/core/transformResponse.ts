@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 14:09:16
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 13:06:27
+ * @LastEditTime: 2020-04-24 08:54:42
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import { pick } from '../helpers/utils';
@@ -26,6 +26,6 @@ export default function transformResponse(response: Response, config: AxiosReque
     statusText,
     headers,
     config,
-    ...pick<Response, 'data' | 'cookies' | 'profile'>(response, 'data', 'cookies', 'profile'),
+    ...pick(response, 'data', 'cookies', 'profile'),
   };
 }

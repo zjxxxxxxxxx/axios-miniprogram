@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 10:12:56
+ * @LastEditTime: 2020-04-23 23:43:00
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import buildURL from '../helpers/buildURL';
@@ -12,25 +12,17 @@ import dispatchRequest from './dispatchRequest';
 
 export default class AxiosStatic implements Axios {
   /**
-   * 默认配置
-   */
-  public defaults: AxiosRequestConfig;
-
-  /**
    *  Axios 拦截器
    */
-  public interceptors: Interceptors;
+  public interceptors: Interceptors = {
+    request: new InterceptorManager<AxiosRequestConfig>(),
+    response: new InterceptorManager<AxiosResponse>(),
+  };
 
   /**
-   * @param config 自定义默认配置
+   * @param defaults 自定义默认配置
    */
-  constructor(config: AxiosRequestConfig = {}) {
-    this.defaults = config;
-    this.interceptors = {
-      request: new InterceptorManager<AxiosRequestConfig>(),
-      response: new InterceptorManager<AxiosResponse>(),
-    };
-  }
+  constructor(public defaults: AxiosRequestConfig = {}) {}
 
   /**
    * 根据配置中的 url 和 params 生成一个 URI
