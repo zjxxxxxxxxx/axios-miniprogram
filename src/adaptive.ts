@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 10:53:50
+ * @LastEditTime: 2020-04-24 09:30:33
  */
 import { Adapter, Platform } from './types';
 
@@ -36,7 +36,7 @@ function adaptive(): Adapter | undefined {
 
   while (stack.length !== 0 && adapter === undefined) {
     try {
-      adapter = stack.shift()?.();
+      adapter = (stack.shift() as Function)();
     } catch (err) {}
   }
 
