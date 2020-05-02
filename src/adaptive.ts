@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 12:18:25
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-24 09:30:33
+ * @LastEditTime: 2020-04-25 19:10:04
  */
 import { Adapter, Platform } from './types';
 
@@ -22,7 +22,7 @@ declare let qq: Platform;
 /**
  * 自适应当前平台
  */
-function adaptive(): Adapter | undefined {
+export default function adaptive(): Adapter | undefined {
   const stack = [
     () => uni.request,
     () => wx.request,
@@ -42,5 +42,3 @@ function adaptive(): Adapter | undefined {
 
   return adapter;
 }
-
-export default adaptive;

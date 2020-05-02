@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 18:00:27
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 23:43:00
+ * @LastEditTime: 2020-04-25 09:23:14
  */
 import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
 import buildURL from '../helpers/buildURL';
@@ -22,7 +22,7 @@ export default class AxiosStatic implements Axios {
   /**
    * @param defaults 自定义默认配置
    */
-  constructor(public defaults: AxiosRequestConfig = {}) {}
+  public constructor(public defaults: AxiosRequestConfig = {}) {}
 
   /**
    * 根据配置中的 url 和 params 生成一个 URI

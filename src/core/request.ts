@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-16 00:48:45
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 16:02:22
+ * @LastEditTime: 2020-05-02 14:33:49
  */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import transformRequest from './transformRequest';
@@ -17,7 +17,7 @@ import createError from './createError';
 export default function request(config: AxiosRequestConfig): Promise<AxiosResponse> {
   return new Promise(function dispatchAdapter(resolve, reject): void {
     const { adapter, cancelToken } = config;
-    const request = transformRequest(config);
+    const requestConfig = transformRequest(config);
 
     /**
      * 捕获错误
@@ -30,7 +30,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
         message = '配置不正确或者网络异常';
       }
 
-      reject(createError(message, config, request, response));
+      reject(createError(message, config, requestConfig, response));
     }
 
     if (adapter === undefined) {
@@ -56,7 +56,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
 
     // 使用适配器发送请求
     const task = adapter({
-      ...request,
+      ...requestConfig,
       success: handleResponse,
       fail: catchError,
     });

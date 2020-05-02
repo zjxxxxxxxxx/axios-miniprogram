@@ -259,9 +259,9 @@ axios('/test', {
 ```typescript
 axios.defaults.adapter = function adapter(adapterConfig) {
   const {
-    // 接口地址
+    // 请求地址
     url,
-    // HTTP 请求方法
+    // 请求方法
     method,
     // 请求数据
     data,
@@ -269,9 +269,9 @@ axios.defaults.adapter = function adapter(adapterConfig) {
     header,
     // 请求头 同 header
     headers,
-    // 返回的数据格式
+    // 响应数据格式
     dataType,
-    // 响应的数据类型
+    // 响应数据类型
     responseType,
     // 超时时间
     timeout,
@@ -283,9 +283,9 @@ axios.defaults.adapter = function adapter(adapterConfig) {
     enableCache,
     // 验证 ssl 证书
     sslVerify,
-    // 成功的响应函数
+    // 成功的回调函数
     success,
-    // 失败的响应函数
+    // 失败的回调函数
     fail
   } = adapterConfig;
 

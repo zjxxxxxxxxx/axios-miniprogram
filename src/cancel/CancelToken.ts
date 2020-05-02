@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 20:00:08
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 17:39:44
+ * @LastEditTime: 2020-04-25 09:22:56
  */
 import { CancelToken, CancelAction, CancelExecutor, CancelTokenSource } from '../types';
 import Cancel from './Cancel';
@@ -15,7 +15,7 @@ export default class CancelTokenStatic implements CancelToken {
 
   public listener: Promise<Cancel>;
 
-  constructor(executor: CancelExecutor) {
+  public constructor(executor: CancelExecutor) {
     let action!: CancelAction;
 
     this.listener = new Promise<Cancel>((resolve) => {

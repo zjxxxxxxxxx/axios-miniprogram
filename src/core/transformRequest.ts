@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-17 15:05:43
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-24 08:53:57
+ * @LastEditTime: 2020-04-25 09:27:30
  */
 import { AxiosRequestConfig, RequestConfig } from '../types';
 import { pick } from '../helpers/utils';
@@ -33,8 +33,11 @@ function transformURL(config: AxiosRequestConfig): string {
 export default function transformRequest(config: AxiosRequestConfig): RequestConfig {
   return {
     url: transformURL(config),
+
     method: methodToUppercase(config.method),
+
     header: config.headers,
+
     ...pick(
       config,
       'data',

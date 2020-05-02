@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-24 09:00:02
+ * @LastEditTime: 2020-05-02 14:37:02
  */
 
 /**
@@ -181,7 +181,7 @@ export declare interface AdapterRequestTask {
  * 适配器
  */
 export declare interface Adapter {
-  (config: AdapterRequestConfig): AdapterRequestTask | void;
+  (config: AdapterRequestConfig): AdapterRequestTask | undefined;
 }
 
 /**
@@ -419,12 +419,12 @@ export declare interface InterceptorManager<T = any> {
  */
 export declare interface Interceptors {
   /**
-   * request 请求前置拦截器
+   * request 请求拦截器
    */
   request: InterceptorManager<AxiosRequestConfig>;
 
   /**
-   * response 请求后置拦截器
+   * response 响应拦截器
    */
   response: InterceptorManager<AxiosResponse>;
 }
