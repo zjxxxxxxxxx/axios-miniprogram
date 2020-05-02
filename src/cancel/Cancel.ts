@@ -6,7 +6,7 @@
  */
 import { Cancel } from '../types';
 
-export default class CancelStatic implements Cancel {
+export default class CancelClass implements Cancel {
   /**
    * @param message 取消信息
    */

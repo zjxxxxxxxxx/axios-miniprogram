@@ -2,17 +2,14 @@
  * @Author: early-autumn
  * @Date: 2020-04-14 22:23:39
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-25 09:23:40
+ * @LastEditTime: 2020-05-02 17:41:55
  */
-import { AxiosRequestConfig, RequestConfig, AxiosResponse } from '../types';
+import { AxiosRequestConfig, RequestConfig, AxiosResponse, AxiosError } from '../types';
 
 /**
  * AxiosError 继承自 Error
  */
-class AxiosError extends Error {
-  /**
-   * 是 Axios 错误
-   */
+class AxiosErrorClass extends Error implements AxiosError {
   public isAxiosError = true;
 
   /**
@@ -30,7 +27,7 @@ class AxiosError extends Error {
     super(message);
 
     // 修复继承系统自带类 prototype 设置失败的问题
-    Object.setPrototypeOf(this, AxiosError.prototype);
+    Object.setPrototypeOf(this, AxiosErrorClass.prototype);
   }
 }
 
@@ -50,5 +47,5 @@ export default function createError(
   request: RequestConfig,
   response?: AxiosResponse
 ): AxiosError {
-  return new AxiosError(message, config, request, response);
+  return new AxiosErrorClass(message, config, request, response);
 }

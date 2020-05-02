@@ -15,7 +15,7 @@ import {
 /**
  * 拦截器管理器
  */
-export default class InterceptorManagerStatic<T> implements InterceptorManager<T> {
+export default class InterceptorManagerClass<T> implements InterceptorManager<T> {
   /**
    * 生成拦截器 id
    */

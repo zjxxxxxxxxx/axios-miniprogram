@@ -10,7 +10,7 @@ import mergeConfig from './mergeConfig';
 import InterceptorManager from './InterceptorManager';
 import dispatchRequest from './dispatchRequest';
 
-export default class AxiosStatic implements Axios {
+export default class AxiosClass implements Axios {
   /**
    *  Axios 拦截器
    */
