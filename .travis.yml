@@ -6,4 +6,6 @@ cache:
 install:
   - npm install  
 script:
+  - npm run prettier
+  - npm run lint
   - npm run coverage

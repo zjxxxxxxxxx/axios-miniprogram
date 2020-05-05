@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 20:00:08
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-05-02 17:43:27
+ * @LastEditTime: 2020-05-05 08:52:21
  */
 import { CancelToken, CancelAction, CancelExecutor, CancelTokenSource } from '../types';
 import Cancel from './Cancel';
@@ -51,7 +51,7 @@ export default class CancelTokenClass implements CancelToken {
    *
    * 取消请求 CancelTokenSource.token
    */
-  static source(): CancelTokenSource {
+  public static source(): CancelTokenSource {
     let cancel!: CancelAction;
 
     const token = new CancelTokenClass(function executor(action) {

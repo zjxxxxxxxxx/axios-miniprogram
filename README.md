@@ -459,9 +459,9 @@ const uri = axios.getUri({
 });
 ```
 
-### `axios.create(config)`
+### `axios.create(defaults)`
 
-创建一个`自定义实例`，传入的自定义配置`config`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
+创建一个`自定义实例`，传入的自定义默认配置`defaults`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
 
 `自定义实例`拥有和`axios`相同的调用方式和请求方法的别名。
 
@@ -484,9 +484,9 @@ instance.get('/test');
 
 ### `axios.Axios`
 
-`axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的，`axios.create(config)`创建的也是`axios.Axios`的实例。
+`axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的，`axios.create(defaults)`创建的也是`axios.Axios`的实例。
 
-直接实例化`axios.Axios`可以得到一个`纯净的实例`，不能当函数调用，传入的自定义配置就是`纯净的实例`的默认配置，而不会像`axios.create(config)`一样去合并`axios`中的默认配置。
+直接实例化`axios.Axios`可以得到一个`纯净的实例`，不能当函数调用，传入的自定义配置就是`纯净的实例`的默认配置，而不会像`axios.create(defaults)`一样去合并`axios`中的默认配置。
 
 ```typescript
 axios.defaults.baseURL = 'https://www.xxx.com';

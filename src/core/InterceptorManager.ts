@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-15 17:50:50
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-05-02 14:30:56
+ * @LastEditTime: 2020-05-05 09:01:50
  */
 import {
   InterceptorResolved,
@@ -26,12 +26,6 @@ export default class InterceptorManagerClass<T> implements InterceptorManager<T>
    */
   private _interceptors: Record<number, Interceptor<T>> = {};
 
-  /**
-   * 添加拦截器
-   *
-   * @param resolved 成功的回调函数
-   * @param rejected 失败的回调函数
-   */
   public use(resolved: InterceptorResolved<T>, rejected?: InterceptorRejected) {
     this._interceptors[++this._id] = {
       resolved,
@@ -41,21 +35,10 @@ export default class InterceptorManagerClass<T> implements InterceptorManager<T>
     return this._id;
   }
 
-  /**
-   * 删除拦截器
-   *
-   * @param id 拦截器 id
-   */
   public eject(id: number): void {
     delete this._interceptors[id];
   }
 
-  /**
-   * 遍历所有拦截器
-   *
-   * @param executor 拦截器执行器
-   * @param reverse  是否倒序遍历
-   */
   public forEach(executor: InterceptorExecutor<T>, reverse?: 'reverse'): void {
     let interceptors: Interceptor<T>[] = Object.values(this._interceptors);
 

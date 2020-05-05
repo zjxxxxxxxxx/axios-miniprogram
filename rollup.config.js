@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
-import typescript from 'rollup-plugin-typescript2';
+import typescript2 from 'rollup-plugin-typescript2';
 
 function removeDir(name) {
   try {
@@ -34,7 +34,7 @@ export default function() {
     },
     plugins: [
       nodeResolve({ extensions: ['.ts'] }),
-      typescript({ useTsconfigDeclarationDir: true }),
+      typescript2({ useTsconfigDeclarationDir: true }),
       babel({ extensions: ['.ts'] }),
     ],
   };

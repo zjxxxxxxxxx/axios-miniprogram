@@ -2,7 +2,7 @@
  * @Author: early-autumn
  * @Date: 2020-04-13 15:23:53
  * @LastEditors: early-autumn
- * @LastEditTime: 2020-05-02 14:37:02
+ * @LastEditTime: 2020-05-05 09:02:12
  */
 
 /**
@@ -181,7 +181,7 @@ export declare interface AdapterRequestTask {
  * 适配器
  */
 export declare interface Adapter {
-  (config: AdapterRequestConfig): AdapterRequestTask | undefined;
+  (config: AdapterRequestConfig): AdapterRequestTask | void;
 }
 
 /**
@@ -390,6 +390,7 @@ export declare interface InterceptorExecutor<T = any> {
  * 拦截器管理器
  */
 export declare interface InterceptorManager<T = any> {
+  [x: string]: any;
   /**
    * 添加拦截器
    *
@@ -682,7 +683,7 @@ export declare interface AxiosInstance extends AxiosBaseInstance {
   /**
    * 创建 Axios 实例基础拓展
    *
-   * @param config 自定义默认配置
+   * @param defaults 自定义默认配置
    */
   create(defaults?: AxiosRequestConfig): AxiosBaseInstance;
 
