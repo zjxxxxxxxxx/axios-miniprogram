@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 15:09:33
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 15:17:27
- */
 import Cancel from '../../src/cancel/Cancel';
 
 describe('测试 src/cancel/Cancel.ts', () => {

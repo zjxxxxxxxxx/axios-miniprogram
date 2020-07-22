@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-15 12:45:18
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-24 09:26:03
- */
 import { AxiosRequestConfig, Data, AxiosResponse, AxiosBaseInstance, AxiosInstance } from './types';
 import Axios from './core/Axios';
 import mergeConfig from './core/mergeConfig';

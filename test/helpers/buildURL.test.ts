@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-19 14:34:13
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 09:58:22
- */
 import buildURL from '../../src/helpers/buildURL';
 
 describe('测试 src/helpers/buildURL.ts', () => {

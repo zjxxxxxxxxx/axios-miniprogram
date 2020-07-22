@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 20:39:42
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 23:27:34
- */
 import flattenHeaders from '../../src/core/flattenHeaders';
 
 describe('测试 src/core/flattenHeaders.ts', () => {

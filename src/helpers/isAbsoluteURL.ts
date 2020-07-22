@@ -1,10 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 09:17:40
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 09:19:11
- */
-
 /**
  * 检查是否是一个绝对 URL
  *

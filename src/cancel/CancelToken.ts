@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-13 20:00:08
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-05-05 08:52:21
- */
 import { CancelToken, CancelAction, CancelExecutor, CancelTokenSource } from '../types';
 import Cancel from './Cancel';
 

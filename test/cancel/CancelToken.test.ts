@@ -1,14 +1,8 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 15:17:50
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 09:01:02
- */
 import CancelToken from '../../src/cancel/CancelToken';
 
 describe('测试 src/cancel/CancelToken.ts', () => {
   it('实例化', () => {
-    const token = new CancelToken(function(cancel) {
+    const token = new CancelToken(function (cancel) {
       cancel('取消');
     });
 

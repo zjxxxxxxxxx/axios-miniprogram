@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 17:22:26
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 22:20:47
- */
 import adaptive from '../src/adaptive';
 
 declare global {

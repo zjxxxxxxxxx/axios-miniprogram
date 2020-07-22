@@ -1,7 +1,7 @@
 # axios-miniprogram
 
-[![build status](https://travis-ci.com/early-autumn/axios-miniprogram.svg?branch=master)](https://travis-ci.org/early-autumn/axios-miniprogram)
-[![Coverage Status](https://coveralls.io/repos/github/early-autumn/axios-miniprogram/badge.svg?branch=master)](https://coveralls.io/github/early-autumn/axios-miniprogram?branch=master)
+[![build status](https://travis-ci.com/zjx0905/axios-miniprogram.svg?branch=master)](https://travis-ci.org/zjx0905/axios-miniprogram)
+[![Coverage Status](https://coveralls.io/repos/github/zjx0905/axios-miniprogram/badge.svg?branch=master)](https://coveralls.io/github/zjx0905/axios-miniprogram?branch=master)
 [![npm version](https://badge.fury.io/js/axios-miniprogram.svg)](https://badge.fury.io/js/axios-miniprogram)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
@@ -486,18 +486,18 @@ instance.get('/test');
 
 `axios.Axios`是一个类，其实`axios`就是`axios.Axios`类的实例改造而来的，`axios.create(defaults)`创建的也是`axios.Axios`的实例。
 
-直接实例化`axios.Axios`可以得到一个`纯净的实例`，不能当函数调用，传入的自定义配置就是`纯净的实例`的默认配置，而不会像`axios.create(defaults)`一样去合并`axios`中的默认配置。
+直接实例化`axios.Axios`可以得到一个`原始实例`，不能当函数调用，传入的自定义配置就是`原始实例`的默认配置，而不会像`axios.create(defaults)`一样去合并`axios`中的默认配置。
 
 ```typescript
 axios.defaults.baseURL = 'https://www.xxx.com';
 
 const instance = new axios.Axios({ 
-  params: { value: '零污染' }
+  params: { value: 123 }
 });
 
-// 最终请求的 URL 是这样的 => /test?value=零污染
+// 最终请求的 URL 是这样的 => /test?value=123
 // /test 来自传入的 '/test'
-// value=零污染 来自 instance.defaults.params
+// value=123 来自 instance.defaults.params
 instance.get('/test');
 ```
 
@@ -512,7 +512,3 @@ axios('/test').then().catch();
 // 请求失败
 // axios => axios.interceptors.request => config.transformRequest => config.paramsSerializer => config.adapter => config.validateStatus => config.transformResponse => config.errorHandler => axios.interceptors.response => catch
 ```
-
-## Typescript
-
-![avatar](http://chuantu.xyz/t6/730/1587543726x1700338641.jpg)

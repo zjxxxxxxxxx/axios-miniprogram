@@ -1,6 +1,6 @@
 {
   "name": "axios-miniprogram",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
   "main": "package/index.js",
   "miniprogram": "package",
@@ -33,7 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/early-autumn/axios-miniprogram.git"
+    "url": "git+https://github.com/zjx0905/axios-miniprogram.git"
   },
   "keywords": [
     "axios",
@@ -41,34 +41,34 @@
     "request",
     "promise"
   ],
-  "author": "early-autumn",
+  "author": "zjx0905",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/early-autumn/axios-miniprogram/issues"
+    "url": "https://github.com/zjx0905/axios-miniprogram/issues"
   },
-  "homepage": "https://github.com/early-autumn/axios-miniprogram#readme",
+  "homepage": "https://github.com/zjx0905/axios-miniprogram#readme",
   "devDependencies": {
-    "@babel/core": "^7.8.7",
-    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
-    "@babel/plugin-transform-modules-commonjs": "^7.9.0",
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.8.7",
-    "@babel/preset-typescript": "^7.8.3",
-    "@babel/runtime": "^7.8.7",
-    "@types/jest": "^25.1.3",
-    "@typescript-eslint/eslint-plugin": "^2.22.0",
-    "@typescript-eslint/parser": "^2.22.0",
-    "coveralls": "^3.0.9",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^4.2.3",
-    "jest": "^25.1.0",
-    "prettier": "^1.19.1",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@babel/runtime": "^7.10.5",
+    "@types/jest": "^26.0.5",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript2": "^0.26.0",
-    "ts-jest": "^25.2.1",
-    "typescript": "^3.8.3"
+    "rollup-plugin-typescript2": "^0.27.1",
+    "ts-jest": "^26.1.3",
+    "typescript": "^3.9.7"
   }
 }

@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 19:16:32
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 11:48:12
- */
 import { AxiosRequestConfig } from '../../src/types';
 import mergeConfig from '../../src/core/mergeConfig';
 import defaults from '../../src/defaults';

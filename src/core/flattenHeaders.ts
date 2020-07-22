@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-18 12:00:01
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 13:44:26
- */
 import { Headers, AxiosRequestConfig } from '../types';
 import { omit } from '../helpers/utils';
 import { methodToLowercase } from './transformMethod';

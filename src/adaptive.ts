@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-17 12:18:25
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-25 19:10:04
- */
 import { Adapter, Platform } from './types';
 
 // uniapp
@@ -23,7 +17,7 @@ declare let qq: Platform;
  * 自适应当前平台
  */
 export default function adaptive(): Adapter | undefined {
-  const stack = [
+  const stack: (() => Adapter)[] = [
     () => uni.request,
     () => wx.request,
     () => my.request,
@@ -36,7 +30,7 @@ export default function adaptive(): Adapter | undefined {
 
   while (stack.length !== 0 && adapter === undefined) {
     try {
-      adapter = (stack.shift() as Function)();
+      adapter = (stack.shift() as () => Adapter)();
     } catch (err) {}
   }
 

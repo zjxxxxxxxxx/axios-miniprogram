@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-17 15:05:43
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-25 09:27:30
- */
 import { AxiosRequestConfig, RequestConfig } from '../types';
 import { pick } from '../helpers/utils';
 import isAbsoluteURL from '../helpers/isAbsoluteURL';

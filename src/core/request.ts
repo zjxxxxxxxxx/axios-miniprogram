@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-16 00:48:45
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-05-02 14:33:49
- */
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
 import transformRequest from './transformRequest';
 import transformResponse from './transformResponse';

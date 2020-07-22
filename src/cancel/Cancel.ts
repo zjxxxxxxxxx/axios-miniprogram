@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-13 21:14:53
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-25 09:26:10
- */
 import { Cancel } from '../types';
 
 export default class CancelClass implements Cancel {
@@ -12,7 +6,7 @@ export default class CancelClass implements Cancel {
    */
   public constructor(public message?: string) {}
 
-  public toString() {
+  public toString(): string {
     const message = this.message ? `: ${this.message}` : '';
 
     return `Cancel${message}`;

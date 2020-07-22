@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-13 21:55:40
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 22:38:30
- */
 import { AnyObject } from '../types';
 
 const _toString = Object.prototype.toString;
@@ -29,7 +23,7 @@ export function encode(str: string): string {
  *
  * @param date 判断目标
  */
-export function isDate(date: any): date is Date {
+export function isDate(date: unknown): date is Date {
   return _toString.call(date) === '[object Date]';
 }
 
@@ -38,7 +32,7 @@ export function isDate(date: any): date is Date {
  *
  * @param obj 判断目标
  */
-export function isPlainObject(obj: any): obj is object {
+export function isPlainObject(obj: unknown): obj is Record<string, unknown> {
   return _toString.call(obj) === '[object Object]';
 }
 

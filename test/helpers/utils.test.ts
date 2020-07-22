@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 10:02:56
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 10:23:45
- */
 import { encode, isDate, isPlainObject, deepMerge, pick, omit } from '../../src/helpers/utils';
 
 describe('测试 src/helpers/utils.ts', () => {

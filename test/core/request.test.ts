@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 22:51:26
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 09:37:30
- */
 import request from '../../src/core/request';
 import CancelToken from '../../src/cancel/CancelToken';
 import isCancel from '../../src/cancel/isCancel';

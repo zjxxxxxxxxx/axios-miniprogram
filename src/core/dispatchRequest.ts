@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-13 18:01:16
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-25 09:24:20
- */
 import { AxiosRequestConfig, AxiosResponse } from '../types';
 import isCancel from '../cancel/isCancel';
 import flattenHeaders from './flattenHeaders';

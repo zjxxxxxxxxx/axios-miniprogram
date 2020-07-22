@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 21:25:08
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 21:34:20
- */
 import transformResponse from '../../src/core/transformResponse';
 
 describe('测试 src/core/transformResponse.ts', () => {

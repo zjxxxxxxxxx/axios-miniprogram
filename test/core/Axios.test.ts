@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 20:47:09
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-22 16:04:16
- */
 import Axios from '../../src/core/Axios';
 
 const instance = new Axios();
@@ -29,12 +23,12 @@ describe('测试 src/core/Axios.ts', () => {
       return 'task';
     };
 
-    instance.interceptors.request.use(function(config) {
+    instance.interceptors.request.use(function (config) {
       config.data = 'interceptors_request';
       return config;
     });
 
-    instance.interceptors.response.use(function(response) {
+    instance.interceptors.response.use(function (response) {
       response.data = 'interceptors_response';
       return response;
     });

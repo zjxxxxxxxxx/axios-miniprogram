@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-14 22:23:39
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-05-02 17:41:55
- */
 import { AxiosRequestConfig, RequestConfig, AxiosResponse, AxiosError } from '../types';
 
 /**

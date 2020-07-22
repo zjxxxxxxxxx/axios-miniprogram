@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 15:40:44
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 09:29:17
- */
 import InterceptorManager from '../../src/core/InterceptorManager';
 
 describe('测试 src/core/InterceptorManager.ts', () => {

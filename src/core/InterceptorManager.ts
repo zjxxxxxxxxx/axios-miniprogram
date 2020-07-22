@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-15 17:50:50
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-05-05 09:01:50
- */
 import {
   InterceptorResolved,
   InterceptorRejected,
@@ -26,7 +20,7 @@ export default class InterceptorManagerClass<T> implements InterceptorManager<T>
    */
   private _interceptors: Record<number, Interceptor<T>> = {};
 
-  public use(resolved: InterceptorResolved<T>, rejected?: InterceptorRejected) {
+  public use(resolved: InterceptorResolved<T>, rejected?: InterceptorRejected): number {
     this._interceptors[++this._id] = {
       resolved,
       rejected,

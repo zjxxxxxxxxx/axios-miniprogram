@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-15 22:09:38
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-23 09:11:41
- */
 import { AxiosRequestConfig } from './types';
 import adaptive from './adaptive';
 

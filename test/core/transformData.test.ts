@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 20:31:29
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 20:38:49
- */
 import { Data } from '../../src/types';
 import transformData from '../../src/core/transformData';
 

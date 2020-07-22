@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 16:14:52
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-20 16:17:39
- */
 import { methodToLowercase, methodToUppercase } from '../../src/core/transformMethod';
 
 describe('测试 src/core/transformMethod.ts', () => {

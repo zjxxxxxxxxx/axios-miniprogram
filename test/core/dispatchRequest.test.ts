@@ -1,9 +1,3 @@
-/*
- * @Author: early-autumn
- * @Date: 2020-04-20 22:42:46
- * @LastEditors: early-autumn
- * @LastEditTime: 2020-04-21 19:38:53
- */
 import { CancelAction } from '../../src/types';
 import dispatchRequest from '../../src/core/dispatchRequest';
 import CancelToken from '../../src/cancel/CancelToken';
