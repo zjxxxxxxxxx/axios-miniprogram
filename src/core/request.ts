@@ -27,7 +27,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
       reject(createError(message, config, requestConfig, response));
     }
 
-    if (adapter === undefined) {
+    if (adapter === void 0) {
       catchError('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
 
       return;
@@ -41,7 +41,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
     function handleResponse(res: Response): void {
       const response = transformResponse(res, config);
 
-      if (config.validateStatus === undefined || config.validateStatus(response.status)) {
+      if (config.validateStatus === void 0 || config.validateStatus(response.status)) {
         resolve(response);
       } else {
         catchError(`请求失败，状态码为 ${response.status}`, response);
@@ -57,9 +57,9 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
 
     // 如果存在取消令牌
     // 则调用取消令牌里的 listener 监听用户的取消操作
-    if (cancelToken !== undefined) {
+    if (cancelToken !== void 0) {
       cancelToken.listener.then(function onCanceled(reason): void {
-        if (task !== undefined) {
+        if (task !== void 0) {
           task.abort();
         }
 

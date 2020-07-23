@@ -49,7 +49,7 @@ describe('测试 src/core/Axios.ts', () => {
         method: 'post',
         data: '',
       })
-      .then(undefined, (error) => expect(error.data).toBe('interceptors_response'));
+      .then(void 0, (error) => expect(error.data).toBe('interceptors_response'));
 
     instance.interceptors.request.use((config) => Promise.reject(config));
 
@@ -58,6 +58,6 @@ describe('测试 src/core/Axios.ts', () => {
         method: 'post',
         data: '',
       })
-      .then(undefined, (error) => expect(error.method).toBe('post'));
+      .then(void 0, (error) => expect(error.method).toBe('post'));
   });
 });

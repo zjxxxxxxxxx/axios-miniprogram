@@ -8,8 +8,8 @@ describe('测试 src/core/transformResponse.ts', () => {
       data: {},
       headers: {},
       config: {},
-      cookies: undefined,
-      profile: undefined,
+      cookies: void 0,
+      profile: void 0,
     });
   });
 
@@ -20,8 +20,8 @@ describe('测试 src/core/transformResponse.ts', () => {
       data: {},
       headers: { status: 'ok' },
       config: {},
-      cookies: undefined,
-      profile: undefined,
+      cookies: void 0,
+      profile: void 0,
     });
   });
   it('statusCode + header', () => {
@@ -31,8 +31,8 @@ describe('测试 src/core/transformResponse.ts', () => {
       data: {},
       headers: { status: 'ok' },
       config: {},
-      cookies: undefined,
-      profile: undefined,
+      cookies: void 0,
+      profile: void 0,
     });
   });
 });

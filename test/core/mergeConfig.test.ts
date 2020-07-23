@@ -8,7 +8,7 @@ describe('测试 src/core/mergeConfig.ts', () => {
 
     expect(mergeConfig({ baseURL: 'https://www.xxx.com' })).toEqual({ baseURL: 'https://www.xxx.com' });
 
-    expect(mergeConfig(undefined, { baseURL: 'https://www.xxx.com' })).toEqual({ baseURL: 'https://www.xxx.com' });
+    expect(mergeConfig(void 0, { baseURL: 'https://www.xxx.com' })).toEqual({ baseURL: 'https://www.xxx.com' });
   });
 
   it('只取 config2', () => {

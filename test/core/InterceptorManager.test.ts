@@ -15,8 +15,8 @@ describe('测试 src/core/InterceptorManager.ts', () => {
     const interceptor = new InterceptorManager();
     const executor1 = jest.fn();
     const executor2 = jest.fn();
-    const id1 = interceptor.use(() => undefined);
-    const id2 = interceptor.use(() => undefined);
+    const id1 = interceptor.use(() => void 0);
+    const id2 = interceptor.use(() => void 0);
     interceptor.forEach(executor1);
 
     // executor1 应该被执行了两次
@@ -49,7 +49,7 @@ describe('测试 src/core/InterceptorManager.ts', () => {
     const interceptor = new InterceptorManager();
 
     interceptor.use(
-      () => undefined,
+      () => void 0,
       (error: any) => {
         expect(error).toBe('error');
         return Promise.reject(error);

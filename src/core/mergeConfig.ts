@@ -30,7 +30,7 @@ type DeepMergeConfigKey = 'params' | 'headers';
  */
 function onlyFromConfig2(keys: OnlyFromConfig2Key[], config: AxiosRequestConfig, config2: AxiosRequestConfig) {
   keys.forEach((key) => {
-    if (config2[key] !== undefined) {
+    if (config2[key] !== void 0) {
       config[key] = config2[key] as any;
     }
   });
@@ -51,9 +51,9 @@ function priorityFromConfig2(
   config2: AxiosRequestConfig
 ) {
   keys.forEach((key) => {
-    if (config2[key] !== undefined) {
+    if (config2[key] !== void 0) {
       config[key] = config2[key] as any;
-    } else if (config1[key] !== undefined) {
+    } else if (config1[key] !== void 0) {
       config[key] = config1[key] as any;
     }
   });

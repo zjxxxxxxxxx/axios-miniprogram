@@ -5,16 +5,16 @@ describe('测试 src/core/transformRequest.ts', () => {
     expect(transformRequest({})).toEqual({
       url: '/',
       method: 'GET',
-      headers: undefined,
-      data: undefined,
-      dataType: undefined,
-      enableCache: undefined,
-      enableHttp2: undefined,
-      enableQuic: undefined,
-      header: undefined,
-      responseType: undefined,
-      sslVerify: undefined,
-      timeout: undefined,
+      headers: void 0,
+      data: void 0,
+      dataType: void 0,
+      enableCache: void 0,
+      enableHttp2: void 0,
+      enableQuic: void 0,
+      header: void 0,
+      responseType: void 0,
+      sslVerify: void 0,
+      timeout: void 0,
     });
   });
 

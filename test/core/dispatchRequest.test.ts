@@ -5,7 +5,7 @@ import isCancel from '../../src/cancel/isCancel';
 
 describe('测试 src/core/dispatchRequest.ts', () => {
   it('默认', () => {
-    dispatchRequest({}).then(undefined, (err) => {
+    dispatchRequest({}).then(void 0, (err) => {
       expect(err.message).toBe('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
     });
   });
@@ -20,7 +20,7 @@ describe('测试 src/core/dispatchRequest.ts', () => {
       validateStatus(status) {
         return status === -1;
       },
-    }).then(undefined, (err) => expect(err.response.status).toBe(200));
+    }).then(void 0, (err) => expect(err.response.status).toBe(200));
   });
 
   it('自定义错误处理', () => {
@@ -34,7 +34,7 @@ describe('测试 src/core/dispatchRequest.ts', () => {
         error.errorHandler = true;
         return error;
       },
-    }).then(undefined, (error) => expect(error.errorHandler).toBe(true));
+    }).then(void 0, (error) => expect(error.errorHandler).toBe(true));
   });
 
   it('取消请求', () => {
@@ -50,6 +50,6 @@ describe('测试 src/core/dispatchRequest.ts', () => {
       cancelToken: new CancelToken(function executor(c) {
         cancel = c;
       }),
-    }).then(undefined, (err) => expect(isCancel(err)).toBe(true));
+    }).then(void 0, (err) => expect(isCancel(err)).toBe(true));
   });
 });

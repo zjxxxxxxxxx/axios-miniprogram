@@ -43,7 +43,7 @@ export default class AxiosClass implements Axios {
   }
 
   public options<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('options', url, undefined, config);
+    return this._requestMethodWithoutParams<T>('options', url, void 0, config);
   }
 
   public get<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
@@ -67,11 +67,11 @@ export default class AxiosClass implements Axios {
   }
 
   public trace<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('trace', url, undefined, config);
+    return this._requestMethodWithoutParams<T>('trace', url, void 0, config);
   }
 
   public connect<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('connect', url, undefined, config);
+    return this._requestMethodWithoutParams<T>('connect', url, void 0, config);
   }
 
   /**

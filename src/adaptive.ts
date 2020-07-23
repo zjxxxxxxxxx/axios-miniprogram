@@ -28,7 +28,7 @@ export default function adaptive(): Adapter | undefined {
 
   let adapter: Adapter | undefined;
 
-  while (stack.length !== 0 && adapter === undefined) {
+  while (stack.length !== 0 && adapter === void 0) {
     try {
       adapter = (stack.shift() as () => Adapter)();
     } catch (err) {}

@@ -12,7 +12,7 @@ export default function transformData(
   headers: Headers,
   transforms?: TransformData | TransformData[]
 ): Data {
-  if (transforms === undefined) {
+  if (transforms === void 0) {
     return data;
   }
 

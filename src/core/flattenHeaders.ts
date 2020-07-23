@@ -10,7 +10,7 @@ import { methodToLowercase } from './transformMethod';
 export default function flattenHeaders(config: AxiosRequestConfig): Headers {
   const { headers } = config;
 
-  if (headers === undefined) {
+  if (headers === void 0) {
     return {};
   }
 

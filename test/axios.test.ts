@@ -2,7 +2,7 @@ import axios from '../src/axios';
 
 describe('测试 src/axios.ts', () => {
   it('default', () => {
-    axios('/test').then(undefined, (error) => {
+    axios('/test').then(void 0, (error) => {
       expect(error.isAxiosError).toBe(true);
       expect(error.message).toBe('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
     });

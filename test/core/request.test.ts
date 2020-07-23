@@ -4,7 +4,7 @@ import isCancel from '../../src/cancel/isCancel';
 
 describe('测试 src/core/request.ts', () => {
   it('默认', () => {
-    request({}).then(undefined, (err) =>
+    request({}).then(void 0, (err) =>
       expect(err.message).toBe('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台')
     );
   });
@@ -16,7 +16,7 @@ describe('测试 src/core/request.ts', () => {
 
         return 'task';
       },
-    }).then(undefined, (err) => expect(err.message).toBe('配置不正确或者网络异常'));
+    }).then(void 0, (err) => expect(err.message).toBe('配置不正确或者网络异常'));
   });
 
   it('取消请求', () => {
@@ -31,6 +31,6 @@ describe('测试 src/core/request.ts', () => {
       cancelToken: new CancelToken(function executor(c) {
         c();
       }),
-    }).then(undefined, (err) => expect(isCancel(err)).toBe(true));
+    }).then(void 0, (err) => expect(isCancel(err)).toBe(true));
   });
 });

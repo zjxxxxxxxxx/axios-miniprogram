@@ -21,7 +21,7 @@ describe('测试 src/adaptive.ts', () => {
   });
 
   it('适配失败', () => {
-    global.wx = undefined;
+    global.wx = void 0;
 
     expect(adaptive()).toBeUndefined();
   });

@@ -74,7 +74,7 @@ describe('测试 src/helpers/buildURL.ts', () => {
     expect(
       buildURL('/test', {
         null: null,
-        undefined: undefined,
+        undefined: void 0,
         NaN: NaN,
       })
     ).toBe('/test');

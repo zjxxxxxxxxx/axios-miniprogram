@@ -39,7 +39,7 @@ export default function dispatchRequest(config: AxiosRequestConfig): Promise<Axi
     if (!isCancel(reason)) {
       throwIfCancellationRequested(config);
 
-      if (reason.response !== undefined) {
+      if (reason.response !== void 0) {
         reason.response.data = transformData(reason.response.data, reason.response.headers, config.transformResponse);
       }
     }

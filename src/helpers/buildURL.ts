@@ -36,7 +36,7 @@ function paramsSerialization(params: AnyObject): string {
   const parts: string[] = [];
 
   Object.entries(params).forEach(function encodeKeyValue([key, value]): void {
-    if (value === null || value === undefined || value !== value) {
+    if (value === null || value === void 0 || value !== value) {
       return;
     }
 
