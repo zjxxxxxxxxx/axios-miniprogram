@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "lint": "eslint --ext ts --fix src test",
-    "prettier": "prettier --write --config .prettierrc \"{src,test}/**/*.{js,ts}\"",
+    "lint": "eslint --ext ts --fix src __tests__",
+    "prettier": "prettier --write --config .prettierrc \"{src,__tests__}/**/*.{js,ts}\"",
     "test": "jest",
     "test:watch": "yarn test -- --watch",
     "test:cov": "yarn test -- --coverage",

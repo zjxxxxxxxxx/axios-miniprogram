@@ -3,7 +3,6 @@
     "target": "esnext",
     "module": "esnext",
     "lib": [
-      "dom",
       "es2020"
     ],
     "declaration": true,
