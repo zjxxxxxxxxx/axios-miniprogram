@@ -1,0 +1,6 @@
+/node_modules
+/package
+/package.zip
+/types
+/coverage
+/yarn-error.log

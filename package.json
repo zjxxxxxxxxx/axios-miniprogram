@@ -1,0 +1,74 @@
+{
+  "name": "axios-miniprogram",
+  "version": "1.1.3",
+  "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
+  "main": "package/index.js",
+  "miniprogram": "package",
+  "types": "types/index.d.ts",
+  "files": [
+    "package",
+    "types"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint --ext ts --fix src __tests__",
+    "prettier": "prettier --write --config .prettierrc \"{src,__tests__}/**/*.{js,ts}\"",
+    "test": "jest",
+    "test:watch": "yarn test -- --watch",
+    "test:cov": "yarn test -- --coverage",
+    "coverage": "yarn test:cov --coverageReporters=text-lcov | coveralls"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier && yarn lint && yarn test:cov && git add ."
+    }
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "babelConfig": "test/.babelrc"
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zjx0905/axios-miniprogram.git"
+  },
+  "keywords": [
+    "axios",
+    "miniprogram",
+    "request",
+    "promise"
+  ],
+  "author": "zjx0905",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zjx0905/axios-miniprogram/issues"
+  },
+  "homepage": "https://github.com/zjx0905/axios-miniprogram#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@babel/runtime": "^7.10.5",
+    "@types/jest": "^26.0.5",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "ts-jest": "^26.1.3",
+    "typescript": "^3.9.7"
+  }
+}
