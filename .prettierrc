@@ -6,5 +6,5 @@
   "trailingComma": "es5",
   "bracketSpacing": true,
   "arrowParens": "always",
-  "parser": "typescript"
+  "parser": "typescript",
 }

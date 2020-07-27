@@ -16,7 +16,7 @@ function removeDir(name) {
       fs.unlinkSync(name);
     } else {
       fs.readdirSync(name).forEach((dir) => removeDir(path.join(name, dir)));
-      fs.rmdirSync(name);
+      fs.rmdirSync(name)
     }
   } catch (err) {}
 }
