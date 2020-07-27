@@ -19,6 +19,17 @@ export default function flattenHeaders(config: AxiosRequestConfig): Headers {
   return {
     ...(headers.common ?? {}),
     ...(headers[method] ?? {}),
-    ...omit(headers, 'common', 'options', 'get', 'head', 'post', 'put', 'delete', 'trace', 'connect'),
+    ...omit(
+      headers,
+      'common',
+      'options',
+      'get',
+      'head',
+      'post',
+      'put',
+      'delete',
+      'trace',
+      'connect'
+    ),
   };
 }

@@ -28,7 +28,11 @@ type DeepMergeConfigKey = 'params' | 'headers';
  * @param config
  * @param config2
  */
-function onlyFromConfig2(keys: OnlyFromConfig2Key[], config: AxiosRequestConfig, config2: AxiosRequestConfig) {
+function onlyFromConfig2(
+  keys: OnlyFromConfig2Key[],
+  config: AxiosRequestConfig,
+  config2: AxiosRequestConfig
+) {
   keys.forEach((key) => {
     if (config2[key] !== void 0) {
       config[key] = config2[key] as any;

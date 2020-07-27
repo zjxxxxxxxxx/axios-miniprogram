@@ -9,7 +9,10 @@ import { pick } from '../helpers/utils';
  * @param response 通用响应体
  * @param config   Axios 请求配置
  */
-export default function transformResponse(response: Response, config: AxiosRequestConfig): AxiosResponse {
+export default function transformResponse(
+  response: Response,
+  config: AxiosRequestConfig
+): AxiosResponse {
   const status = response.statusCode ?? response.status ?? 400;
 
   const headers = response.header ?? response.headers ?? {};

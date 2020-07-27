@@ -1,6 +1,7 @@
 # axios-miniprogram
 
 [![build status](https://travis-ci.com/zjx0905/axios-miniprogram.svg?branch=master)](https://travis-ci.org/zjx0905/axios-miniprogram)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Coverage Status](https://coveralls.io/repos/github/zjx0905/axios-miniprogram/badge.svg?branch=master)](https://coveralls.io/github/zjx0905/axios-miniprogram?branch=master)
 [![npm version](https://badge.fury.io/js/axios-miniprogram.svg)](https://badge.fury.io/js/axios-miniprogram)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)

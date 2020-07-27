@@ -8,12 +8,28 @@ export declare interface AnyObject<T extends any = any> {
 /**
  * 请求方法
  */
-export declare type AdapterMethod = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
+export declare type AdapterMethod =
+  | 'OPTIONS'
+  | 'GET'
+  | 'HEAD'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'TRACE'
+  | 'CONNECT';
 
 /**
  * 请求方法别名
  */
-export declare type AliasMethod = 'options' | 'get' | 'head' | 'post' | 'put' | 'delete' | 'trace' | 'connect';
+export declare type AliasMethod =
+  | 'options'
+  | 'get'
+  | 'head'
+  | 'post'
+  | 'put'
+  | 'delete'
+  | 'trace'
+  | 'connect';
 
 /**
  * Axios 请求方法
@@ -33,7 +49,8 @@ export declare type Data = string | AnyObject | ArrayBuffer;
 /**
  * Axios 头
  */
-export declare interface Headers extends Partial<Record<'common' | AliasMethod, AnyObject<string>>> {
+export declare interface Headers
+  extends Partial<Record<'common' | AliasMethod, AnyObject<string>>> {
   /**
    * 自定义配置
    */
@@ -466,7 +483,11 @@ export declare interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  get<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  get<T extends Data>(
+    url: string,
+    params?: Params,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 HEAD
@@ -475,7 +496,11 @@ export declare interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  head<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  head<T extends Data>(
+    url: string,
+    params?: Params,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 POST
@@ -484,7 +509,11 @@ export declare interface Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  post<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  post<T extends Data>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 PUT
@@ -493,7 +522,11 @@ export declare interface Axios {
    * @param data   请求数据
    * @param config 额外配置
    */
-  put<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  put<T extends Data>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 DELETE
@@ -502,7 +535,11 @@ export declare interface Axios {
    * @param params 请求参数
    * @param config 额外配置
    */
-  delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  delete<T extends Data>(
+    url: string,
+    params?: Params,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>;
 
   /**
    * 发送 HTTP 请求 TRACE

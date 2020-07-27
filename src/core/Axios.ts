@@ -1,4 +1,12 @@
-import { Method, Params, Data, Interceptors, AxiosRequestConfig, AxiosResponse, Axios } from '../types';
+import {
+  Method,
+  Params,
+  Data,
+  Interceptors,
+  AxiosRequestConfig,
+  AxiosResponse,
+  Axios,
+} from '../types';
 import buildURL from '../helpers/buildURL';
 import mergeConfig from './mergeConfig';
 import InterceptorManager from './InterceptorManager';
@@ -42,35 +50,64 @@ export default class AxiosClass implements Axios {
     return promiseResponse as Promise<AxiosResponse<T>>;
   }
 
-  public options<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public options<T extends Data>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('options', url, void 0, config);
   }
 
-  public get<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public get<T extends Data>(
+    url: string,
+    params?: Params,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('get', url, params, config);
   }
 
-  public head<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public head<T extends Data>(
+    url: string,
+    params?: Params,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('head', url, params, config);
   }
 
-  public post<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public post<T extends Data>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutData<T>('post', url, data, config);
   }
 
-  public put<T extends Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public put<T extends Data>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutData<T>('put', url, data, config);
   }
 
-  public delete<T extends Data>(url: string, params?: Params, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public delete<T extends Data>(
+    url: string,
+    params?: Params,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('delete', url, params, config);
   }
 
-  public trace<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public trace<T extends Data>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('trace', url, void 0, config);
   }
 
-  public connect<T extends Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public connect<T extends Data>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     return this._requestMethodWithoutParams<T>('connect', url, void 0, config);
   }
 

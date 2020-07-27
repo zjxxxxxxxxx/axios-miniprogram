@@ -69,6 +69,10 @@ function paramsSerialization(params: AnyObject): string {
  * @param params           请求参数
  * @param paramsSerializer 自定义参数序列化
  */
-export default function buildURL(url: string, params: Params = {}, paramsSerializer = paramsSerialization): string {
+export default function buildURL(
+  url: string,
+  params: Params = {},
+  paramsSerializer = paramsSerialization
+): string {
   return generateURL(url, paramsSerializer(params));
 }
