@@ -11,25 +11,12 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "lint": "eslint --ext ts --fix src __tests__",
-    "prettier": "prettier --write --config .prettierrc \"{src,__tests__}/**/*.{js,ts}\"",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}'",
+    "format": "eslint --fix 'src/**/*.{js,ts,tsx}'",
     "test": "jest",
     "test:watch": "yarn test -- --watch",
     "test:cov": "yarn test -- --coverage",
     "coverage": "yarn test:cov --coverageReporters=text-lcov | coveralls"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn prettier && yarn lint && yarn test:cov && git add ."
-    }
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "babelConfig": "test/.babelrc"
-      }
-    }
   },
   "repository": {
     "type": "git",
@@ -49,10 +36,8 @@
   "homepage": "https://github.com/zjx0905/axios-miniprogram#readme",
   "devDependencies": {
     "@babel/core": "^7.10.5",
-    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
-    "@babel/plugin-transform-runtime": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5", 
     "@babel/preset-typescript": "^7.10.4",
     "@babel/runtime": "^7.10.5",
     "@types/jest": "^26.0.5",
@@ -63,12 +48,13 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
-    "jest": "^26.1.0",
-    "prettier": "^2.0.5",
+    "jest": "^26.1.0", 
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "ts-jest": "^26.1.3",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "@babel/plugin-transform-typescript": "^7.10.3",
+    "lint-staged": "^10.2.11"
   }
 }

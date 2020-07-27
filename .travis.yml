@@ -4,8 +4,8 @@ cache:
   directories:
     - node_modules
 install:
-  - npm install  
+  - yarn install  
 script:
-  - npm run prettier
-  - npm run lint
-  - npm run coverage
+  - yarn prettier
+  - yarn lint
+  - yarn coverage
