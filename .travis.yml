@@ -7,5 +7,5 @@ install:
   - yarn install  
 script:
   - yarn prettier
-  - yarn lint
+  - yarn lint --fix
   - yarn coverage

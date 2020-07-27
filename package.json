@@ -13,6 +13,7 @@
     "build": "rollup -c",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "format": "eslint --fix 'src/**/*.{js,ts,tsx}'",
+    "prettier": "prettier",
     "test": "jest",
     "test:watch": "yarn test -- --watch",
     "test:cov": "yarn test -- --coverage",
