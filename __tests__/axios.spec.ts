@@ -1,4 +1,5 @@
 import axios from '../src/axios';
+import CancelToken from '../src/cancel/CancelToken';
 
 describe('测试 src/axios.ts', () => {
   it('default', () => {
@@ -86,5 +87,23 @@ describe('测试 src/axios.ts', () => {
     const instance = axios.create();
 
     expect(instance.defaults).toEqual(axios.defaults);
+  });
+
+  it('取消请求', (done) => {
+    const source = CancelToken.source();
+    const instance = axios.create();
+    instance.interceptors.response.use(
+      (res) => {
+        return res;
+      },
+      (err) => {
+        expect(axios.isCancel(err)).toBe(true);
+        done();
+      }
+    );
+    instance('/test', {
+      cancelToken: source.token,
+    });
+    source.cancel('取消');
   });
 });

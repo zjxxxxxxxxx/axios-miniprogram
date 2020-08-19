@@ -1,12 +1,14 @@
 {
   "name": "axios-miniprogram",
-  "version": "1.1.6",
+  "version": "1.2.2",
   "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
-  "main": "package/index.js",
-  "miniprogram": "package",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "miniprogram": "lib",
   "types": "types/index.d.ts",
   "files": [
-    "package",
+    "lib",
+    "es",
     "types"
   ],
   "scripts": {
@@ -40,14 +42,12 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
-    "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/plugin-transform-typescript": "^7.10.3",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-typescript": "^7.10.4",
-    "@babel/runtime": "^7.10.5",
-    "@babel/runtime-corejs3": "^7.11.2",
     "@rollup/plugin-babel": "^5.1.0",
     "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/jest": "^26.0.5",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
@@ -59,7 +59,6 @@
     "jest": "^26.1.0",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "ts-jest": "^26.1.3",
     "typescript": "^3.9.7"
