@@ -110,3 +110,5 @@ package
 types
 coverage/
 yarn-error.log
+lib
+es

@@ -23,10 +23,10 @@ const defaults: AxiosRequestConfig = {
     get: {},
     head: {},
     post: {
-      'Context-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
     put: {
-      'Context-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
     delete: {},
     trace: {},
