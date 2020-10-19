@@ -106,9 +106,5 @@ dist
 .idea
 .vscode
 
-package
-types
-coverage/
+coverage
 yarn-error.log
-lib
-es
