@@ -1,4 +1,5 @@
 import { Data, Headers, TransformData } from '../types';
+import { isUndefined } from '../helpers/utils';
 
 /**
  * 转换数据
@@ -12,7 +13,7 @@ export default function transformData(
   headers: Headers,
   transforms?: TransformData | TransformData[]
 ): Data {
-  if (transforms === void 0) {
+  if (isUndefined(transforms)) {
     return data;
   }
 

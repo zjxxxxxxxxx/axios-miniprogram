@@ -1,5 +1,5 @@
 import { Headers, AxiosRequestConfig } from '../types';
-import { omit } from '../helpers/utils';
+import { isUndefined, omit } from '../helpers/utils';
 import { methodToLowercase } from './transformMethod';
 
 /**
@@ -10,7 +10,7 @@ import { methodToLowercase } from './transformMethod';
 export default function flattenHeaders(config: AxiosRequestConfig): Headers {
   const { headers } = config;
 
-  if (headers === void 0) {
+  if (isUndefined(headers)) {
     return {};
   }
 

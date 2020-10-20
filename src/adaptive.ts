@@ -1,4 +1,5 @@
 import { Adapter, Platform } from './types';
+import { isUndefined } from './helpers/utils';
 
 // uniapp
 declare let uni: Platform;
@@ -28,7 +29,7 @@ export default function adaptive(): Adapter | undefined {
 
   let adapter: Adapter | undefined;
 
-  while (stack.length !== 0 && adapter === void 0) {
+  while (stack.length !== 0 && isUndefined(adapter)) {
     try {
       adapter = (stack.shift() as () => Adapter)();
     } catch (err) {}

@@ -1,5 +1,5 @@
 import { AnyObject, Params } from '../types';
-import { encode, isPlainObject, isDate } from './utils';
+import { encode, isPlainObject, isDate, isUndefined, isNull } from './utils';
 
 /**
  * 通过请求地址和序列化参数生成新的请求地址
@@ -36,7 +36,7 @@ function paramsSerialization(params: AnyObject): string {
   const parts: string[] = [];
 
   Object.entries(params).forEach(function encodeKeyValue([key, value]): void {
-    if (value === null || value === void 0 || value !== value) {
+    if (isNull(value) || isUndefined(value) || value !== value) {
       return;
     }
 

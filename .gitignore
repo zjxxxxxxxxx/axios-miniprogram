@@ -108,3 +108,8 @@ dist
 
 coverage
 yarn-error.log
+
+
+es
+lib
+types

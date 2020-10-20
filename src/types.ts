@@ -191,7 +191,7 @@ export declare interface AdapterRequestTask {
  * 适配器
  */
 export declare interface Adapter {
-  (config: AdapterRequestConfig): AdapterRequestTask | void;
+  (config: AdapterRequestConfig): AdapterRequestTask | undefined;
 }
 
 /**
@@ -318,6 +318,8 @@ export declare interface AxiosRequestConfig {
    * 验证 ssl 证书
    */
   sslVerify?: boolean;
+
+  [key: string]: unknown;
 }
 
 /**
@@ -733,4 +735,8 @@ export declare interface AxiosInstance extends AxiosBaseInstance {
    * @param value 判断的值
    */
   isCancel: (value: any) => boolean;
+}
+
+export interface ObjectTree<T = unknown> {
+  [key: string]: T | ObjectTree<T>;
 }

@@ -1,4 +1,4 @@
-import { AnyObject } from '../types';
+import { AnyObject, ObjectTree } from '../types';
 
 const _toString = Object.prototype.toString;
 
@@ -19,21 +19,40 @@ export function encode(str: string): string {
 }
 
 /**
- * 是不是一个日期对象
- *
- * @param date 判断目标
+ * 是否是 Date
  */
 export function isDate(date: unknown): date is Date {
   return _toString.call(date) === '[object Date]';
 }
 
 /**
- * 是不是一个普通对象
- *
- * @param obj 判断目标
+ * 是否是普通对象
  */
-export function isPlainObject(obj: unknown): obj is Record<string, unknown> {
-  return _toString.call(obj) === '[object Object]';
+export function isPlainObject<T = never>(
+  value: unknown
+): value is [T] extends never[] ? AnyObject : T {
+  return _toString.call(value) === '[object Object]';
+}
+
+/**
+ * 是否是 undefined
+ */
+export function isUndefined(value: unknown): value is undefined {
+  return typeof value === 'undefined';
+}
+
+/**
+ * 是否是字符型
+ */
+export function isString(value: unknown): value is number {
+  return typeof value === 'string';
+}
+
+/**
+ * 是否是 Null
+ */
+export function isNull(value: unknown): value is null {
+  return value === null;
 }
 
 /**
@@ -41,19 +60,19 @@ export function isPlainObject(obj: unknown): obj is Record<string, unknown> {
  *
  * @param objs n 个对象
  */
-export function deepMerge(...objs: Record<string, any>[]): Record<string, any> {
-  const result: Record<string, any> = {};
+export function deepMerge<T = never>(...objs: ObjectTree[]): [T] extends never[] ? ObjectTree : T {
+  const result: ObjectTree = {};
 
-  function assignValue(key: string, val: any) {
+  function assignValue(key: string, val: unknown) {
     // 如果当前结果和当前值都为普通对象
     // 递归进行深度合并
     if (isPlainObject(result[key]) && isPlainObject(val)) {
-      result[key] = deepMerge(result[key], val);
+      result[key] = deepMerge(result[key] as ObjectTree, val as ObjectTree);
     }
     // 如果只有当前值为普通对象
     // 直接深拷贝当前值
     else if (isPlainObject(val)) {
-      result[key] = deepMerge({}, val);
+      result[key] = deepMerge({}, val as ObjectTree);
     }
     // 如果都不是普通对象
     // 直接赋值
@@ -62,13 +81,13 @@ export function deepMerge(...objs: Record<string, any>[]): Record<string, any> {
     }
   }
 
-  objs.forEach(function assignObj(obj: Record<string, any>): void {
-    Object.entries(obj).forEach(function assignKey([key, value]) {
+  objs.forEach(function assignObj(obj: ObjectTree): void {
+    Object.entries(obj).forEach(function ([key, value]) {
       assignValue(key, value);
     });
   });
 
-  return result;
+  return result as [T] extends never[] ? ObjectTree : T;
 }
 
 /**

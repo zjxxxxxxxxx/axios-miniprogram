@@ -79,9 +79,9 @@ function deepMergeConfig(
 ) {
   keys.forEach((key) => {
     if (isPlainObject(config2[key])) {
-      config[key] = deepMerge(config1[key] ?? {}, config2[key] as AnyObject);
+      config[key] = deepMerge<AnyObject>(config1[key] ?? {}, config2[key] as AnyObject);
     } else if (isPlainObject(config1[key])) {
-      config[key] = deepMerge(config1[key] as AnyObject);
+      config[key] = deepMerge<AnyObject>(config1[key] as AnyObject);
     }
   });
 }

@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
+import { isString, isUndefined } from '../helpers/utils';
 import transformRequest from './transformRequest';
 import transformResponse from './transformResponse';
 import createError from './createError';
@@ -20,14 +21,14 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
      * @param response Axios 响应体
      */
     function catchError(message: any, response?: AxiosResponse): void {
-      if (typeof message !== 'string') {
-        message = '配置不正确或者网络异常';
+      if (!isString(message)) {
+        message = message.fail;
       }
 
       reject(createError(message, config, requestConfig, response));
     }
 
-    if (adapter === void 0) {
+    if (isUndefined(adapter)) {
       catchError('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
 
       return;
@@ -41,7 +42,7 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
     function handleResponse(res: Response): void {
       const response = transformResponse(res, config);
 
-      if (config.validateStatus === void 0 || config.validateStatus(response.status)) {
+      if (isUndefined(config.validateStatus) || config.validateStatus(response.status)) {
         resolve(response);
       } else {
         catchError(`请求失败，状态码为 ${response.status}`, response);
@@ -57,9 +58,9 @@ export default function request(config: AxiosRequestConfig): Promise<AxiosRespon
 
     // 如果存在取消令牌
     // 则调用取消令牌里的 listener 监听用户的取消操作
-    if (cancelToken !== void 0) {
+    if (!isUndefined(cancelToken)) {
       cancelToken.listener.then(function onCanceled(reason): void {
-        if (task !== void 0) {
+        if (!isUndefined(task)) {
           task.abort();
         }
 
