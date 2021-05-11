@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist",
+    "sourceMap": true,
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "lib": ["esnext"]
+  },
+  "include": ["src", "__tests__"]
+}
