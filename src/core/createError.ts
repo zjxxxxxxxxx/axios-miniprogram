@@ -1,45 +1,38 @@
-import { AxiosRequestConfig, RequestConfig, AxiosResponse, AxiosError } from '../types';
+import { AxiosAdapterRequestConfig } from './adapter';
+import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 
-/**
- * AxiosError 继承自 Error
- */
-class AxiosErrorClass extends Error implements AxiosError {
+export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
+
+class AxiosError extends Error {
   public isAxiosError = true;
 
-  /**
-   * @param message  错误信息
-   * @param config   Axios 请求配置
-   * @param request  通用请求配置
-   * @param response Axios 响应体
-   */
+  public config: AxiosRequestConfig;
+
+  public request: AxiosAdapterRequestConfig;
+
+  public response?: AxiosErrorResponse;
+
   public constructor(
     message: string,
-    public config: AxiosRequestConfig,
-    public request: RequestConfig,
-    public response?: AxiosResponse
+    config: AxiosRequestConfig,
+    request: AxiosAdapterRequestConfig,
+    response?: AxiosErrorResponse,
   ) {
     super(message);
 
-    // 修复继承系统自带类 prototype 设置失败的问题
-    Object.setPrototypeOf(this, AxiosErrorClass.prototype);
+    this.config = config;
+    this.request = request;
+    this.response = response;
+
+    Object.setPrototypeOf(this, AxiosError.prototype);
   }
 }
 
-/**
- * 创建 AxiosError 的工厂方法
- *
- * 返回一个新的 AxiosError 对象
- *
- * @param message  错误信息
- * @param config   Axios 请求配置
- * @param request  通用请求配置
- * @param response Axios 响应体
- */
-export default function createError(
+export function createError(
   message: string,
   config: AxiosRequestConfig,
-  request: RequestConfig,
-  response?: AxiosResponse
+  request: AxiosAdapterRequestConfig,
+  response?: AxiosErrorResponse,
 ): AxiosError {
-  return new AxiosErrorClass(message, config, request, response);
+  return new AxiosError(message, config, request, response);
 }

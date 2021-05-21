@@ -1,27 +1,31 @@
-import { Data, Headers, TransformData } from '../types';
-import { isUndefined } from '../helpers/utils';
+import { isArray, isUndefined } from '../utils';
+import {
+  AxiosRequestData,
+  AxiosRequestFormData,
+  AxiosResponseHeaders,
+} from './Axios';
 
-/**
- * 转换数据
- *
- * @param data       请求数据/响应数据
- * @param headers    请求头/响应头
- * @param transforms 请求数据转换函数/响应数据转换函数
- */
-export default function transformData(
-  data: Data,
-  headers: Headers,
-  transforms?: TransformData | TransformData[]
-): Data {
+export interface AxiosTransformer {
+  (
+    data?: AxiosRequestData | AxiosRequestFormData,
+    headers?: AxiosResponseHeaders,
+  ): AxiosRequestData | AxiosRequestFormData;
+}
+
+export function transformData(
+  data?: AxiosRequestData | AxiosRequestFormData,
+  headers?: AxiosResponseHeaders,
+  transforms?: AxiosTransformer | AxiosTransformer[],
+): AxiosRequestData | AxiosRequestFormData | undefined {
   if (isUndefined(transforms)) {
     return data;
   }
 
-  if (!Array.isArray(transforms)) {
+  if (!isArray(transforms)) {
     transforms = [transforms];
   }
 
-  transforms.forEach((transform: TransformData) => {
+  transforms.forEach((transform: AxiosTransformer) => {
     data = transform(data, headers);
   });
 

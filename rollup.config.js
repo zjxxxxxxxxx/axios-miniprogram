@@ -1,44 +1,42 @@
-const path = require('path');
-const rimraf = require('rimraf');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const { babel } = require('@rollup/plugin-babel');
-const typescript = require('@rollup/plugin-typescript');
-const commonjs = require('@rollup/plugin-commonjs');
-const { terser } = require('rollup-plugin-terser');
-const { DEFAULT_EXTENSIONS } = require('@babel/core');
+import path from 'path';
+import rimraf from 'rimraf';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { babel } from '@rollup/plugin-babel';
+import typescript from 'rollup-plugin-typescript2';
+import commonjs from '@rollup/plugin-commonjs';
+import { DEFAULT_EXTENSIONS } from '@babel/core';
 
-const pkg = require('./package.json');
+import filterEmptyLines from './scripts/@rollup/plugin-filter-empty-lines';
+import pkg from './package.json';
 
 const entryFilePath = path.resolve(__dirname, 'src/index.ts');
-const buildPath = path.resolve(__dirname, 'dist');
+const distPath = path.resolve(__dirname, 'dist');
 const pkgName = pkg.name;
 
-function resolveOutputFilePath(format) {
-  return path.resolve(buildPath, format, pkgName + '.js');
-}
-
 const extensions = [].concat(DEFAULT_EXTENSIONS, '.ts');
-
-const basePlugins = [
+const plugins = [
   nodeResolve({
     extensions,
   }),
-  typescript({}),
+  typescript({
+    useTsconfigDeclarationDir: true,
+  }),
   babel({
     extensions,
-    babelHelpers: 'runtime',
+    babelHelpers: 'bundled',
+    comments: false,
   }),
-  commonjs(),
+  commonjs({
+    include: /node_modules/,
+  }),
+  filterEmptyLines(),
 ];
 
-function createConfig(format) {
-  const isUmd = format === 'umd';
-  const plugins = [].concat(basePlugins);
+function resolveOutputFilePath(format) {
+  return path.resolve(distPath, format, `${pkgName}.js`);
+}
 
-  if (isUmd) {
-    plugins.push(terser());
-  }
-
+function generateConfig(format) {
   return {
     input: entryFilePath,
     output: {
@@ -46,30 +44,26 @@ function createConfig(format) {
       format,
       name: pkgName,
       exports: 'default',
-    },
-    external(id) {
-      if (isUmd) {
-        return false;
-      }
-
-      return /@babel\/runtime/.test(id);
+      indent: false,
     },
     plugins,
   };
 }
 
 let run;
-const promise = new Promise(function (resolve, reject) {
-  run = function (error) {
-    if (error) {
-      reject(error);
+const promise = new Promise((resolve, reject) => {
+  run = (err) => {
+    if (err) {
+      reject(err);
+      return;
     }
 
-    resolve([createConfig('esm'), createConfig('cjs'), createConfig('umd')]);
+    resolve([generateConfig('esm'), generateConfig('cjs')]);
   };
 });
 
-module.exports = function () {
-  rimraf(buildPath, run);
+export default () => {
+  rimraf(distPath, run);
+
   return promise;
 };

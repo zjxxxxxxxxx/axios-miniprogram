@@ -1,35 +1,34 @@
-import { Headers, AxiosRequestConfig } from '../types';
-import { isUndefined, omit } from '../helpers/utils';
-import { methodToLowercase } from './transformMethod';
+import { isPlainObject, omit } from '../utils';
+import {
+  AxiosRequestConfig,
+  AxiosRequestMethodAlias,
+  AxiosRequestHeaders,
+} from './Axios';
 
-/**
- * 拉平请求头
- *
- * @param config Axios 请求配置
- */
-export default function flattenHeaders(config: AxiosRequestConfig): Headers {
-  const { headers } = config;
-
-  if (isUndefined(headers)) {
-    return {};
+export function flattenHeaders(
+  config: AxiosRequestConfig,
+): AxiosRequestHeaders | undefined {
+  if (!isPlainObject(config.headers)) {
+    return;
   }
 
-  const method = methodToLowercase(config.method);
+  const common = 'common';
+  const method = config.method?.toLowerCase() ?? 'get';
+  const alias: AxiosRequestMethodAlias[] = [
+    'options',
+    'get',
+    'head',
+    'post',
+    'put',
+    'delete',
+    'trace',
+    'connect',
+  ];
 
-  return {
-    ...(headers.common ?? {}),
-    ...(headers[method] ?? {}),
-    ...omit(
-      headers,
-      'common',
-      'options',
-      'get',
-      'head',
-      'post',
-      'put',
-      'delete',
-      'trace',
-      'connect'
-    ),
-  };
+  return Object.assign(
+    {},
+    config.headers[common],
+    config.headers[method],
+    omit(config.headers, common, ...alias),
+  );
 }
