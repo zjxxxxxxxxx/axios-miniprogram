@@ -1,131 +1,221 @@
-import {
-  Method,
-  Params,
-  Data,
-  Interceptors,
-  AxiosRequestConfig,
-  AxiosResponse,
-  Axios,
-} from '../types';
-import buildURL from '../helpers/buildURL';
-import mergeConfig from './mergeConfig';
-import InterceptorManager from './InterceptorManager';
+import { buildURL } from '../utils';
+import { mergeConfig } from './mergeConfig';
+import { AdapterRequestMethod, AxiosAdapter } from './adapter';
+import { CancelToken } from './cancel';
 import dispatchRequest from './dispatchRequest';
+import InterceptorManager from './InterceptorManager';
+import { AxiosTransformer } from './transformData';
 
-export default class AxiosClass implements Axios {
-  public interceptors: Interceptors = {
+export type AxiosRequestMethodAlias =
+  | 'options'
+  | 'get'
+  | 'head'
+  | 'post'
+  | 'put'
+  | 'delete'
+  | 'trace'
+  | 'connect';
+
+export type AxiosRequestMethod = AdapterRequestMethod | AxiosRequestMethodAlias;
+
+export type AxiosRequestHeaders = AnyObject;
+
+export type AxiosRequestParams = AnyObject;
+
+export type AxiosRequestData = AnyObject;
+
+export type AxiosResponseHeaders = AnyObject;
+
+export interface AxiosRequestFormData extends AxiosRequestData {
+  fileName: string;
+  filePath: string;
+  fileType?: 'image' | 'video' | 'audio';
+  hideLoading?: boolean;
+}
+
+export interface AxiosProgressEvent {
+  progress: number;
+  totalBytesSent: number;
+  totalBytesExpectedToSend: number;
+}
+
+export interface AxiosProgressCallback {
+  (event: AxiosProgressEvent): void;
+}
+
+export interface AxiosRequestConfig {
+  adapter?: AxiosAdapter;
+  baseURL?: string;
+  cancelToken?: CancelToken;
+  data?: AxiosRequestData | AxiosRequestFormData;
+  dataType?: 'json' | '其他';
+  enableHttp2?: boolean;
+  enableQuic?: boolean;
+  enableCache?: boolean;
+  errorHandler?: (error: any) => Promise<any>;
+  headers?: AxiosRequestHeaders;
+  method?: AxiosRequestMethod;
+  onUploadProgress?: AxiosProgressCallback;
+  onDownloadProgress?: AxiosProgressCallback;
+  params?: AxiosRequestParams;
+  paramsSerializer?: (params?: AxiosRequestParams) => string;
+  responseType?: 'text' | 'arraybuffer' | 'file';
+  sslVerify?: boolean;
+  transformRequest?: AxiosTransformer | AxiosTransformer[];
+  transformResponse?: AxiosTransformer | AxiosTransformer[];
+  timeout?: number;
+  url?: string;
+  validateStatus?: (status: number) => boolean;
+}
+
+export interface AxiosResponse<TData = any> {
+  status: number;
+  statusText: string;
+  headers: AxiosResponseHeaders;
+  data: TData;
+  cookies?: string[];
+  profile?: AnyObject;
+}
+
+export interface AxiosResponseError extends AnyObject {
+  status: number;
+  statusText: string;
+  headers: AxiosResponseHeaders;
+}
+
+export interface AxiosConstructor {
+  new (config: AxiosRequestConfig): Axios;
+}
+
+export default class Axios {
+  public defaults: AxiosRequestConfig;
+
+  public interceptors = {
     request: new InterceptorManager<AxiosRequestConfig>(),
     response: new InterceptorManager<AxiosResponse>(),
   };
 
-  /**
-   * @param defaults 自定义默认配置
-   */
-  public constructor(public defaults: AxiosRequestConfig = {}) {}
+  public constructor(defaults: AxiosRequestConfig = {}) {
+    this.defaults = defaults;
+  }
 
   public getUri(config: AxiosRequestConfig): string {
-    const { url = '', params, paramsSerializer } = mergeConfig(this.defaults, config);
+    const { url, params, paramsSerializer } = mergeConfig(
+      this.defaults,
+      config,
+    );
 
     return buildURL(url, params, paramsSerializer).replace(/^\?/, '');
   }
 
-  public request<T extends Data>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  public request<TData = any>(
+    config: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
     const requestConfig = mergeConfig(this.defaults, config);
 
     let promiseRequest = Promise.resolve(requestConfig);
 
-    // 执行请求拦截器
-    this.interceptors.request.forEach(function executor({ resolved, rejected }) {
+    this.interceptors.request.forEach(({ resolved, rejected }) => {
       promiseRequest = promiseRequest.then(resolved, rejected);
     }, 'reverse');
 
-    // 发送请求
     let promiseResponse = promiseRequest.then(dispatchRequest);
 
-    // 执行响应拦截器
-    this.interceptors.response.forEach(function executor({ resolved, rejected }) {
+    this.interceptors.response.forEach(({ resolved, rejected }) => {
       promiseResponse = promiseResponse.then(resolved, rejected);
     });
 
-    return promiseResponse as Promise<AxiosResponse<T>>;
+    return promiseResponse as Promise<AxiosResponse<TData>>;
   }
 
-  public options<T extends Data>(
+  public options<TData = any>(
     url: string,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('options', url, void 0, config);
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutParams<TData>(
+      'options',
+      url,
+      undefined,
+      config,
+    );
   }
 
-  public get<T extends Data>(
+  public get<TData = any>(
     url: string,
-    params?: Params,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('get', url, params, config);
+    params?: AnyObject,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutParams<TData>('get', url, params, config);
   }
 
-  public head<T extends Data>(
+  public head<TData = any>(
     url: string,
-    params?: Params,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('head', url, params, config);
+    params?: AnyObject,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutParams<TData>('head', url, params, config);
   }
 
-  public post<T extends Data>(
+  public post<TData = any>(
     url: string,
-    data?: Data,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutData<T>('post', url, data, config);
+    data?: AnyObject,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutData<TData>('post', url, data, config);
   }
 
-  public put<T extends Data>(
+  public put<TData = any>(
     url: string,
-    data?: Data,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutData<T>('put', url, data, config);
+    data?: AnyObject,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutData<TData>('put', url, data, config);
   }
 
-  public delete<T extends Data>(
+  public delete<TData = any>(
     url: string,
-    params?: Params,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('delete', url, params, config);
+    params?: AnyObject,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutParams<TData>(
+      'delete',
+      url,
+      params,
+      config,
+    );
   }
 
-  public trace<T extends Data>(
+  public trace<TData = any>(
     url: string,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('trace', url, void 0, config);
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutParams<TData>(
+      'trace',
+      url,
+      undefined,
+      config,
+    );
   }
 
-  public connect<T extends Data>(
+  public connect<TData = any>(
     url: string,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> {
-    return this._requestMethodWithoutParams<T>('connect', url, void 0, config);
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>> {
+    return this._requestMethodWithoutParams<TData>(
+      'connect',
+      url,
+      undefined,
+      config,
+    );
   }
 
-  /**
-   * 合并配置后发送 HTTP 请求
-   *
-   * @param method 请求方法
-   * @param url    请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   */
-  private _requestMethodWithoutParams<T extends Data>(
-    method: Method,
+  private _requestMethodWithoutParams<TData = any>(
+    method: AxiosRequestMethod,
     url: string,
-    params?: Params,
-    config: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<T>> {
-    return this.request<T>({
+    params?: AnyObject,
+    config: AxiosRequestConfig = {},
+  ): Promise<AxiosResponse<TData>> {
+    return this.request<TData>({
       ...config,
       method,
       url,
@@ -133,21 +223,13 @@ export default class AxiosClass implements Axios {
     });
   }
 
-  /**
-   * 合并配置后发送 HTTP 请求
-   *
-   * @param method 请求方法
-   * @param url    请求地址
-   * @param data   请求数据
-   * @param config 额外配置
-   */
-  private _requestMethodWithoutData<T extends Data>(
-    method: Method,
+  private _requestMethodWithoutData<TData = any>(
+    method: AxiosRequestMethod,
     url: string,
-    data?: Data,
-    config: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<T>> {
-    return this.request<T>({
+    data?: AnyObject,
+    config: AxiosRequestConfig = {},
+  ): Promise<AxiosResponse<TData>> {
+    return this.request<TData>({
       ...config,
       method,
       url,

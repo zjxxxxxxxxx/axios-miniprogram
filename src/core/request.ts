@@ -1,67 +1,74 @@
-import { AxiosRequestConfig, AxiosResponse, Response } from '../types';
-import { isString, isUndefined } from '../helpers/utils';
-import transformRequest from './transformRequest';
-import transformResponse from './transformResponse';
-import createError from './createError';
+import { assert, isFunction, isPlainObject } from '../utils';
+import { AxiosAdapterRequestConfig, AdapterRequestMethod } from './adapter';
+import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
+import { isCancelToken } from './cancel';
+import { AxiosErrorResponse, createError } from './createError';
+import { generateType } from './generateType';
 
-/**
- * 请求函数
- *
- * @param config Axios 请求配置
- */
-export default function request(config: AxiosRequestConfig): Promise<AxiosResponse> {
-  return new Promise(function dispatchAdapter(resolve, reject): void {
-    const { adapter, cancelToken } = config;
-    const requestConfig = transformRequest(config);
-
-    /**
-     * 捕获错误
-     *
-     * @param message  错误信息
-     * @param response Axios 响应体
-     */
-    function catchError(message: any, response?: AxiosResponse): void {
-      if (!isString(message)) {
-        message = message.fail;
-      }
-
-      reject(createError(message, config, requestConfig, response));
+function tryToggleProgressUpdate(
+  adapterConfig: AxiosAdapterRequestConfig,
+  progressUpdate?: Function,
+) {
+  if (isFunction(progressUpdate)) {
+    switch (adapterConfig.type) {
+      case 'upload':
+        if (isFunction(adapterConfig.onUploadProgress)) {
+          progressUpdate(adapterConfig.onUploadProgress);
+        }
+        break;
+      case 'download':
+        if (isFunction(adapterConfig.onDownloadProgress)) {
+          progressUpdate(adapterConfig.onDownloadProgress);
+        }
+        break;
+      default:
     }
+  }
+}
 
-    if (isUndefined(adapter)) {
-      catchError('平台适配失败，您需要参阅文档使用自定义适配器手动适配当前平台');
+export function request<TData = any>(
+  config: AxiosRequestConfig,
+): Promise<AxiosResponse<TData>> {
+  return new Promise((resolve, reject) => {
+    assert(isFunction(config.adapter), 'adapter 需要是一个 Function 类型');
 
-      return;
-    }
-
-    /**
-     * 效验状态码
-     *
-     * @param res 请求结果
-     */
-    function handleResponse(res: Response): void {
-      const response = transformResponse(res, config);
-
-      if (isUndefined(config.validateStatus) || config.validateStatus(response.status)) {
-        resolve(response);
-      } else {
-        catchError(`请求失败，状态码为 ${response.status}`, response);
-      }
-    }
-
-    // 使用适配器发送请求
-    const task = adapter({
-      ...requestConfig,
-      success: handleResponse,
-      fail: catchError,
+    const adapterConfig: AxiosAdapterRequestConfig = Object.assign({}, config, {
+      url: config.url ?? '',
+      type: generateType(config),
+      method: (config.method?.toUpperCase() as AdapterRequestMethod) ?? 'GET',
+      success(response: AxiosResponse): void {
+        if (
+          !isFunction(config.validateStatus) ||
+          config.validateStatus(response.status)
+        ) {
+          resolve(response);
+        } else {
+          catchError('请求失败', response);
+        }
+      },
+      fail(error: AxiosResponseError): void {
+        catchError('网络错误', error);
+      },
     });
 
-    // 如果存在取消令牌
-    // 则调用取消令牌里的 listener 监听用户的取消操作
-    if (!isUndefined(cancelToken)) {
-      cancelToken.listener.then(function onCanceled(reason): void {
-        if (!isUndefined(task)) {
-          task.abort();
+    function catchError(message: string, response?: AxiosErrorResponse): void {
+      reject(createError(message, config, adapterConfig, response));
+    }
+
+    const adapterTask = config.adapter!(adapterConfig);
+
+    if (isPlainObject(adapterTask)) {
+      tryToggleProgressUpdate(adapterConfig, adapterTask.onProgressUpdate);
+    }
+
+    if (isCancelToken(config.cancelToken)) {
+      config.cancelToken.listener.then((reason: any) => {
+        if (isPlainObject(adapterTask)) {
+          tryToggleProgressUpdate(adapterConfig, adapterTask.offProgressUpdate);
+
+          if (isFunction(adapterTask.abort)) {
+            adapterTask.abort();
+          }
         }
 
         reject(reason);

@@ -1,40 +1,45 @@
-import {
-  InterceptorResolved,
-  InterceptorRejected,
-  Interceptor,
-  InterceptorExecutor,
-  InterceptorManager,
-} from '../types';
+export interface InterceptorResolved<T = any> {
+  (value: T): T | Promise<T>;
+}
 
-/**
- * 拦截器管理器
- */
-export default class InterceptorManagerClass<T> implements InterceptorManager<T> {
-  /**
-   * 生成拦截器 id
-   */
-  private _id = 0;
+export interface InterceptorRejected {
+  (error: any): any | Promise<any>;
+}
 
-  /**
-   * 拦截器集合
-   */
-  private _interceptors: Record<number, Interceptor<T>> = {};
+export interface Interceptor<T = any> {
+  resolved: InterceptorResolved<T>;
+  rejected?: InterceptorRejected;
+}
 
-  public use(resolved: InterceptorResolved<T>, rejected?: InterceptorRejected): number {
-    this._interceptors[++this._id] = {
+export interface InterceptorExecutor {
+  (interceptor: Interceptor): void;
+}
+
+export default class InterceptorManager<T = any> {
+  private id = 0;
+
+  private interceptors: AnyObject<Interceptor<T>> = {};
+
+  public use(
+    resolved: InterceptorResolved,
+    rejected?: InterceptorRejected,
+  ): number {
+    this.interceptors[++this.id] = {
       resolved,
       rejected,
     };
 
-    return this._id;
+    return this.id;
   }
 
   public eject(id: number): void {
-    delete this._interceptors[id];
+    delete this.interceptors[id];
   }
 
-  public forEach(executor: InterceptorExecutor<T>, reverse?: 'reverse'): void {
-    let interceptors: Interceptor<T>[] = Object.values(this._interceptors);
+  public forEach(executor: InterceptorExecutor, reverse?: 'reverse'): void {
+    let interceptors: Interceptor[] = Object.keys(this.interceptors).map(
+      (id) => this.interceptors[id],
+    );
 
     if (reverse === 'reverse') {
       interceptors = interceptors.reverse();

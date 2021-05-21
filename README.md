@@ -17,7 +17,7 @@ $ npm i axios-miniprogram
 
 ## 简介
 
-小程序平台专用请求库，实现了 [axios](https://github.com/axios/axios) 大部分功能，用法只存在少许差异，如果您是 [axios](https://github.com/axios/axios) 的老用户，那么不需要学习就可以直接上手使用。
+为小程序平台量身定制的轻量级请求库，请求配置以微信小程序作为标准，其他平台兼容实现。
 
 - 支持 微信小程序、支付宝小程序、百度小程序、字节跳动小程序、QQ 小程序、uniapp。
 - 支持 `Typescript`，健全的类型系统，智能的 `IDE` 提示。
@@ -31,6 +31,18 @@ $ npm i axios-miniprogram
 - 支持 自定义平台适配器
 
 ## 使用
+
+### 如何引入
+
+```typescript
+// esm
+import axios from 'axios-miniprogram';
+// cjs
+const axios = require('axios-miniprogram');
+// 使用
+axios('/user');
+```
+
 
 ### `axios(config)`
 
@@ -314,8 +326,8 @@ axios.defaults.adapter = function adapter(adapterConfig) {
     // 请求数据
     data,
     // 请求头 同 headers
-    header,
-    // 请求头 同 header
+    headers,
+    // 请求头 同 headers
     headers,
     // 响应数据格式
     dataType,
@@ -342,7 +354,7 @@ axios.defaults.adapter = function adapter(adapterConfig) {
     url,
     method,
     data,
-    header,
+    headers,
     success,
     fail,
   });

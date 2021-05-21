@@ -2,11 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "dist",
-    "sourceMap": true,
-    "target": "esnext",
+    "target": "ES5",
     "module": "esnext",
+    "sourceMap": true,
     "strict": true,
-    "lib": ["esnext"]
+    "declaration": true,
+    "declarationDir": "dist/@types/axios-miniprogram",
   },
-  "include": ["src", "__tests__"]
+  "include": ["src/**/*", "global.d.ts"],
+  "exclude": ["node_modules"]
 }
