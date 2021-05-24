@@ -1,5 +1,5 @@
 import { AxiosPlatform } from './core/adapter';
-import { AxiosRequestParams } from './core/Axios';
+import { AxiosRequestData, AxiosRequestParams } from './core/Axios';
 
 const _toString = Object.prototype.toString;
 
@@ -184,25 +184,31 @@ export function buildURL(
   return generateURL(url, paramsSerializer(params));
 }
 
-const combineREG = /\/{2,}/g;
+export const combineREG = /(?<!:)\/{2,}/g;
 export function combineURL(baseURL = '', url: string): string {
   const separator = '/';
 
   return `${baseURL}${separator}${url}`.replace(combineREG, separator);
 }
 
-const dynamicREG = /\/?(:([a-zA-Z_$][\w-$]*))\/??/g;
-export function dynamicURL(url: string, params?: AxiosRequestParams): string {
-  if (!isPlainObject(params)) {
+export const dynamicREG = /\/?(:([a-zA-Z_$][\w-$]*))\/??/g;
+export function isDynamicURL(url: string): boolean {
+  return dynamicREG.test(url);
+}
+export function dynamicInterpolation(
+  url: string,
+  sourceData?: AxiosRequestParams & AxiosRequestData,
+): string {
+  if (!isPlainObject(sourceData)) {
     return url;
   }
 
   return url.replace(dynamicREG, (key1, key2, key3) =>
-    key1.replace(key2, params[key3]),
+    key1.replace(key2, sourceData[key3]),
   );
 }
 
-const absoluteREG = /^([a-z][a-z\d+\-.]*:)?\/\//i;
+export const absoluteREG = /^([a-z][a-z\d+\-.]*:)?\/\//i;
 export function isAbsoluteURL(url: string): boolean {
   return absoluteREG.test(url);
 }

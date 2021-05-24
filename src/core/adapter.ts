@@ -207,8 +207,8 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
       filePath: config.params?.filePath,
       fileName: config.params?.fileName,
       success(response: any): void {
-        transformCommon(response);
         generateDownloadResponseData(response);
+        transformCommon(response);
         config.success(response);
       },
       fail(error: any): void {

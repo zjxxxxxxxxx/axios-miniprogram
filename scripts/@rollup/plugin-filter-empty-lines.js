@@ -1,4 +1,4 @@
-module.exports = function filterEmptyLines() {
+export default function filterEmptyLines() {
   const filterREG = /\s{2,}|\n/g;
 
   return {
@@ -9,4 +9,4 @@ module.exports = function filterEmptyLines() {
       };
     },
   };
-};
+}
