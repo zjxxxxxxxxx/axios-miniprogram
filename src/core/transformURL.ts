@@ -1,4 +1,10 @@
-import { buildURL, combineURL, dynamicURL, isAbsoluteURL } from '../utils';
+import {
+  buildURL,
+  combineURL,
+  dynamicInterpolation,
+  isAbsoluteURL,
+  isDynamicURL,
+} from '../utils';
 import { AxiosRequestConfig } from './Axios';
 
 export function transformURL(config: AxiosRequestConfig): string {
@@ -8,7 +14,11 @@ export function transformURL(config: AxiosRequestConfig): string {
     url = combineURL(config.baseURL, url);
   }
 
-  url = dynamicURL(url, config.params);
+  if (isDynamicURL(url)) {
+    const sourceData = Object.assign({}, config.params, config.data);
+    url = dynamicInterpolation(url, sourceData);
+  }
+
   url = buildURL(url, config.params, config.paramsSerializer);
 
   return url;

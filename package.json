@@ -1,6 +1,6 @@
 {
   "name": "axios-miniprogram",
-  "version": "1.3.1",
+  "version": "2.0.0_rc_1",
   "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
   "main": "dist/cjs/axios-miniprogram.js",
   "module": "dist/esm/axios-miniprogram.js",
@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "rollup --config",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "eslint",
     "format": "prettier --check --write  '{src,__tests__}/**/*.{js,ts,tsx}'",
     "version": "yarn test && yarn build",

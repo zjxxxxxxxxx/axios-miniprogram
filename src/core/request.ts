@@ -1,5 +1,9 @@
 import { assert, isFunction, isPlainObject } from '../utils';
-import { AxiosAdapterRequestConfig, AdapterRequestMethod } from './adapter';
+import {
+  AxiosAdapterRequestConfig,
+  AdapterRequestMethod,
+  AxiosAdapterTask,
+} from './adapter';
 import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
@@ -30,9 +34,10 @@ export function request<TData = any>(
   config: AxiosRequestConfig,
 ): Promise<AxiosResponse<TData>> {
   return new Promise((resolve, reject) => {
-    assert(isFunction(config.adapter), 'adapter 需要是一个 Function 类型');
+    assert(isFunction(config.adapter), 'adapter 需要是一个 function');
 
-    const adapterConfig: AxiosAdapterRequestConfig = Object.assign({}, config, {
+    const adapterConfig: AxiosAdapterRequestConfig = {
+      ...config,
       url: config.url ?? '',
       type: generateType(config),
       method: (config.method?.toUpperCase() as AdapterRequestMethod) ?? 'GET',
@@ -49,13 +54,15 @@ export function request<TData = any>(
       fail(error: AxiosResponseError): void {
         catchError('网络错误', error);
       },
-    });
+    };
+
+    const adapterTask = config.adapter!(adapterConfig) as
+      | AxiosAdapterTask
+      | undefined;
 
     function catchError(message: string, response?: AxiosErrorResponse): void {
-      reject(createError(message, config, adapterConfig, response));
+      reject(createError(message, config, adapterTask, response));
     }
-
-    const adapterTask = config.adapter!(adapterConfig);
 
     if (isPlainObject(adapterTask)) {
       tryToggleProgressUpdate(adapterConfig, adapterTask.onProgressUpdate);

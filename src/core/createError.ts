@@ -1,4 +1,4 @@
-import { AxiosAdapterRequestConfig } from './adapter';
+import { AxiosAdapterTask } from './adapter';
 import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 
 export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
@@ -8,14 +8,14 @@ class AxiosError extends Error {
 
   public config: AxiosRequestConfig;
 
-  public request: AxiosAdapterRequestConfig;
+  public request?: AxiosAdapterTask;
 
   public response?: AxiosErrorResponse;
 
   public constructor(
     message: string,
     config: AxiosRequestConfig,
-    request: AxiosAdapterRequestConfig,
+    request?: AxiosAdapterTask,
     response?: AxiosErrorResponse,
   ) {
     super(message);
@@ -31,7 +31,7 @@ class AxiosError extends Error {
 export function createError(
   message: string,
   config: AxiosRequestConfig,
-  request: AxiosAdapterRequestConfig,
+  request?: AxiosAdapterTask,
   response?: AxiosErrorResponse,
 ): AxiosError {
   return new AxiosError(message, config, request, response);

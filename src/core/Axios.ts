@@ -47,7 +47,7 @@ export interface AxiosRequestConfig {
   adapter?: AxiosAdapter;
   baseURL?: string;
   cancelToken?: CancelToken;
-  data?: AxiosRequestData | AxiosRequestFormData;
+  data?: AxiosRequestData | AxiosRequestFormData | AxiosRequestFormData;
   dataType?: 'json' | '其他';
   enableHttp2?: boolean;
   enableQuic?: boolean;
@@ -59,7 +59,7 @@ export interface AxiosRequestConfig {
   onDownloadProgress?: AxiosProgressCallback;
   params?: AxiosRequestParams;
   paramsSerializer?: (params?: AxiosRequestParams) => string;
-  responseType?: 'text' | 'arraybuffer' | 'file';
+  responseType?: 'text' | 'arraybuffer';
   sslVerify?: boolean;
   transformRequest?: AxiosTransformer | AxiosTransformer[];
   transformResponse?: AxiosTransformer | AxiosTransformer[];
@@ -142,7 +142,7 @@ export default class Axios {
 
   public get<TData = any>(
     url: string,
-    params?: AnyObject,
+    params?: AxiosRequestParams,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this._requestMethodWithoutParams<TData>('get', url, params, config);
@@ -150,7 +150,7 @@ export default class Axios {
 
   public head<TData = any>(
     url: string,
-    params?: AnyObject,
+    params?: AxiosRequestParams,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this._requestMethodWithoutParams<TData>('head', url, params, config);
@@ -158,7 +158,7 @@ export default class Axios {
 
   public post<TData = any>(
     url: string,
-    data?: AnyObject,
+    data?: AxiosRequestData | AxiosRequestFormData,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this._requestMethodWithoutData<TData>('post', url, data, config);
@@ -166,7 +166,7 @@ export default class Axios {
 
   public put<TData = any>(
     url: string,
-    data?: AnyObject,
+    data?: AxiosRequestData | AxiosRequestFormData,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this._requestMethodWithoutData<TData>('put', url, data, config);
@@ -174,7 +174,7 @@ export default class Axios {
 
   public delete<TData = any>(
     url: string,
-    params?: AnyObject,
+    params?: AxiosRequestParams,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this._requestMethodWithoutParams<TData>(
@@ -212,11 +212,11 @@ export default class Axios {
   private _requestMethodWithoutParams<TData = any>(
     method: AxiosRequestMethod,
     url: string,
-    params?: AnyObject,
-    config: AxiosRequestConfig = {},
+    params?: AxiosRequestParams,
+    config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this.request<TData>({
-      ...config,
+      ...(config ?? {}),
       method,
       url,
       params,
@@ -226,11 +226,11 @@ export default class Axios {
   private _requestMethodWithoutData<TData = any>(
     method: AxiosRequestMethod,
     url: string,
-    data?: AnyObject,
-    config: AxiosRequestConfig = {},
+    data?: AxiosRequestData | AxiosRequestFormData,
+    config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this.request<TData>({
-      ...config,
+      ...(config ?? {}),
       method,
       url,
       data,
