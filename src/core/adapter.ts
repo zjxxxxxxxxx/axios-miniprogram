@@ -92,41 +92,41 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     'platform.request 与 platform.download 和 platform.upload 需要是一个 Function 类型',
   );
 
-  function transformCommon(common: any): void {
-    if (!isUndefined(common.statusCode)) {
-      common.status = common.statusCode;
-      delete common.statusCode;
+  function transformResult(result: any): void {
+    if (!isUndefined(result.statusCode)) {
+      result.status = result.statusCode;
+      delete result.statusCode;
     }
 
-    if (isUndefined(common.status)) {
-      common.status = isUndefined(common.data) ? 400 : 200;
+    if (isUndefined(result.status)) {
+      result.status = isUndefined(result.data) ? 400 : 200;
     }
 
-    if (!isUndefined(common.header)) {
-      common.headers = common.header;
-      delete common.header;
+    if (!isUndefined(result.header)) {
+      result.headers = result.header;
+      delete result.header;
     }
 
-    if (isUndefined(common.headers)) {
-      common.headers = {};
+    if (isUndefined(result.headers)) {
+      result.headers = {};
     }
 
-    if (!isUndefined(common.errMsg)) {
-      common.statusText = common.errMsg;
-      delete common.errMsg;
+    if (!isUndefined(result.errMsg)) {
+      result.statusText = result.errMsg;
+      delete result.errMsg;
     }
 
-    if (isUndefined(common.statusText)) {
-      common.statusText =
-        common.status === 200
+    if (isUndefined(result.statusText)) {
+      result.statusText =
+        result.status === 200
           ? 'OK'
-          : common.status === 400
+          : result.status === 400
           ? 'Bad Adapter'
           : '';
     }
   }
 
-  function generateDownloadResponseData(response: any): void {
+  function injectDownloadData(response: any): void {
     if (!isPlainObject(response.data)) {
       response.data = {};
     }
@@ -154,11 +154,11 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     const options = Object.assign({}, config, {
       header: config.headers,
       success(response: any): void {
-        transformCommon(response);
+        transformResult(response);
         config.success(response);
       },
       fail(error: any): void {
-        transformCommon(error);
+        transformResult(error);
         config.fail(error);
       },
     });
@@ -186,11 +186,11 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
       hideLoading,
       formData,
       success(response: any): void {
-        transformCommon(response);
+        transformResult(response);
         config.success(response);
       },
       fail(error: any): void {
-        transformCommon(error);
+        transformResult(error);
         config.fail(error);
       },
     });
@@ -207,12 +207,12 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
       filePath: config.params?.filePath,
       fileName: config.params?.fileName,
       success(response: any): void {
-        generateDownloadResponseData(response);
-        transformCommon(response);
+        injectDownloadData(response);
+        transformResult(response);
         config.success(response);
       },
       fail(error: any): void {
-        transformCommon(error);
+        transformResult(error);
         config.fail(error);
       },
     });
