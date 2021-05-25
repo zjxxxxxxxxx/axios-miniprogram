@@ -1,4 +1,4 @@
-import { buildURL } from '../utils';
+import { buildURL } from '../helpers/url';
 import { mergeConfig } from './mergeConfig';
 import {
   AdapterRequestMethod,

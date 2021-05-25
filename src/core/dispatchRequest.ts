@@ -1,4 +1,4 @@
-import { isPlainObject } from '../utils';
+import { isPlainObject } from '../helpers/is';
 import { isCancel } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { transformData } from './transformData';

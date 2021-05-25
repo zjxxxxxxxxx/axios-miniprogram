@@ -1,4 +1,4 @@
-import { isArray, isUndefined } from '../utils';
+import { isArray, isUndefined } from '../helpers/is';
 import {
   AxiosRequestData,
   AxiosRequestFormData,
