@@ -1,6 +1,7 @@
 import {
   assert,
   isEmptyArray,
+  isFunction,
   isPlainObject,
   isPlatform,
   isUndefined,
@@ -86,10 +87,12 @@ export interface AxiosAdapter {
 }
 
 export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
-  assert(isPlainObject(platform), 'platform 需要是一个 Object 类型');
+  assert(isPlainObject(platform), 'platform 需要是一个 object');
+  assert(isFunction(platform.request), 'platform.request 需要是一个 function');
+  assert(isFunction(platform.upload), 'platform.upload 需要是一个 function');
   assert(
-    isPlatform(platform),
-    'platform.request 与 platform.download 和 platform.upload 需要是一个 Function 类型',
+    isFunction(platform.download),
+    'platform.download 需要是一个 function',
   );
 
   function transformResult(result: any): void {

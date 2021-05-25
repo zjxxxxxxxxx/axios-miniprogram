@@ -50,7 +50,7 @@ export default function dispatchRequest<TData = any>(
         }
       }
 
-      return config.errorHandler?.(reason) ?? Promise.reject(reason);
+      return Promise.reject(config.errorHandler?.(reason) ?? reason);
     },
   );
 }

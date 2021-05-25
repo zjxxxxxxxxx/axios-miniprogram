@@ -41,24 +41,32 @@ export function request<TData = any>(
       url: config.url ?? '',
       type: generateType(config),
       method: (config.method?.toUpperCase() as AdapterRequestMethod) ?? 'GET',
-      success(response: AxiosResponse): void {
-        if (
-          !isFunction(config.validateStatus) ||
-          config.validateStatus(response.status)
-        ) {
-          resolve(response);
-        } else {
-          catchError('请求失败', response);
-        }
-      },
-      fail(error: AxiosResponseError): void {
-        catchError('网络错误', error);
-      },
+      success,
+      fail,
     };
 
     const adapterTask = config.adapter!(adapterConfig) as
       | AxiosAdapterTask
       | undefined;
+
+    function success(response: AxiosResponse): void {
+      response.config = config;
+      response.request = adapterTask;
+      if (
+        !isFunction(config.validateStatus) ||
+        config.validateStatus(response.status)
+      ) {
+        resolve(response);
+      } else {
+        catchError('请求失败', response);
+      }
+    }
+
+    function fail(error: AxiosResponseError): void {
+      error.config = config;
+      error.request = adapterTask;
+      catchError('网络错误', error);
+    }
 
     function catchError(message: string, response?: AxiosErrorResponse): void {
       reject(createError(message, config, adapterTask, response));
