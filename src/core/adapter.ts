@@ -1,13 +1,10 @@
 import {
-  assert,
   isEmptyArray,
   isFunction,
   isPlainObject,
-  isPlatform,
   isUndefined,
-  revisePlatformApiNames,
-  throwError,
-} from '../utils';
+} from '../helpers/is';
+import { assert, throwError } from '../helpers/utils';
 import {
   AxiosProgressCallback,
   AxiosRequestConfig,
@@ -84,6 +81,23 @@ export interface AxiosAdapterTask {
 
 export interface AxiosAdapter {
   (config: AxiosAdapterRequestConfig): AxiosAdapterTask | void;
+}
+
+export function isPlatform(value: any): value is AxiosPlatform {
+  return (
+    isPlainObject(value) &&
+    isFunction(value.request) &&
+    isFunction(value.upload) &&
+    isFunction(value.download)
+  );
+}
+
+export function revisePlatformApiNames(platform: AnyObject): AxiosPlatform {
+  return {
+    request: platform.request ?? platform.httpRequest,
+    upload: platform.upload ?? platform.uploadFile,
+    download: platform.download ?? platform.downloadFile,
+  };
 }
 
 export function createAdapter(platform: AxiosPlatform): AxiosAdapter {

@@ -1,4 +1,5 @@
-import { assert, isFunction, isPlainObject } from '../utils';
+import { isFunction, isPlainObject } from '../helpers/is';
+import { assert } from '../helpers/utils';
 import {
   AxiosAdapterRequestConfig,
   AdapterRequestMethod,

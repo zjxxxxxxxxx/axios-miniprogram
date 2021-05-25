@@ -1,4 +1,5 @@
-import { assert, isPlainObject, isString } from '../utils';
+import { isPlainObject, isString } from 'src/helpers/is';
+import { assert } from '../helpers/utils';
 import { AdapterRequestType } from './adapter';
 import { AxiosRequestConfig } from './Axios';
 

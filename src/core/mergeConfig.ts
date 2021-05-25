@@ -1,4 +1,5 @@
-import { isPlainObject, deepMerge, isUndefined } from '../utils';
+import { isUndefined, isPlainObject } from '../helpers/is';
+import { deepMerge } from '../helpers/utils';
 import { AxiosRequestConfig } from './Axios';
 
 type AxiosRequestConfigKey = keyof AxiosRequestConfig;

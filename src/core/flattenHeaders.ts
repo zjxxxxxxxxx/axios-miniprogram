@@ -1,4 +1,5 @@
-import { isPlainObject, omit } from '../utils';
+import { isPlainObject } from '../helpers/is';
+import { omit } from '../helpers/utils';
 import {
   AxiosRequestConfig,
   AxiosRequestMethodAlias,

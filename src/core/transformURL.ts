@@ -4,7 +4,7 @@ import {
   dynamicInterpolation,
   isAbsoluteURL,
   isDynamicURL,
-} from '../utils';
+} from '../helpers/url';
 import { AxiosRequestConfig } from './Axios';
 
 export function transformURL(config: AxiosRequestConfig): string {

@@ -6,7 +6,7 @@ import Axios, {
 } from './core/Axios';
 import { CancelToken, CancelTokenConstructor, isCancel } from './core/cancel';
 import { mergeConfig } from './core/mergeConfig';
-import { isString } from './utils';
+import { isString } from './helpers/is';
 import defaults from './defaults';
 
 export interface AxiosInstance extends Axios {
