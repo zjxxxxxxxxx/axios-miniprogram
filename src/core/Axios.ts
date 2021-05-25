@@ -1,6 +1,10 @@
 import { buildURL } from '../utils';
 import { mergeConfig } from './mergeConfig';
-import { AdapterRequestMethod, AxiosAdapter } from './adapter';
+import {
+  AdapterRequestMethod,
+  AxiosAdapter,
+  AxiosAdapterTask,
+} from './adapter';
 import { CancelToken } from './cancel';
 import dispatchRequest from './dispatchRequest';
 import InterceptorManager from './InterceptorManager';
@@ -73,6 +77,8 @@ export interface AxiosResponse<TData = any> {
   statusText: string;
   headers: AxiosResponseHeaders;
   data: TData;
+  config?: AxiosRequestConfig;
+  request?: AxiosAdapterTask;
   cookies?: string[];
   profile?: AnyObject;
 }
@@ -81,6 +87,8 @@ export interface AxiosResponseError extends AnyObject {
   status: number;
   statusText: string;
   headers: AxiosResponseHeaders;
+  config?: AxiosRequestConfig;
+  request?: AxiosAdapterTask;
 }
 
 export interface AxiosConstructor {
