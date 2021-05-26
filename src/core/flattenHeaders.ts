@@ -1,5 +1,5 @@
 import { isPlainObject } from '../helpers/is';
-import { omit } from '../helpers/utils';
+import { omit, toLowerCase } from '../helpers/utils';
 import {
   AxiosRequestConfig,
   AxiosRequestMethodAlias,
@@ -10,11 +10,11 @@ export function flattenHeaders(
   config: AxiosRequestConfig,
 ): AxiosRequestHeaders | undefined {
   if (!isPlainObject(config.headers)) {
-    return;
+    return config.headers;
   }
 
   const common = 'common';
-  const method = config.method?.toLowerCase() ?? 'get';
+  const method = toLowerCase<AxiosRequestMethodAlias>(config.method, 'get');
   const alias: AxiosRequestMethodAlias[] = [
     'options',
     'get',

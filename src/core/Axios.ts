@@ -53,6 +53,7 @@ export interface AxiosRequestConfig {
   cancelToken?: CancelToken;
   data?: AxiosRequestData | AxiosRequestFormData | AxiosRequestFormData;
   dataType?: 'json' | '其他';
+  download?: boolean;
   enableHttp2?: boolean;
   enableQuic?: boolean;
   enableCache?: boolean;
@@ -68,6 +69,7 @@ export interface AxiosRequestConfig {
   transformRequest?: AxiosTransformer | AxiosTransformer[];
   transformResponse?: AxiosTransformer | AxiosTransformer[];
   timeout?: number;
+  upload?: boolean;
   url?: string;
   validateStatus?: (status: number) => boolean;
 }
