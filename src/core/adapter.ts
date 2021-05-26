@@ -2,6 +2,7 @@ import {
   isEmptyArray,
   isFunction,
   isPlainObject,
+  isString,
   isUndefined,
 } from '../helpers/is';
 import { assert, throwError } from '../helpers/utils';
@@ -15,6 +16,8 @@ import {
   AxiosResponseError,
 } from './Axios';
 
+export type AdapterRequestType = 'request' | 'download' | 'upload';
+
 export type AdapterRequestMethod =
   | 'OPTIONS'
   | 'GET'
@@ -24,8 +27,6 @@ export type AdapterRequestMethod =
   | 'DELETE'
   | 'TRACE'
   | 'CONNECT';
-
-export type AdapterRequestType = 'request' | 'download' | 'upload';
 
 export interface AxiosAdapterRequestConfig extends AxiosRequestConfig {
   type: AdapterRequestType;
@@ -187,6 +188,16 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     upload: AxiosAdapterUpload,
     config: AxiosAdapterRequestConfig,
   ): AxiosAdapterTask | void {
+    assert(isPlainObject(config.data), '上传文件时 data 需要是一个 object');
+    assert(
+      isString(config.data!.fileName),
+      '上传文件时 data.fileName 需要是一个 string',
+    );
+    assert(
+      isString(config.data!.filePath),
+      '上传文件时 data.filePath 需要是一个 string',
+    );
+
     const {
       fileName,
       filePath,

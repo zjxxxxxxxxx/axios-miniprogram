@@ -1,4 +1,4 @@
-import { isPlainObject } from './is';
+import { isPlainObject, isString } from './is';
 
 export function deepMerge<T = any>(...objs: T[]): T {
   const result: AnyObject = {};
@@ -51,4 +51,20 @@ export function assert(condition: boolean, msg: string) {
 
 export function throwError(msg: string): void {
   throw new Error(`[axios-miniprogram]:${msg}`);
+}
+
+export function toLowerCase<T extends string>(value: any, defaultValue: T): T {
+  if (!isString(value)) {
+    return defaultValue;
+  }
+
+  return value.toLowerCase() as T;
+}
+
+export function toUpperCase<T extends string>(value: any, defaultValue: T): T {
+  if (!isString(value)) {
+    return defaultValue;
+  }
+
+  return value.toUpperCase() as T;
 }
