@@ -11,6 +11,48 @@ function encode(str: string): string {
     .replace(/%5D/gi, ']');
 }
 
+export function buildURL(
+  url = '',
+  params?: any,
+  paramsSerializer = paramsSerialization,
+): string {
+  if (!isPlainObject(params)) {
+    return url;
+  }
+
+  return generateURL(url, paramsSerializer(params));
+}
+
+const combineREG = /(?<!:)\/{2,}/g;
+export function combineURL(baseURL = '', url: string): string {
+  const separator = '/';
+
+  return `${baseURL}${separator}${url}`.replace(combineREG, separator);
+}
+
+const dynamicREG = /\/?(:([a-zA-Z_$][\w-$]*))\/??/g;
+
+export function dynamicInterpolation(url: string, sourceData?: any): string {
+  if (!isPlainObject(sourceData)) {
+    return url;
+  }
+
+  return url.replace(dynamicREG, (key1, key2, key3) =>
+    key1.replace(key2, sourceData[key3]),
+  );
+}
+
+const absoluteREG = /^([a-z][a-z\d+\-.]*:)?\/\//i;
+
+export function isAbsoluteURL(url: string): boolean {
+  return absoluteREG.test(url);
+}
+
+export function isDynamicURL(url: string): boolean {
+  dynamicREG.lastIndex = 0;
+  return dynamicREG.test(url);
+}
+
 function generateURL(url: string, serializedParams: string): string {
   const hashIndex = url.indexOf('#');
 
@@ -61,42 +103,4 @@ function paramsSerialization(params?: any): string {
   });
 
   return parts.join('&');
-}
-
-export function buildURL(
-  url = '',
-  params?: any,
-  paramsSerializer = paramsSerialization,
-): string {
-  if (!isPlainObject(params)) {
-    return url;
-  }
-
-  return generateURL(url, paramsSerializer(params));
-}
-
-export const combineREG = /(?<!:)\/{2,}/g;
-export function combineURL(baseURL = '', url: string): string {
-  const separator = '/';
-
-  return `${baseURL}${separator}${url}`.replace(combineREG, separator);
-}
-
-export const dynamicREG = /\/?(:([a-zA-Z_$][\w-$]*))\/??/g;
-export function isDynamicURL(url: string): boolean {
-  return dynamicREG.test(url);
-}
-export function dynamicInterpolation(url: string, sourceData?: any): string {
-  if (!isPlainObject(sourceData)) {
-    return url;
-  }
-
-  return url.replace(dynamicREG, (key1, key2, key3) =>
-    key1.replace(key2, sourceData[key3]),
-  );
-}
-
-export const absoluteREG = /^([a-z][a-z\d+\-.]*:)?\/\//i;
-export function isAbsoluteURL(url: string): boolean {
-  return absoluteREG.test(url);
 }
