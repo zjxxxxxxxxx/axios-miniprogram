@@ -3,7 +3,6 @@ import { AxiosRequestConfig } from './core/Axios';
 
 const defaults: AxiosRequestConfig = {
   adapter: getAdapterDefault(),
-  method: 'get',
   headers: {
     common: {
       Accept: 'application/json, test/plain, */*',

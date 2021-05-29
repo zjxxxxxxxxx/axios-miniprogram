@@ -54,12 +54,16 @@ function deepMergeConfig(
   });
 }
 
-const onlyFromConfig2Keys: AxiosRequestConfigKey[] = ['url', 'method', 'data'];
+const onlyFromConfig2Keys: AxiosRequestConfigKey[] = [
+  'url',
+  'method',
+  'data',
+  'upload',
+  'download',
+];
 const priorityFromConfig2Keys: AxiosRequestConfigKey[] = [
   'adapter',
   'baseURL',
-  'method',
-  'validateStatus',
   'paramsSerializer',
   'transformRequest',
   'transformResponse',
