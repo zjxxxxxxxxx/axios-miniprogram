@@ -4,6 +4,8 @@ const rimraf = require('rimraf');
 const archiver = require('archiver');
 const chalk = require('chalk');
 
+const pkg = require('../package.json');
+
 const zip = archiver('zip');
 const distPath = path.resolve(__dirname, '..', 'dist');
 const distZipName = 'dist.zip';
@@ -26,6 +28,6 @@ rimraf(distZipPath, () => {
     console.log(chalk.green(`created ${distZipName} in ${ss}s`));
   });
   zip.pipe(outputStream);
-  zip.directory(distPath, false);
+  zip.directory(distPath, pkg.name);
   zip.finalize();
 });
