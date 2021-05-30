@@ -1,7 +1,7 @@
 import { buildURL } from '../helpers/url';
 import { mergeConfig } from './mergeConfig';
 import {
-  AdapterRequestMethod,
+  AxiosAdapterRequestMethod,
   AxiosAdapter,
   AxiosAdapterTask,
 } from './adapter';
@@ -20,7 +20,9 @@ export type AxiosRequestMethodAlias =
   | 'trace'
   | 'connect';
 
-export type AxiosRequestMethod = AdapterRequestMethod | AxiosRequestMethodAlias;
+export type AxiosRequestMethod =
+  | AxiosAdapterRequestMethod
+  | AxiosRequestMethodAlias;
 
 export type AxiosRequestHeaders = AnyObject;
 

@@ -16,9 +16,9 @@ import {
   AxiosResponseError,
 } from './Axios';
 
-export type AdapterRequestType = 'request' | 'download' | 'upload';
+export type AxiosAdapterRequestType = 'request' | 'download' | 'upload';
 
-export type AdapterRequestMethod =
+export type AxiosAdapterRequestMethod =
   | 'OPTIONS'
   | 'GET'
   | 'HEAD'
@@ -29,20 +29,20 @@ export type AdapterRequestMethod =
   | 'CONNECT';
 
 export interface AxiosAdapterRequestConfig extends AxiosRequestConfig {
-  type: AdapterRequestType;
-  method: AdapterRequestMethod;
+  type: AxiosAdapterRequestType;
+  method: AxiosAdapterRequestMethod;
   url: string;
   success(response: AxiosResponse): void;
   fail(error: AxiosResponseError): void;
 }
 
-export interface AxiosAdapterRequestOptions extends AxiosAdapterRequestConfig {
+export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
   header?: AxiosRequestHeaders;
   success(response: any): void;
   fail(error: any): void;
 }
 
-export interface AxiosAdapterUploadOptions extends AxiosAdapterRequestOptions {
+export interface AxiosAdapterUploadOptions extends AxiosAdapterBaseOptions {
   filePath: string;
   name: string;
   fileName: string;
@@ -51,14 +51,13 @@ export interface AxiosAdapterUploadOptions extends AxiosAdapterRequestOptions {
   formData?: AxiosRequestData;
 }
 
-export interface AxiosAdapterDownloadOptions
-  extends AxiosAdapterRequestOptions {
+export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
   filePath?: string;
   fileName?: string;
 }
 
 export interface AxiosAdapterRequest {
-  (config: AxiosAdapterRequestOptions): AxiosAdapterTask | void;
+  (config: AxiosAdapterBaseOptions): AxiosAdapterTask | void;
 }
 
 export interface AxiosAdapterUpload {
@@ -144,6 +143,23 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     }
   }
 
+  function transformOptions(
+    config: AxiosAdapterRequestConfig,
+  ): AxiosAdapterBaseOptions {
+    return {
+      ...config,
+      header: config.headers,
+      success(response: any): void {
+        transformResult(response);
+        config.success(response);
+      },
+      fail(error: any): void {
+        transformResult(error);
+        config.fail(error);
+      },
+    };
+  }
+
   function injectDownloadData(response: any): void {
     if (!isPlainObject(response.data)) {
       response.data = {};
@@ -165,36 +181,27 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     }
   }
 
-  function requestAdapter(
+  function callRequest(
     request: AxiosAdapterRequest,
-    config: AxiosAdapterRequestConfig,
+    baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask | void {
-    const options = Object.assign({}, config, {
-      header: config.headers,
-      success(response: any): void {
-        transformResult(response);
-        config.success(response);
-      },
-      fail(error: any): void {
-        transformResult(error);
-        config.fail(error);
-      },
-    });
-
-    return request(options);
+    return request(baseOptions);
   }
 
-  function uploadAdapter(
+  function callUpload(
     upload: AxiosAdapterUpload,
-    config: AxiosAdapterRequestConfig,
+    baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask | void {
-    assert(isPlainObject(config.data), '上传文件时 data 需要是一个 object');
     assert(
-      isString(config.data!.fileName),
+      isPlainObject(baseOptions.data),
+      '上传文件时 data 需要是一个 object',
+    );
+    assert(
+      isString(baseOptions.data!.fileName),
       '上传文件时 data.fileName 需要是一个 string',
     );
     assert(
-      isString(config.data!.filePath),
+      isString(baseOptions.data!.filePath),
       '上传文件时 data.filePath 需要是一个 string',
     );
 
@@ -204,46 +211,33 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
       fileType,
       hideLoading,
       ...formData
-    } = config.data as AxiosRequestFormData;
-    const options = Object.assign({}, config, {
-      header: config.headers,
+    } = baseOptions.data as AxiosRequestFormData;
+    const options = {
+      ...baseOptions,
       name: fileName,
       fileName: fileName,
       filePath,
       fileType: fileType ?? 'image',
       hideLoading,
       formData,
-      success(response: any): void {
-        transformResult(response);
-        config.success(response);
-      },
-      fail(error: any): void {
-        transformResult(error);
-        config.fail(error);
-      },
-    });
+    };
 
     return upload(options);
   }
 
-  function downloadAdapter(
+  function callDownload(
     download: AxiosAdapterDownload,
-    config: AxiosAdapterRequestConfig,
+    baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask | void {
-    const options = Object.assign({}, config, {
-      header: config.headers,
-      filePath: config.params?.filePath,
-      fileName: config.params?.fileName,
+    const options = {
+      ...baseOptions,
+      filePath: baseOptions.params?.filePath,
+      fileName: baseOptions.params?.fileName,
       success(response: any): void {
         injectDownloadData(response);
-        transformResult(response);
-        config.success(response);
+        baseOptions.success(response);
       },
-      fail(error: any): void {
-        transformResult(error);
-        config.fail(error);
-      },
-    });
+    };
 
     return download(options);
   }
@@ -251,13 +245,15 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   return function adapterDefault(
     config: AxiosAdapterRequestConfig,
   ): AxiosAdapterTask | void {
+    const baseOptions = transformOptions(config);
+
     switch (config.type) {
       case 'request':
-        return requestAdapter(platform.request, config);
+        return callRequest(platform.request, baseOptions);
       case 'upload':
-        return uploadAdapter(platform.upload, config);
+        return callUpload(platform.upload, baseOptions);
       case 'download':
-        return downloadAdapter(platform.download, config);
+        return callDownload(platform.download, baseOptions);
       default:
         throwError(`无法识别的请求类型 ${config.type}`);
     }

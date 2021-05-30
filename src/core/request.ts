@@ -2,7 +2,7 @@ import { isFunction, isPlainObject } from '../helpers/is';
 import { assert, toUpperCase } from '../helpers/utils';
 import {
   AxiosAdapterRequestConfig,
-  AdapterRequestMethod,
+  AxiosAdapterRequestMethod,
   AxiosAdapterTask,
 } from './adapter';
 import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
@@ -41,7 +41,7 @@ export function request<TData = any>(
       ...config,
       url: config.url ?? '',
       type: generateType(config),
-      method: toUpperCase<AdapterRequestMethod>(config.method, 'GET'),
+      method: toUpperCase<AxiosAdapterRequestMethod>(config.method, 'GET'),
       success,
       fail,
     };
