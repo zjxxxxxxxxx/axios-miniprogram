@@ -1,6 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# pkgName=$(cat ../package.json .name | sed 's/\"//g')
+
 yarn build:zip
 git add dist.zip
 yarn lint-staged

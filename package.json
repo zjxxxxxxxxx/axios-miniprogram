@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "rollup --config",
-    "build:zip": "yarn build && node scripts/dist.zip.js",
+    "build:zip": "yarn build && node scripts/zip.js",
     "test": "jest --passWithNoTests",
     "lint": "eslint",
     "format": "prettier --check --write  '{src,__tests__}/**/*.{js,ts,tsx}'",
