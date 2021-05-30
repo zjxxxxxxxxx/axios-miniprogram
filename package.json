@@ -4,7 +4,7 @@
   "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
   "main": "dist/cjs/axios-miniprogram.js",
   "module": "dist/esm/axios-miniprogram.js",
-  "types": "dist/@types/index.d.ts",
+  "types": "dist/@types/axios-miniprogram/index.d.ts",
   "files": [
     "dist"
   ],
@@ -28,7 +28,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup --config",
     "test": "jest --passWithNoTests",
     "lint": "eslint",
     "format": "prettier --check --write  '{src,__tests__}/**/*.{js,ts,tsx}'",
@@ -47,7 +47,6 @@
     "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
-    "dayjs": "^1.10.5",
     "eslint": "^7.26.0",
     "husky": "^6.0.0",
     "jest": "^26.6.3",
