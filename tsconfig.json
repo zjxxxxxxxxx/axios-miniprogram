@@ -7,7 +7,7 @@
     "sourceMap": true,
     "strict": true,
     "declaration": true,
-    "declarationDir": "dist/@types/axios-miniprogram",
+    "declarationDir": "dist/@types",
   },
   "include": ["src/**/*", "global.d.ts"],
   "exclude": ["node_modules"]
