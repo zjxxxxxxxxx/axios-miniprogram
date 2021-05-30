@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+yarn build:zip
+git add dist.zip
 yarn lint-staged
