@@ -28,7 +28,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "build": "rollup --config",
+    "build": "rollup -c",
     "test": "jest --passWithNoTests",
     "lint": "eslint",
     "format": "prettier --check --write  '{src,__tests__}/**/*.{js,ts,tsx}'",
@@ -63,7 +63,8 @@
     "*.ts": [
       "yarn lint",
       "yarn format",
-      "yarn test"
+      "yarn test",
+      "yarn build"
     ]
   }
 }
