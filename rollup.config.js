@@ -72,8 +72,6 @@ const promise = new Promise((resolve, reject) => {
   };
 });
 
-export default () => {
-  rimraf(distPath, run);
+rimraf(distPath, run);
 
-  return promise;
-};
+export default () => promise;
