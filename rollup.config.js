@@ -4,7 +4,6 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
-import dayjs from 'dayjs';
 import { DEFAULT_EXTENSIONS } from '@babel/core';
 
 import filterEmptyLines from './scripts/@rollup/plugin-filter-empty-lines';
@@ -12,6 +11,7 @@ import pkg from './package.json';
 
 const entryFilePath = path.resolve(__dirname, 'src/index.ts');
 const distPath = path.resolve(__dirname, 'dist');
+const pkgName = pkg.name;
 
 const extensions = [].concat(DEFAULT_EXTENSIONS, '.ts');
 const plugins = [
@@ -32,18 +32,8 @@ const plugins = [
   filterEmptyLines(),
 ];
 
-const banner = `/**
- * @name ${pkg.name}
- * @description ${pkg.description}
- * @version ${pkg.version}
- * @date ${dayjs().format('YYYY-MM-DD HH:mm:ss')}
- * @author ${pkg.author}
- * @github ${pkg.repository.url}
- * @issues ${pkg.bugs.url}
- */`;
-
 function resolveOutputFilePath(format) {
-  return path.resolve(distPath, format, `${pkg.name}.js`);
+  return path.resolve(distPath, format, `${pkgName}.js`);
 }
 
 function generateConfig(format) {
@@ -52,10 +42,9 @@ function generateConfig(format) {
     output: {
       file: resolveOutputFilePath(format),
       format,
-      name: pkg.name,
+      name: pkgName,
       exports: 'default',
       indent: false,
-      banner,
     },
     plugins,
   };
