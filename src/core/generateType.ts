@@ -1,9 +1,11 @@
 import { toLowerCase } from '../helpers/utils';
-import { AdapterRequestType } from './adapter';
+import { AxiosAdapterRequestType } from './adapter';
 import { AxiosRequestConfig, AxiosRequestMethodAlias } from './Axios';
 
-export function generateType(config: AxiosRequestConfig): AdapterRequestType {
-  let requestType: AdapterRequestType = 'request';
+export function generateType(
+  config: AxiosRequestConfig,
+): AxiosAdapterRequestType {
+  let requestType: AxiosAdapterRequestType = 'request';
 
   const method = toLowerCase<AxiosRequestMethodAlias>(config.method, 'get');
 

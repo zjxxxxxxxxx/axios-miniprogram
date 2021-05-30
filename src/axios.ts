@@ -20,7 +20,7 @@ export interface AxiosStatic extends AxiosInstance {
   Axios: AxiosConstructor;
   CancelToken: CancelTokenConstructor;
   create(defaults?: AxiosRequestConfig): AxiosInstance;
-  createAdapter(platform: AxiosPlatform): AxiosAdapter | undefined;
+  createAdapter(platform: AxiosPlatform): AxiosAdapter;
   isCancel(value: any): boolean;
 }
 
