@@ -34,7 +34,10 @@
     "lint": "eslint",
     "format": "prettier --check --write  '{src,__tests__}/**/*.{js,ts,tsx}'",
     "version": "yarn test && yarn build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -61,7 +64,8 @@
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-node": "^9.1.1",
     "tslib": "^2.2.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "vitepress": "^0.14.0"
   },
   "lint-staged": {
     "*.(t|j)s": [
