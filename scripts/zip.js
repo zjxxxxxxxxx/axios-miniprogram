@@ -8,7 +8,7 @@ const pkg = require('../package.json');
 
 const zip = archiver('zip');
 const distPath = path.resolve(__dirname, '..', 'dist');
-const distZipName = 'dist.zip';
+const distZipName = `download/${pkg.version}.zip`;
 const distZipPath = path.resolve(__dirname, '..', distZipName);
 
 console.log();

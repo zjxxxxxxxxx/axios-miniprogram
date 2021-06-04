@@ -37,7 +37,7 @@ const banner = `/**
  * @description ${pkg.description}
  * @date ${dayjs().format('YYYY-MM-DD')}
  * @author ${pkg.author}
- * @github ${pkg.repository.url}
+ * @github ${pkg.repository.url.replace('git+', '')}
  * @issues ${pkg.bugs.url}
  */`;
 

@@ -27,7 +27,7 @@ describe('对 src/helpers/url.ts 进行测试', () => {
     );
   });
 
-  it('测试 combineURL() 执行结果是否正确', () => {
+  it('测试 combineURL() 执行结果是否符合预期', () => {
     expect(combineURL('https://www.server.com', 'api')).toBe(
       'https://www.server.com/api',
     );
@@ -39,7 +39,7 @@ describe('对 src/helpers/url.ts 进行测试', () => {
     );
   });
 
-  it('测试 dynamicInterpolation() 执行结果是否正确', () => {
+  it('测试 dynamicInterpolation() 执行结果是否符合预期', () => {
     expect(
       dynamicInterpolation('https://www.server.com/api/user/:id', {
         id: 1,
