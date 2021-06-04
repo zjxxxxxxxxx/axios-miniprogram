@@ -1,15 +1,15 @@
 import axios from './axios';
 
-export {
+export type {
   AxiosRequestConfig,
   AxiosRequestFormData,
   AxiosResponse,
   AxiosResponseError,
 } from './core/Axios';
-export {
+export type {
   AxiosAdapterRequestConfig,
   AxiosAdapter,
   AxiosPlatform,
 } from './core/adapter';
-export { AxiosInstance, AxiosStatic } from './axios';
+export type { AxiosInstance, AxiosStatic } from './axios';
 export default axios;

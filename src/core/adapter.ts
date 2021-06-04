@@ -67,6 +67,7 @@ export interface AxiosAdapterUpload {
 export interface AxiosAdapterDownload {
   (config: AxiosAdapterDownloadOptions): AxiosAdapterTask | void;
 }
+
 export interface AxiosPlatform {
   request: AxiosAdapterRequest;
   upload: AxiosAdapterUpload;

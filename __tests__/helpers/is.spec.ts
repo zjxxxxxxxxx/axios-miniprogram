@@ -11,7 +11,7 @@ import {
 } from '../../src/helpers/is';
 
 describe('对 src/helpers/is.ts 进行测试', () => {
-  it('测试 isArray() 的执行结果是否符合预期', () => {
+  it('测试 isArray() 执行结果是否符合预期', () => {
     expect(isArray([0])).toBe(true);
     expect(isArray([])).toBe(true);
     expect(isArray({})).toBe(false);
@@ -21,7 +21,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isArray(null)).toBe(false);
   });
 
-  it('测试 isDate() 的执行结果是否符合预期', () => {
+  it('测试 isDate() 执行结果是否符合预期', () => {
     expect(isDate(new Date())).toBe(true);
     expect(isDate({})).toBe(false);
     expect(isDate([])).toBe(false);
@@ -31,7 +31,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isDate(null)).toBe(false);
   });
 
-  it('测试 isEmptyArray() 的执行结果是否符合预期', () => {
+  it('测试 isEmptyArray() 执行结果是否符合预期', () => {
     expect(isEmptyArray([])).toBe(true);
     expect(isEmptyArray([0])).toBe(false);
     expect(isEmptyArray({})).toBe(false);
@@ -41,7 +41,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isEmptyArray(null)).toBe(false);
   });
 
-  it('测试 isEmptyObject() 的执行结果是否符合预期', () => {
+  it('测试 isEmptyObject() 执行结果是否符合预期', () => {
     expect(isEmptyObject({})).toBe(true);
     expect(isEmptyObject({ a: 0 })).toBe(false);
     expect(isEmptyObject([0])).toBe(false);
@@ -52,7 +52,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isEmptyObject(null)).toBe(false);
   });
 
-  it('测试 isFunction 的执行结果是否符合预期', () => {
+  it('测试 isFunction() 执行结果是否符合预期', () => {
     expect(
       isFunction(() => {
         return;
@@ -71,7 +71,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isFunction(null)).toBe(false);
   });
 
-  it('测试 isNull() 的执行结果是否符合预期', () => {
+  it('测试 isNull() 执行结果是否符合预期', () => {
     expect(isNull(null)).toBe(true);
     expect(isNull({ a: 0 })).toBe(false);
     expect(isNull([0])).toBe(false);
@@ -81,7 +81,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isNull(undefined)).toBe(false);
   });
 
-  it('测试 isPlainObject() 的执行结果是否符合预期', () => {
+  it('测试 isPlainObject() 执行结果是否符合预期', () => {
     expect(isPlainObject({})).toBe(true);
     expect(isPlainObject({ a: 0 })).toBe(true);
     expect(isPlainObject([0])).toBe(false);
@@ -92,7 +92,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isPlainObject(null)).toBe(false);
   });
 
-  it('测试 isString() 的执行结果是否符合预期', () => {
+  it('测试 isString() 执行结果是否符合预期', () => {
     expect(isString('')).toBe(true);
     expect(isString({})).toBe(false);
     expect(isString({ a: 0 })).toBe(false);
@@ -103,7 +103,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isString(null)).toBe(false);
   });
 
-  it('测试 isUndefined() 的执行结果是否符合预期', () => {
+  it('测试 isUndefined() 执行结果是否符合预期', () => {
     expect(isUndefined(undefined)).toBe(true);
     expect(isUndefined('')).toBe(false);
     expect(isUndefined({})).toBe(false);
