@@ -23,15 +23,15 @@ export function buildURL(
   return generateURL(url, paramsSerializer(params));
 }
 
-const combineREG = /(?<!:)\/{2,}/g;
+const combineREG = /([^:])\/{2,}/g;
 export function combineURL(baseURL = '', url: string): string {
   const separator = '/';
+  const replaceStr = `$1${separator}`;
 
-  return `${baseURL}${separator}${url}`.replace(combineREG, separator);
+  return `${baseURL}${separator}${url}`.replace(combineREG, replaceStr);
 }
 
 const dynamicREG = /\/?(:([a-zA-Z_$][\w-$]*))\/??/g;
-
 export function dynamicInterpolation(url: string, sourceData?: any): string {
   if (!isPlainObject(sourceData)) {
     return url;
@@ -43,7 +43,6 @@ export function dynamicInterpolation(url: string, sourceData?: any): string {
 }
 
 const absoluteREG = /^([a-z][a-z\d+\-.]*:)?\/\//i;
-
 export function isAbsoluteURL(url: string): boolean {
   return absoluteREG.test(url);
 }
