@@ -32,6 +32,7 @@
     "cz": "czg",
     "build": "esno scripts/build.ts",
     "release": "esno scripts/release.ts",
+    "test": "vitest run",
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
     "postinstall": "simple-git-hooks"
@@ -51,7 +52,6 @@
     "enquirer": "^2.3.6",
     "eslint": "^8.36.0",
     "esno": "^0.16.3",
-    "jest": "^29.5.0",
     "lint-staged": "13.2.0",
     "minimist": "^1.2.8",
     "prettier": "2.8.5",
@@ -62,7 +62,8 @@
     "semver": "^7.3.8",
     "simple-git-hooks": "^2.8.1",
     "typescript": "^5.0.2",
-    "vitepress": "1.0.0-alpha.60"
+    "vitepress": "1.0.0-alpha.60",
+    "vitest": "^0.29.7"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged",
