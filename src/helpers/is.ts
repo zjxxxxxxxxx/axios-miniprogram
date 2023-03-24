@@ -24,7 +24,7 @@ export function isNull(value: any): value is null {
   return value === null;
 }
 
-export function isPlainObject(value: any): value is object {
+export function isPlainObject(value: any): value is object & AnyObject {
   return _toString.call(value) === '[object Object]';
 }
 

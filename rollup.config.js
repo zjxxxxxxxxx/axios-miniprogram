@@ -1,11 +1,12 @@
 import path from 'node:path';
-import esbuild from 'rollup-plugin-esbuild';
+import esbuildPlugin from 'rollup-plugin-esbuild';
 import dtsPlugin from 'rollup-plugin-dts';
-import { __dirname, getPkgJSON } from './scripts/utils.js';
+import { __dirname, distPath, getPkgJSON } from './scripts/utils.js';
+import { readFileSync } from 'node:fs';
 
 const pkg = getPkgJSON();
 const inputPath = path.resolve(__dirname, 'src/index.ts');
-const outputPath = path.resolve(__dirname, 'dist');
+
 const sourceMap = process.env.SOURCE_MAP === 'true';
 const dts = process.env.DTS === 'true';
 
@@ -19,6 +20,11 @@ function main() {
   return configs;
 }
 
+/**
+ *
+ * @param {*} format
+ * @returns {import('rollup').InputOptions}
+ */
 function buildConfig(format) {
   const isDts = format === 'dts';
   const output = {
@@ -35,11 +41,14 @@ function buildConfig(format) {
     output,
     plugins: [
       isDts
-        ? dtsPlugin({
-            tsconfig: path.resolve(__dirname, 'tsconfig.build.json'),
-          })
-        : esbuild({
-            tsconfig: path.resolve(__dirname, 'tsconfig.build.json'),
+        ? [
+            dtsPlugin({
+              tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+            }),
+            compleTypePlugin([path.resolve(__dirname, 'global.d.ts')]),
+          ]
+        : esbuildPlugin({
+            tsconfig: path.resolve(__dirname, 'tsconfig.json'),
             sourceMap: output.sourcemap,
             minify: true,
           }),
@@ -49,7 +58,22 @@ function buildConfig(format) {
 
 function resolvePath(format, isDts) {
   return path.resolve(
-    outputPath,
+    distPath,
     `${pkg.name}${isDts ? '.d.ts' : `.${format}.js`}`,
   );
+}
+
+function compleTypePlugin(files) {
+  return {
+    name: 'comple-type',
+    renderChunk: (code) =>
+      `${files
+        .map(
+          (file) =>
+            `// ${file.replace(__dirname, '')}\n${readFileSync(
+              file,
+            ).toString()}\n// ${file.replace(__dirname, '')} end\n`,
+        )
+        .join('')}\n${code}`,
+  };
 }

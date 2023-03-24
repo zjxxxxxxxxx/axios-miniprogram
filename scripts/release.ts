@@ -7,10 +7,7 @@ import { exec, pkgPath, getPkgJSON } from './utils';
 const pkg = getPkgJSON();
 const { version: currentVersion } = pkg;
 
-main().catch((err) => {
-  updateVersion(currentVersion);
-  console.error(err);
-});
+main().catch((err) => exit(err.message));
 
 async function main() {
   checkBranch();
@@ -36,11 +33,12 @@ function checkBranch() {
   const releaseBranch = 'main';
   const currentBranch = exec('git branch --show-current', {
     stdio: 'pipe',
-  }).toString();
+  })
+    .toString()
+    .trim();
 
   if (currentBranch !== releaseBranch) {
-    consola.warn(`请切回 ${releaseBranch} 分支进行发版！`);
-    process.exit();
+    exit(`请切回 ${releaseBranch} 分支进行发版！`);
   }
 }
 
@@ -73,8 +71,7 @@ async function inputVersion() {
     !semver.valid(targetVersion) ||
     !semver.lt(currentVersion, targetVersion)
   ) {
-    consola.error(`无效的版本号: ${targetVersion}`);
-    process.exit();
+    exit(`无效的版本号: ${targetVersion}`);
   }
 
   const { yes: confirmRelease } = await enquirer.prompt<{ yes: boolean }>({
@@ -84,8 +81,7 @@ async function inputVersion() {
   });
 
   if (!confirmRelease) {
-    consola.error(`取消发布: v${targetVersion}`);
-    process.exit();
+    exit(`取消发布: v${targetVersion}`);
   }
 
   return targetVersion;
@@ -106,6 +102,12 @@ function createReleases() {
     releases.push(`${type} (${semver.inc(currentVersion, type, preid)})`);
   }
   return releases;
+}
+
+function exit(msg: string) {
+  updateVersion(currentVersion);
+  consola.error(msg || '已退出');
+  process.exit();
 }
 
 function updateVersion(version: string) {

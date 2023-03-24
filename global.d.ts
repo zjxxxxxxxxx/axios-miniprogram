@@ -8,4 +8,4 @@ declare const qh: unknown;
 declare const ks: unknown;
 declare const dd: unknown;
 
-declare type AnyObject<T = any> = Record<string, T>;
+type AnyObject<T = any> = Record<string, T>;

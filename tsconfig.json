@@ -8,6 +8,6 @@
     "strict": true,
     "noEmit": true
   },
-  "include": ["src", "test", "global.d.ts"],
+  "include": ["./src", "./test", "./global.d.ts"],
   "exclude": ["node_modules"]
 }
