@@ -1,4 +1,4 @@
-import { getAdapterDefault } from './core/adapter';
+import { getAdapterDefault } from './adapter';
 import { AxiosRequestConfig } from './core/Axios';
 
 const defaults: AxiosRequestConfig = {

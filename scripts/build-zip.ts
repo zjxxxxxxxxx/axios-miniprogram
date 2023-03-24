@@ -25,7 +25,11 @@ function generateZip(inputPath: string, outputPath: string) {
 
     const start = Date.now();
     JSZip()
-      .file(inputName, fs.createReadStream(inputPath))
+      .file(inputName, fs.createReadStream(inputPath), {
+        compressionOptions: {
+          level: 9,
+        },
+      })
       .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
       .pipe(fs.createWriteStream(outputPath))
       .on('finish', (result) => {

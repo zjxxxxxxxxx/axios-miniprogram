@@ -1,5 +1,5 @@
 import { toLowerCase } from '../helpers/utils';
-import { AxiosAdapterRequestType } from './adapter';
+import { AxiosAdapterRequestType } from '../adapter';
 import { AxiosRequestConfig, AxiosRequestMethodAlias } from './Axios';
 
 export function generateType(

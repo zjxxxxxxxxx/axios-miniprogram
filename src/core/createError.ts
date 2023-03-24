@@ -1,4 +1,4 @@
-import { AxiosAdapterTask } from './adapter';
+import { AxiosAdapterTask } from '../adapter';
 import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 
 export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;

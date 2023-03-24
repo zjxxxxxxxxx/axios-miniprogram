@@ -10,6 +10,6 @@ export type {
   AxiosAdapterRequestConfig,
   AxiosAdapter,
   AxiosPlatform,
-} from './core/adapter';
+} from './adapter';
 export type { AxiosInstance, AxiosStatic } from './axios';
 export default axios;

@@ -4,7 +4,7 @@ import {
   AxiosAdapterRequestMethod,
   AxiosAdapter,
   AxiosAdapterTask,
-} from './adapter';
+} from '../adapter';
 import { CancelToken } from './cancel';
 import dispatchRequest from './dispatchRequest';
 import InterceptorManager from './InterceptorManager';

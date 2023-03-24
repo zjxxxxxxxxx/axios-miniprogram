@@ -16,7 +16,8 @@ export function isEmptyObject(value: any): value is object {
   return isPlainObject(value) && Object.keys(value).length === 0;
 }
 
-export function isFunction<T extends () => void>(value: any): value is T {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isFunction<T extends Function>(value: any): value is T {
   return typeof value === 'function';
 }
 

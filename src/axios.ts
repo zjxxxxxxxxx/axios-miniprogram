@@ -1,4 +1,4 @@
-import { AxiosAdapter, createAdapter, AxiosPlatform } from './core/adapter';
+import { AxiosAdapter, createAdapter, AxiosPlatform } from './adapter';
 import Axios, {
   AxiosConstructor,
   AxiosRequestConfig,

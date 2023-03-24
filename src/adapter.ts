@@ -4,8 +4,8 @@ import {
   isPlainObject,
   isString,
   isUndefined,
-} from '../helpers/is';
-import { assert, throwError } from '../helpers/utils';
+} from './helpers/is';
+import { assert, throwError } from './helpers/utils';
 import {
   AxiosProgressCallback,
   AxiosRequestConfig,
@@ -14,7 +14,7 @@ import {
   AxiosRequestHeaders,
   AxiosResponse,
   AxiosResponseError,
-} from './Axios';
+} from './core/Axios';
 
 export type AxiosAdapterRequestType = 'request' | 'download' | 'upload';
 

@@ -4,7 +4,7 @@ import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
   AxiosAdapterTask,
-} from './adapter';
+} from '../adapter';
 import {
   AxiosProgressCallback,
   AxiosRequestConfig,
