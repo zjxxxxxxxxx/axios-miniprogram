@@ -1,5 +1,25 @@
 node_modules
+.env
+*.log
+
+# Docs
 dist
-.eslintcache
+docs/.vitepress/cache
+
+# Mac OS
 .DS_Store
-.idea
+
+# Bundle
+lib/
+
+# Typescript build file
+*.tsbuildinfo
+
+# Typescript test file
+*.test.js
+*.test.d.ts
+*.test.js.map
+coverage
+
+# eslint
+.eslintcache

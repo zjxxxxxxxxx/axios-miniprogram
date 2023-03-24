@@ -1,11 +1,11 @@
 {
   "name": "axios-miniprogram",
-  "type": "module",
   "version": "2.0.0-alpha.0",
   "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
   "main": "dist/axios-miniprogram.esm.js",
   "module": "dist/axios-miniprogram.cjs.js",
   "types": "dist/axios-miniprogram.d.ts",
+  "type": "module",
   "files": [
     "dist"
   ],
@@ -26,7 +26,8 @@
   "homepage": "https://github.com/zjx0905/axios-miniprogram#readme",
   "license": "MIT",
   "engines": {
-    "node": ">=16"
+    "node": ">=16",
+    "pnpm": ">=7"
   },
   "scripts": {
     "cz": "czg",
@@ -37,6 +38,9 @@
     "test": "vitest run",
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
+    "docs:dev": "pnpm -C docs dev",
+    "docs:build": "pnpm -C docs build",
+    "docs:preview": "pnpm -C docs preview",
     "postinstall": "simple-git-hooks"
   },
   "devDependencies": {
@@ -67,7 +71,6 @@
     "semver": "^7.3.8",
     "simple-git-hooks": "^2.8.1",
     "typescript": "^5.0.2",
-    "vitepress": "1.0.0-alpha.60",
     "vitest": "^0.29.7"
   },
   "simple-git-hooks": {
@@ -81,5 +84,12 @@
   },
   "lint-staged": {
     "*.(j|t)s": "pnpm lint:fix"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search"
+      ]
+    }
   }
 }
