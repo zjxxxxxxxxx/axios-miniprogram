@@ -17,6 +17,9 @@ async function main() {
   consola.info(`Update version ${currentVersion} -> ${version}`);
   updateVersion(version);
 
+  consola.info('Changelog');
+  exec('pnpm changelog');
+
   consola.info('Git add');
   exec('git add .');
 
