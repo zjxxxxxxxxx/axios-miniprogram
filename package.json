@@ -19,7 +19,7 @@
     "request",
     "promise"
   ],
-  "author": "zjx0905",
+  "author": "zjx0905 <954270063@qq.com>",
   "bugs": {
     "url": "https://github.com/zjx0905/axios-miniprogram/issues"
   },
@@ -32,9 +32,11 @@
   "scripts": {
     "cz": "czg",
     "build": "esno scripts/build.ts",
-    "build:zip": "esno scripts/build-zip.ts",
+    "build:asset": "esno scripts/build-asset.ts",
     "release": "esno scripts/release.ts",
+    "publish:ci": "esno scripts/publish.ts",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "upload:asset": "esno scripts/upload-asset.ts",
     "test": "vitest run",
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
@@ -49,6 +51,7 @@
     "@types/node": "^18.15.5",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
+    "actions-toolkit": "^6.0.1",
     "chalk": "^5.2.0",
     "consola": "^2.15.3",
     "conventional-changelog-cli": "^2.2.2",

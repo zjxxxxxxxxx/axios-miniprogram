@@ -10,5 +10,5 @@ export const distPath = path.resolve(__dirname, 'dist');
 
 export const exec = (command, options) =>
   execSync(command, { stdio: 'inherit', ...(options ?? {}) });
-
 export const getPkgJSON = () => require(pkgPath);
+export const getFileName = (filePath) => filePath.match(/\/([^/]*)$/)[1];

@@ -41,8 +41,8 @@ jobs:
       - name: Build
         run: pnpm build -a
 
-      - name: Build zip
-        run: pnpm build:zip
+      - name: Build asset
+        run: pnpm build:asset
 
       - name: Test
         run: pnpm test

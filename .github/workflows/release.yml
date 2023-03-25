@@ -1,0 +1,66 @@
+name: Release Package
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Set node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: pnpm
+
+      - name: Install
+        run: pnpm i
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build -a
+
+      - name: Publish
+        run: pnpm publish:ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Check prerelease
+        uses: actions/github-script@v6
+        id: prerelease
+        with:
+          script: return /-/.test("${{github.ref}}")
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Please refer to [CHANGELOG.md](https://github.com/axios-miniprogram/core/blob/main/CHANGELOG.md) for details.
+          prerelease: ${{ steps.prerelease.outputs.result }}
+
+      - name: Build Release Asset
+        run: pnpm build:asset
+
+      - name: Upload Release Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_ID: ${{ steps.create_release.outputs.id }}
+          UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
+        run: pnpm upload:asset

@@ -3,14 +3,14 @@ import fg from 'fast-glob';
 import JSZip from 'jszip';
 import consola from 'consola';
 import chalk from 'chalk';
-import { distPath, exec } from './utils';
+import { distPath, exec, getFileName } from './utils';
 
 main();
 
 async function main() {
   exec('pnpm build');
 
-  consola.info('Generate zip\n');
+  consola.info('Generate asset\n');
   for (const filePath of await fg(`${distPath}/**.js`)) {
     await generateZip(filePath, filePath.replace(/\.js$/, '.zip'));
   }
@@ -46,12 +46,4 @@ function generateZip(inputPath: string, outputPath: string) {
       .on('finish', finish)
       .on('error', reject);
   });
-}
-
-function getFileName(filePath: string) {
-  const result = filePath.match(/\/([^/]*)$/);
-  if (!result) {
-    throw new Error(`无效的文件路径: ${filePath}`);
-  }
-  return result[1];
 }
