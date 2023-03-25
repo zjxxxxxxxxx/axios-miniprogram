@@ -17,13 +17,24 @@ async function main() {
 }
 
 function generateZip(inputPath: string, outputPath: string) {
+  const start = Date.now();
+
+  const inputName = getFileName(inputPath);
+  const outputName = getFileName(outputPath);
+
+  console.log(chalk.cyanBright.bold(`${inputPath} → dist/${outputName}...`));
+
   return new Promise((resolve, reject) => {
-    const inputName = getFileName(inputPath);
-    const outputName = getFileName(outputPath);
+    const finish = (result) => {
+      console.log(
+        `${chalk.green('created')} ${chalk.greenBright.bold(
+          `dist/${outputName} in ${Date.now() - start}ms\n`,
+        )}`,
+      );
+      exec(`rimraf ${inputPath}`);
+      resolve(result);
+    };
 
-    console.log(chalk.cyanBright.bold(`${inputPath} → dist/${outputName}...`));
-
-    const start = Date.now();
     JSZip()
       .file(inputName, fs.createReadStream(inputPath), {
         compressionOptions: {
@@ -32,15 +43,7 @@ function generateZip(inputPath: string, outputPath: string) {
       })
       .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
       .pipe(fs.createWriteStream(outputPath))
-      .on('finish', (result) => {
-        console.log(
-          `${chalk.green('created')} ${chalk.greenBright.bold(
-            `dist/${outputName} in ${Date.now() - start}ms\n`,
-          )}`,
-        );
-        exec(`rimraf ${inputPath}`);
-        resolve(result);
-      })
+      .on('finish', finish)
       .on('error', reject);
   });
 }
@@ -48,7 +51,7 @@ function generateZip(inputPath: string, outputPath: string) {
 function getFileName(filePath: string) {
   const result = filePath.match(/\/([^/]*)$/);
   if (!result) {
-    throw new Error(`无效的文件路径 ${filePath}`);
+    throw new Error(`无效的文件路径: ${filePath}`);
   }
   return result[1];
 }

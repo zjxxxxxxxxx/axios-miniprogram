@@ -80,11 +80,11 @@ async function inputVersion() {
   const { yes: confirmRelease } = await enquirer.prompt<{ yes: boolean }>({
     type: 'confirm',
     name: 'yes',
-    message: `确定发布 v${targetVersion} ？`,
+    message: `确定发版: v${targetVersion} ？`,
   });
 
   if (!confirmRelease) {
-    exit(`取消发布: v${targetVersion}`);
+    exit(`取消发版: v${targetVersion}`);
   }
 
   return targetVersion;

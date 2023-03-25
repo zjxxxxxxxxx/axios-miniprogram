@@ -1,8 +1,8 @@
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
 import esbuildPlugin from 'rollup-plugin-esbuild';
 import dtsPlugin from 'rollup-plugin-dts';
 import { __dirname, distPath, getPkgJSON } from './scripts/utils.js';
-import { readFileSync } from 'node:fs';
 
 const pkg = getPkgJSON();
 const inputPath = path.resolve(__dirname, 'src/index.ts');
@@ -20,11 +20,6 @@ function main() {
   return configs;
 }
 
-/**
- *
- * @param {*} format
- * @returns {import('rollup').InputOptions}
- */
 function buildConfig(format) {
   const isDts = format === 'dts';
   const output = {
@@ -72,8 +67,8 @@ function compleTypePlugin(files) {
           (file) =>
             `// ${file.replace(__dirname, '')}\n${readFileSync(
               file,
-            ).toString()}\n// ${file.replace(__dirname, '')} end\n`,
+            ).toString()}\n// ${file.replace(__dirname, '')} end`,
         )
-        .join('')}\n${code}`,
+        .join('\n')}\n${code}`,
   };
 }

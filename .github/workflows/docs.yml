@@ -1,21 +1,22 @@
-name: CI
+name: Deploy Docs
 
 on:
   push:
     branches:
       - main
-    paths-ignore:
+    paths:
       - 'docs/**'
       - '**.md'
   pull_request:
     branches:
       - main
-    paths-ignore:
+    paths:
       - 'docs/**'
       - '**.md'
+  workflow_dispatch:
 
 jobs:
-  ci:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,14 +36,13 @@ jobs:
       - name: Install
         run: pnpm i
 
-      - name: Lint
-        run: pnpm lint
-
       - name: Build
-        run: pnpm build -a
+        run: pnpm docs:build
 
-      - name: Build zip
-        run: pnpm build:zip
-
-      - name: Test
-        run: pnpm test
+      - name: Deploy
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --prod
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
