@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/axios-miniprogram.svg)](https://badge.fury.io/js/axios-miniprogram)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-[中文文档](axios-miniprogram.com)
+[中文文档](https://axios-miniprogram.com)
 
 ## 安装
 

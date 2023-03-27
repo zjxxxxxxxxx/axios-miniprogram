@@ -7,6 +7,8 @@
 ```typescript
 axios.defaults.adapter = function adapter(adapterConfig) {
   const {
+    // 请求类型
+    type,
     // 请求地址
     url,
     // 请求方法
@@ -38,13 +40,34 @@ axios.defaults.adapter = function adapter(adapterConfig) {
   } = adapterConfig;
 
   // 在 adapterConfig 中选择您需要的参数发送请求
-  return wx.request({
-    url,
-    method,
-    data,
-    headers,
-    success,
-    fail,
-  });
+  switch (type) {
+    case 'request': // 数据请求
+      return wx.request({
+        url,
+        method,
+        data,
+        headers,
+        success,
+        fail,
+      });
+    case 'upload': // 上传
+      return wx.uploadFile({
+        url,
+        method,
+        data,
+        headers,
+        success,
+        fail,
+      });
+    case 'download': //  下载
+      return wx.downloadFile({
+        url,
+        method,
+        data,
+        headers,
+        success,
+        fail,
+      });
+  }
 };
 ```

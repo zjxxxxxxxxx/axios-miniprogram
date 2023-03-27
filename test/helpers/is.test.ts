@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import {
   isArray,
   isDate,
@@ -11,7 +12,7 @@ import {
 } from '../../src/helpers/is';
 
 describe('对 src/helpers/is.ts 进行测试', () => {
-  it('测试 isArray() 执行结果是否符合预期', () => {
+  test('传入数组应该返回 true，其他参数应该返回 fasle', () => {
     expect(isArray([0])).toBe(true);
     expect(isArray([])).toBe(true);
     expect(isArray({})).toBe(false);
@@ -21,7 +22,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isArray(null)).toBe(false);
   });
 
-  it('测试 isDate() 执行结果是否符合预期', () => {
+  test('传入 Date 实例应该返回 true，其他参数应该返回 fasle', () => {
     expect(isDate(new Date())).toBe(true);
     expect(isDate({})).toBe(false);
     expect(isDate([])).toBe(false);
@@ -31,7 +32,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isDate(null)).toBe(false);
   });
 
-  it('测试 isEmptyArray() 执行结果是否符合预期', () => {
+  test('传入空数组应该返回 true，其他参数应该返回 fasle', () => {
     expect(isEmptyArray([])).toBe(true);
     expect(isEmptyArray([0])).toBe(false);
     expect(isEmptyArray({})).toBe(false);
@@ -41,7 +42,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isEmptyArray(null)).toBe(false);
   });
 
-  it('测试 isEmptyObject() 执行结果是否符合预期', () => {
+  test('传入空对象应该返回 true，其他参数应该返回 fasle', () => {
     expect(isEmptyObject({})).toBe(true);
     expect(isEmptyObject({ a: 0 })).toBe(false);
     expect(isEmptyObject([0])).toBe(false);
@@ -52,7 +53,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isEmptyObject(null)).toBe(false);
   });
 
-  it('测试 isFunction() 执行结果是否符合预期', () => {
+  test('传入空函数应该返回 true，其他参数应该返回 fasle', () => {
     expect(
       isFunction(() => {
         return;
@@ -71,7 +72,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isFunction(null)).toBe(false);
   });
 
-  it('测试 isNull() 执行结果是否符合预期', () => {
+  test('传入空 null 应该返回 true，其他参数应该返回 fasle', () => {
     expect(isNull(null)).toBe(true);
     expect(isNull({ a: 0 })).toBe(false);
     expect(isNull([0])).toBe(false);
@@ -81,7 +82,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isNull(undefined)).toBe(false);
   });
 
-  it('测试 isPlainObject() 执行结果是否符合预期', () => {
+  test('传入普通对象应该返回 true，其他参数应该返回 fasle', () => {
     expect(isPlainObject({})).toBe(true);
     expect(isPlainObject({ a: 0 })).toBe(true);
     expect(isPlainObject([0])).toBe(false);
@@ -92,7 +93,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isPlainObject(null)).toBe(false);
   });
 
-  it('测试 isString() 执行结果是否符合预期', () => {
+  test('传入字符串应该返回 true，其他参数应该返回 fasle', () => {
     expect(isString('')).toBe(true);
     expect(isString({})).toBe(false);
     expect(isString({ a: 0 })).toBe(false);
@@ -103,7 +104,7 @@ describe('对 src/helpers/is.ts 进行测试', () => {
     expect(isString(null)).toBe(false);
   });
 
-  it('测试 isUndefined() 执行结果是否符合预期', () => {
+  test('传入 undefined 应该返回 true，其他参数应该返回 fasle', () => {
     expect(isUndefined(undefined)).toBe(true);
     expect(isUndefined('')).toBe(false);
     expect(isUndefined({})).toBe(false);

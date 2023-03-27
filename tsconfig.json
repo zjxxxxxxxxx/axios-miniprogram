@@ -6,7 +6,8 @@
     "target": "ESNext",
     "module": "ESNext",
     "strict": true,
-    "noEmit": true
+    "noEmit": true,
+    "moduleResolution": "node"
   },
   "include": ["./src", "./test", "./global.d.ts"],
   "exclude": ["node_modules"]

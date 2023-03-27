@@ -38,6 +38,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "upload:asset": "esno scripts/upload-asset.ts",
     "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
     "docs:dev": "pnpm -C docs dev",
