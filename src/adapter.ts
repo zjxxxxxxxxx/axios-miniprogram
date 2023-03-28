@@ -4,8 +4,8 @@ import {
   isPlainObject,
   isString,
   isUndefined,
-} from './helpers/is';
-import { assert, throwError } from './helpers/utils';
+} from './helpers/isTypes';
+import { assert, throwError } from './helpers/error';
 import {
   AxiosProgressCallback,
   AxiosRequestFormData,
@@ -53,7 +53,11 @@ export interface AxiosAdapterRequestConfig extends AnyObject {
    */
   method: AxiosAdapterRequestMethod;
   /**
-   * 请求的数据
+   * 请求参数
+   */
+  params?: AnyObject;
+  /**
+   * 请求数据
    */
   data?: AnyObject;
   /**

@@ -7,7 +7,7 @@ import Axios, {
 } from './core/Axios';
 import { CancelToken, CancelTokenConstructor, isCancel } from './core/cancel';
 import { mergeConfig } from './core/mergeConfig';
-import { isString } from './helpers/is';
+import { isString } from './helpers/isTypes';
 import defaults from './defaults';
 
 export interface AxiosInstance extends Axios {
@@ -19,7 +19,9 @@ export interface AxiosInstance extends Axios {
 
 export interface AxiosStatic extends AxiosInstance {
   Axios: AxiosConstructor;
-  defaults: AxiosRequestConfig & { headers: Required<AxiosRequestHeaders> };
+  defaults: AxiosRequestConfig & {
+    headers: Required<AxiosRequestHeaders> & { common?: AnyObject };
+  };
   CancelToken: CancelTokenConstructor;
   create(defaults?: AxiosRequestConfig): AxiosInstance;
   createAdapter(platform: AxiosPlatform): AxiosAdapter;

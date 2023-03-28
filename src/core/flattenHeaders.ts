@@ -1,5 +1,5 @@
-import { isPlainObject } from '../helpers/is';
-import { omit } from '../helpers/utils';
+import { isPlainObject } from '../helpers/isTypes';
+import { omit } from '../helpers/omit';
 import { AxiosRequestConfig, AxiosRequestHeaders } from './Axios';
 
 export function flattenHeaders(

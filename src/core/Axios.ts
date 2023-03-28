@@ -1,4 +1,4 @@
-import { buildURL } from '../helpers/url';
+import { buildURL } from '../helpers/buildURL';
 import { mergeConfig } from './mergeConfig';
 import {
   AxiosAdapter,

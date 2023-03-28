@@ -1,4 +1,4 @@
-import { isArray, isUndefined } from '../helpers/is';
+import { isArray, isUndefined } from '../helpers/isTypes';
 import { AxiosRequestFormData } from './Axios';
 
 export interface AxiosTransformer {

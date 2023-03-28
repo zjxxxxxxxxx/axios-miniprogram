@@ -1,5 +1,5 @@
-import { isFunction, isPlainObject } from '../helpers/is';
-import { assert } from '../helpers/utils';
+import { isFunction, isPlainObject } from '../helpers/isTypes';
+import { assert } from '../helpers/error';
 import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
@@ -19,16 +19,17 @@ function tryToggleProgressUpdate(
   adapterConfig: AxiosAdapterRequestConfig,
   progressUpdate?: (callback: AxiosProgressCallback) => void,
 ) {
+  const { onUploadProgress, onDownloadProgress } = adapterConfig;
   if (isFunction(progressUpdate)) {
     switch (adapterConfig.type) {
       case 'upload':
-        if (isFunction(adapterConfig.onUploadProgress)) {
-          progressUpdate(adapterConfig.onUploadProgress);
+        if (isFunction(onUploadProgress)) {
+          progressUpdate(onUploadProgress);
         }
         break;
       case 'download':
-        if (isFunction(adapterConfig.onDownloadProgress)) {
-          progressUpdate(adapterConfig.onDownloadProgress);
+        if (isFunction(onDownloadProgress)) {
+          progressUpdate(onDownloadProgress);
         }
         break;
       default:
