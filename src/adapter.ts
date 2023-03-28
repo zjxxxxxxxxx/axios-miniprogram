@@ -140,6 +140,7 @@ export function getAdapterDefault(): AxiosAdapter | undefined {
     () => qh,
     () => ks,
     () => dd,
+    () => jd,
   ];
 
   let platform;

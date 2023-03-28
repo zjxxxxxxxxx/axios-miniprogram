@@ -1,5 +1,5 @@
 import { isFunction, isPlainObject } from '../helpers/is';
-import { assert, toUpperCase } from '../helpers/utils';
+import { assert } from '../helpers/utils';
 import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
@@ -46,7 +46,7 @@ export function request<TData = unknown>(
       ...config,
       url: config.url ?? '',
       type: generateType(config),
-      method: toUpperCase<AxiosAdapterRequestMethod>(config.method, 'GET'),
+      method: config.method!.toUpperCase() as AxiosAdapterRequestMethod,
       success,
       fail,
     };

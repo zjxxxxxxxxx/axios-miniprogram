@@ -1,17 +1,16 @@
-import { toLowerCase } from '../helpers/utils';
 import { AxiosAdapterRequestType } from '../adapter';
-import { AxiosRequestConfig, AxiosRequestMethodAlias } from './Axios';
+import { AxiosRequestConfig } from './Axios';
 
 export function generateType(
   config: AxiosRequestConfig,
 ): AxiosAdapterRequestType {
   let requestType: AxiosAdapterRequestType = 'request';
-  const method = toLowerCase<AxiosRequestMethodAlias>(config.method, 'get');
 
-  if (config.upload && method === 'post') {
+  const method = config.method!.toUpperCase();
+  if (config.upload && method === 'POST') {
     requestType = 'upload';
   }
-  if (config.download && method === 'get') {
+  if (config.download && method === 'GET') {
     requestType = 'download';
   }
 

@@ -5,8 +5,6 @@ import {
   omit,
   pick,
   throwError,
-  toLowerCase,
-  toUpperCase,
 } from '../../src/helpers/utils';
 
 describe('对 src/helpers/utils.ts 进行测试', () => {
@@ -48,19 +46,5 @@ describe('对 src/helpers/utils.ts 进行测试', () => {
     expect(() => throwError(' msg ')).toThrowError(
       '[axios-miniprogram]:  msg ',
     );
-  });
-
-  test('测试 toLowerCase() 是否符合预期', () => {
-    expect(toLowerCase('', 'GET')).toBe('');
-    expect(toLowerCase(undefined, 'GET')).toBe('get');
-    expect(toLowerCase('GET', '')).toBe('get');
-    expect(toLowerCase('Get', '')).toBe('get');
-  });
-
-  test('测试 toUpperCase() 是否符合预期', () => {
-    expect(toUpperCase('', 'get')).toBe('');
-    expect(toUpperCase(undefined, 'get')).toBe('GET');
-    expect(toUpperCase('get', '')).toBe('GET');
-    expect(toUpperCase('Get', '')).toBe('GET');
   });
 });

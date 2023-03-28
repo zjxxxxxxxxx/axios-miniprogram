@@ -1,10 +1,6 @@
 import { isPlainObject } from '../helpers/is';
-import { omit, toLowerCase } from '../helpers/utils';
-import {
-  AxiosRequestConfig,
-  AxiosRequestMethodAlias,
-  AxiosRequestHeaders,
-} from './Axios';
+import { omit } from '../helpers/utils';
+import { AxiosRequestConfig, AxiosRequestHeaders } from './Axios';
 
 export function flattenHeaders(
   config: AxiosRequestConfig,
@@ -15,9 +11,7 @@ export function flattenHeaders(
 
   return {
     ...(config.headers.common ?? {}),
-    ...(config.headers[
-      toLowerCase<AxiosRequestMethodAlias>(config.method, 'get')
-    ] ?? {}),
+    ...(config.headers[config.method!.toLowerCase()] ?? {}),
     ...omit(
       config.headers,
       'common',

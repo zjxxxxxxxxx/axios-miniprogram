@@ -7,5 +7,6 @@ declare const qq: unknown;
 declare const qh: unknown;
 declare const ks: unknown;
 declare const dd: unknown;
+declare const jd: unknown;
 
 type AnyObject<T = any> = Record<string, T>;

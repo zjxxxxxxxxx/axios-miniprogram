@@ -17,6 +17,7 @@ export default function dispatchRequest<TData = unknown>(
 ): Promise<AxiosResponse> {
   throwIfCancellationRequested(config);
 
+  config.method = config.method ?? 'get';
   config.url = transformURL(config);
   config.headers = flattenHeaders(config);
   config.data = transformData(
