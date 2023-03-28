@@ -8,9 +8,9 @@ const all = Boolean(args.all || args.a);
 const sourceMap = all || Boolean(args.sourceMap || args.s);
 const dts = all || Boolean(args.dts || args.d);
 
-build();
+main();
 
-function build() {
+function main() {
   exec('rimraf dist');
 
   consola.info('Rollup');

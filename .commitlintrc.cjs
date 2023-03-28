@@ -28,7 +28,7 @@ module.exports = {
       subject: '请输入变更描述',
       breaking: '列举非兼容性重大的变更，如果有多行，使用 "|" 换行（选填项）\n',
       footer: '列举关联的 issue，例如：#31,#I3244（选填项）\n',
-      confirmCommit: '是否提交',
+      confirmCommit: '确定提交',
     },
     types: metas.map((meta) => ({
       value: meta.type,
