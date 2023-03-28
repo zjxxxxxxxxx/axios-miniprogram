@@ -17,22 +17,12 @@ axios.defaults.adapter = function adapter(adapterConfig) {
     data,
     // 请求头 同 headers
     headers,
-    // 请求头 同 headers
-    headers,
     // 响应数据格式
     dataType,
     // 响应数据类型
     responseType,
     // 超时时间
     timeout,
-    // 开启 http2
-    enableHttp2,
-    // 开启 quic
-    enableQuic,
-    // 开启 cache
-    enableCache,
-    // 验证 ssl 证书
-    sslVerify,
     // 成功的回调函数
     success,
     // 失败的回调函数
@@ -46,7 +36,7 @@ axios.defaults.adapter = function adapter(adapterConfig) {
         url,
         method,
         data,
-        headers,
+        header: headers,
         success,
         fail,
       });
@@ -54,8 +44,8 @@ axios.defaults.adapter = function adapter(adapterConfig) {
       return wx.uploadFile({
         url,
         method,
-        data,
-        headers,
+        formData: data,
+        header: headers,
         success,
         fail,
       });
@@ -63,8 +53,8 @@ axios.defaults.adapter = function adapter(adapterConfig) {
       return wx.downloadFile({
         url,
         method,
-        data,
-        headers,
+        filePath: data.filePath,
+        header: headers,
         success,
         fail,
       });

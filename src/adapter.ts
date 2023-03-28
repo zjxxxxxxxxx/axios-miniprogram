@@ -8,8 +8,6 @@ import {
 import { assert, throwError } from './helpers/utils';
 import {
   AxiosProgressCallback,
-  AxiosRequestConfig,
-  AxiosRequestData,
   AxiosRequestFormData,
   AxiosRequestHeaders,
   AxiosResponse,
@@ -28,12 +26,60 @@ export type AxiosAdapterRequestMethod =
   | 'TRACE'
   | 'CONNECT';
 
-export interface AxiosAdapterRequestConfig extends AxiosRequestConfig {
-  type: AxiosAdapterRequestType;
-  method: AxiosAdapterRequestMethod;
+export interface AxiosAdapterResponse<TData = unknown> extends AnyObject {
+  status: number;
+  statusText: string;
+  headers: AnyObject;
+  data: TData;
+}
+
+export interface AxiosAdapterResponseError extends AnyObject {
+  status: number;
+  statusText: string;
+  headers: AnyObject;
+}
+
+export interface AxiosAdapterRequestConfig extends AnyObject {
+  /**
+   * 请求类型
+   */
+  type: 'request' | 'upload' | 'download';
+  /**
+   * 开发者服务器接口地址
+   */
   url: string;
-  success(response: AxiosResponse): void;
-  fail(error: AxiosResponseError): void;
+  /**
+   * HTTP 请求方法
+   */
+  method: AxiosAdapterRequestMethod;
+  /**
+   * 请求的数据
+   */
+  data?: AnyObject;
+  /**
+   * 请求头
+   */
+  headers?: AnyObject;
+  /**
+   * 返回的数据格式
+   */
+  dataType?: 'json' | '其他';
+  /**
+   * 响应的数据类型
+   */
+  responseType?: 'text' | 'arraybuffer';
+  /**
+   * 超时时间，单位为毫秒。默认值为 60000
+   */
+  timeout?: number;
+  /**
+   * 成功的回调
+   */
+  success(response: AxiosAdapterResponse): void;
+  /**
+   * 失败的回调
+   */
+  fail(error: AxiosAdapterResponseError): void;
 }
 
 export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
@@ -47,8 +93,7 @@ export interface AxiosAdapterUploadOptions extends AxiosAdapterBaseOptions {
   name: string;
   fileName: string;
   fileType: 'image' | 'video' | 'audio';
-  hideLoading?: boolean;
-  formData?: AxiosRequestData;
+  formData?: AnyObject;
 }
 
 export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
@@ -167,7 +212,7 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
       '上传文件时 data.filePath 需要是一个 string',
     );
 
-    const { fileName, filePath, fileType, hideLoading, ...formData } =
+    const { fileName, filePath, fileType, ...formData } =
       baseOptions.data as AxiosRequestFormData;
     const options = {
       ...baseOptions,
@@ -175,7 +220,6 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
       fileName: fileName,
       filePath,
       fileType: fileType ?? 'image',
-      hideLoading,
       formData,
     };
 
@@ -200,27 +244,10 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   }
 
   function transformResult(result: AnyObject): void {
-    if (!isUndefined(result.statusCode)) {
+    result.status = result.status || isUndefined(result.data) ? 400 : 200;
+    if (result.statusCode) {
       result.status = result.statusCode;
       delete result.statusCode;
-    }
-
-    if (isUndefined(result.status)) {
-      result.status = isUndefined(result.data) ? 400 : 200;
-    }
-
-    if (!isUndefined(result.header)) {
-      result.headers = result.header;
-      delete result.header;
-    }
-
-    if (isUndefined(result.headers)) {
-      result.headers = {};
-    }
-
-    if (!isUndefined(result.errMsg)) {
-      result.statusText = result.errMsg;
-      delete result.errMsg;
     }
 
     if (isUndefined(result.statusText)) {
@@ -230,6 +257,17 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
           : result.status === 400
           ? 'Bad Adapter'
           : '';
+    }
+
+    result.headers = result.headers || {};
+    if (result.header) {
+      result.headers = result.header;
+      delete result.header;
+    }
+
+    if (result.errMsg) {
+      result.statusText = result.errMsg;
+      delete result.errMsg;
     }
   }
 
@@ -251,21 +289,19 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   }
 
   function injectDownloadData(response: AnyObject): void {
-    if (!isPlainObject(response.data)) {
-      response.data = {};
-    }
+    response.data = response.data || {};
 
-    if (!isUndefined(response.tempFilePath)) {
+    if (response.tempFilePath) {
       response.data.tempFilePath = response.tempFilePath;
       delete response.tempFilePath;
     }
 
-    if (!isUndefined(response.apFilePath)) {
+    if (response.apFilePath) {
       response.data.tempFilePath = response.apFilePath;
       delete response.apFilePath;
     }
 
-    if (!isUndefined(response.filePath)) {
+    if (response.filePath) {
       response.data.filePath = response.filePath;
       delete response.filePath;
     }

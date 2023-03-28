@@ -26,10 +26,6 @@ const defaults: AxiosRequestConfig = {
   timeout: 10000,
   dataType: 'json',
   responseType: 'text',
-  enableHttp2: false,
-  enableQuic: false,
-  enableCache: false,
-  sslVerify: true,
 };
 
 export default defaults;

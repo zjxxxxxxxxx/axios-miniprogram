@@ -2,6 +2,7 @@ import { AxiosAdapter, createAdapter, AxiosPlatform } from './adapter';
 import Axios, {
   AxiosConstructor,
   AxiosRequestConfig,
+  AxiosRequestHeaders,
   AxiosResponse,
 } from './core/Axios';
 import { CancelToken, CancelTokenConstructor, isCancel } from './core/cancel';
@@ -18,6 +19,7 @@ export interface AxiosInstance extends Axios {
 
 export interface AxiosStatic extends AxiosInstance {
   Axios: AxiosConstructor;
+  defaults: AxiosRequestConfig & { headers: Required<AxiosRequestHeaders> };
   CancelToken: CancelTokenConstructor;
   create(defaults?: AxiosRequestConfig): AxiosInstance;
   createAdapter(platform: AxiosPlatform): AxiosAdapter;

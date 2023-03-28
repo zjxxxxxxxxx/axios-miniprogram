@@ -1,16 +1,20 @@
 import { buildURL } from '../helpers/url';
 import { mergeConfig } from './mergeConfig';
 import {
-  AxiosAdapterRequestMethod,
   AxiosAdapter,
+  AxiosAdapterRequestMethod,
   AxiosAdapterTask,
+  AxiosAdapterResponse,
+  AxiosAdapterResponseError,
+  AxiosAdapterRequestConfig,
 } from '../adapter';
 import { CancelToken } from './cancel';
 import dispatchRequest from './dispatchRequest';
 import InterceptorManager from './InterceptorManager';
 import { AxiosTransformer } from './transformData';
 
-export type AxiosRequestMethodAlias =
+export type AxiosRequestMethod =
+  | AxiosAdapterRequestMethod
   | 'options'
   | 'get'
   | 'head'
@@ -20,23 +24,21 @@ export type AxiosRequestMethodAlias =
   | 'trace'
   | 'connect';
 
-export type AxiosRequestMethod =
-  | AxiosAdapterRequestMethod
-  | AxiosRequestMethodAlias;
+export interface AxiosRequestHeaders extends AnyObject {
+  options?: AnyObject;
+  get?: AnyObject;
+  head?: AnyObject;
+  post?: AnyObject;
+  put?: AnyObject;
+  delete?: AnyObject;
+  trace?: AnyObject;
+  connect?: AnyObject;
+}
 
-export type AxiosRequestHeaders = AnyObject;
-
-export type AxiosRequestParams = AnyObject;
-
-export type AxiosRequestData = AnyObject;
-
-export type AxiosResponseHeaders = AnyObject;
-
-export interface AxiosRequestFormData extends AxiosRequestData {
+export interface AxiosRequestFormData extends AnyObject {
   fileName: string;
   filePath: string;
   fileType?: 'image' | 'video' | 'audio';
-  hideLoading?: boolean;
 }
 
 export interface AxiosProgressEvent {
@@ -49,48 +51,84 @@ export interface AxiosProgressCallback {
   (event: AxiosProgressEvent): void;
 }
 
-export interface AxiosRequestConfig {
+export interface AxiosRequestConfig
+  extends Omit<
+    Partial<AxiosAdapterRequestConfig>,
+    'type' | 'method' | 'success' | 'fail'
+  > {
+  /**
+   * 请求适配器
+   */
   adapter?: AxiosAdapter;
+  /**
+   * 基础路径
+   */
   baseURL?: string;
-  cancelToken?: CancelToken;
-  data?: AxiosRequestData | AxiosRequestFormData | AxiosRequestFormData;
-  dataType?: 'json' | '其他';
-  download?: boolean;
-  enableHttp2?: boolean;
-  enableQuic?: boolean;
-  enableCache?: boolean;
-  errorHandler?: (error: unknown) => Promise<unknown>;
+  /**
+   * 请求参数
+   */
+  params?: AnyObject;
+  /**
+   * 请求数据
+   */
+  data?: AnyObject | AxiosRequestFormData;
+  /**
+   * 请求头
+   */
   headers?: AxiosRequestHeaders;
+  /**
+   * 请求方法
+   */
   method?: AxiosRequestMethod;
-  onUploadProgress?: AxiosProgressCallback;
-  onDownloadProgress?: AxiosProgressCallback;
-  params?: AxiosRequestParams;
-  paramsSerializer?: (params?: AxiosRequestParams) => string;
-  responseType?: 'text' | 'arraybuffer';
-  sslVerify?: boolean;
-  transformRequest?: AxiosTransformer | AxiosTransformer[];
-  transformResponse?: AxiosTransformer | AxiosTransformer[];
-  timeout?: number;
+  /**
+   * 取消令牌
+   */
+  cancelToken?: CancelToken;
+  /**
+   * 上传
+   */
   upload?: boolean;
-  url?: string;
+  /**
+   * 下载
+   */
+  download?: boolean;
+  /**
+   * 转换请求数据
+   */
+  transformRequest?: AxiosTransformer | AxiosTransformer[];
+  /**
+   * 转换响应数据
+   */
+  transformResponse?: AxiosTransformer | AxiosTransformer[];
+  /**
+   * 异常梳处理
+   */
+  errorHandler?: (error: unknown) => Promise<unknown>;
+  /**
+   * 监听上传进度
+   */
+  onUploadProgress?: AxiosProgressCallback;
+  /**
+   * 监听下载进度
+   */
+  onDownloadProgress?: AxiosProgressCallback;
+  /**
+   * 请求参数系列化函数
+   */
+  paramsSerializer?: (params?: AnyObject) => string;
+  /**
+   * 校验状态码
+   */
   validateStatus?: (status: number) => boolean;
 }
 
-export interface AxiosResponse<TData = unknown> {
-  status: number;
-  statusText: string;
-  headers: AxiosResponseHeaders;
-  data: TData;
+export interface AxiosResponse<TData = unknown>
+  extends AxiosAdapterResponse<TData> {
   config?: AxiosRequestConfig;
   request?: AxiosAdapterTask;
-  cookies?: string[];
-  profile?: AnyObject;
 }
 
-export interface AxiosResponseError extends AnyObject {
-  status: number;
-  statusText: string;
-  headers: AxiosResponseHeaders;
+export interface AxiosResponseError extends AxiosAdapterResponseError {
   config?: AxiosRequestConfig;
   request?: AxiosAdapterTask;
 }
@@ -149,87 +187,67 @@ export default class Axios {
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutParams<TData>(
-      'options',
-      url,
-      undefined,
-      config,
-    );
+    return this._req<TData>('options', url, undefined, config);
   }
 
   public get<TData = unknown>(
     url: string,
-    params?: AxiosRequestParams,
+    params?: AnyObject,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutParams<TData>('get', url, params, config);
+    return this._req<TData>('get', url, params, config);
   }
 
   public head<TData = unknown>(
     url: string,
-    params?: AxiosRequestParams,
+    params?: AnyObject,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutParams<TData>('head', url, params, config);
+    return this._req<TData>('head', url, params, config);
   }
 
   public post<TData = unknown>(
     url: string,
-    data?: AxiosRequestData | AxiosRequestFormData,
+    data?: AnyObject | AxiosRequestFormData,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutData<TData>('post', url, data, config);
+    return this._reqWithData<TData>('post', url, data, config);
   }
 
   public put<TData = unknown>(
     url: string,
-    data?: AxiosRequestData | AxiosRequestFormData,
+    data?: AnyObject | AxiosRequestFormData,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutData<TData>('put', url, data, config);
+    return this._reqWithData<TData>('put', url, data, config);
   }
 
   public delete<TData = unknown>(
     url: string,
-    params?: AxiosRequestParams,
+    params?: AnyObject,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutParams<TData>(
-      'delete',
-      url,
-      params,
-      config,
-    );
+    return this._req<TData>('delete', url, params, config);
   }
 
   public trace<TData = unknown>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutParams<TData>(
-      'trace',
-      url,
-      undefined,
-      config,
-    );
+    return this._req<TData>('trace', url, undefined, config);
   }
 
   public connect<TData = unknown>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
-    return this._requestMethodWithoutParams<TData>(
-      'connect',
-      url,
-      undefined,
-      config,
-    );
+    return this._req<TData>('connect', url, undefined, config);
   }
 
-  private _requestMethodWithoutParams<TData = unknown>(
+  private _req<TData = unknown>(
     method: AxiosRequestMethod,
     url: string,
-    params?: AxiosRequestParams,
+    params?: AnyObject,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this.request<TData>({
@@ -240,10 +258,10 @@ export default class Axios {
     });
   }
 
-  private _requestMethodWithoutData<TData = unknown>(
+  private _reqWithData<TData = unknown>(
     method: AxiosRequestMethod,
     url: string,
-    data?: AxiosRequestData | AxiosRequestFormData,
+    data?: AnyObject | AxiosRequestFormData,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     return this.request<TData>({

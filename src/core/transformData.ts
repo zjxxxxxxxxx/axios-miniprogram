@@ -1,22 +1,17 @@
 import { isArray, isUndefined } from '../helpers/is';
-import {
-  AxiosRequestData,
-  AxiosRequestFormData,
-  AxiosResponseHeaders,
-} from './Axios';
+import { AxiosRequestFormData } from './Axios';
 
 export interface AxiosTransformer {
-  (
-    data?: AxiosRequestData | AxiosRequestFormData,
-    headers?: AxiosResponseHeaders,
-  ): AxiosRequestData | AxiosRequestFormData;
+  (data?: AnyObject | AxiosRequestFormData, headers?: AnyObject):
+    | AnyObject
+    | AxiosRequestFormData;
 }
 
 export function transformData(
-  data?: AxiosRequestData | AxiosRequestFormData,
-  headers?: AxiosResponseHeaders,
+  data?: AnyObject | AxiosRequestFormData,
+  headers?: AnyObject,
   transforms?: AxiosTransformer | AxiosTransformer[],
-): AxiosRequestData | AxiosRequestFormData | undefined {
+): AnyObject | AxiosRequestFormData | undefined {
   if (isUndefined(transforms)) {
     return data;
   }

@@ -8,6 +8,8 @@ export type {
 } from './core/Axios';
 export type {
   AxiosAdapterRequestConfig,
+  AxiosAdapterResponse,
+  AxiosAdapterResponseError,
   AxiosAdapter,
   AxiosPlatform,
 } from './adapter';
