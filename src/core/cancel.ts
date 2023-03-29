@@ -37,11 +37,11 @@ export function isCancel(value: unknown): value is Cancel {
 export class CancelToken {
   private reason?: Cancel;
 
-  public listener: Promise<Cancel>;
+  public onCancel: Promise<Cancel>['then'];
 
   public constructor(executor: CancelExecutor) {
     let action!: CancelAction;
-    this.listener = new Promise<Cancel>((resolve) => {
+    const promise = new Promise<Cancel>((resolve) => {
       action = (message) => {
         if (this.reason) {
           return;
@@ -52,6 +52,8 @@ export class CancelToken {
         resolve(this.reason);
       };
     });
+
+    this.onCancel = promise.then.bind(promise);
 
     executor(action);
   }

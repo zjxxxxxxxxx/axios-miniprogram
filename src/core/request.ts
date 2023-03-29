@@ -84,7 +84,7 @@ export function request<TData = unknown>(
     }
 
     if (isCancelToken(config.cancelToken)) {
-      config.cancelToken.listener.then((reason: unknown) => {
+      config.cancelToken.onCancel((reason: unknown) => {
         if (isPlainObject(adapterTask)) {
           tryToggleProgressUpdate(adapterConfig, adapterTask.offProgressUpdate);
 
