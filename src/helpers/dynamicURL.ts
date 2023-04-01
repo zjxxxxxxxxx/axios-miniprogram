@@ -2,10 +2,7 @@ import { isPlainObject } from './isTypes';
 
 const dynamicREG = /\/?(:([a-zA-Z_$][\w-$]*))\/??/g;
 
-export function dynamicInterpolation(
-  url: string,
-  sourceData?: unknown,
-): string {
+export function interpolation(url: string, sourceData?: unknown): string {
   if (!isPlainObject(sourceData)) {
     return url;
   }

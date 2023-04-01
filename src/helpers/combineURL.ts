@@ -1,7 +1,4 @@
-const combineREG = /([^:])\/{2,}/g;
-export function combineURL(baseURL = '', url: string): string {
-  const separator = '/';
-  const replaceStr = `$1${separator}`;
-
-  return `${baseURL}${separator}${url}`.replace(combineREG, replaceStr);
+const combineREG = /(^|[^:])\/{2,}/g;
+export function combineURL(baseURL: string, url: string): string {
+  return url ? `${baseURL}/${url}`.replace(combineREG, '$1/') : baseURL;
 }

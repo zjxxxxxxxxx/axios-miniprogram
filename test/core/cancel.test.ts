@@ -2,7 +2,7 @@ import { describe, test, expect, vi } from 'vitest';
 import {
   asyncNext,
   captureError,
-  mockSuccessResponse,
+  mockSuccess,
   noop,
   asyncTimeout,
 } from 'scripts/test.utils';
@@ -100,7 +100,7 @@ describe('测试 src/helpers/cancel.ts', () => {
 
     source.cancel();
     axios({
-      adapter: ({ success }) => success(mockSuccessResponse()),
+      adapter: ({ success }) => success(mockSuccess()),
       cancelToken: source.token,
     }).catch(canceled);
 
@@ -114,7 +114,7 @@ describe('测试 src/helpers/cancel.ts', () => {
     const source = CancelToken.source();
 
     axios({
-      adapter: ({ success }) => success(mockSuccessResponse()),
+      adapter: ({ success }) => success(mockSuccess()),
       cancelToken: source.token,
     }).catch(canceled);
     source.cancel();
