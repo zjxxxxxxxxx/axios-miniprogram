@@ -13,9 +13,8 @@ export function throwError(msg: string): void {
 export function cleanStack(error: Error) {
   if (error.stack) {
     const start = error.stack.indexOf('at');
-    const end = error.stack.indexOf('at /');
-
-    if (start !== end) {
+    const end = error.stack.search(/at ([\w-_.]+:)?\//i);
+    if (start < end) {
       const removed = error.stack.slice(start, end);
       error.stack = error.stack.replace(removed, '');
     }

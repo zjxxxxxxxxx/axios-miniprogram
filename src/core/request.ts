@@ -52,7 +52,7 @@ export function request<TData = unknown>(
       fail,
     };
 
-    const adapterTask = config.adapter?.(adapterConfig) as
+    const adapterTask = config.adapter!(adapterConfig) as
       | AxiosAdapterTask
       | undefined;
 
@@ -83,8 +83,9 @@ export function request<TData = unknown>(
       tryToggleProgressUpdate(adapterConfig, adapterTask.onProgressUpdate);
     }
 
-    if (isCancelToken(config.cancelToken)) {
-      config.cancelToken.onCancel((reason: unknown) => {
+    const { cancelToken } = config;
+    if (isCancelToken(cancelToken)) {
+      cancelToken.onCancel((reason) => {
         if (isPlainObject(adapterTask)) {
           tryToggleProgressUpdate(adapterConfig, adapterTask.offProgressUpdate);
 

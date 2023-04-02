@@ -2,12 +2,17 @@ import { describe, test, expect, vi } from 'vitest';
 import {
   asyncNext,
   captureError,
-  mockSuccess,
+  mockAdapterSuccess,
   noop,
   asyncTimeout,
 } from 'scripts/test.utils';
 import axios from 'src/axios';
-import { Cancel, isCancel, CancelToken, isCancelToken } from 'src/core/cancel';
+import {
+  Cancel,
+  isCancel,
+  CancelToken,
+  isCancelToken,
+} from '../../src/core/cancel';
 
 describe('src/helpers/cancel.ts', () => {
   test('应该支持空参数', () => {
@@ -100,7 +105,7 @@ describe('src/helpers/cancel.ts', () => {
 
     source.cancel();
     axios({
-      adapter: ({ success }) => success(mockSuccess()),
+      adapter: mockAdapterSuccess(),
       cancelToken: source.token,
     }).catch(canceled);
 
@@ -114,7 +119,7 @@ describe('src/helpers/cancel.ts', () => {
     const source = CancelToken.source();
 
     axios({
-      adapter: ({ success }) => success(mockSuccess()),
+      adapter: mockAdapterSuccess(),
       cancelToken: source.token,
     }).catch(canceled);
     source.cancel();

@@ -1,3 +1,5 @@
+import { AxiosAdapterRequestConfig } from 'src';
+
 export function asyncNext() {
   return Promise.resolve().then;
 }
@@ -46,4 +48,39 @@ export function mockSuccess(headers: AnyObject = {}, data: AnyObject = {}) {
 
 export function mockFail(headers: AnyObject = {}, data: AnyObject = {}) {
   return mockResponse(400, 'FAIL', headers, data);
+}
+
+export interface MockAdapterOptions {
+  headers?: AnyObject;
+  data?: AnyObject;
+  delay?: number;
+  before?: (config: AxiosAdapterRequestConfig) => void;
+  after?: () => void;
+}
+
+export function mockAdapter(
+  type: 'success' | 'fail',
+  options: MockAdapterOptions = {},
+) {
+  const { headers = {}, data = {}, delay = 0, before, after } = options;
+
+  return (config: AxiosAdapterRequestConfig) => {
+    before?.(config);
+    setTimeout(() => {
+      if (type === 'success') {
+        config.success(mockSuccess(headers, data));
+      } else {
+        config.fail(mockFail(headers, data));
+      }
+      after?.();
+    }, delay);
+  };
+}
+
+export function mockAdapterSuccess(options: MockAdapterOptions = {}) {
+  return mockAdapter('success', options);
+}
+
+export function mockAdapterFail(options: MockAdapterOptions = {}) {
+  return mockAdapter('fail', options);
 }

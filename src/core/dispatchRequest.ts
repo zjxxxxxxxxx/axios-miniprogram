@@ -1,5 +1,5 @@
 import { isPlainObject } from '../helpers/isTypes';
-import { isCancel } from './cancel';
+import { isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { transformData } from './transformData';
 import { request } from './request';
@@ -7,8 +7,9 @@ import { AxiosRequestConfig, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
 
 function throwIfCancellationRequested(config: AxiosRequestConfig) {
-  if (config.cancelToken) {
-    config.cancelToken.throwIfRequested();
+  const { cancelToken } = config;
+  if (isCancelToken(cancelToken)) {
+    cancelToken.throwIfRequested();
   }
 }
 

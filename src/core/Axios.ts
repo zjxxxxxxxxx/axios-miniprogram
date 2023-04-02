@@ -138,6 +138,10 @@ export interface AxiosConstructor {
 }
 
 export default class Axios {
+  public static as = ['options', 'trace', 'connect'] as const;
+  public static pas = ['head', 'get', 'delete'] as const;
+  public static das = ['post', 'put'] as const;
+
   public defaults: AxiosRequestConfig;
 
   public interceptors = {
@@ -145,8 +149,71 @@ export default class Axios {
     response: new InterceptorManager<AxiosResponse>(),
   };
 
+  public options!: <TData = unknown>(
+    url: string,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
+  public get!: <TData = unknown>(
+    url: string,
+    params?: AnyObject,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
+  public head!: <TData = unknown>(
+    url: string,
+    params?: AnyObject,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
+  public post!: <TData = unknown>(
+    url: string,
+    data?: AnyObject | AxiosRequestFormData,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
+  public put!: <TData = unknown>(
+    url: string,
+    data?: AnyObject | AxiosRequestFormData,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
+  public delete!: <TData = unknown>(
+    url: string,
+    params?: AnyObject,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
+  public trace!: <TData = unknown>(
+    url: string,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
+  public connect!: <TData = unknown>(
+    url: string,
+    config?: AxiosRequestConfig,
+  ) => Promise<AxiosResponse<TData>>;
+
   public constructor(defaults: AxiosRequestConfig = {}) {
     this.defaults = defaults;
+
+    for (const alias of Axios.as) {
+      this[alias] = (url, config) => {
+        return this._req(alias, url, undefined, config);
+      };
+    }
+
+    for (const alias of Axios.pas) {
+      this[alias] = (url, params, config) => {
+        return this._req(alias, url, params, config);
+      };
+    }
+
+    for (const alias of Axios.das) {
+      this[alias] = (url, data, config) => {
+        return this._reqWithData(alias, url, data, config);
+      };
+    }
   }
 
   public getUri(config: AxiosRequestConfig): string {
@@ -181,67 +248,6 @@ export default class Axios {
     });
 
     return promiseResponse as Promise<AxiosResponse<TData>>;
-  }
-
-  public options<TData = unknown>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._req<TData>('options', url, undefined, config);
-  }
-
-  public get<TData = unknown>(
-    url: string,
-    params?: AnyObject,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._req<TData>('get', url, params, config);
-  }
-
-  public head<TData = unknown>(
-    url: string,
-    params?: AnyObject,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._req<TData>('head', url, params, config);
-  }
-
-  public post<TData = unknown>(
-    url: string,
-    data?: AnyObject | AxiosRequestFormData,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._reqWithData<TData>('post', url, data, config);
-  }
-
-  public put<TData = unknown>(
-    url: string,
-    data?: AnyObject | AxiosRequestFormData,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._reqWithData<TData>('put', url, data, config);
-  }
-
-  public delete<TData = unknown>(
-    url: string,
-    params?: AnyObject,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._req<TData>('delete', url, params, config);
-  }
-
-  public trace<TData = unknown>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._req<TData>('trace', url, undefined, config);
-  }
-
-  public connect<TData = unknown>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this._req<TData>('connect', url, undefined, config);
   }
 
   private _req<TData = unknown>(
