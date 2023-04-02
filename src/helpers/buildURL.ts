@@ -1,65 +1,46 @@
-import { isDate, isNull, isPlainObject, isUndefined } from './isTypes';
+import { isArray, isDate, isNull, isPlainObject, isUndefined } from './isTypes';
 
 export function buildURL(
   url = '',
-  params?: unknown,
-  paramsSerializer = paramsSerialization,
+  params?: AnyObject,
+  paramsSerializer = defaultSerializer,
 ): string {
-  if (!isPlainObject(params)) {
-    return url;
-  }
-
-  return generateURL(url, paramsSerializer(params));
-}
-
-function generateURL(url: string, serializedParams: string): string {
   const hashIndex = url.indexOf('#');
-
   if (hashIndex !== -1) {
     url = url.slice(0, hashIndex);
   }
 
-  if (serializedParams === '') {
-    return url;
+  const paramsStr = paramsSerializer(params);
+  if (paramsStr) {
+    url = `${url}${url.indexOf('?') === -1 ? '?' : '&'}${paramsStr}`;
   }
 
-  const prefix = url.indexOf('?') === -1 ? '?' : '&';
-
-  serializedParams = `${prefix}${serializedParams}`;
-
-  return `${url}${serializedParams}`;
+  return url;
 }
 
-function paramsSerialization(params?: AnyObject): string {
-  if (!isPlainObject(params)) {
-    return '';
-  }
+function defaultSerializer(params?: AnyObject): string {
+  if (!isPlainObject(params)) return '';
 
   const parts: string[] = [];
 
-  Object.keys(params).forEach((key): void => {
-    const value = params[key];
+  function push(key: string, value: string) {
+    parts.push(`${encode(key)}=${encode(value)}`);
+  }
 
-    if (isNull(value) || isUndefined(value) || value !== value) {
-      return;
-    }
-
-    if (Array.isArray(value)) {
-      key += '[]';
-    }
-
-    const values = [].concat(value);
-
-    values.forEach((val: any): void => {
+  for (const [key, val] of Object.entries(params)) {
+    if (!isNull(val) && !isUndefined(val) && val === val) {
       if (isPlainObject(val)) {
-        val = JSON.stringify(val);
+        for (const [k, v] of Object.entries(val)) push(`${key}[${k}]`, v);
+      } else if (isArray<string>(val)) {
+        const k = `${key}[]`;
+        for (const v of val) push(k, v);
       } else if (isDate(val)) {
-        val = (val as Date).toISOString();
+        push(key, val.toISOString());
+      } else {
+        push(key, val);
       }
-
-      parts.push(`${encode(key)}=${encode(val)}`);
-    });
-  });
+    }
+  }
 
   return parts.join('&');
 }

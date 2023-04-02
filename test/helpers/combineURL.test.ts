@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { combineURL } from 'src/helpers/combineURL';
 
-describe('测试 src/helpers/combineURL.ts', () => {
+describe('src/helpers/combineURL.ts', () => {
   test('应该直接返回第一个参数', () => {
     expect(combineURL('http://api.com', '')).toBe('http://api.com');
     expect(combineURL('file://api.com', '')).toBe('file://api.com');

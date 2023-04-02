@@ -15,6 +15,13 @@ export function captureError<T = any>(fn: () => void): T {
   }
 }
 
+export function cleanedStack(error: Error) {
+  if (error.stack) {
+    return error.stack.indexOf('at') === error.stack.indexOf('at /');
+  }
+  return true;
+}
+
 export function noop() {
   return;
 }

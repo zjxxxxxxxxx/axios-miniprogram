@@ -1,18 +1,4 @@
-import { isPlainObject } from './isTypes';
-
-const dynamicREG = /\/?(:([a-zA-Z_$][\w-$]*))\/??/g;
-
-export function interpolation(url: string, sourceData?: unknown): string {
-  if (!isPlainObject(sourceData)) {
-    return url;
-  }
-
-  return url.replace(dynamicREG, ($1, $2, $3) =>
-    $1.replace($2, sourceData[$3]),
-  );
-}
-
-export function isDynamicURL(url: string): boolean {
-  dynamicREG.lastIndex = 0;
-  return dynamicREG.test(url);
+const dynamicRE = /:([^/]+)/g;
+export function dynamicURL(url: string, data: AnyObject = {}): string {
+  return url.replace(dynamicRE, (_, $2) => data[$2]);
 }

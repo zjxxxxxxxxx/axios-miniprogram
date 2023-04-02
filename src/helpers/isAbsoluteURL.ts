@@ -1,4 +1,4 @@
-const absoluteREG = /^([a-z][a-z\d+\-.]*:)?\/\//i;
+const absoluteRE = /^([a-z][\w-.]*:)\/\//i;
 export function isAbsoluteURL(url: string): boolean {
-  return absoluteREG.test(url);
+  return absoluteRE.test(url);
 }

@@ -9,7 +9,7 @@ import {
 import axios from 'src/axios';
 import { Cancel, isCancel, CancelToken, isCancelToken } from 'src/core/cancel';
 
-describe('测试 src/helpers/cancel.ts', () => {
+describe('src/helpers/cancel.ts', () => {
   test('应该支持空参数', () => {
     const cancel = new Cancel();
 

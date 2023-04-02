@@ -1,3 +1,4 @@
+import { cleanStack } from '../helpers/error';
 import { AxiosAdapterTask } from '../adapter';
 import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 
@@ -34,5 +35,7 @@ export function createError(
   request?: AxiosAdapterTask,
   response?: AxiosErrorResponse,
 ): AxiosError {
-  return new AxiosError(message, config, request, response);
+  const axiosError = new AxiosError(message, config, request, response);
+  cleanStack(axiosError);
+  return axiosError;
 }

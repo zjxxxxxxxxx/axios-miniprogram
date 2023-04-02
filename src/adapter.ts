@@ -168,13 +168,10 @@ export function getAdapterDefault(): AxiosAdapter | undefined {
 }
 
 export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
-  assert(isPlainObject(platform), 'platform 需要是一个 object');
-  assert(isFunction(platform.request), 'platform.request 需要是一个 function');
-  assert(isFunction(platform.upload), 'platform.upload 需要是一个 function');
-  assert(
-    isFunction(platform.download),
-    'platform.download 需要是一个 function',
-  );
+  assert(isPlainObject(platform), 'platform 不是一个 object');
+  assert(isFunction(platform.request), 'platform.request 不是一个 function');
+  assert(isFunction(platform.upload), 'platform.upload 不是一个 function');
+  assert(isFunction(platform.download), 'platform.download 不是一个 function');
 
   function adapterDefault(
     config: AxiosAdapterRequestConfig,
@@ -204,17 +201,14 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     upload: AxiosAdapterUpload,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask | void {
-    assert(
-      isPlainObject(baseOptions.data),
-      '上传文件时 data 需要是一个 object',
-    );
+    assert(isPlainObject(baseOptions.data), 'data 不是一个 object');
     assert(
       isString(baseOptions.data?.fileName),
-      '上传文件时 data.fileName 需要是一个 string',
+      'data.fileName 不是一个 string',
     );
     assert(
       isString(baseOptions.data?.filePath),
-      '上传文件时 data.filePath 需要是一个 string',
+      'data.filePath 不是一个 string',
     );
 
     const { fileName, filePath, fileType, ...formData } =

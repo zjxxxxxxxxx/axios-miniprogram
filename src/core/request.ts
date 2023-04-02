@@ -41,7 +41,7 @@ export function request<TData = unknown>(
   config: AxiosRequestConfig,
 ): Promise<AxiosResponse<TData>> {
   return new Promise((resolve, reject) => {
-    assert(isFunction(config.adapter), 'adapter 需要是一个 function');
+    assert(isFunction(config.adapter), 'adapter 不是一个 function');
 
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...config,

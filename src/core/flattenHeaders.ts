@@ -1,5 +1,5 @@
 import { isPlainObject } from '../helpers/isTypes';
-import { omit } from '../helpers/omit';
+import { ignore } from '../helpers/ignore';
 import { AxiosRequestConfig, AxiosRequestHeaders } from './Axios';
 
 export function flattenHeaders(
@@ -12,7 +12,7 @@ export function flattenHeaders(
   return {
     ...(config.headers.common ?? {}),
     ...(config.headers[config.method!.toLowerCase()] ?? {}),
-    ...omit(
+    ...ignore(
       config.headers,
       'common',
       'options',
