@@ -2,35 +2,17 @@ import { isUndefined, isPlainObject } from '../helpers/isTypes';
 import { deepMerge } from '../helpers/deepMerge';
 import { AxiosRequestConfig } from './Axios';
 
-type AxiosRequestConfigKey = keyof AxiosRequestConfig;
-
-const onlyFromConfig2Keys: AxiosRequestConfigKey[] = [
-  'url',
-  'method',
-  'data',
-  'upload',
-  'download',
-];
-const priorityFromConfig2Keys: AxiosRequestConfigKey[] = [
-  'adapter',
-  'baseURL',
-  'paramsSerializer',
-  'transformRequest',
-  'transformResponse',
-  'errorHandler',
-  'cancelToken',
-  'dataType',
-  'responseType',
-  'timeout',
-  'enableHttp2',
-  'enableQuic',
-  'enableCache',
-  'sslVerify',
-  'validateStatus',
-  'onUploadProgress',
-  'onDownloadProgress',
-];
-const deepMergeConfigKeys: AxiosRequestConfigKey[] = ['headers', 'params'];
+const fromConfig2Map: Record<string, boolean> = {
+  url: true,
+  method: true,
+  data: true,
+  upload: true,
+  download: true,
+};
+const deepMergeConfigMap: Record<string, boolean> = {
+  headers: true,
+  params: true,
+};
 
 export function mergeConfig(
   config1: AxiosRequestConfig = {},
@@ -38,33 +20,36 @@ export function mergeConfig(
 ): AxiosRequestConfig {
   const config: AxiosRequestConfig = {};
 
-  for (const key of onlyFromConfig2Keys) {
-    const value = config2[key];
+  // 所有已知键名
+  const keysSet = Array.from(
+    new Set([...Object.keys(config1), ...Object.keys(config2)]),
+  );
 
-    if (!isUndefined(value)) {
-      config[key] = value as any;
+  for (const key of keysSet) {
+    const val1 = config1[key] as any;
+    const val2 = config2[key] as any;
+
+    // 只从 config2 中取值
+    if (fromConfig2Map[key]) {
+      if (!isUndefined(val2)) config[key] = val2;
     }
-  }
-
-  for (const key of priorityFromConfig2Keys) {
-    const value1 = config1[key];
-    const value2 = config2[key];
-
-    if (!isUndefined(value2)) {
-      config[key] = value2 as any;
-    } else if (!isUndefined(value1)) {
-      config[key] = value1 as any;
+    // 深度合并 config1 和 config2 中的对象
+    else if (deepMergeConfigMap[key]) {
+      if (isPlainObject(val1) && isPlainObject(val2)) {
+        config[key] = deepMerge(val1, val2);
+      } else if (isPlainObject(val1)) {
+        config[key] = deepMerge(val1);
+      } else if (isPlainObject(val2)) {
+        config[key] = deepMerge(val2);
+      }
     }
-  }
-
-  for (const key of deepMergeConfigKeys) {
-    const value1 = config1[key];
-    const value2 = config2[key];
-
-    if (isPlainObject(value2)) {
-      config[key] = deepMerge(value1 ?? {}, value2) as any;
-    } else if (isPlainObject(value1)) {
-      config[key] = deepMerge(value1) as any;
+    // 优先从 config2 中取值，如果没有值就从 config1 中取值
+    else {
+      if (!isUndefined(val2)) {
+        config[key] = val2;
+      } else if (!isUndefined(val1)) {
+        config[key] = val1;
+      }
     }
   }
 

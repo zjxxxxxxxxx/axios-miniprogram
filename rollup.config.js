@@ -23,7 +23,7 @@ function main() {
 function buildConfig(format) {
   const isDts = format === 'dts';
   const output = {
-    file: resolvePath(format, isDts),
+    file: resolveOutput(format, isDts),
     format: isDts ? 'es' : format,
     name: pkg.name,
     exports: 'default',
@@ -51,7 +51,7 @@ function buildConfig(format) {
   };
 }
 
-function resolvePath(format, isDts) {
+function resolveOutput(format, isDts) {
   return path.resolve(
     distPath,
     `${pkg.name}${isDts ? '.d.ts' : `.${format}.js`}`,

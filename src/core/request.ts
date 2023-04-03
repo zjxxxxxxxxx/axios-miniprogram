@@ -1,4 +1,4 @@
-import { isFunction, isPlainObject } from '../helpers/isTypes';
+import { isFunction, isPlainObject, isString } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
 import {
   AxiosAdapterRequestConfig,
@@ -42,10 +42,12 @@ export function request<TData = unknown>(
 ): Promise<AxiosResponse<TData>> {
   return new Promise((resolve, reject) => {
     assert(isFunction(config.adapter), 'adapter 不是一个 function');
+    assert(isString(config.url), 'url 不是一个 string');
+    assert(isString(config.method), 'method 不是一个 string');
 
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...config,
-      url: config.url ?? '',
+      url: config.url,
       type: generateType(config),
       method: config.method!.toUpperCase() as AxiosAdapterRequestMethod,
       success,

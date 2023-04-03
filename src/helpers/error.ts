@@ -11,12 +11,13 @@ export function throwError(msg: string): void {
 }
 
 export function cleanStack(error: Error) {
-  if (error.stack) {
-    const start = error.stack.indexOf('at');
-    const end = error.stack.search(/at ([\w-_.]+:)?\//i);
+  const { stack } = error;
+  if (stack) {
+    const start = stack.indexOf('at');
+    const end = stack.search(/at ([\w-_.]+:)?\//i);
     if (start < end) {
-      const removed = error.stack.slice(start, end);
-      error.stack = error.stack.replace(removed, '');
+      const removed = stack.slice(start, end);
+      error.stack = stack.replace(removed, '');
     }
   }
 }

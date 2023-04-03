@@ -8,7 +8,7 @@ export function asyncTimeout(delay = 0) {
   return new Promise((resolve) => setTimeout(resolve, delay));
 }
 
-export function captureError<T = any>(fn: () => void): T {
+export function captureError<T = any>(fn: () => void) {
   try {
     fn();
     throw new Error('without Error');
@@ -17,7 +17,7 @@ export function captureError<T = any>(fn: () => void): T {
   }
 }
 
-export function cleanedStack(error: Error) {
+export function checkStack(error: Error) {
   if (error.stack) {
     return error.stack.indexOf('at') === error.stack.indexOf('at /');
   }
@@ -28,7 +28,7 @@ export function noop() {
   return;
 }
 
-export function mockResponse(
+export function mockResponseBase(
   status: number,
   statusText: string,
   headers: AnyObject,
@@ -42,12 +42,15 @@ export function mockResponse(
   };
 }
 
-export function mockSuccess(headers: AnyObject = {}, data: AnyObject = {}) {
-  return mockResponse(200, 'OK', headers, data);
+export function mockResponse(headers: AnyObject = {}, data: AnyObject = {}) {
+  return mockResponseBase(200, 'OK', headers, data);
 }
 
-export function mockFail(headers: AnyObject = {}, data: AnyObject = {}) {
-  return mockResponse(400, 'FAIL', headers, data);
+export function mockResponseError(
+  headers: AnyObject = {},
+  data: AnyObject = {},
+) {
+  return mockResponseBase(400, 'FAIL', headers, data);
 }
 
 export interface MockAdapterOptions {
@@ -58,8 +61,8 @@ export interface MockAdapterOptions {
   after?: () => void;
 }
 
-export function mockAdapter(
-  type: 'success' | 'fail',
+export function mockAdapterBase(
+  type: 'success' | 'error' | 'fail' = 'success',
   options: MockAdapterOptions = {},
 ) {
   const { headers = {}, data = {}, delay = 0, before, after } = options;
@@ -67,20 +70,30 @@ export function mockAdapter(
   return (config: AxiosAdapterRequestConfig) => {
     before?.(config);
     setTimeout(() => {
-      if (type === 'success') {
-        config.success(mockSuccess(headers, data));
-      } else {
-        config.fail(mockFail(headers, data));
+      switch (type) {
+        case 'success':
+          config.success(mockResponse(headers, data));
+          break;
+        case 'error':
+          config.success(mockResponseError(headers, data));
+          break;
+        case 'fail':
+          config.fail(mockResponseError(headers));
+          break;
       }
       after?.();
     }, delay);
   };
 }
 
-export function mockAdapterSuccess(options: MockAdapterOptions = {}) {
-  return mockAdapter('success', options);
+export function mockAdapter(options: MockAdapterOptions = {}) {
+  return mockAdapterBase('success', options);
+}
+
+export function mockAdapterError(options: MockAdapterOptions = {}) {
+  return mockAdapterBase('error', options);
 }
 
 export function mockAdapterFail(options: MockAdapterOptions = {}) {
-  return mockAdapter('fail', options);
+  return mockAdapterBase('fail', options);
 }

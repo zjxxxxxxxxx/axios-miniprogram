@@ -27,32 +27,28 @@ export default function dispatchRequest<TData = unknown>(
     config.transformRequest,
   );
 
-  return request<TData>(config).then(
-    (response: AxiosResponse<TData>) => {
+  function transformer(response: AxiosResponse<TData>) {
+    response.data = transformData(
+      response.data as AnyObject,
+      response.headers,
+      config.transformResponse,
+    ) as TData;
+  }
+
+  return request<TData>(config)
+    .then((response: AxiosResponse<TData>) => {
       throwIfCancellationRequested(config);
-
-      response.data = transformData(
-        response.data as AnyObject,
-        response.headers,
-        config.transformResponse,
-      ) as TData;
-
+      transformer(response);
       return response;
-    },
-    (reason: unknown) => {
+    })
+    .catch((reason: unknown) => {
       if (!isCancel(reason)) {
         throwIfCancellationRequested(config);
-
-        if (isPlainObject(reason) && isPlainObject(reason.response)) {
-          reason.response.data = transformData(
-            reason.response.data,
-            reason.response.headers,
-            config.transformResponse,
-          );
+        const response = (reason as AnyObject)?.response;
+        if (isPlainObject(response)) {
+          transformer(response as AxiosResponse<TData>);
         }
       }
-
       throw config.errorHandler?.(reason) ?? reason;
-    },
-  );
+    });
 }

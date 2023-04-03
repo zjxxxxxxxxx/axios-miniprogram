@@ -1,27 +1,27 @@
 import { describe, test, expect } from 'vitest';
-import { cleanedStack } from 'scripts/test.utils';
+import { checkStack } from 'scripts/test.utils';
 import { createError } from 'src/core/createError';
 
 describe('src/core/createError.ts', () => {
   test('应该支持空参数', () => {
-    const config = {};
-    const axiosError = createError('error', config);
+    const c = {};
+    const err = createError('error', c);
 
-    expect(axiosError.isAxiosError).toBeTruthy();
-    expect(axiosError.message).toBe('error');
-    expect(axiosError.config).toBe(config);
-    expect(cleanedStack(axiosError)).toBeTruthy();
+    expect(err.isAxiosError).toBeTruthy();
+    expect(err.message).toBe('error');
+    expect(err.config).toBe(c);
+    expect(checkStack(err)).toBeTruthy();
   });
 
   test('应该支持传入更多参数', () => {
-    const config = {};
-    const request = {};
-    const response = {};
-    const axiosError = createError('error', config, request, response as any);
+    const c = {};
+    const req = {};
+    const res = {};
+    const err = createError('error', c, req, res as any);
 
-    expect(axiosError.message).toBe('error');
-    expect(axiosError.config).toBe(config);
-    expect(axiosError.request).toBe(request);
-    expect(axiosError.response).toBe(response);
+    expect(err.message).toBe('error');
+    expect(err.config).toBe(c);
+    expect(err.request).toBe(req);
+    expect(err.response).toBe(res);
   });
 });

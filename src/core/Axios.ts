@@ -198,20 +198,34 @@ export default class Axios {
     this.defaults = defaults;
 
     for (const alias of Axios.as) {
-      this[alias] = (url, config) => {
-        return this._req(alias, url, undefined, config);
+      this[alias] = (url, config = {}) => {
+        return this.request({
+          ...config,
+          method: alias,
+          url,
+        });
       };
     }
 
     for (const alias of Axios.pas) {
-      this[alias] = (url, params, config) => {
-        return this._req(alias, url, params, config);
+      this[alias] = (url, params, config = {}) => {
+        return this.request({
+          ...config,
+          method: alias,
+          params,
+          url,
+        });
       };
     }
 
     for (const alias of Axios.das) {
       this[alias] = (url, data, config) => {
-        return this._reqWithData(alias, url, data, config);
+        return this.request({
+          ...config,
+          method: alias,
+          data,
+          url,
+        });
       };
     }
   }
@@ -248,33 +262,5 @@ export default class Axios {
     });
 
     return promiseResponse as Promise<AxiosResponse<TData>>;
-  }
-
-  private _req<TData = unknown>(
-    method: AxiosRequestMethod,
-    url: string,
-    params?: AnyObject,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this.request<TData>({
-      ...(config ?? {}),
-      method,
-      url,
-      params,
-    });
-  }
-
-  private _reqWithData<TData = unknown>(
-    method: AxiosRequestMethod,
-    url: string,
-    data?: AnyObject | AxiosRequestFormData,
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>> {
-    return this.request<TData>({
-      ...(config ?? {}),
-      method,
-      url,
-      data,
-    });
   }
 }

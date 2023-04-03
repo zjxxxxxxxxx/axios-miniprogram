@@ -9,17 +9,17 @@ describe('src/helpers/combineURL.ts', () => {
   });
 
   test('应该得到拼接后的结果', () => {
-    expect(combineURL('http://api.com', '/user')).toBe('http://api.com/user');
-    expect(combineURL('file://api.com', '/user')).toBe('file://api.com/user');
-    expect(combineURL('unknow://api.com', '/user')).toBe(
-      'unknow://api.com/user',
+    expect(combineURL('http://api.com', '/test')).toBe('http://api.com/test');
+    expect(combineURL('file://api.com', '/test')).toBe('file://api.com/test');
+    expect(combineURL('unknow://api.com', '/test')).toBe(
+      'unknow://api.com/test',
     );
   });
 
   test('应该清理多余的斜线', () => {
-    expect(combineURL('//api//', '//user//')).toBe('/api/user/');
-    expect(combineURL('http://api.com//', '//user//')).toBe(
-      'http://api.com/user/',
+    expect(combineURL('//api//', '//test//')).toBe('/api/test/');
+    expect(combineURL('http://api.com//', '//test//')).toBe(
+      'http://api.com/test/',
     );
   });
 });

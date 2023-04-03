@@ -9,6 +9,6 @@
     "noEmit": true,
     "moduleResolution": "node"
   },
-  "include": ["./src", "./test", "./global.d.ts"],
+  "include": ["./src", "./test", "./global.d.ts", "./global.variables.d.ts"],
   "exclude": ["node_modules"]
 }

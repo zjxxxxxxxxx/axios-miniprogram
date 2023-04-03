@@ -13,6 +13,8 @@ axios.defaults.adapter = function adapter(adapterConfig) {
     url,
     // 请求方法
     method,
+    // 请求参数
+    params,
     // 请求数据
     data,
     // 请求头 同 headers
@@ -53,7 +55,7 @@ axios.defaults.adapter = function adapter(adapterConfig) {
       return wx.downloadFile({
         url,
         method,
-        filePath: data.filePath,
+        filePath: params.filePath,
         header: headers,
         success,
         fail,
