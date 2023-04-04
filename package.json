@@ -1,6 +1,6 @@
 {
   "name": "axios-miniprogram",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-beta.0",
   "description": "基于 Promise 的 HTTP 请求库，适用于各大小程序平台。",
   "main": "dist/axios-miniprogram.esm.js",
   "module": "dist/axios-miniprogram.cjs.js",
