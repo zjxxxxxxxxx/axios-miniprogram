@@ -95,10 +95,10 @@ function createReleases() {
     ['patch'],
     ['minor'],
     ['major'],
-    ['prepatch', 'alpha'],
-    ['preminor', 'alpha'],
-    ['premajor', 'alpha'],
-    ['prerelease', 'alpha'],
+    ['prepatch', 'beta'],
+    ['preminor', 'beta'],
+    ['premajor', 'beta'],
+    ['prerelease', 'beta'],
   ];
   const releases: string[] = [];
   for (const [type, preid] of types) {

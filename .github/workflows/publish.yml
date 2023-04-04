@@ -29,7 +29,8 @@ jobs:
       - name: Build
         run: pnpm build -a
 
+      - name: Set .npmrc for publish
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ./.npmrc
+
       - name: Publish
         run: pnpm publish:ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
