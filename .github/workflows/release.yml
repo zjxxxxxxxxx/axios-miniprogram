@@ -40,7 +40,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: 'CHANGELOG.md'
+          body_path: 'CHANGELOG.md'
           prerelease: ${{ steps.prerelease.outputs.result }}
 
       - name: Build Release Asset
