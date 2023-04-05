@@ -274,22 +274,17 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   }
 
   function injectDownloadData(response: AnyObject): void {
-    response.data = response.data || {};
+    response.data = {
+      filePath: response.filePath,
+      tempFilePath:
+        response.tempFilePath ||
+        // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
+        response.apFilePath,
+    };
 
-    if (response.tempFilePath) {
-      response.data.tempFilePath = response.tempFilePath;
-      delete response.tempFilePath;
-    }
-
-    if (response.apFilePath) {
-      response.data.tempFilePath = response.apFilePath;
-      delete response.apFilePath;
-    }
-
-    if (response.filePath) {
-      response.data.filePath = response.filePath;
-      delete response.filePath;
-    }
+    if (response.tempFilePath) delete response.tempFilePath;
+    if (response.apFilePath) delete response.apFilePath;
+    if (response.filePath) delete response.filePath;
   }
 
   return adapter;
