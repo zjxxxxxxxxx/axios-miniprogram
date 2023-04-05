@@ -7,15 +7,15 @@ export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
 class AxiosError extends Error {
   public config: AxiosRequestConfig;
 
-  public request?: AxiosAdapterTask;
+  public request: AxiosAdapterTask;
 
-  public response?: AxiosErrorResponse;
+  public response: AxiosErrorResponse;
 
   public constructor(
     message: string,
     config: AxiosRequestConfig,
-    request?: AxiosAdapterTask,
-    response?: AxiosErrorResponse,
+    response: AxiosErrorResponse,
+    request: AxiosAdapterTask,
   ) {
     super(message);
 
@@ -30,10 +30,10 @@ class AxiosError extends Error {
 export function createError(
   message: string,
   config: AxiosRequestConfig,
-  request?: AxiosAdapterTask,
-  response?: AxiosErrorResponse,
+  response: AxiosErrorResponse,
+  request: AxiosAdapterTask,
 ): AxiosError {
-  const axiosError = new AxiosError(message, config, request, response);
+  const axiosError = new AxiosError(message, config, response, request);
   cleanStack(axiosError);
   return axiosError;
 }

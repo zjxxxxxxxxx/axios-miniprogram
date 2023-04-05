@@ -11,7 +11,7 @@ import { mergeConfig } from './core/mergeConfig';
 import { AxiosAdapter, createAdapter, AxiosPlatform } from './adapter';
 import defaults from './defaults';
 
-export interface AxiosInstanceDefaults extends AxiosRequestHeaders {
+export interface AxiosInstanceDefaults extends AxiosRequestConfig {
   headers: Required<AxiosRequestHeaders>;
 }
 

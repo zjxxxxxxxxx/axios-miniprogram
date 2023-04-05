@@ -5,7 +5,6 @@ import {
   AxiosAdapterRequestMethod,
   AxiosAdapterResponse,
   AxiosAdapterResponseError,
-  AxiosAdapterTask,
 } from '../adapter';
 import {
   AxiosProgressCallback,
@@ -56,9 +55,7 @@ export function request<TData = unknown>(
       fail,
     };
 
-    const adapterTask = config.adapter!(adapterConfig) as
-      | AxiosAdapterTask
-      | undefined;
+    const adapterTask = config.adapter!(adapterConfig);
 
     function success(_: AxiosAdapterResponse<TData>): void {
       const response = _ as AxiosResponse<TData>;
@@ -75,15 +72,18 @@ export function request<TData = unknown>(
     }
 
     function fail(_: AxiosAdapterResponseError): void {
-      const error = _ as AxiosResponseError;
-      error.isFail = true;
-      error.config = config;
-      error.request = adapterTask;
-      catchError('网络错误', error);
+      const responseError = _ as AxiosResponseError;
+      responseError.isFail = true;
+      responseError.config = config;
+      responseError.request = adapterTask;
+      catchError('网络错误', responseError);
     }
 
-    function catchError(message: string, response?: AxiosErrorResponse): void {
-      reject(createError(message, config, adapterTask, response));
+    function catchError(
+      message: string,
+      errorResponse: AxiosErrorResponse,
+    ): void {
+      reject(createError(message, config, errorResponse, adapterTask));
     }
 
     if (isPlainObject(adapterTask)) {

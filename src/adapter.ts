@@ -104,15 +104,15 @@ export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
 }
 
 export interface AxiosAdapterRequest {
-  (config: AxiosAdapterBaseOptions): AxiosAdapterTask | void;
+  (config: AxiosAdapterBaseOptions): AxiosAdapterTask;
 }
 
 export interface AxiosAdapterUpload {
-  (config: AxiosAdapterUploadOptions): AxiosAdapterTask | void;
+  (config: AxiosAdapterUploadOptions): AxiosAdapterTask;
 }
 
 export interface AxiosAdapterDownload {
-  (config: AxiosAdapterDownloadOptions): AxiosAdapterTask | void;
+  (config: AxiosAdapterDownloadOptions): AxiosAdapterTask;
 }
 
 export interface AxiosPlatform {
@@ -121,14 +121,14 @@ export interface AxiosPlatform {
   download: AxiosAdapterDownload;
 }
 
-export interface AxiosAdapterTask {
+export type AxiosAdapterTask = {
   abort?(): void;
   onProgressUpdate?(callback: AxiosProgressCallback): void;
   offProgressUpdate?(callback: AxiosProgressCallback): void;
-}
+} | void;
 
 export interface AxiosAdapter {
-  (config: AxiosAdapterRequestConfig): AxiosAdapterTask | void;
+  (config: AxiosAdapterRequestConfig): AxiosAdapterTask;
 }
 
 export function getAdapterDefault(): AxiosAdapter | undefined {
@@ -171,7 +171,7 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   assert(isFunction(platform.upload), 'upload 不是一个 function');
   assert(isFunction(platform.download), 'download 不是一个 function');
 
-  function adapter(config: AxiosAdapterRequestConfig): AxiosAdapterTask | void {
+  function adapter(config: AxiosAdapterRequestConfig): AxiosAdapterTask {
     const baseOptions = transformOptions(config);
 
     switch (config.type) {
@@ -189,14 +189,14 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   function callRequest(
     request: AxiosAdapterRequest,
     baseOptions: AxiosAdapterBaseOptions,
-  ): AxiosAdapterTask | void {
+  ): AxiosAdapterTask {
     return request(baseOptions);
   }
 
   function callUpload(
     upload: AxiosAdapterUpload,
     baseOptions: AxiosAdapterBaseOptions,
-  ): AxiosAdapterTask | void {
+  ): AxiosAdapterTask {
     const { fileName, filePath, fileType, ...formData } =
       baseOptions.data as AxiosRequestFormData;
     const options = {
@@ -214,7 +214,7 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   function callDownload(
     download: AxiosAdapterDownload,
     baseOptions: AxiosAdapterBaseOptions,
-  ): AxiosAdapterTask | void {
+  ): AxiosAdapterTask {
     const options = {
       ...baseOptions,
       filePath: baseOptions.params?.filePath,
