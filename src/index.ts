@@ -13,5 +13,9 @@ export type {
   AxiosAdapter,
   AxiosPlatform,
 } from './adapter';
-export type { AxiosInstance, AxiosStatic } from './axios';
+export type {
+  AxiosInstanceDefaults,
+  AxiosInstance,
+  AxiosStatic,
+} from './axios';
 export default axios;

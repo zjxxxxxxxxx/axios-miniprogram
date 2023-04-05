@@ -1,21 +1,17 @@
 import { getAdapterDefault } from './adapter';
-import { AxiosRequestConfig } from './core/Axios';
+import { AxiosInstanceDefaults } from './axios';
 
-const defaults: AxiosRequestConfig = {
+const defaults: AxiosInstanceDefaults = {
   adapter: getAdapterDefault(),
   headers: {
     common: {
-      Accept: 'application/json, test/plain, */*',
+      Accept: 'application/json, text/plain, */*',
     },
     options: {},
     get: {},
     head: {},
-    post: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-    },
-    put: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-    },
+    post: {},
+    put: {},
     delete: {},
     trace: {},
     connect: {},

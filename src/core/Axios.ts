@@ -25,6 +25,7 @@ export type AxiosRequestMethod =
   | 'connect';
 
 export interface AxiosRequestHeaders extends AnyObject {
+  common?: AnyObject;
   options?: AnyObject;
   get?: AnyObject;
   head?: AnyObject;

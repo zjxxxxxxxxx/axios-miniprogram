@@ -10,7 +10,12 @@ import { mergeConfig } from './core/mergeConfig';
 import { isString } from './helpers/isTypes';
 import defaults from './defaults';
 
+export interface AxiosInstanceDefaults extends AxiosRequestHeaders {
+  headers: Required<AxiosRequestHeaders>;
+}
+
 export interface AxiosInstance extends Axios {
+  defaults: AxiosInstanceDefaults;
   <TData = unknown>(config: AxiosRequestConfig): Promise<AxiosResponse<TData>>;
   <TData = unknown>(url: string, config?: AxiosRequestConfig): Promise<
     AxiosResponse<TData>
@@ -19,9 +24,6 @@ export interface AxiosInstance extends Axios {
 
 export interface AxiosStatic extends AxiosInstance {
   Axios: AxiosConstructor;
-  defaults: AxiosRequestConfig & {
-    headers?: AxiosRequestHeaders & { common?: AnyObject };
-  };
   CancelToken: CancelTokenConstructor;
   create(defaults?: AxiosRequestConfig): AxiosInstance;
   createAdapter(platform: AxiosPlatform): AxiosAdapter;
