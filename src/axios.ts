@@ -20,7 +20,7 @@ export interface AxiosInstance extends Axios {
 export interface AxiosStatic extends AxiosInstance {
   Axios: AxiosConstructor;
   defaults: AxiosRequestConfig & {
-    headers: Required<AxiosRequestHeaders> & { common?: AnyObject };
+    headers?: AxiosRequestHeaders & { common?: AnyObject };
   };
   CancelToken: CancelTokenConstructor;
   create(defaults?: AxiosRequestConfig): AxiosInstance;

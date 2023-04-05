@@ -26,6 +26,9 @@ jobs:
       - name: Install
         run: pnpm i
 
+      - name: Create releaselog
+        run: pnpm releaselog
+
       - name: Check prerelease
         id: prerelease
         uses: actions/github-script@v6
@@ -40,7 +43,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body_path: 'CHANGELOG.md'
+          body_path: 'RELEASELOG.md'
           prerelease: ${{ steps.prerelease.outputs.result }}
 
       - name: Build Release Asset

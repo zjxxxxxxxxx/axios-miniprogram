@@ -243,19 +243,17 @@ export default class Axios {
     config: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     const requestConfig = mergeConfig(this.defaults, config);
+    const { request, response } = this.interceptors;
 
     let promiseRequest = Promise.resolve(requestConfig);
-
-    this.interceptors.request.forEach(({ resolved, rejected }) => {
+    request.forEach(({ resolved, rejected }) => {
       promiseRequest = promiseRequest.then(
         resolved,
         rejected,
       ) as Promise<AxiosRequestConfig>;
-    }, 'reverse');
-
+    }, true);
     let promiseResponse = promiseRequest.then(dispatchRequest);
-
-    this.interceptors.response.forEach(({ resolved, rejected }) => {
+    response.forEach(({ resolved, rejected }) => {
       promiseResponse = promiseResponse.then(resolved, rejected) as Promise<
         AxiosResponse<unknown>
       >;

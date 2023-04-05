@@ -36,15 +36,9 @@ export default class InterceptorManager<T = unknown> {
     delete this.interceptors[id];
   }
 
-  public forEach(executor: InterceptorExecutor, reverse?: 'reverse'): void {
-    let interceptors: Interceptor<any>[] = Object.keys(this.interceptors).map(
-      (id) => this.interceptors[id],
-    );
-
-    if (reverse === 'reverse') {
-      interceptors = interceptors.reverse();
-    }
-
+  public forEach(executor: InterceptorExecutor, reverse?: boolean): void {
+    let interceptors: Interceptor<any>[] = Object.values(this.interceptors);
+    if (reverse) interceptors = interceptors.reverse();
     interceptors.forEach(executor);
   }
 }

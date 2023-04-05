@@ -45,6 +45,7 @@ function buildConfig(format) {
         : esbuildPlugin({
             tsconfig: path.resolve(__dirname, 'tsconfig.json'),
             sourceMap: output.sourcemap,
+            target: 'es2015',
             minify: true,
           }),
     ],

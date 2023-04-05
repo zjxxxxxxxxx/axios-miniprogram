@@ -44,9 +44,11 @@ export default function dispatchRequest<TData = unknown>(
     .catch((reason: unknown) => {
       if (!isCancel(reason)) {
         throwIfCancellationRequested(config);
-        const response = (reason as AnyObject)?.response;
-        if (isPlainObject(response)) {
-          transformer(response as AxiosResponse<TData>);
+        if (isPlainObject(reason)) {
+          const { response } = reason;
+          if (isPlainObject(response)) {
+            transformer(response as AxiosResponse<TData>);
+          }
         }
       }
       throw config.errorHandler?.(reason) ?? reason;

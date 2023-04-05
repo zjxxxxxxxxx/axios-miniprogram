@@ -2,7 +2,6 @@ import {
   isEmptyArray,
   isFunction,
   isPlainObject,
-  isString,
   isUndefined,
 } from './helpers/isTypes';
 import { assert, throwError } from './helpers/error';
@@ -152,7 +151,7 @@ export function getAdapterDefault(): AxiosAdapter | undefined {
     try {
       const tryGetPlatform = tryGetPlatforms.shift();
 
-      if (isPlainObject((platform = tryGetPlatform?.()))) {
+      if (isPlainObject((platform = tryGetPlatform!()))) {
         platform = revisePlatformApiNames(platform);
       }
     } catch (err) {
@@ -169,13 +168,11 @@ export function getAdapterDefault(): AxiosAdapter | undefined {
 
 export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   assert(isPlainObject(platform), 'platform 不是一个 object');
-  assert(isFunction(platform.request), 'platform.request 不是一个 function');
-  assert(isFunction(platform.upload), 'platform.upload 不是一个 function');
-  assert(isFunction(platform.download), 'platform.download 不是一个 function');
+  assert(isFunction(platform.request), 'request 不是一个 function');
+  assert(isFunction(platform.upload), 'upload 不是一个 function');
+  assert(isFunction(platform.download), 'download 不是一个 function');
 
-  function adapterDefault(
-    config: AxiosAdapterRequestConfig,
-  ): AxiosAdapterTask | void {
+  function adapter(config: AxiosAdapterRequestConfig): AxiosAdapterTask | void {
     const baseOptions = transformOptions(config);
 
     switch (config.type) {
@@ -201,16 +198,6 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     upload: AxiosAdapterUpload,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask | void {
-    assert(isPlainObject(baseOptions.data), 'data 不是一个 object');
-    assert(
-      isString(baseOptions.data?.fileName),
-      'data.fileName 不是一个 string',
-    );
-    assert(
-      isString(baseOptions.data?.filePath),
-      'data.filePath 不是一个 string',
-    );
-
     const { fileName, filePath, fileType, ...formData } =
       baseOptions.data as AxiosRequestFormData;
     const options = {
@@ -306,7 +293,7 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     }
   }
 
-  return adapterDefault;
+  return adapter;
 }
 
 export function isPlatform(value: unknown): value is AxiosPlatform {
