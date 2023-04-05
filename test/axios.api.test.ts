@@ -1,7 +1,8 @@
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 import { mockAdapter } from 'scripts/test.utils';
 import Axios from '../src/core/Axios';
-import { CancelToken } from '../src/core/cancel';
+import { CancelToken, isCancel } from '../src/core/cancel';
+import { isAxiosError } from '../src/core/createError';
 import { createAdapter } from '../src/adapter';
 import defaults from '../src/defaults';
 import axios from '../src/axios';
@@ -24,11 +25,13 @@ describe('src/axios.ts', () => {
     expect(axios.Axios).toBe(Axios);
     expect(axios.CancelToken).toBe(CancelToken);
     expect(axios.createAdapter).toBe(createAdapter);
+    expect(axios.isCancel).toBe(isCancel);
+    expect(axios.isAxiosError).toBe(isAxiosError);
 
     expect(axios.interceptors).toBeTypeOf('object');
     expect(axios.create).toBeTypeOf('function');
     expect(axios.request).toBeTypeOf('function');
-    expect(axios.isCancel).toBeTypeOf('function');
+
     expect(axios.getUri).toBeTypeOf('function');
 
     [...Axios.as, ...Axios.pas, ...Axios.das].forEach((k) => {

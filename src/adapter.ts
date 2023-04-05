@@ -10,7 +10,6 @@ import {
   AxiosRequestFormData,
   AxiosRequestHeaders,
   AxiosResponse,
-  AxiosResponseError,
 } from './core/Axios';
 
 export type AxiosAdapterRequestType = 'request' | 'download' | 'upload';
@@ -267,7 +266,7 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
         transformResult(response);
         config.success(response);
       },
-      fail(error: AxiosResponseError): void {
+      fail(error: AxiosAdapterResponseError): void {
         transformResult(error);
         config.fail(error);
       },

@@ -5,8 +5,6 @@ import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
 
 class AxiosError extends Error {
-  public isAxiosError = true;
-
   public config: AxiosRequestConfig;
 
   public request?: AxiosAdapterTask;
@@ -38,4 +36,8 @@ export function createError(
   const axiosError = new AxiosError(message, config, request, response);
   cleanStack(axiosError);
   return axiosError;
+}
+
+export function isAxiosError(value: unknown): value is AxiosError {
+  return value instanceof AxiosError;
 }

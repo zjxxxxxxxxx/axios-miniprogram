@@ -1,4 +1,4 @@
-import { AxiosAdapter, createAdapter, AxiosPlatform } from './adapter';
+import { isString } from './helpers/isTypes';
 import Axios, {
   AxiosConstructor,
   AxiosRequestConfig,
@@ -6,8 +6,9 @@ import Axios, {
   AxiosResponse,
 } from './core/Axios';
 import { CancelToken, CancelTokenConstructor, isCancel } from './core/cancel';
+import { isAxiosError } from './core/createError';
 import { mergeConfig } from './core/mergeConfig';
-import { isString } from './helpers/isTypes';
+import { AxiosAdapter, createAdapter, AxiosPlatform } from './adapter';
 import defaults from './defaults';
 
 export interface AxiosInstanceDefaults extends AxiosRequestHeaders {
@@ -27,7 +28,8 @@ export interface AxiosStatic extends AxiosInstance {
   CancelToken: CancelTokenConstructor;
   create(defaults?: AxiosRequestConfig): AxiosInstance;
   createAdapter(platform: AxiosPlatform): AxiosAdapter;
-  isCancel(value: unknown): boolean;
+  isCancel: typeof isCancel;
+  isAxiosError: typeof isAxiosError;
 }
 
 function createInstance(defaults: AxiosRequestConfig): AxiosInstance {
@@ -61,5 +63,6 @@ axios.create = function create(defaults: AxiosRequestConfig): AxiosInstance {
 };
 axios.createAdapter = createAdapter;
 axios.isCancel = isCancel;
+axios.isAxiosError = isAxiosError;
 
 export default axios;

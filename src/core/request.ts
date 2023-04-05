@@ -3,6 +3,8 @@ import { assert } from '../helpers/error';
 import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
+  AxiosAdapterResponse,
+  AxiosAdapterResponseError,
   AxiosAdapterTask,
 } from '../adapter';
 import {
@@ -58,7 +60,8 @@ export function request<TData = unknown>(
       | AxiosAdapterTask
       | undefined;
 
-    function success(response: AxiosResponse<TData>): void {
+    function success(_: AxiosAdapterResponse<TData>): void {
+      const response = _ as AxiosResponse<TData>;
       response.config = config;
       response.request = adapterTask;
       if (
@@ -71,7 +74,9 @@ export function request<TData = unknown>(
       }
     }
 
-    function fail(error: AxiosResponseError): void {
+    function fail(_: AxiosAdapterResponseError): void {
+      const error = _ as AxiosResponseError;
+      error.isFail = true;
       error.config = config;
       error.request = adapterTask;
       catchError('网络错误', error);

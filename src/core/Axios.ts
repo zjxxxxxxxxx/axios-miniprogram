@@ -5,8 +5,8 @@ import {
   AxiosAdapterRequestMethod,
   AxiosAdapterTask,
   AxiosAdapterResponse,
-  AxiosAdapterResponseError,
   AxiosAdapterRequestConfig,
+  AxiosAdapterResponseError,
 } from '../adapter';
 import { CancelToken } from './cancel';
 import dispatchRequest from './dispatchRequest';
@@ -130,6 +130,7 @@ export interface AxiosResponse<TData = unknown>
 }
 
 export interface AxiosResponseError extends AxiosAdapterResponseError {
+  isFail: true;
   config?: AxiosRequestConfig;
   request?: AxiosAdapterTask;
 }
