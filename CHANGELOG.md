@@ -1,3 +1,12 @@
+# [2.0.0-beta.10](https://github.com/zjx0905/axios-miniprogram/compare/v2.0.0-beta.0...v2.0.0-beta.10) (2023-04-05)
+
+
+### Features
+
+* 支持 es2015 ([b66176f](https://github.com/zjx0905/axios-miniprogram/commit/b66176f0ed90eaec5c1377077359a234691ae1b3))
+
+
+
 # 2.0.0-beta.0 (2023-04-04)
 
 ### Bug Fixes
