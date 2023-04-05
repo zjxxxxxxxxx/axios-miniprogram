@@ -19,4 +19,17 @@ describe('src/helpers/dynamicURL.ts', () => {
       }),
     ).toBe('http://api.com/tests/name/axios/type/0/list');
   });
+
+  test('应该忽略端口号', () => {
+    expect(
+      dynamicURL(':8080/:id', {
+        id: 0,
+      }),
+    ).toBe(':8080/0');
+    expect(
+      dynamicURL('http://api.com:8080/:id', {
+        id: 0,
+      }),
+    ).toBe('http://api.com:8080/0');
+  });
 });
