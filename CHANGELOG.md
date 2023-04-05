@@ -1,3 +1,23 @@
+# [2.0.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.0.0-beta.10...v2.0.0) (2023-04-05)
+
+
+### Bug Fixes
+
+* 修复 dynamicURL 错误匹配端口号 ([7e29e91](https://github.com/zjx0905/axios-miniprogram/commit/7e29e91f0a2a4b1b1f3ca49a9cd5ff123466301a))
+
+
+### Features
+
+* 添加新的 API isAxiosError ([61337a9](https://github.com/zjx0905/axios-miniprogram/commit/61337a9bbe100cdab9e175f8ee42e4d5d2ba6842))
+* 优化 defaults ([2793dd8](https://github.com/zjx0905/axios-miniprogram/commit/2793dd8b5e1ad34218088718314e06545033cbbf))
+
+
+### BREAKING CHANGES
+
+* 移除了 headers 中 post,put 默认值
+
+
+
 # [2.0.0-beta.10](https://github.com/zjx0905/axios-miniprogram/compare/v2.0.0-beta.0...v2.0.0-beta.10) (2023-04-05)
 
 
