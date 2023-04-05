@@ -73,7 +73,7 @@
     "vitest": "^0.29.7"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged",
+    "pre-commit": "pnpm lint-staged && pnpm test && pnpm build -a",
     "commit-msg": "pnpm commitlint --edit $1"
   },
   "config": {
@@ -82,7 +82,13 @@
     }
   },
   "lint-staged": {
-    "*.(j|t)s": "pnpm lint:fix"
+    "*.{js,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "eslint",
+      "prettier --parser=typescript --write"
+    ]
   },
   "pnpm": {
     "peerDependencyRules": {

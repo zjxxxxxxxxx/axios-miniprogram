@@ -22,13 +22,13 @@ async function main() {
 
   consola.info('Git add');
   exec('git add .');
+  exec(`git commit -m "chore: release v${version}"`);
+  exec(`git tag -a v${version} -m "v${version}"`);
 
   consola.info('Git push');
-  exec(`git commit -m "chore: release v${version}"`);
   exec('git push');
 
   consola.info('Git push tag');
-  exec(`git tag -a v${version} -m "v${version}"`);
   exec(`git push origin v${version}`);
 }
 
