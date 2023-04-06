@@ -239,25 +239,25 @@ export default class Axios {
   /**
    * 普通请求别名
    */
-  public static as = ['options', 'trace', 'connect'] as const;
+  static as = ['options', 'trace', 'connect'] as const;
   /**
    * 带请求参数的请求别名
    */
-  public static pas = ['head', 'get', 'delete'] as const;
+  static pas = ['head', 'get', 'delete'] as const;
   /**
    * 带请求数据的请求别名
    */
-  public static das = ['post', 'put'] as const;
+  static das = ['post', 'put'] as const;
 
   /**
    * 默认请求配置
    */
-  public defaults: AxiosRequestConfig;
+  defaults: AxiosRequestConfig;
 
   /**
    * 拦截器
    */
-  public interceptors = {
+  interceptors = {
     /**
      * 请求拦截器
      */
@@ -271,49 +271,49 @@ export default class Axios {
   /**
    * 发送 options 请求
    */
-  public options!: AxiosAliasMethod;
+  options!: AxiosAliasMethod;
 
   /**
    * 发送 get 请求
    */
-  public get!: AxiosWithParamsAliasMethod;
+  get!: AxiosWithParamsAliasMethod;
 
   /**
    * 发送 head 请求
    */
-  public head!: AxiosWithParamsAliasMethod;
+  head!: AxiosWithParamsAliasMethod;
 
   /**
    * 发送 post 请求
    */
-  public post!: AxiosWithDataAliasMethod;
+  post!: AxiosWithDataAliasMethod;
 
   /**
    * 发送 put 请求
    */
-  public put!: AxiosWithDataAliasMethod;
+  put!: AxiosWithDataAliasMethod;
 
   /**
    * 发送 delete 请求
    */
-  public delete!: AxiosWithParamsAliasMethod;
+  delete!: AxiosWithParamsAliasMethod;
 
   /**
    * 发送 trace 请求
    */
-  public trace!: AxiosAliasMethod;
+  trace!: AxiosAliasMethod;
 
   /**
    * 发送 connect 请求
    */
-  public connect!: AxiosAliasMethod;
+  connect!: AxiosAliasMethod;
 
   /**
    * 实例化
    *
    * @param defaults 默认配置
    */
-  public constructor(defaults: AxiosRequestConfig = {}) {
+  constructor(defaults: AxiosRequestConfig = {}) {
     this.defaults = defaults;
 
     for (const alias of Axios.as) {
@@ -349,7 +349,7 @@ export default class Axios {
     }
   }
 
-  public getUri(config: AxiosRequestConfig): string {
+  getUri(config: AxiosRequestConfig): string {
     const { url, params, paramsSerializer } = mergeConfig(
       this.defaults,
       config,
@@ -363,7 +363,7 @@ export default class Axios {
    *
    * @param config 请求配置
    */
-  public request<TData = unknown>(
+  request<TData = unknown>(
     config: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {
     const requestConfig = mergeConfig(this.defaults, config);

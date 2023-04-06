@@ -33,13 +33,13 @@ export interface CancelTokenConstructor {
 }
 
 export class Cancel {
-  public message?: string;
+  message?: string;
 
-  public constructor(message?: string) {
+  constructor(message?: string) {
     this.message = message;
   }
 
-  public toString(): string {
+  toString(): string {
     const message = this.message ? `: ${this.message}` : '';
 
     return `Cancel${message}`;
@@ -51,21 +51,21 @@ export function isCancel(value: unknown): value is Cancel {
 }
 
 export class CancelToken {
-  private reason?: Cancel;
+  #reason?: Cancel;
 
-  public onCancel: Promise<Cancel>['then'];
+  onCancel: Promise<Cancel>['then'];
 
-  public constructor(executor: CancelExecutor) {
+  constructor(executor: CancelExecutor) {
     let action!: CancelAction;
     const promise = new Promise<Cancel>((resolve) => {
       action = (message) => {
-        if (this.reason) {
+        if (this.#reason) {
           return;
         }
 
-        this.reason = new Cancel(message);
+        this.#reason = new Cancel(message);
 
-        resolve(this.reason);
+        resolve(this.#reason);
       };
     });
 
@@ -74,7 +74,7 @@ export class CancelToken {
     executor(action);
   }
 
-  public static source(): CancelTokenSource {
+  static source(): CancelTokenSource {
     let cancel!: CancelAction;
     const token = new CancelToken((action) => {
       cancel = action;
@@ -86,9 +86,9 @@ export class CancelToken {
     };
   }
 
-  public throwIfRequested(): void {
-    if (this.reason) {
-      throw this.reason;
+  throwIfRequested(): void {
+    if (this.#reason) {
+      throw this.#reason;
     }
   }
 }

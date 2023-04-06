@@ -5,11 +5,11 @@ import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
 
 class AxiosError extends Error {
-  public config: AxiosRequestConfig;
-  public request: AxiosAdapterTask;
-  public response: AxiosErrorResponse;
+  config: AxiosRequestConfig;
+  request: AxiosAdapterTask;
+  response: AxiosErrorResponse;
 
-  public constructor(
+  constructor(
     message: string,
     config: AxiosRequestConfig,
     response: AxiosErrorResponse,
