@@ -6,7 +6,7 @@ import { __dirname, getPkgJSON } from './utils';
 const changelogPath = path.resolve(__dirname, 'CHANGELOG.md');
 const releaselogPath = path.resolve(__dirname, 'RELEASELOG.md');
 const { version } = getPkgJSON();
-const versionRE = new RegExp(`^# \\[?${version}\\]?`);
+const versionRE = new RegExp(`^# \\[?${version}\\]?[ (]`);
 
 main();
 
