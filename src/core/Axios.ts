@@ -25,22 +25,56 @@ export type AxiosRequestMethod =
   | 'connect';
 
 export interface AxiosRequestHeaders extends AnyObject {
+  /**
+   * 通用请求头
+   */
   common?: AnyObject;
+  /**
+   * options 请求头
+   */
   options?: AnyObject;
+  /**
+   * get 请求头
+   */
   get?: AnyObject;
+  /**
+   * head 请求头
+   */
   head?: AnyObject;
+  /**
+   * post 请求头
+   */
   post?: AnyObject;
+  /**
+   * put 请求头
+   */
   put?: AnyObject;
+  /**
+   * delete 请求头
+   */
   delete?: AnyObject;
+  /**
+   * trace 请求头
+   */
   trace?: AnyObject;
+  /**
+   * connect 请求头
+   */
   connect?: AnyObject;
 }
 
 export interface AxiosRequestFormData extends AnyObject {
-  fileName: string;
+  /**
+   * 文件名
+   */
+  name: string;
+  /**
+   * 文件路径
+   */
   filePath: string;
-  fileType?: 'image' | 'video' | 'audio';
 }
+
+export type AxiosRequestData = AnyObject | AxiosRequestFormData;
 
 export interface AxiosProgressEvent {
   progress: number;
@@ -72,7 +106,7 @@ export interface AxiosRequestConfig
   /**
    * 请求数据
    */
-  data?: AnyObject | AxiosRequestFormData;
+  data?: AxiosRequestData;
   /**
    * 请求头
    */
@@ -125,13 +159,28 @@ export interface AxiosRequestConfig
 
 export interface AxiosResponse<TData = unknown>
   extends AxiosAdapterResponse<TData> {
+  /**
+   * 请求配置
+   */
   config?: AxiosRequestConfig;
+  /**
+   * 请求任务
+   */
   request?: AxiosAdapterTask;
 }
 
 export interface AxiosResponseError extends AxiosAdapterResponseError {
+  /**
+   * 原生接口 fail 回调产生的响应错误
+   */
   isFail: true;
+  /**
+   * 请求配置
+   */
   config?: AxiosRequestConfig;
+  /**
+   * 请求任务
+   */
   request?: AxiosAdapterTask;
 }
 
@@ -139,63 +188,131 @@ export interface AxiosConstructor {
   new (config: AxiosRequestConfig): Axios;
 }
 
+export interface AxiosAliasMethod {
+  <TData = unknown>(
+    /**
+     * 请求地址
+     */
+    url: string,
+    /**
+     * 请求配置
+     */
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>>;
+}
+
+export interface AxiosWithParamsAliasMethod {
+  <TData = unknown>(
+    /**
+     * 请求地址
+     */
+    url: string,
+    /**
+     * 请求参数
+     */
+    params?: AnyObject,
+    /**
+     * 请求配置
+     */
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>>;
+}
+
+export interface AxiosWithDataAliasMethod {
+  <TData = unknown>(
+    /**
+     * 请求地址
+     */
+    url: string,
+    /**
+     * 请求数据
+     */
+    data?: AnyObject,
+    /**
+     * 请求配置
+     */
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>>;
+}
+
 export default class Axios {
+  /**
+   * 普通请求别名
+   */
   public static as = ['options', 'trace', 'connect'] as const;
+  /**
+   * 带请求参数的请求别名
+   */
   public static pas = ['head', 'get', 'delete'] as const;
+  /**
+   * 带请求数据的请求别名
+   */
   public static das = ['post', 'put'] as const;
 
+  /**
+   * 默认请求配置
+   */
   public defaults: AxiosRequestConfig;
 
+  /**
+   * 拦截器
+   */
   public interceptors = {
+    /**
+     * 请求拦截器
+     */
     request: new InterceptorManager<AxiosRequestConfig>(),
+    /**
+     * 响应拦截器
+     */
     response: new InterceptorManager<AxiosResponse>(),
   };
 
-  public options!: <TData = unknown>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 options 请求
+   */
+  public options!: AxiosAliasMethod;
 
-  public get!: <TData = unknown>(
-    url: string,
-    params?: AnyObject,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 get 请求
+   */
+  public get!: AxiosWithParamsAliasMethod;
 
-  public head!: <TData = unknown>(
-    url: string,
-    params?: AnyObject,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 head 请求
+   */
+  public head!: AxiosWithParamsAliasMethod;
 
-  public post!: <TData = unknown>(
-    url: string,
-    data?: AnyObject | AxiosRequestFormData,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 post 请求
+   */
+  public post!: AxiosWithDataAliasMethod;
 
-  public put!: <TData = unknown>(
-    url: string,
-    data?: AnyObject | AxiosRequestFormData,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 put 请求
+   */
+  public put!: AxiosWithDataAliasMethod;
 
-  public delete!: <TData = unknown>(
-    url: string,
-    params?: AnyObject,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 delete 请求
+   */
+  public delete!: AxiosWithParamsAliasMethod;
 
-  public trace!: <TData = unknown>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 trace 请求
+   */
+  public trace!: AxiosAliasMethod;
 
-  public connect!: <TData = unknown>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ) => Promise<AxiosResponse<TData>>;
+  /**
+   * 发送 connect 请求
+   */
+  public connect!: AxiosAliasMethod;
 
+  /**
+   * 实例化
+   *
+   * @param defaults 默认配置
+   */
   public constructor(defaults: AxiosRequestConfig = {}) {
     this.defaults = defaults;
 
@@ -221,7 +338,7 @@ export default class Axios {
     }
 
     for (const alias of Axios.das) {
-      this[alias] = (url, data, config) => {
+      this[alias] = (url, data, config = {}) => {
         return this.request({
           ...config,
           method: alias,
@@ -241,6 +358,11 @@ export default class Axios {
     return buildURL(url, params, paramsSerializer).replace(/^\?/, '');
   }
 
+  /**
+   * 发送请求
+   *
+   * @param config 请求配置
+   */
   public request<TData = unknown>(
     config: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>> {

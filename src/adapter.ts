@@ -25,15 +25,36 @@ export type AxiosAdapterRequestMethod =
   | 'CONNECT';
 
 export interface AxiosAdapterResponse<TData = unknown> extends AnyObject {
+  /**
+   * 状态码
+   */
   status: number;
+  /**
+   * 状态字符
+   */
   statusText: string;
+  /**
+   * 响应头
+   */
   headers: AnyObject;
+  /**
+   * 响应数据
+   */
   data: TData;
 }
 
 export interface AxiosAdapterResponseError extends AnyObject {
+  /**
+   * 状态码
+   */
   status: number;
+  /**
+   * 状态字符
+   */
   statusText: string;
+  /**
+   * 响应头
+   */
   headers: AnyObject;
 }
 
@@ -90,17 +111,15 @@ export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
   fail(error: unknown): void;
 }
 
-export interface AxiosAdapterUploadOptions extends AxiosAdapterBaseOptions {
-  filePath: string;
-  name: string;
+export interface AxiosAdapterUploadOptions
+  extends AxiosAdapterBaseOptions,
+    AxiosRequestFormData {
   fileName: string;
-  fileType: 'image' | 'video' | 'audio';
   formData?: AnyObject;
 }
 
 export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
   filePath?: string;
-  fileName?: string;
 }
 
 export interface AxiosAdapterRequest {
@@ -149,7 +168,6 @@ export function getAdapterDefault(): AxiosAdapter | undefined {
   while (!isEmptyArray(tryGetPlatforms) && !isPlatform(platform)) {
     try {
       const tryGetPlatform = tryGetPlatforms.shift();
-
       if (isPlainObject((platform = tryGetPlatform!()))) {
         platform = revisePlatformApiNames(platform);
       }
@@ -176,49 +194,54 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
 
     switch (config.type) {
       case 'request':
-        return callRequest(platform.request, baseOptions);
+        return processRequest(platform.request, baseOptions);
       case 'upload':
-        return callUpload(platform.upload, baseOptions);
+        return processUpload(platform.upload, baseOptions);
       case 'download':
-        return callDownload(platform.download, baseOptions);
+        return processDownload(platform.download, baseOptions);
       default:
         throwError(`无法识别的请求类型 ${config.type}`);
     }
   }
 
-  function callRequest(
+  function processRequest(
     request: AxiosAdapterRequest,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask {
     return request(baseOptions);
   }
 
-  function callUpload(
+  function processUpload(
     upload: AxiosAdapterUpload,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask {
-    const { fileName, filePath, fileType, ...formData } =
+    const { name, filePath, fileType, ...formData } =
       baseOptions.data as AxiosRequestFormData;
     const options = {
       ...baseOptions,
-      name: fileName,
-      fileName: fileName,
+      name,
+      /**
+       * [钉钉小程序用 fileName 代替 name](https://open.dingtalk.com/document/orgapp/dd-upload-objects#title-ngk-rr1-eow)
+       */
+      fileName: name,
       filePath,
-      fileType: fileType ?? 'image',
+      /**
+       * 钉钉小程序|支付宝小程序特有参数
+       */
+      fileType,
       formData,
     };
 
     return upload(options);
   }
 
-  function callDownload(
+  function processDownload(
     download: AxiosAdapterDownload,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask {
     const options = {
       ...baseOptions,
       filePath: baseOptions.params?.filePath,
-      fileName: baseOptions.params?.fileName,
       success(response: AnyObject): void {
         injectDownloadData(response);
         baseOptions.success(response);

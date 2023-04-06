@@ -6,9 +6,7 @@ export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
 
 class AxiosError extends Error {
   public config: AxiosRequestConfig;
-
   public request: AxiosAdapterTask;
-
   public response: AxiosErrorResponse;
 
   public constructor(

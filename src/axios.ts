@@ -12,23 +12,63 @@ import { AxiosAdapter, createAdapter, AxiosPlatform } from './adapter';
 import defaults from './defaults';
 
 export interface AxiosInstanceDefaults extends AxiosRequestConfig {
+  /**
+   * 请求头
+   */
   headers: Required<AxiosRequestHeaders>;
 }
 
 export interface AxiosInstance extends Axios {
+  /**
+   * 默认请求配置
+   */
   defaults: AxiosInstanceDefaults;
-  <TData = unknown>(config: AxiosRequestConfig): Promise<AxiosResponse<TData>>;
-  <TData = unknown>(url: string, config?: AxiosRequestConfig): Promise<
-    AxiosResponse<TData>
-  >;
+  <TData = unknown>(
+    /**
+     * 请求配置
+     */
+    config: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>>;
+  <TData = unknown>(
+    /**
+     * 请求地址
+     */
+    url: string,
+    /**
+     * 请求配置
+     */
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>>;
 }
 
 export interface AxiosStatic extends AxiosInstance {
+  /**
+   * Axios 类
+   */
   Axios: AxiosConstructor;
+  /**
+   * 取消令牌
+   */
   CancelToken: CancelTokenConstructor;
+  /**
+   * 创建 axios 实例
+   *
+   * @param defaults 默认配置
+   */
   create(defaults?: AxiosRequestConfig): AxiosInstance;
+  /**
+   * 创建适配器
+   *
+   * @param platform 平台
+   */
   createAdapter(platform: AxiosPlatform): AxiosAdapter;
+  /**
+   * 判断 Cancel
+   */
   isCancel: typeof isCancel;
+  /**
+   * 判断 AxiosError
+   */
   isAxiosError: typeof isAxiosError;
 }
 

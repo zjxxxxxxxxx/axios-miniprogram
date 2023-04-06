@@ -50,7 +50,7 @@ describe('src/adapter.ts', () => {
       type: 'download' as const,
       url: 'test',
       method: 'GET' as const,
-      params: { fileName: '', filePath: '' },
+      params: { filePath: '' },
       success: noop,
       fail: noop,
     };

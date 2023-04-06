@@ -11,8 +11,6 @@ axios
     {
       // 指定文件下载后存储的路径 (本地路径)，选填
       filePath: '',
-      // 指定文件下载后存储的名称，选填
-      fileName: '',
     },
     {
       download: true,

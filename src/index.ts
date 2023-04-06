@@ -2,6 +2,7 @@ import axios from './axios';
 
 export type {
   AxiosRequestConfig,
+  AxiosRequestData,
   AxiosRequestFormData,
   AxiosResponse,
   AxiosResponseError,

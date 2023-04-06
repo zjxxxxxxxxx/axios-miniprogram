@@ -1,17 +1,24 @@
 import { isArray, isUndefined } from '../helpers/isTypes';
-import { AxiosRequestFormData } from './Axios';
+import { AxiosRequestData } from './Axios';
 
 export interface AxiosTransformer {
-  (data?: AnyObject | AxiosRequestFormData, headers?: AnyObject):
-    | AnyObject
-    | AxiosRequestFormData;
+  (
+    /**
+     * 数据
+     */
+    data?: AxiosRequestData,
+    /**
+     * 头信息
+     */
+    headers?: AnyObject,
+  ): AxiosRequestData;
 }
 
 export function transformData(
-  data?: AnyObject | AxiosRequestFormData,
+  data?: AxiosRequestData,
   headers?: AnyObject,
   transforms?: AxiosTransformer | AxiosTransformer[],
-): AnyObject | AxiosRequestFormData | undefined {
+): AxiosRequestData | undefined {
   if (isUndefined(transforms)) {
     return data;
   }

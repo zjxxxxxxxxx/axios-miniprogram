@@ -1,13 +1,29 @@
 export interface CancelAction {
-  (message?: string): void;
+  (
+    /**
+     * 取消信息
+     */
+    message?: string,
+  ): void;
 }
 
 export interface CancelExecutor {
-  (cancel: CancelAction): void;
+  (
+    /**
+     * 取消函数
+     */
+    cancel: CancelAction,
+  ): void;
 }
 
 export interface CancelTokenSource {
+  /**
+   * 取消令牌
+   */
   token: CancelToken;
+  /**
+   * 取消函数
+   */
   cancel: CancelAction;
 }
 
