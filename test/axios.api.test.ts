@@ -33,8 +33,9 @@ describe('src/axios.ts', () => {
     expect(axios.request).toBeTypeOf('function');
 
     expect(axios.getUri).toBeTypeOf('function');
+    expect(axios.fork).toBeTypeOf('function');
 
-    [...Axios.as, ...Axios.pas, ...Axios.das].forEach((k) => {
+    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
       expect(axios[k]).toBeTypeOf('function');
     });
   });
@@ -77,7 +78,7 @@ describe('src/axios.ts', () => {
       }),
     };
 
-    Axios.pas.forEach((a) => {
+    Axios.asp.forEach((a) => {
       axios[a]('test', p, c1).then((res) => {
         expect(res.data).toEqual(data);
       });
@@ -108,7 +109,7 @@ describe('src/axios.ts', () => {
       }),
     };
 
-    Axios.das.forEach((a) => {
+    Axios.asd.forEach((a) => {
       axios[a]('test', d, c1).then((res) => {
         expect(res.data).toEqual(data);
       });

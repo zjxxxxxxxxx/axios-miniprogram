@@ -4,7 +4,7 @@ import Axios from 'src/core/Axios';
 
 describe('src/core/generateType.ts', () => {
   test('应该是一个 reuqest', () => {
-    for (const a of [...Axios.as, ...Axios.pas, ...Axios.das]) {
+    for (const a of [...Axios.as, ...Axios.asp, ...Axios.asd]) {
       expect(generateType({ method: a })).toBe('request');
     }
   });

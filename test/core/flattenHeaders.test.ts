@@ -3,7 +3,7 @@ import { flattenHeaders } from 'src/core/flattenHeaders';
 import Axios from 'src/core/Axios';
 
 describe('src/core/flattenHeaders.ts', () => {
-  const keys = [...Axios.as, ...Axios.pas, ...Axios.das];
+  const keys = [...Axios.as, ...Axios.asp, ...Axios.asd];
   const baseHeaders = {
     options: {
       v1: 'options1',
