@@ -139,9 +139,9 @@ export interface AxiosRequestConfig
    */
   transformResponse?: AxiosTransformer | AxiosTransformer[];
   /**
-   * 异常梳处理
+   * 异常处理
    */
-  errorHandler?: (error: unknown) => Promise<unknown>;
+  errorHandler?: (error: unknown) => Promise<AxiosResponse>;
   /**
    * 监听上传进度
    */

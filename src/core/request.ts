@@ -44,7 +44,6 @@ export function request<TData = unknown>(
   return new Promise((resolve, reject) => {
     assert(isFunction(config.adapter), 'adapter 不是一个 function');
     assert(isString(config.url), 'url 不是一个 string');
-    assert(isString(config.method), 'method 不是一个 string');
 
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...config,

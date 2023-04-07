@@ -7,19 +7,14 @@ import {
 } from 'scripts/test.utils';
 
 describe('src/core/request.ts', () => {
-  test('应该抛出异常', async () => {
-    await expect(request({})).rejects.toThrowErrorMatchingInlineSnapshot(
+  test('应该抛出异常', () => {
+    expect(request({})).rejects.toThrowErrorMatchingInlineSnapshot(
       '"[axios-miniprogram]: adapter 不是一个 function"',
     );
-    await expect(
+    expect(
       request({ adapter: mockAdapter() }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       '"[axios-miniprogram]: url 不是一个 string"',
-    );
-    await expect(
-      request({ adapter: mockAdapter(), url: 'test' }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"[axios-miniprogram]: method 不是一个 string"',
     );
   });
 

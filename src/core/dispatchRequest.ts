@@ -1,6 +1,7 @@
+import { isFunction } from '../helpers/isTypes';
 import { isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
-import { transformData } from './transformData';
+import { AxiosTransformer, transformData } from './transformData';
 import { request } from './request';
 import { AxiosRequestConfig, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
@@ -17,37 +18,45 @@ export default function dispatchRequest<TData = unknown>(
   config: AxiosRequestConfig,
 ): Promise<AxiosResponse> {
   throwIfCancellationRequested(config);
+  const { transformRequest, transformResponse } = config;
 
-  config.method = config.method ?? 'get';
   config.url = transformURL(config);
+  config.method = config.method ?? 'get';
   config.headers = flattenHeaders(config);
-  config.data = transformData(
-    config.data,
-    config.headers,
-    config.transformRequest,
-  );
 
-  function transformer(response: AxiosResponse<TData>) {
-    response.data = transformData(
-      response.data as AnyObject,
-      response.headers,
-      config.transformResponse,
+  transform(config, transformRequest);
+
+  function onSuccess(response: AxiosResponse<TData>) {
+    throwIfCancellationRequested(config);
+    transform(response, transformResponse);
+    return response;
+  }
+
+  function onError(reason: unknown) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+      if (isAxiosError(reason)) {
+        transform(reason.response as AxiosResponse<TData>, transformResponse);
+      }
+    }
+
+    if (isFunction(config.errorHandler)) {
+      return config.errorHandler(reason);
+    }
+
+    return Promise.reject(reason);
+  }
+
+  function transform<TData = unknown>(
+    target: AxiosRequestConfig | AxiosResponse<TData>,
+    transformer?: AxiosTransformer | AxiosTransformer[],
+  ) {
+    target.data = transformData(
+      target.data as AnyObject,
+      target.headers,
+      transformer,
     ) as TData;
   }
 
-  return request<TData>(config)
-    .then((response: AxiosResponse<TData>) => {
-      throwIfCancellationRequested(config);
-      transformer(response);
-      return response;
-    })
-    .catch((reason: unknown) => {
-      if (!isCancel(reason)) {
-        throwIfCancellationRequested(config);
-        if (isAxiosError(reason)) {
-          transformer(reason.response as AxiosResponse<TData>);
-        }
-      }
-      throw config.errorHandler?.(reason) ?? reason;
-    });
+  return request<TData>(config).then(onSuccess).catch(onError);
 }

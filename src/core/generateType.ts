@@ -1,16 +1,17 @@
 import { AxiosAdapterRequestType } from '../adapter';
 import { AxiosRequestConfig } from './Axios';
 
+const postRE = /^POST$/i;
+const getRE = /^GET$/i;
+
 export function generateType(
   config: AxiosRequestConfig,
 ): AxiosAdapterRequestType {
   let requestType: AxiosAdapterRequestType = 'request';
 
-  const method = config.method!.toUpperCase();
-  if (config.upload && method === 'POST') {
+  if (config.upload && postRE.test(config.method!)) {
     requestType = 'upload';
-  }
-  if (config.download && method === 'GET') {
+  } else if (config.download && getRE.test(config.method!)) {
     requestType = 'download';
   }
 
