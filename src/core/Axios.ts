@@ -207,7 +207,9 @@ export default class Axios extends AxiosDomain {
   };
 
   constructor(defaults: AxiosRequestConfig = {}) {
-    super(defaults, (...args) => this.#processRequest(...args));
+    super(defaults, (...args) => {
+      return this.#processRequest(...args);
+    });
   }
 
   getUri(config: AxiosRequestConfig): string {
@@ -222,15 +224,16 @@ export default class Axios extends AxiosDomain {
    * 派生领域
    */
   fork(defaults: AxiosRequestConfig) {
-    const config = mergeConfig(this.defaults, defaults);
     const { baseURL = '' } = defaults;
     if (!isAbsoluteURL(baseURL)) {
-      config.baseURL = combineURL(this.defaults.baseURL ?? '', baseURL);
+      defaults.baseURL = combineURL(this.defaults.baseURL ?? '', baseURL);
     }
-    return new AxiosDomain(config, this.#processRequest);
+    return new AxiosDomain(mergeConfig(this.defaults, defaults), (...args) => {
+      return this.#processRequest(...args);
+    });
   }
 
-  #processRequest = <TData = unknown>(config: AxiosRequestConfig) => {
+  #processRequest<TData = unknown>(config: AxiosRequestConfig) {
     const { request, response } = this.interceptors;
 
     let promiseRequest = Promise.resolve(config);
@@ -247,5 +250,5 @@ export default class Axios extends AxiosDomain {
       >;
     });
     return promiseResponse as Promise<AxiosResponse<TData>>;
-  };
+  }
 }

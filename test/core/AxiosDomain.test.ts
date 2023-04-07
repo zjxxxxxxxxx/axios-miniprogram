@@ -2,7 +2,7 @@ import { describe, test, expect, vi } from 'vitest';
 import AxiosDomain, { AxiosDomainRequest } from 'src/core/AxiosDomain';
 import { ignore } from 'src/helpers/ignore';
 
-describe('src/core/Axios.ts', () => {
+describe('src/core/AxiosDomain.ts', () => {
   test('应该有这些静态属性', () => {
     expect(AxiosDomain.as).toEqual(['options', 'trace', 'connect']);
     expect(AxiosDomain.asp).toEqual(['head', 'get', 'delete']);
@@ -86,5 +86,71 @@ describe('src/core/Axios.ts', () => {
       AxiosDomain.asd.length +
       1;
     expect(cb.mock.calls.length).toBe(l);
+  });
+
+  test('应该支持深度合并 params', () => {
+    const d = {
+      baseURL: 'http://api.com',
+    };
+    const p = {
+      v1: 1,
+      v2: {
+        v1: 1,
+      },
+    };
+    const c = {
+      params: {
+        v2: {
+          v2: 2,
+        },
+        v3: 3,
+      },
+    };
+
+    const a = new AxiosDomain(d, ((config) => {
+      expect(config.params).toEqual({
+        v1: 1,
+        v2: {
+          v1: 1,
+          v2: 2,
+        },
+        v3: 3,
+      });
+    }) as AxiosDomainRequest);
+
+    AxiosDomain.asp.forEach((k) => a[k]('test', p, c));
+  });
+
+  test('应该支持深度合并 data', () => {
+    const ds = {
+      baseURL: 'http://api.com',
+    };
+    const d = {
+      v1: 1,
+      v2: {
+        v1: 1,
+      },
+    };
+    const c = {
+      data: {
+        v2: {
+          v2: 2,
+        },
+        v3: 3,
+      },
+    };
+
+    const a = new AxiosDomain(ds, ((config) => {
+      expect(config.data).toEqual({
+        v1: 1,
+        v2: {
+          v1: 1,
+          v2: 2,
+        },
+        v3: 3,
+      });
+    }) as AxiosDomainRequest);
+
+    AxiosDomain.asd.forEach((k) => a[k]('test', d, c));
   });
 });

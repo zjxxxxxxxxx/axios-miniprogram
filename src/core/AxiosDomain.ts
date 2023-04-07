@@ -1,5 +1,6 @@
-import { AxiosRequestConfig, AxiosRequestData, AxiosResponse } from './Axios';
+import { deepMerge } from '../helpers/deepMerge';
 import { mergeConfig } from './mergeConfig';
+import { AxiosRequestConfig, AxiosRequestData, AxiosResponse } from './Axios';
 
 export interface AxiosDomainRequest {
   <TData = unknown>(
@@ -49,7 +50,7 @@ export interface AxiosDomainAsRequestWithData {
     /**
      * 请求数据
      */
-    data?: AnyObject,
+    data?: AxiosRequestData,
     /**
      * 请求配置
      */
@@ -128,8 +129,8 @@ export default class AxiosDomain {
     processRequest: AxiosDomainRequest,
   ) {
     this.defaults = defaults;
-    this.request = <TData = unknown>(config: AxiosRequestConfig) => {
-      return processRequest<TData>(mergeConfig(this.defaults, config));
+    this.request = (config) => {
+      return processRequest(mergeConfig(this.defaults, config));
     };
 
     this.#createAsRequests();
@@ -139,10 +140,7 @@ export default class AxiosDomain {
 
   #createAsRequests() {
     for (const alias of AxiosDomain.as) {
-      this[alias] = function processAsRequest(
-        url: string,
-        config: AxiosRequestConfig = {},
-      ) {
+      this[alias] = function processAsRequest(url, config = {}) {
         config.url = url;
         config.method = alias;
 
@@ -153,14 +151,10 @@ export default class AxiosDomain {
 
   #createAspRequests() {
     for (const alias of AxiosDomain.asp) {
-      this[alias] = function processAspRequest(
-        url: string,
-        params: AnyObject = {},
-        config: AxiosRequestConfig = {},
-      ) {
+      this[alias] = function processAspRequest(url, params = {}, config = {}) {
         config.url = url;
         config.method = alias;
-        config.params = Object.assign(params, config.params);
+        config.params = deepMerge(params, config.params ?? {});
 
         return this.request(config);
       };
@@ -169,14 +163,10 @@ export default class AxiosDomain {
 
   #createAsdRequests() {
     for (const alias of AxiosDomain.asd) {
-      this[alias] = function processAsdRequest(
-        url: string,
-        data: AxiosRequestData = {},
-        config: AxiosRequestConfig = {},
-      ) {
+      this[alias] = function processAsdRequest(url, data = {}, config = {}) {
         config.url = url;
         config.method = alias;
-        config.data = Object.assign(data, config.data);
+        config.data = deepMerge(data, config.data ?? {});
 
         return this.request(config);
       };
