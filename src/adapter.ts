@@ -252,31 +252,21 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
   }
 
   function transformResult(result: AnyObject): void {
-    result.status = result.status || isUndefined(result.data) ? 400 : 200;
-    if (result.statusCode) {
-      result.status = result.statusCode;
-      delete result.statusCode;
-    }
+    result.status =
+      result.status ?? result.statusCode ?? isUndefined(result.data)
+        ? 400
+        : 200;
+    result.statusText =
+      result.status === 200
+        ? 'OK'
+        : result.status === 400
+        ? 'Bad Adapter'
+        : result.errMsg;
+    result.headers = result.headers || result.header;
 
-    if (isUndefined(result.statusText)) {
-      result.statusText =
-        result.status === 200
-          ? 'OK'
-          : result.status === 400
-          ? 'Bad Adapter'
-          : '';
-    }
-
-    result.headers = result.headers || {};
-    if (result.header) {
-      result.headers = result.header;
-      delete result.header;
-    }
-
-    if (result.errMsg) {
-      result.statusText = result.errMsg;
-      delete result.errMsg;
-    }
+    if (result.statusCode) delete result.statusCode;
+    if (result.errMsg) delete result.errMsg;
+    if (result.header) delete result.header;
   }
 
   function transformOptions(

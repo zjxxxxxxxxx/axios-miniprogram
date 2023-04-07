@@ -60,13 +60,10 @@ export function request<TData = unknown>(
       const response = _ as AxiosResponse<TData>;
       response.config = config;
       response.request = adapterTask;
-      if (
-        !isFunction(config.validateStatus) ||
-        config.validateStatus(response.status)
-      ) {
+      if (config.validateStatus?.(response.status) ?? true) {
         resolve(response);
       } else {
-        catchError('请求失败', response);
+        catchError('validate status fail', response);
       }
     }
 
@@ -75,7 +72,7 @@ export function request<TData = unknown>(
       responseError.isFail = true;
       responseError.config = config;
       responseError.request = adapterTask;
-      catchError('网络错误', responseError);
+      catchError(responseError.statusText, responseError);
     }
 
     function catchError(
@@ -95,9 +92,7 @@ export function request<TData = unknown>(
         if (isPlainObject(adapterTask)) {
           tryToggleProgressUpdate(adapterConfig, adapterTask.offProgressUpdate);
 
-          if (isFunction(adapterTask.abort)) {
-            adapterTask.abort();
-          }
+          adapterTask?.abort?.();
         }
 
         reject(reason);

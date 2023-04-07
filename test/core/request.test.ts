@@ -65,6 +65,6 @@ describe('src/core/request.ts', () => {
         url: '/test',
         method: 'get',
       }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot('"网络错误"');
+    ).rejects.toThrowErrorMatchingInlineSnapshot('"FAIL"');
   });
 });
