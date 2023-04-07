@@ -17,11 +17,13 @@ $ yarn add axios-miniprogram
 $ npm i axios-miniprogram
 ```
 
+[原生小程序也可以直接下载源码包](https://github.com/zjx0905/axios-miniprogram/releases)
+
 ## 简介
 
 为小程序平台量身定制的轻量级请求库，请求配置以微信小程序作为标准，其他平台兼容实现。
 
-- 支持 微信小程序、支付宝小程序、百度小程序、字节跳动小程序、QQ 小程序、uniapp。
+- 支持 微信小程序、支付宝小程序、百度小程序、字节跳动小程序、QQ 小程序、钉钉小程序、京东小程序、uniapp。
 - 支持 `Typescript`，健全的类型系统，智能的 `IDE` 提示。
 - 支持 `Promise`。
 - 支持 拦截器。
@@ -31,3 +33,5 @@ $ npm i axios-miniprogram
 - 支持 自定义转换数据。
 - 支持 自定义错误处理。
 - 支持 自定义平台适配器
+
+[有问题欢迎反馈](https://github.com/zjx0905/axios-miniprogram/issues)

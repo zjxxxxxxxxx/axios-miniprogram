@@ -76,13 +76,13 @@ function createInstance(defaults: AxiosRequestConfig): AxiosInstance {
   const instance = new Axios(defaults);
 
   function axios<TData = unknown>(
-    url: AxiosRequestConfig | string,
-    config?: AxiosRequestConfig,
+    urlOrConfig: string | AxiosRequestConfig,
+    config: AxiosRequestConfig = {},
   ): Promise<AxiosResponse<TData>> {
-    if (isString(url)) {
-      config = Object.assign({}, config, { url });
+    if (isString(urlOrConfig)) {
+      config.url = urlOrConfig;
     } else {
-      config = url;
+      config = urlOrConfig;
     }
 
     return instance.request(config);
@@ -92,8 +92,8 @@ function createInstance(defaults: AxiosRequestConfig): AxiosInstance {
   Object.setPrototypeOf(
     axios,
     Object.assign(Object.getPrototypeOf(instance), {
-      // axios.fork 内部调用了 instance 的私有方法，无法直接访问私有方法
-      // axios.fork 调用时 this 重新指向 instance
+      // axios.fork 内部调用了 instance 的私有方法，但是无法直接访问私有方法程序抛出导致异常
+      // axios.fork 调用时 this 重新指向 instance，解决此问题
       fork: instance.fork.bind(instance),
     }),
   );
