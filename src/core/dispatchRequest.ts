@@ -1,10 +1,10 @@
-import { isPlainObject } from '../helpers/isTypes';
 import { isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { transformData } from './transformData';
 import { request } from './request';
 import { AxiosRequestConfig, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
+import { isAxiosError } from './createError';
 
 function throwIfCancellationRequested(config: AxiosRequestConfig) {
   const { cancelToken } = config;
@@ -44,11 +44,8 @@ export default function dispatchRequest<TData = unknown>(
     .catch((reason: unknown) => {
       if (!isCancel(reason)) {
         throwIfCancellationRequested(config);
-        if (isPlainObject(reason)) {
-          const { response } = reason;
-          if (isPlainObject(response)) {
-            transformer(response as AxiosResponse<TData>);
-          }
+        if (isAxiosError(reason)) {
+          transformer(reason.response as AxiosResponse<TData>);
         }
       }
       throw config.errorHandler?.(reason) ?? reason;
