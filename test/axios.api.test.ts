@@ -118,4 +118,19 @@ describe('src/axios.ts', () => {
       });
     });
   });
+
+  test('应该可以获取 URI', () => {
+    expect(
+      axios.getUri({
+        url: 'test',
+      }),
+    ).toBe('test');
+  });
+
+  test('应该可以派生领域', () => {
+    const a = axios.fork({
+      baseURL: 'test',
+    });
+    expect(a.defaults.baseURL).toBe('http://api.com/test');
+  });
 });

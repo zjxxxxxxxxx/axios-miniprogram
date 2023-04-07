@@ -89,7 +89,14 @@ function createInstance(defaults: AxiosRequestConfig): AxiosInstance {
   }
 
   Object.assign(axios, instance);
-  Object.setPrototypeOf(axios, Object.getPrototypeOf(instance));
+  Object.setPrototypeOf(
+    axios,
+    Object.assign(Object.getPrototypeOf(instance), {
+      // axios.fork 内部调用了 instance 的私有方法，无法直接访问私有方法
+      // axios.fork 调用时 this 重新指向 instance
+      fork: instance.fork.bind(instance),
+    }),
+  );
 
   return axios as AxiosInstance;
 }
