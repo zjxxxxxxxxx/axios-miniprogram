@@ -1,14 +1,16 @@
-import { isPlainObject, isString } from '../helpers/isTypes';
 import { AxiosRequestConfig, AxiosRequestData, AxiosResponse } from './Axios';
 import { mergeConfig } from './mergeConfig';
 
-export interface AxiosDomainAsRequest {
+export interface AxiosDomainRequest {
   <TData = unknown>(
     /**
      * 请求配置
      */
-    config?: AxiosRequestConfig,
+    config: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>>;
+}
+
+export interface AxiosDomainAsRequest {
   <TData = unknown>(
     /**
      * 请求地址
@@ -22,16 +24,6 @@ export interface AxiosDomainAsRequest {
 }
 
 export interface AxiosDomainAsRequestWithParams {
-  <TData = unknown>(
-    /**
-     * 请求参数
-     */
-    params?: AnyObject,
-    /**
-     * 请求配置
-     */
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
   <TData = unknown>(
     /**
      * 请求地址
@@ -51,16 +43,6 @@ export interface AxiosDomainAsRequestWithParams {
 export interface AxiosDomainAsRequestWithData {
   <TData = unknown>(
     /**
-     * 请求数据
-     */
-    data?: AnyObject,
-    /**
-     * 请求配置
-     */
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
-  <TData = unknown>(
-    /**
      * 请求地址
      */
     url: string,
@@ -73,10 +55,6 @@ export interface AxiosDomainAsRequestWithData {
      */
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>>;
-}
-
-export interface AxiosDomainRequest {
-  <TData = unknown>(config: AxiosRequestConfig): Promise<AxiosResponse<TData>>;
 }
 
 export default class AxiosDomain {
@@ -162,14 +140,10 @@ export default class AxiosDomain {
   #createAsRequests() {
     for (const alias of AxiosDomain.as) {
       this[alias] = function processAsRequest(
-        urlOrConfig?: string | AxiosRequestConfig,
+        url: string,
         config: AxiosRequestConfig = {},
       ) {
-        if (isString(urlOrConfig)) {
-          config.url = urlOrConfig;
-        } else if (isPlainObject(urlOrConfig)) {
-          config = urlOrConfig;
-        }
+        config.url = url;
         config.method = alias;
 
         return this.request(config);
@@ -180,18 +154,13 @@ export default class AxiosDomain {
   #createAspRequests() {
     for (const alias of AxiosDomain.asp) {
       this[alias] = function processAspRequest(
-        urlOrParams?: string | AxiosRequestConfig,
-        paramsOrConfig: AxiosRequestConfig | AnyObject = {},
+        url: string,
+        params: AnyObject = {},
         config: AxiosRequestConfig = {},
       ) {
-        if (isString(urlOrParams)) {
-          config.url = urlOrParams;
-          config.params = paramsOrConfig;
-        } else if (isPlainObject(urlOrParams)) {
-          config = paramsOrConfig;
-          config.params = urlOrParams;
-        }
+        config.url = url;
         config.method = alias;
+        config.params = Object.assign(params, config.params);
 
         return this.request(config);
       };
@@ -201,18 +170,13 @@ export default class AxiosDomain {
   #createAsdRequests() {
     for (const alias of AxiosDomain.asd) {
       this[alias] = function processAsdRequest(
-        urlOrData?: string | AxiosRequestConfig,
-        dataOrConfig: AxiosRequestData | AxiosRequestConfig = {},
+        url: string,
+        data: AxiosRequestData = {},
         config: AxiosRequestConfig = {},
       ) {
-        if (isString(urlOrData)) {
-          config.url = urlOrData;
-          config.data = dataOrConfig;
-        } else if (isPlainObject(urlOrData)) {
-          config = dataOrConfig;
-          config.data = urlOrData;
-        }
+        config.url = url;
         config.method = alias;
+        config.data = Object.assign(data, config.data);
 
         return this.request(config);
       };

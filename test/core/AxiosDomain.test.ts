@@ -72,25 +72,19 @@ describe('src/core/Axios.ts', () => {
 
     a.request(c);
 
-    AxiosDomain.as.forEach((k) => a[k](c));
     AxiosDomain.as.forEach((k) => a[k](c.url, ignore(c, 'url')));
-
-    AxiosDomain.asp.forEach((k) => a[k](c.params, ignore(c, 'params')));
     AxiosDomain.asp.forEach((k) =>
       a[k](c.url, c.params, ignore(c, 'url', 'params')),
     );
-
-    AxiosDomain.asd.forEach((k) => a[k](c.data, ignore(c, 'data')));
     AxiosDomain.asd.forEach((k) =>
       a[k](c.url, c.data, ignore(c, 'url', 'data')),
     );
 
-    const t =
-      (AxiosDomain.as.length +
-        AxiosDomain.asp.length +
-        AxiosDomain.asd.length) *
-        2 +
+    const l =
+      AxiosDomain.as.length +
+      AxiosDomain.asp.length +
+      AxiosDomain.asd.length +
       1;
-    expect(cb.mock.calls.length).toBe(t);
+    expect(cb.mock.calls.length).toBe(l);
   });
 });

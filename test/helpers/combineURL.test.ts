@@ -17,10 +17,14 @@ describe('src/helpers/combineURL.ts', () => {
   });
 
   test('应该清理多余的斜线', () => {
-    expect(combineURL('//api//', 'test//')).toBe('/api/test/');
-    expect(combineURL('//api//', '//test//')).toBe('/api/test/');
+    expect(combineURL('//api//', 'test//')).toBe('/api/test');
+    expect(combineURL('//api//', '//test//')).toBe('/api/test');
+    expect(combineURL('////', '')).toBe('');
+    expect(combineURL('', '///')).toBe('');
+    expect(combineURL('http://api.com//', '')).toBe('http://api.com');
+    expect(combineURL('http://api.com/', '/')).toBe('http://api.com');
     expect(combineURL('http://api.com//', '//test//')).toBe(
-      'http://api.com/test/',
+      'http://api.com/test',
     );
   });
 });
