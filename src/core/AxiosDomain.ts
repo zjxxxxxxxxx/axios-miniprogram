@@ -1,3 +1,4 @@
+import { isString, isUndefined } from '../helpers/isTypes';
 import { deepMerge } from '../helpers/deepMerge';
 import { mergeConfig } from './mergeConfig';
 import { AxiosRequestConfig, AxiosRequestData, AxiosResponse } from './Axios';
@@ -8,6 +9,16 @@ export interface AxiosDomainRequest {
      * 请求配置
      */
     config: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>>;
+  <TData = unknown>(
+    /**
+     * 请求地址
+     */
+    url: string,
+    /**
+     * 请求配置
+     */
+    config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>>;
 }
 
@@ -126,10 +137,24 @@ export default class AxiosDomain {
 
   constructor(
     defaults: AxiosRequestConfig = {},
-    processRequest: AxiosDomainRequest,
+    processRequest: (config: AxiosRequestConfig) => Promise<AxiosResponse>,
   ) {
     this.defaults = defaults;
-    this.request = (config) => {
+
+    this.request = (
+      urlOrConfig: string | AxiosRequestConfig,
+      config: AxiosRequestConfig = {},
+    ) => {
+      if (isString(urlOrConfig)) {
+        config.url = urlOrConfig;
+      } else {
+        config = urlOrConfig;
+      }
+
+      if (isUndefined(config.method)) {
+        config.method = 'get';
+      }
+
       return processRequest(mergeConfig(this.defaults, config));
     };
 
@@ -141,10 +166,8 @@ export default class AxiosDomain {
   #createAsRequests() {
     for (const alias of AxiosDomain.as) {
       this[alias] = function processAsRequest(url, config = {}) {
-        config.url = url;
         config.method = alias;
-
-        return this.request(config);
+        return this.request(url, config);
       };
     }
   }
@@ -152,11 +175,9 @@ export default class AxiosDomain {
   #createAspRequests() {
     for (const alias of AxiosDomain.asp) {
       this[alias] = function processAspRequest(url, params = {}, config = {}) {
-        config.url = url;
         config.method = alias;
         config.params = deepMerge(params, config.params ?? {});
-
-        return this.request(config);
+        return this.request(url, config);
       };
     }
   }
@@ -164,11 +185,9 @@ export default class AxiosDomain {
   #createAsdRequests() {
     for (const alias of AxiosDomain.asd) {
       this[alias] = function processAsdRequest(url, data = {}, config = {}) {
-        config.url = url;
         config.method = alias;
         config.data = deepMerge(data, config.data ?? {});
-
-        return this.request(config);
+        return this.request(url, config);
       };
     }
   }

@@ -5,13 +5,13 @@ import { AxiosRequestConfig } from './Axios';
 const fromConfig2Map: Record<string, boolean> = {
   url: true,
   method: true,
-  data: true,
   upload: true,
   download: true,
 };
 const deepMergeConfigMap: Record<string, boolean> = {
   headers: true,
   params: true,
+  data: true,
 };
 
 export function mergeConfig(

@@ -207,9 +207,7 @@ export default class Axios extends AxiosDomain {
   };
 
   constructor(defaults: AxiosRequestConfig = {}) {
-    super(defaults, (...args) => {
-      return this.#processRequest(...args);
-    });
+    super(defaults, (config) => this.#processRequest(config));
   }
 
   getUri(config: AxiosRequestConfig): string {
@@ -228,9 +226,11 @@ export default class Axios extends AxiosDomain {
     if (!isAbsoluteURL(baseURL)) {
       defaults.baseURL = combineURL(this.defaults.baseURL ?? '', baseURL);
     }
-    return new AxiosDomain(mergeConfig(this.defaults, defaults), (...args) => {
-      return this.#processRequest(...args);
-    });
+    return new AxiosDomain(
+      mergeConfig(this.defaults, defaults),
+
+      (config) => this.#processRequest(config),
+    );
   }
 
   #processRequest<TData = unknown>(config: AxiosRequestConfig) {

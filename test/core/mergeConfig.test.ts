@@ -13,14 +13,12 @@ describe('src/core/mergeConfig.ts', () => {
     const c1 = {
       url: 'a',
       method: 'get' as const,
-      data: {},
       upload: true,
       download: true,
     };
     const c2 = {
       url: 'b',
       method: 'post' as const,
-      data: {},
       upload: false,
       download: false,
     };
@@ -37,6 +35,27 @@ describe('src/core/mergeConfig.ts', () => {
   });
 
   test('应该深度合并', () => {
+    const o1 = {
+      v1: 1,
+      v2: 1,
+      v3: {
+        v1: 1,
+      },
+    };
+    const o2 = {
+      v2: 2,
+      v3: {
+        v2: 2,
+      },
+    };
+    const o3 = {
+      v1: 1,
+      v2: 2,
+      v3: {
+        v1: 1,
+        v2: 2,
+      },
+    };
     const c1 = {
       headers: {
         common: {
@@ -44,9 +63,8 @@ describe('src/core/mergeConfig.ts', () => {
         },
         v1: 1,
       },
-      params: {
-        v1: 1,
-      },
+      params: o1,
+      data: o1,
     };
     const c2 = {
       headers: {
@@ -55,9 +73,8 @@ describe('src/core/mergeConfig.ts', () => {
         },
         v2: 2,
       },
-      params: {
-        v2: 2,
-      },
+      params: o2,
+      data: o2,
     };
     const mc = {
       headers: {
@@ -68,10 +85,8 @@ describe('src/core/mergeConfig.ts', () => {
         v1: 1,
         v2: 2,
       },
-      params: {
-        v1: 1,
-        v2: 2,
-      },
+      params: o3,
+      data: o3,
     };
 
     expect(mergeConfig(c1, {})).toEqual(c1);

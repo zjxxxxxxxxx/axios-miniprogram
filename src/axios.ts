@@ -1,14 +1,13 @@
-import { isString } from './helpers/isTypes';
+import { AxiosDomainRequest } from './core/AxiosDomain';
 import Axios, {
   AxiosConstructor,
   AxiosRequestConfig,
   AxiosRequestHeaders,
-  AxiosResponse,
 } from './core/Axios';
 import { CancelToken, CancelTokenConstructor, isCancel } from './core/cancel';
 import { isAxiosError } from './core/createError';
 import { mergeConfig } from './core/mergeConfig';
-import { AxiosAdapter, createAdapter, AxiosPlatform } from './adapter';
+import { createAdapter } from './adapter';
 import defaults from './defaults';
 
 export interface AxiosInstanceDefaults extends AxiosRequestConfig {
@@ -18,27 +17,11 @@ export interface AxiosInstanceDefaults extends AxiosRequestConfig {
   headers: Required<AxiosRequestHeaders>;
 }
 
-export interface AxiosInstance extends Axios {
+export interface AxiosInstance extends AxiosDomainRequest, Axios {
   /**
    * 默认请求配置
    */
   defaults: AxiosInstanceDefaults;
-  <TData = unknown>(
-    /**
-     * 请求配置
-     */
-    config: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
-  <TData = unknown>(
-    /**
-     * 请求地址
-     */
-    url: string,
-    /**
-     * 请求配置
-     */
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
 }
 
 export interface AxiosStatic extends AxiosInstance {
@@ -61,7 +44,7 @@ export interface AxiosStatic extends AxiosInstance {
    *
    * @param platform 平台
    */
-  createAdapter(platform: AxiosPlatform): AxiosAdapter;
+  createAdapter: typeof createAdapter;
   /**
    * 判断 Cancel
    */
@@ -72,40 +55,26 @@ export interface AxiosStatic extends AxiosInstance {
   isAxiosError: typeof isAxiosError;
 }
 
-function createInstance(defaults: AxiosRequestConfig): AxiosInstance {
-  const instance = new Axios(defaults);
+function createInstance(defaults: AxiosRequestConfig) {
+  const context = new Axios(defaults);
+  const instance = context.request as AxiosInstance;
 
-  function axios<TData = unknown>(
-    urlOrConfig: string | AxiosRequestConfig,
-    config: AxiosRequestConfig = {},
-  ): Promise<AxiosResponse<TData>> {
-    if (isString(urlOrConfig)) {
-      config.url = urlOrConfig;
-    } else {
-      config = urlOrConfig;
-    }
+  Object.assign(instance, context, {
+    // instance.fork 内部调用了 context 的私有方法
+    // 所以直接调用 instance.fork 会导致程序会抛出无法访问私有方法的异常
+    // instance.fork 调用时 this 重新指向 context，解决此问题
+    fork: context.fork.bind(context),
+  });
+  Object.setPrototypeOf(instance, Object.getPrototypeOf(context));
 
-    return instance.request(config);
-  }
-
-  Object.assign(axios, instance);
-  Object.setPrototypeOf(
-    axios,
-    Object.assign(Object.getPrototypeOf(instance), {
-      // axios.fork 内部调用了 instance 的私有方法，但是无法直接访问私有方法程序抛出导致异常
-      // axios.fork 调用时 this 重新指向 instance，解决此问题
-      fork: instance.fork.bind(instance),
-    }),
-  );
-
-  return axios as AxiosInstance;
+  return instance;
 }
 
 const axios = createInstance(defaults) as AxiosStatic;
 
 axios.Axios = Axios;
 axios.CancelToken = CancelToken;
-axios.create = function create(defaults: AxiosRequestConfig): AxiosInstance {
+axios.create = function create(defaults) {
   return createInstance(mergeConfig(axios.defaults, defaults));
 };
 axios.createAdapter = createAdapter;

@@ -253,9 +253,9 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
 
   function transformResult(result: AnyObject): void {
     result.status =
-      result.status ?? result.statusCode ?? isUndefined(result.data)
-        ? 400
-        : 200;
+      result.status ??
+      result.statusCode ??
+      (isUndefined(result.data) ? 400 : 200);
     result.statusText =
       result.status === 200
         ? 'OK'
