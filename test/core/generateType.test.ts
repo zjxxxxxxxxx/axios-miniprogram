@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { generateType } from 'src/core/generateType';
-import Axios from 'src/core/Axios';
+import { generateType } from '@/core/generateType';
+import Axios from '@/core/Axios';
 
 describe('src/core/generateType.ts', () => {
   test('应该是一个 reuqest', () => {

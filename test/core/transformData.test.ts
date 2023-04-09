@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { transformData } from 'src/core/transformData';
+import { transformData } from '@/core/transformData';
 
 describe('src/core/transformData.ts', () => {
   test('应该支持空配置', () => {

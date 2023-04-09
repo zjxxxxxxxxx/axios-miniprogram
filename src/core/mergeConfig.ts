@@ -17,7 +17,7 @@ const deepMergeConfigMap: Record<string, boolean> = {
 export function mergeConfig(
   config1: AxiosRequestConfig = {},
   config2: AxiosRequestConfig = {},
-): AxiosRequestConfig {
+) {
   const config: AxiosRequestConfig = {};
 
   // 所有已知键名

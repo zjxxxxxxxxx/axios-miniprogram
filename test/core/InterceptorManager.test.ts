@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import InterceptorManager from 'src/core/InterceptorManager';
+import InterceptorManager from '@/core/InterceptorManager';
 
 describe('src/core/InterceptorManager.ts', () => {
   test('应该有这些实例属性', () => {

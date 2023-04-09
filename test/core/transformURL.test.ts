@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { transformURL } from 'src/core/transformURL';
+import { transformURL } from '@/core/transformURL';
 
 describe('src/core/transformURL.ts', () => {
   test('应该支持空配置', () => {

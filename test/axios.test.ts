@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import axios from 'src/axios';
 import { mockAdapter, mockAdapterError } from 'scripts/test.utils';
+import axios from '@/axios';
 
 describe('src/axios.ts', () => {
   test('应该处理成功和失败', () => {

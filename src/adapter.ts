@@ -9,7 +9,6 @@ import {
   AxiosProgressCallback,
   AxiosRequestFormData,
   AxiosRequestHeaders,
-  AxiosResponse,
 } from './core/Axios';
 
 export type AxiosAdapterRequestType = 'request' | 'download' | 'upload';
@@ -24,7 +23,7 @@ export type AxiosAdapterRequestMethod =
   | 'TRACE'
   | 'CONNECT';
 
-export interface AxiosAdapterResponse<TData = unknown> extends AnyObject {
+export interface AxiosAdapterResponse extends AnyObject {
   /**
    * 状态码
    */
@@ -40,7 +39,7 @@ export interface AxiosAdapterResponse<TData = unknown> extends AnyObject {
   /**
    * 响应数据
    */
-  data: TData;
+  data: string | ArrayBuffer | AnyObject;
 }
 
 export interface AxiosAdapterResponseError extends AnyObject {
@@ -107,8 +106,8 @@ export interface AxiosAdapterRequestConfig extends AnyObject {
 
 export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
   header?: AxiosRequestHeaders;
-  success(response: unknown): void;
-  fail(error: unknown): void;
+  success(response: AxiosAdapterResponse): void;
+  fail(error: AxiosAdapterResponseError): void;
 }
 
 export interface AxiosAdapterUploadOptions
@@ -239,10 +238,10 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     download: AxiosAdapterDownload,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterTask {
-    const options = {
+    const options: AxiosAdapterDownloadOptions = {
       ...baseOptions,
       filePath: baseOptions.params?.filePath,
-      success(response: AnyObject): void {
+      success(response): void {
         injectDownloadData(response);
         baseOptions.success(response);
       },
@@ -275,7 +274,7 @@ export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
     return {
       ...config,
       header: config.headers,
-      success(response: AxiosResponse<unknown>): void {
+      success(response): void {
         transformResult(response);
         config.success(response);
       },

@@ -7,12 +7,7 @@ import {
   asyncTimeout,
 } from 'scripts/test.utils';
 import axios from 'src/axios';
-import {
-  Cancel,
-  isCancel,
-  CancelToken,
-  isCancelToken,
-} from '../../src/core/cancel';
+import { Cancel, isCancel, CancelToken, isCancelToken } from '@/core/cancel';
 
 describe('src/helpers/cancel.ts', () => {
   test('应该支持空参数', () => {

@@ -11,7 +11,7 @@ import {
   AxiosAdapterResponseError,
 } from '../adapter';
 import { CancelToken } from './cancel';
-import dispatchRequest from './dispatchRequest';
+import { dispatchRequest } from './dispatchRequest';
 import InterceptorManager from './InterceptorManager';
 import { AxiosTransformer } from './transformData';
 import AxiosDomain from './AxiosDomain';
@@ -79,6 +79,13 @@ export interface AxiosRequestFormData extends AnyObject {
 
 export type AxiosRequestData = AnyObject | AxiosRequestFormData;
 
+export type AxiosResponseData =
+  | undefined
+  | number
+  | string
+  | ArrayBuffer
+  | AnyObject;
+
 export interface AxiosProgressEvent {
   progress: number;
   totalBytesSent: number;
@@ -90,9 +97,8 @@ export interface AxiosProgressCallback {
 }
 
 export interface AxiosRequestConfig
-  extends Omit<
-    Partial<AxiosAdapterRequestConfig>,
-    'type' | 'method' | 'success' | 'fail'
+  extends Partial<
+    Omit<AxiosAdapterRequestConfig, 'type' | 'success' | 'fail'>
   > {
   /**
    * 请求适配器
@@ -102,6 +108,10 @@ export interface AxiosRequestConfig
    * 基础路径
    */
   baseURL?: string;
+  /**
+   * 请求的 URL
+   */
+  url?: string;
   /**
    * 请求参数
    */
@@ -133,11 +143,11 @@ export interface AxiosRequestConfig
   /**
    * 转换请求数据
    */
-  transformRequest?: AxiosTransformer | AxiosTransformer[];
+  transformRequest?: AxiosTransformer<AxiosRequestData>;
   /**
    * 转换响应数据
    */
-  transformResponse?: AxiosTransformer | AxiosTransformer[];
+  transformResponse?: AxiosTransformer<AxiosResponseData>;
   /**
    * 异常处理
    */
@@ -160,8 +170,9 @@ export interface AxiosRequestConfig
   validateStatus?: (status: number) => boolean;
 }
 
-export interface AxiosResponse<TData = unknown>
-  extends AxiosAdapterResponse<TData> {
+export interface AxiosResponse<
+  TData extends AxiosResponseData = AxiosResponseData,
+> extends Omit<AxiosAdapterResponse, 'data'> {
   /**
    * 请求配置
    */
@@ -170,6 +181,10 @@ export interface AxiosResponse<TData = unknown>
    * 请求任务
    */
   request?: AxiosAdapterTask;
+  /**
+   * 响应数据
+   */
+  data: TData;
 }
 
 export interface AxiosResponseError extends AxiosAdapterResponseError {
@@ -233,22 +248,17 @@ export default class Axios extends AxiosDomain {
     );
   }
 
-  #processRequest<TData = unknown>(config: AxiosRequestConfig) {
+  #processRequest(config: AxiosRequestConfig) {
     const { request, response } = this.interceptors;
 
     let promiseRequest = Promise.resolve(config);
     request.forEach(({ resolved, rejected }) => {
-      promiseRequest = promiseRequest.then(
-        resolved,
-        rejected,
-      ) as Promise<AxiosRequestConfig>;
+      promiseRequest = promiseRequest.then(resolved, rejected);
     }, true);
     let promiseResponse = promiseRequest.then(dispatchRequest);
     response.forEach(({ resolved, rejected }) => {
-      promiseResponse = promiseResponse.then(resolved, rejected) as Promise<
-        AxiosResponse<unknown>
-      >;
+      promiseResponse = promiseResponse.then(resolved, rejected);
     });
-    return promiseResponse as Promise<AxiosResponse<TData>>;
+    return promiseResponse;
   }
 }

@@ -1,36 +1,28 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 import { mockAdapter } from 'scripts/test.utils';
 import Axios from '@/core/Axios';
-import AxiosDomain from '@/core/AxiosDomain';
+import defaults from '@/defaults';
+import axios from '@/axios';
 
-describe('src/core/Axios.ts', () => {
+describe('src/axios.ts', () => {
   const data = {
     result: null,
   };
-  const axios = new Axios({
-    baseURL: 'http://api.com',
+
+  beforeAll(() => {
+    axios.defaults.baseURL = 'http://api.com';
   });
 
-  test('应该继承自 AxiosDomain', () => {
-    expect(new Axios() instanceof AxiosDomain).toBeTruthy();
-  });
-
-  test('应该有这些静态属性', () => {
-    expect(Axios.as).toEqual(['options', 'trace', 'connect']);
-    expect(Axios.asp).toEqual(['head', 'get', 'delete']);
-    expect(Axios.asd).toEqual(['post', 'put']);
+  afterAll(() => {
+    axios.defaults.baseURL = undefined;
   });
 
   test('应该有这些实例属性及方法', () => {
-    const c = {
-      baseURL: 'http://api.com',
-    };
-
-    expect(axios.defaults).toEqual(c);
+    expect(axios.defaults).toBe(defaults);
     expect(axios.interceptors).toBeTypeOf('object');
-    expect(axios.request).toBeTypeOf('function');
     expect(axios.getUri).toBeTypeOf('function');
     expect(axios.fork).toBeTypeOf('function');
+    expect(axios.request).toBeTypeOf('function');
 
     [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
       expect(axios[k]).toBeTypeOf('function');

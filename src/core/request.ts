@@ -10,6 +10,7 @@ import {
   AxiosProgressCallback,
   AxiosRequestConfig,
   AxiosResponse,
+  AxiosResponseData,
   AxiosResponseError,
 } from './Axios';
 import { isCancelToken } from './cancel';
@@ -38,16 +39,14 @@ function tryToggleProgressUpdate(
   }
 }
 
-export function request<TData = unknown>(
-  config: AxiosRequestConfig,
-): Promise<AxiosResponse<TData>> {
-  return new Promise((resolve, reject) => {
+export function request(config: AxiosRequestConfig) {
+  return new Promise<AxiosResponse>((resolve, reject) => {
     assert(isFunction(config.adapter), 'adapter 不是一个 function');
     assert(isString(config.url), 'url 不是一个 string');
 
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...config,
-      url: config.url,
+      url: config.url!,
       type: generateType(config),
       method: config.method!.toUpperCase() as AxiosAdapterRequestMethod,
       success,
@@ -56,10 +55,11 @@ export function request<TData = unknown>(
 
     const adapterTask = config.adapter!(adapterConfig);
 
-    function success(_: AxiosAdapterResponse<TData>): void {
-      const response = _ as AxiosResponse<TData>;
+    function success(_: AxiosAdapterResponse): void {
+      const response = _ as AxiosResponse;
       response.config = config;
       response.request = adapterTask;
+
       if (config.validateStatus?.(response.status) ?? true) {
         resolve(response);
       } else {
@@ -72,7 +72,7 @@ export function request<TData = unknown>(
       responseError.isFail = true;
       responseError.config = config;
       responseError.request = adapterTask;
-      catchError(responseError.statusText, responseError);
+      catchError('request fail', responseError);
     }
 
     function catchError(

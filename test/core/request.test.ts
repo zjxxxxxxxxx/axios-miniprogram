@@ -1,10 +1,10 @@
 import { describe, test, expect } from 'vitest';
-import { request } from 'src/core/request';
 import {
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
 } from 'scripts/test.utils';
+import { request } from '@/core/request';
 
 describe('src/core/request.ts', () => {
   test('应该抛出异常', () => {
@@ -18,14 +18,25 @@ describe('src/core/request.ts', () => {
     );
   });
 
-  test('应该能够取到数据', async () => {
-    await expect(
-      request({
-        adapter: mockAdapter(),
-        url: '/test',
-        method: 'get',
-      }),
-    ).resolves.toMatchInlineSnapshot(`
+  test('应该正确的响应请求', async () => {
+    const s = request({
+      adapter: mockAdapter(),
+      url: '/test',
+      method: 'get',
+    });
+    const e = request({
+      adapter: mockAdapterError(),
+      url: '/test',
+      method: 'get',
+      validateStatus: () => false,
+    });
+    const f = request({
+      adapter: mockAdapterFail(),
+      url: '/test',
+      method: 'get',
+    });
+
+    await expect(s).resolves.toMatchInlineSnapshot(`
       {
         "config": {
           "adapter": [Function],
@@ -34,37 +45,75 @@ describe('src/core/request.ts', () => {
         },
         "data": {},
         "headers": {},
-        "request": undefined,
+        "request": {
+          "abort": [Function],
+        },
         "status": 200,
         "statusText": "OK",
       }
     `);
-    await expect(
-      request({
-        adapter: mockAdapterError(),
-        url: '/test',
-        method: 'get',
-      }),
-    ).resolves.toMatchInlineSnapshot(`
+
+    await expect(e).rejects.toMatchInlineSnapshot(
+      '[Error: validate status fail]',
+    );
+    await expect(e.catch((e) => Object.assign({}, e))).resolves
+      .toMatchInlineSnapshot(`
+      {
+        "config": {
+          "adapter": [Function],
+          "method": "get",
+          "url": "/test",
+          "validateStatus": [Function],
+        },
+        "request": {
+          "abort": [Function],
+        },
+        "response": {
+          "config": {
+            "adapter": [Function],
+            "method": "get",
+            "url": "/test",
+            "validateStatus": [Function],
+          },
+          "data": {},
+          "headers": {},
+          "request": {
+            "abort": [Function],
+          },
+          "status": 500,
+          "statusText": "ERROR",
+        },
+      }
+    `);
+
+    await expect(f).rejects.toMatchInlineSnapshot('[Error: request fail]');
+    await expect(f.catch((e) => Object.assign({}, e))).resolves
+      .toMatchInlineSnapshot(`
       {
         "config": {
           "adapter": [Function],
           "method": "get",
           "url": "/test",
         },
-        "data": {},
-        "headers": {},
-        "request": undefined,
-        "status": 400,
-        "statusText": "FAIL",
+        "request": {
+          "abort": [Function],
+        },
+        "response": {
+          "config": {
+            "adapter": [Function],
+            "method": "get",
+            "url": "/test",
+          },
+          "data": {},
+          "headers": {},
+          "isFail": true,
+          "request": {
+            "abort": [Function],
+          },
+          "status": 400,
+          "statusText": "FAIL",
+        },
       }
     `);
-    await expect(
-      request({
-        adapter: mockAdapterFail(),
-        url: '/test',
-        method: 'get',
-      }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot('"FAIL"');
   });
 });

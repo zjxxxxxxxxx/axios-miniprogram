@@ -1,16 +1,21 @@
 import { isString, isUndefined } from '../helpers/isTypes';
 import { deepMerge } from '../helpers/deepMerge';
 import { mergeConfig } from './mergeConfig';
-import { AxiosRequestConfig, AxiosRequestData, AxiosResponse } from './Axios';
+import {
+  AxiosRequestConfig,
+  AxiosRequestData,
+  AxiosResponse,
+  AxiosResponseData,
+} from './Axios';
 
 export interface AxiosDomainRequest {
-  <TData = unknown>(
+  <TData extends AxiosResponseData>(
     /**
      * 请求配置
      */
     config: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>>;
-  <TData = unknown>(
+  <TData extends AxiosResponseData>(
     /**
      * 请求地址
      */
@@ -23,7 +28,7 @@ export interface AxiosDomainRequest {
 }
 
 export interface AxiosDomainAsRequest {
-  <TData = unknown>(
+  <TData extends AxiosResponseData>(
     /**
      * 请求地址
      */
@@ -36,7 +41,7 @@ export interface AxiosDomainAsRequest {
 }
 
 export interface AxiosDomainAsRequestWithParams {
-  <TData = unknown>(
+  <TData extends AxiosResponseData>(
     /**
      * 请求地址
      */
@@ -53,7 +58,7 @@ export interface AxiosDomainAsRequestWithParams {
 }
 
 export interface AxiosDomainAsRequestWithData {
-  <TData = unknown>(
+  <TData extends AxiosResponseData>(
     /**
      * 请求地址
      */

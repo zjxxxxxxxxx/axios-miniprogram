@@ -34,6 +34,7 @@
     "cz": "czg",
     "build": "esno scripts/build.ts",
     "build:asset": "esno scripts/build-asset.ts",
+    "watch": "pnpm build -a -w",
     "release": "esno scripts/release.ts",
     "publish:ci": "esno scripts/publish.ts",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",

@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { checkStack } from 'scripts/test.utils';
-import { createError, isAxiosError } from 'src/core/createError';
+import { createError, isAxiosError } from '@/core/createError';
 
 describe('src/core/createError.ts', () => {
   test('应该支持空参数', () => {

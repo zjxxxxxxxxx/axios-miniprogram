@@ -6,6 +6,9 @@ export default defineConfig({
   test: {
     root: resolve(__dirname),
     globals: true,
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
     include: ['./test/**/*.test.ts'],
   },
 });

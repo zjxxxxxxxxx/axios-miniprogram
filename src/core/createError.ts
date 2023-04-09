@@ -30,7 +30,7 @@ export function createError(
   config: AxiosRequestConfig,
   response: AxiosErrorResponse,
   request: AxiosAdapterTask,
-): AxiosError {
+) {
   const axiosError = new AxiosError(message, config, response, request);
   cleanStack(axiosError);
   return axiosError;

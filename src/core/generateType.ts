@@ -4,9 +4,7 @@ import { AxiosRequestConfig } from './Axios';
 const postRE = /^POST$/i;
 const getRE = /^GET$/i;
 
-export function generateType(
-  config: AxiosRequestConfig,
-): AxiosAdapterRequestType {
+export function generateType(config: AxiosRequestConfig) {
   let requestType: AxiosAdapterRequestType = 'request';
 
   if (config.upload && postRE.test(config.method!)) {

@@ -1,35 +1,38 @@
-import { isArray, isUndefined } from '../helpers/isTypes';
-import { AxiosRequestData } from './Axios';
+import { isArray, isFunction } from '../helpers/isTypes';
 
-export interface AxiosTransformer {
+export interface AxiosTransformCallback<TData = unknown> {
   (
     /**
      * 数据
      */
-    data?: AxiosRequestData,
+    data?: TData,
     /**
      * 头信息
      */
     headers?: AnyObject,
-  ): AxiosRequestData;
+  ): TData | undefined;
 }
 
-export function transformData(
-  data?: AxiosRequestData,
+export type AxiosTransformer<TData = unknown> =
+  | AxiosTransformCallback<TData>
+  | AxiosTransformCallback<TData>[];
+
+export function transformData<TData = unknown>(
+  data?: TData,
   headers?: AnyObject,
-  transforms?: AxiosTransformer | AxiosTransformer[],
-): AxiosRequestData | undefined {
-  if (isUndefined(transforms)) {
-    return data;
-  }
-
+  transforms?: AxiosTransformer<TData>,
+) {
   if (!isArray(transforms)) {
-    transforms = [transforms];
+    if (isFunction(transforms)) {
+      transforms = [transforms];
+    } else {
+      transforms = [];
+    }
   }
 
-  transforms.forEach((transform: AxiosTransformer) => {
+  transforms.forEach((transform) => {
     data = transform(data, headers);
   });
 
-  return data;
+  return data as TData;
 }

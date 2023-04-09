@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
-import { getAdapterDefault } from 'src/adapter';
+import { getAdapterDefault } from '@/adapter';
 
 const platforms = [
   'uni',

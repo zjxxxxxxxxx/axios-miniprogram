@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { flattenHeaders } from 'src/core/flattenHeaders';
-import Axios from 'src/core/Axios';
+import { flattenHeaders } from '@/core/flattenHeaders';
+import Axios from '@/core/Axios';
 
 describe('src/core/flattenHeaders.ts', () => {
   const keys = [...Axios.as, ...Axios.asp, ...Axios.asd];

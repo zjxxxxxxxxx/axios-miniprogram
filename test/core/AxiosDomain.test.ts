@@ -1,6 +1,7 @@
 import { describe, test, expect, vi } from 'vitest';
-import AxiosDomain, { AxiosDomainRequest } from 'src/core/AxiosDomain';
-import { ignore } from 'src/helpers/ignore';
+import { ignore } from '@/helpers/ignore';
+import AxiosDomain from '@/core/AxiosDomain';
+import { AxiosResponse } from '@/core/Axios';
 
 describe('src/core/AxiosDomain.ts', () => {
   test('应该有这些静态属性', () => {
@@ -52,6 +53,45 @@ describe('src/core/AxiosDomain.ts', () => {
     const d = {
       baseURL: 'http://api.com',
     };
+    const u = 'test';
+    const c = {
+      params: {
+        id: 1,
+      },
+      data: {
+        id: 1,
+      },
+    };
+    const a = new AxiosDomain(d, async (config) => {
+      cb();
+
+      expect(config.baseURL).toBe(d.baseURL);
+      expect(config.url).toBe(u);
+      expect(config.params).toEqual(c.params);
+      expect(config.data).toEqual(c.data);
+
+      return {} as AxiosResponse;
+    });
+
+    a.request(u, c);
+
+    AxiosDomain.as.forEach((k) => a[k](u, c));
+    AxiosDomain.asp.forEach((k) => a[k](u, c.params, ignore(c, 'params')));
+    AxiosDomain.asd.forEach((k) => a[k](u, c.data, ignore(c, 'data')));
+
+    const l =
+      AxiosDomain.as.length +
+      AxiosDomain.asp.length +
+      AxiosDomain.asd.length +
+      1;
+    expect(cb.mock.calls.length).toBe(l);
+  });
+
+  test('应该可以直接传入 config 调用这些方法', () => {
+    const cb = vi.fn();
+    const d = {
+      baseURL: 'http://api.com',
+    };
     const c = {
       url: 'test',
       params: {
@@ -61,14 +101,16 @@ describe('src/core/AxiosDomain.ts', () => {
         id: 1,
       },
     };
-    const a = new AxiosDomain(d, ((config) => {
+    const a = new AxiosDomain(d, async (config) => {
       cb();
 
       expect(config.baseURL).toBe(d.baseURL);
       expect(config.url).toBe(c.url);
       expect(config.params).toEqual(c.params);
       expect(config.data).toEqual(c.data);
-    }) as AxiosDomainRequest);
+
+      return {} as AxiosResponse;
+    });
 
     a.request(c);
 
@@ -107,7 +149,7 @@ describe('src/core/AxiosDomain.ts', () => {
       },
     };
 
-    const a = new AxiosDomain(d, ((config) => {
+    const a = new AxiosDomain(d, async (config) => {
       expect(config.params).toEqual({
         v1: 1,
         v2: {
@@ -116,7 +158,9 @@ describe('src/core/AxiosDomain.ts', () => {
         },
         v3: 3,
       });
-    }) as AxiosDomainRequest);
+
+      return {} as AxiosResponse;
+    });
 
     AxiosDomain.asp.forEach((k) => a[k]('test', p, c));
   });
@@ -140,7 +184,7 @@ describe('src/core/AxiosDomain.ts', () => {
       },
     };
 
-    const a = new AxiosDomain(ds, ((config) => {
+    const a = new AxiosDomain(ds, async (config) => {
       expect(config.data).toEqual({
         v1: 1,
         v2: {
@@ -149,7 +193,9 @@ describe('src/core/AxiosDomain.ts', () => {
         },
         v3: 3,
       });
-    }) as AxiosDomainRequest);
+
+      return {} as AxiosResponse;
+    });
 
     AxiosDomain.asd.forEach((k) => a[k]('test', d, c));
   });

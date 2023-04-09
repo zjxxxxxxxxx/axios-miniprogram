@@ -14,29 +14,30 @@ function throwIfCancellationRequested(config: AxiosRequestConfig) {
   }
 }
 
-export default function dispatchRequest<TData = unknown>(
-  config: AxiosRequestConfig,
-): Promise<AxiosResponse> {
+export function dispatchRequest(config: AxiosRequestConfig) {
   throwIfCancellationRequested(config);
+
   const { transformRequest, transformResponse } = config;
 
   config.url = transformURL(config);
   config.method = config.method ?? 'get';
   config.headers = flattenHeaders(config);
 
-  transform(config, transformRequest);
+  transformer(config, transformRequest);
 
-  function onSuccess(response: AxiosResponse<TData>) {
+  function onSuccess(response: AxiosResponse) {
     throwIfCancellationRequested(config);
-    transform(response, transformResponse);
+
+    transformer(response, transformResponse);
     return response;
   }
 
   function onError(reason: unknown) {
     if (!isCancel(reason)) {
       throwIfCancellationRequested(config);
+
       if (isAxiosError(reason)) {
-        transform(reason.response as AxiosResponse<TData>, transformResponse);
+        transformer(reason.response as AxiosResponse, transformResponse);
       }
     }
 
@@ -47,16 +48,16 @@ export default function dispatchRequest<TData = unknown>(
     return Promise.reject(reason);
   }
 
-  function transform<TData = unknown>(
-    target: AxiosRequestConfig | AxiosResponse<TData>,
-    transformer?: AxiosTransformer | AxiosTransformer[],
+  function transformer<TData = unknown>(
+    targetObject: { data?: TData; headers?: AnyObject },
+    transformer?: AxiosTransformer<TData>,
   ) {
-    target.data = transformData(
-      target.data as AnyObject,
-      target.headers,
+    targetObject.data = transformData(
+      targetObject.data,
+      targetObject.headers,
       transformer,
-    ) as TData;
+    );
   }
 
-  return request<TData>(config).then(onSuccess).catch(onError);
+  return request(config).then(onSuccess).catch(onError);
 }

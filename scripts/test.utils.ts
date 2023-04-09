@@ -28,7 +28,7 @@ export function noop() {
   return;
 }
 
-export function mockResponseBase(
+export function mockResponse(
   status: number,
   statusText: string,
   headers: AnyObject,
@@ -40,17 +40,6 @@ export function mockResponseBase(
     headers,
     data,
   };
-}
-
-export function mockResponse(headers: AnyObject = {}, data: AnyObject = {}) {
-  return mockResponseBase(200, 'OK', headers, data);
-}
-
-export function mockResponseError(
-  headers: AnyObject = {},
-  data: AnyObject = {},
-) {
-  return mockResponseBase(400, 'FAIL', headers, data);
 }
 
 export interface MockAdapterOptions {
@@ -68,21 +57,33 @@ export function mockAdapterBase(
   const { headers = {}, data = {}, delay = 0, before, after } = options;
 
   return (config: AxiosAdapterRequestConfig) => {
+    let canceled = false;
+
     before?.(config);
+
     setTimeout(() => {
-      switch (type) {
-        case 'success':
-          config.success(mockResponse(headers, data));
-          break;
-        case 'error':
-          config.success(mockResponseError(headers, data));
-          break;
-        case 'fail':
-          config.fail(mockResponseError(headers));
-          break;
+      if (!canceled) {
+        switch (type) {
+          case 'success':
+            config.success(mockResponse(200, 'OK', headers, data));
+            break;
+          case 'error':
+            config.success(mockResponse(500, 'ERROR', headers, data));
+            break;
+          case 'fail':
+            config.fail(mockResponse(400, 'FAIL', headers, data));
+            break;
+        }
+
+        after?.();
       }
-      after?.();
     }, delay);
+
+    return {
+      abort() {
+        canceled = true;
+      },
+    };
   };
 }
 
