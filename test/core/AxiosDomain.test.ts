@@ -48,7 +48,7 @@ describe('src/core/AxiosDomain.ts', () => {
     });
   });
 
-  test('应该可以调用这些方法', () => {
+  test('应该可以调用请求方法', () => {
     const cb = vi.fn();
     const d = {
       baseURL: 'http://api.com',
@@ -87,7 +87,7 @@ describe('src/core/AxiosDomain.ts', () => {
     expect(cb.mock.calls.length).toBe(l);
   });
 
-  test('应该可以直接传入 config 调用这些方法', () => {
+  test('应该可以直接传入 config 调用请求方法', () => {
     const cb = vi.fn();
     const d = {
       baseURL: 'http://api.com',

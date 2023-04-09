@@ -55,6 +55,7 @@
     "@types/node": "^18.15.5",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
+    "@vitest/coverage-c8": "^0.29.8",
     "actions-toolkit": "^6.0.1",
     "chalk": "^5.2.0",
     "consola": "^2.15.3",
@@ -76,7 +77,7 @@
     "semver": "^7.3.8",
     "simple-git-hooks": "^2.8.1",
     "typescript": "^5.0.2",
-    "vitest": "^0.29.7"
+    "vitest": "^0.30.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged && pnpm test && pnpm build -a",
@@ -99,7 +100,8 @@
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
-        "@algolia/client-search"
+        "@algolia/client-search",
+        "@octokit/core"
       ]
     }
   }
