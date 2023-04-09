@@ -1,7 +1,6 @@
 import { buildURL } from '../helpers/buildURL';
 import { isAbsoluteURL } from '../helpers/isAbsoluteURL';
 import { combineURL } from '../helpers/combineURL';
-import { mergeConfig } from './mergeConfig';
 import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
@@ -9,12 +8,14 @@ import {
   AxiosAdapterResponse,
   AxiosAdapterRequestConfig,
   AxiosAdapterResponseError,
+  AxiosAdapterResponseData,
 } from '../adapter';
+import { mergeConfig } from './mergeConfig';
 import { CancelToken } from './cancel';
 import { dispatchRequest } from './dispatchRequest';
-import InterceptorManager from './InterceptorManager';
 import { AxiosTransformer } from './transformData';
 import AxiosDomain from './AxiosDomain';
+import InterceptorManager from './InterceptorManager';
 
 export type AxiosRequestMethod =
   | AxiosAdapterRequestMethod
@@ -79,12 +80,7 @@ export interface AxiosRequestFormData extends AnyObject {
 
 export type AxiosRequestData = AnyObject | AxiosRequestFormData;
 
-export type AxiosResponseData =
-  | undefined
-  | number
-  | string
-  | ArrayBuffer
-  | AnyObject;
+export type AxiosResponseData = undefined | number | AxiosAdapterResponseData;
 
 export interface AxiosProgressEvent {
   progress: number;
@@ -151,7 +147,7 @@ export interface AxiosRequestConfig
   /**
    * 异常处理
    */
-  errorHandler?: (error: unknown) => Promise<AxiosResponse>;
+  errorHandler?: (error: unknown) => Promise<void> | void;
   /**
    * 监听上传进度
    */
@@ -241,10 +237,8 @@ export default class Axios extends AxiosDomain {
     if (!isAbsoluteURL(baseURL)) {
       defaults.baseURL = combineURL(this.defaults.baseURL ?? '', baseURL);
     }
-    return new AxiosDomain(
-      mergeConfig(this.defaults, defaults),
-
-      (config) => this.#processRequest(config),
+    return new AxiosDomain(mergeConfig(this.defaults, defaults), (config) =>
+      this.#processRequest(config),
     );
   }
 

@@ -1,23 +1,14 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 import {
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
 } from 'scripts/test.utils';
 import { request } from '@/core/request';
+import axios from '@/axios';
+import Axios from '@/core/Axios';
 
 describe('src/core/request.ts', () => {
-  test('应该抛出异常', () => {
-    expect(request({})).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"[axios-miniprogram]: adapter 不是一个 function"',
-    );
-    expect(
-      request({ adapter: mockAdapter() }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"[axios-miniprogram]: url 不是一个 string"',
-    );
-  });
-
   test('应该正确的响应请求', async () => {
     const s = request({
       adapter: mockAdapter(),
@@ -43,7 +34,9 @@ describe('src/core/request.ts', () => {
           "method": "get",
           "url": "/test",
         },
-        "data": {},
+        "data": {
+          "result": null,
+        },
         "headers": {},
         "request": {
           "abort": [Function],
@@ -75,7 +68,9 @@ describe('src/core/request.ts', () => {
             "url": "/test",
             "validateStatus": [Function],
           },
-          "data": {},
+          "data": {
+            "result": null,
+          },
           "headers": {},
           "request": {
             "abort": [Function],
@@ -104,7 +99,9 @@ describe('src/core/request.ts', () => {
             "method": "get",
             "url": "/test",
           },
-          "data": {},
+          "data": {
+            "result": null,
+          },
           "headers": {},
           "isFail": true,
           "request": {
@@ -115,5 +112,76 @@ describe('src/core/request.ts', () => {
         },
       }
     `);
+  });
+
+  test('应该支持请求发送前取消请求', async () => {
+    const cb = vi.fn();
+    const task = {
+      abort: vi.fn(),
+    };
+    const { cancel, token } = axios.CancelToken.source();
+
+    cancel();
+
+    await request({
+      adapter: () => task,
+      url: '/test',
+      method: 'get' as const,
+      cancelToken: token,
+    }).catch(cb);
+
+    expect(task.abort).toBeCalled();
+    expect(cb).toBeCalled();
+  });
+
+  test('应该支持请求发送后取消请求', async () => {
+    const cb = vi.fn();
+    const task = {
+      abort: vi.fn(),
+    };
+    const { cancel, token } = axios.CancelToken.source();
+
+    const p = request({
+      adapter: () => task,
+      url: '/test',
+      method: 'get' as const,
+      cancelToken: token,
+    }).catch(cb);
+
+    cancel();
+    await p;
+
+    expect(task.abort).toBeCalled();
+    expect(cb).toBeCalled();
+  });
+
+  test('应该发送不同类型的请求', () => {
+    request({
+      adapter: ({ type }) => {
+        expect(type).toBe('upload');
+      },
+      url: 'test',
+      method: 'post',
+      upload: true,
+    });
+
+    request({
+      adapter: ({ type }) => {
+        expect(type).toBe('download');
+      },
+      url: 'test',
+      method: 'get',
+      download: true,
+    });
+
+    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((a) => {
+      request({
+        adapter: ({ type }) => {
+          expect(type).toBe('request');
+        },
+        url: 'test',
+        method: a,
+      });
+    });
   });
 });

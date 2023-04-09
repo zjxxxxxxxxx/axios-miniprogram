@@ -1,4 +1,5 @@
-import { isFunction } from '../helpers/isTypes';
+import { isFunction, isString } from '../helpers/isTypes';
+import { assert } from '../helpers/error';
 import { isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
@@ -17,17 +18,19 @@ function throwIfCancellationRequested(config: AxiosRequestConfig) {
 export function dispatchRequest(config: AxiosRequestConfig) {
   throwIfCancellationRequested(config);
 
-  const { transformRequest, transformResponse } = config;
+  assert(isFunction(config.adapter), 'adapter 不是一个 function');
+  assert(isString(config.url), 'url 不是一个 string');
+  assert(isString(config.method), 'method 不是一个 string');
+
+  const { errorHandler, transformRequest, transformResponse } = config;
 
   config.url = transformURL(config);
-  config.method = config.method ?? 'get';
   config.headers = flattenHeaders(config);
 
   transformer(config, transformRequest);
 
   function onSuccess(response: AxiosResponse) {
     throwIfCancellationRequested(config);
-
     transformer(response, transformResponse);
     return response;
   }
@@ -41,8 +44,13 @@ export function dispatchRequest(config: AxiosRequestConfig) {
       }
     }
 
-    if (isFunction(config.errorHandler)) {
-      return config.errorHandler(reason);
+    if (isFunction(errorHandler)) {
+      const promise = errorHandler(reason);
+      if (promise) {
+        return promise.then(() => {
+          throw reason;
+        });
+      }
     }
 
     return Promise.reject(reason);

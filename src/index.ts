@@ -5,11 +5,13 @@ export type {
   AxiosRequestData,
   AxiosRequestFormData,
   AxiosResponse,
+  AxiosResponseData,
   AxiosResponseError,
 } from './core/Axios';
 export type {
   AxiosAdapterRequestConfig,
   AxiosAdapterResponse,
+  AxiosAdapterResponseData,
   AxiosAdapterResponseError,
   AxiosAdapter,
   AxiosPlatform,
@@ -19,4 +21,5 @@ export type {
   AxiosInstance,
   AxiosStatic,
 } from './axios';
+
 export default axios;

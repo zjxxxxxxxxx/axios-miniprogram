@@ -50,11 +50,19 @@ export interface MockAdapterOptions {
   after?: () => void;
 }
 
-export function mockAdapterBase(
+function mockAdapterBase(
   type: 'success' | 'error' | 'fail' = 'success',
   options: MockAdapterOptions = {},
 ) {
-  const { headers = {}, data = {}, delay = 0, before, after } = options;
+  const {
+    headers = {},
+    data = {
+      result: null,
+    },
+    delay = 0,
+    before,
+    after,
+  } = options;
 
   return (config: AxiosAdapterRequestConfig) => {
     let canceled = false;

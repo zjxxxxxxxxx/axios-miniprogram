@@ -23,6 +23,8 @@ export type AxiosAdapterRequestMethod =
   | 'TRACE'
   | 'CONNECT';
 
+export type AxiosAdapterResponseData = string | ArrayBuffer | AnyObject;
+
 export interface AxiosAdapterResponse extends AnyObject {
   /**
    * 状态码
@@ -39,7 +41,7 @@ export interface AxiosAdapterResponse extends AnyObject {
   /**
    * 响应数据
    */
-  data: string | ArrayBuffer | AnyObject;
+  data: AxiosAdapterResponseData;
 }
 
 export interface AxiosAdapterResponseError extends AnyObject {
@@ -139,17 +141,20 @@ export interface AxiosPlatform {
   download: AxiosAdapterDownload;
 }
 
-export type AxiosAdapterTask = {
-  abort?(): void;
-  onProgressUpdate?(callback: AxiosProgressCallback): void;
-  offProgressUpdate?(callback: AxiosProgressCallback): void;
-} | void;
+export type AxiosAdapterTask =
+  | undefined
+  | void
+  | {
+      abort?(): void;
+      onProgressUpdate?(callback: AxiosProgressCallback): void;
+      offProgressUpdate?(callback: AxiosProgressCallback): void;
+    };
 
 export interface AxiosAdapter {
   (config: AxiosAdapterRequestConfig): AxiosAdapterTask;
 }
 
-export function getAdapterDefault(): AxiosAdapter | undefined {
+export function getAdapterDefault() {
   const tryGetPlatforms = [
     () => uni,
     () => wx,
@@ -182,7 +187,7 @@ export function getAdapterDefault(): AxiosAdapter | undefined {
   return createAdapter(platform);
 }
 
-export function createAdapter(platform: AxiosPlatform): AxiosAdapter {
+export function createAdapter(platform: AxiosPlatform) {
   assert(isPlainObject(platform), 'platform 不是一个 object');
   assert(isFunction(platform.request), 'request 不是一个 function');
   assert(isFunction(platform.upload), 'upload 不是一个 function');

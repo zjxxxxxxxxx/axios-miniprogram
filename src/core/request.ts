@@ -1,5 +1,4 @@
-import { isFunction, isPlainObject, isString } from '../helpers/isTypes';
-import { assert } from '../helpers/error';
+import { isFunction, isPlainObject } from '../helpers/isTypes';
 import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
@@ -10,7 +9,6 @@ import {
   AxiosProgressCallback,
   AxiosRequestConfig,
   AxiosResponse,
-  AxiosResponseData,
   AxiosResponseError,
 } from './Axios';
 import { isCancelToken } from './cancel';
@@ -41,19 +39,18 @@ function tryToggleProgressUpdate(
 
 export function request(config: AxiosRequestConfig) {
   return new Promise<AxiosResponse>((resolve, reject) => {
-    assert(isFunction(config.adapter), 'adapter 不是一个 function');
-    assert(isString(config.url), 'url 不是一个 string');
+    const { adapter, url, method, cancelToken } = config;
 
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...config,
-      url: config.url!,
+      url: url!,
       type: generateType(config),
-      method: config.method!.toUpperCase() as AxiosAdapterRequestMethod,
+      method: method!.toUpperCase() as AxiosAdapterRequestMethod,
       success,
       fail,
     };
 
-    const adapterTask = config.adapter!(adapterConfig);
+    const adapterTask = adapter!(adapterConfig);
 
     function success(_: AxiosAdapterResponse): void {
       const response = _ as AxiosResponse;
@@ -86,7 +83,6 @@ export function request(config: AxiosRequestConfig) {
       tryToggleProgressUpdate(adapterConfig, adapterTask.onProgressUpdate);
     }
 
-    const { cancelToken } = config;
     if (isCancelToken(cancelToken)) {
       cancelToken.onCancel((reason) => {
         if (isPlainObject(adapterTask)) {
