@@ -38,7 +38,7 @@ pnpm test:watch
 - 应该对新功能进行单元测试。
 - 应该在文档中添加相关的使用介绍及方法。
 
-## Project Structure
+## 项目结构
 
 ```
 src/            - 源代码

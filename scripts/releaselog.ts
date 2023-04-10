@@ -1,10 +1,9 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import readline from 'node:readline';
-import { __dirname, getPkgJSON } from './utils';
+import { getPkgJSON, resolve } from './utils';
 
-const changelogPath = path.resolve(__dirname, 'CHANGELOG.md');
-const releaselogPath = path.resolve(__dirname, 'RELEASELOG.md');
+const changelogPath = resolve('CHANGELOG.md');
+const releaselogPath = resolve('RELEASELOG.md');
 const { version } = getPkgJSON();
 const versionRE = new RegExp(`^# \\[?${version}\\]?[ (]`);
 

@@ -1,8 +1,5 @@
-import path from 'node:path';
 import { defineConfig } from 'vitest/config';
-import { __dirname } from './scripts/utils';
-
-const resolve = (...paths) => path.resolve(__dirname, ...paths);
+import { __dirname, resolve } from './scripts/utils';
 
 export default defineConfig({
   test: {

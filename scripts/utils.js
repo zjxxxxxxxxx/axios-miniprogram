@@ -8,6 +8,7 @@ export const require = createRequire(import.meta.url);
 export const pkgPath = path.resolve(__dirname, 'package.json');
 export const distPath = path.resolve(__dirname, 'dist');
 
+export const resolve = (...paths) => path.resolve(__dirname, ...paths);
 export const exec = (command, options) =>
   execSync(command, { stdio: 'inherit', ...(options ?? {}) });
 export const getPkgJSON = () => require(pkgPath);
