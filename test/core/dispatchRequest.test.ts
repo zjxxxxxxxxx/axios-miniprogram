@@ -145,6 +145,39 @@ describe('src/core/dispatchRequest.ts', () => {
     }
   });
 
+  test('应该支持异步的自定义异常处理器', async () => {
+    const e1 = vi.fn();
+    const e2 = vi.fn();
+    const c1 = {
+      ...defaults,
+      adapter: mockAdapterError(),
+      url: 'test',
+      errorHandler: e1,
+    };
+    const c2 = {
+      ...defaults,
+      adapter: mockAdapterFail(),
+      url: 'test',
+      errorHandler: e2,
+    };
+
+    try {
+      await dispatchRequest(c1);
+    } catch (err) {
+      expect(e1).toBeCalled();
+      expect(e1.mock.calls[0][0]).toBe(err);
+      expect(axios.isAxiosError(err)).toBeTruthy();
+    }
+
+    try {
+      await dispatchRequest(c2);
+    } catch (err) {
+      expect(e2).toBeCalled();
+      expect(e2.mock.calls[0][0]).toBe(err);
+      expect(axios.isAxiosError(err)).toBeTruthy();
+    }
+  });
+
   test('请求发送前取消请求应该抛出异常', async () => {
     const cb = vi.fn();
     const { cancel, token } = axios.CancelToken.source();

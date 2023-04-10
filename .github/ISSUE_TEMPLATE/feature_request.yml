@@ -1,0 +1,44 @@
+name: 🚀 新功能提案
+description: 提出要添加到 axios-miniprogram 的新功能
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您对该项目的关注并抽出宝贵时间填写此专题报告！
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: 清晰简洁的问题描述
+      description: '作为使用 axios-miniprogram 的开发人员，我想要 [目标/愿望] 以便 [受益]。如果您打算为此问题提交 PR，请在描述中告诉我们。谢谢！'
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: 建议的解决方案
+      description: '在模块 [xy] 中，我们可以提供以下实现......'
+    validations:
+      required: true
+  - type: textarea
+    id: alternative
+    attributes:
+      label: 选择
+      description: 清晰简洁地描述您考虑过的任何替代解决方案或功能。
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 附加上下文
+      description: 有关功能请求的任何其他上下文或屏幕截图。
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: 验证
+      description: 在提交问题之前，请确保您执行以下操作
+      options:
+        - label: 遵守我们的[行为准则 ](https://github.com/zjx0905/axios-miniprogram/blob/main/CODE_OF_CONDUCT.md)
+          required: true
+        - label: 阅读[贡献指南](https://github.com/zjx0905/axios-miniprogram/blob/main/CONTRIBUTING.md).
+          required: true
+        - label: 阅读[文档](https://axios-miniprogram.com).
+          required: true

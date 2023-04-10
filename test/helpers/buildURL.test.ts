@@ -6,13 +6,9 @@ describe('src/helpers/buildURL.ts', () => {
     expect(buildURL('/test')).toBe('/test');
   });
 
-  test('应该清理哈希值', () => {
-    expect(buildURL('/test#hash')).toBe('/test');
-  });
-
   test('应该对参数进行系列化', () => {
     expect(
-      buildURL('/test#hash', {
+      buildURL('/test', {
         v1: 1,
         v2: undefined,
         v3: null,

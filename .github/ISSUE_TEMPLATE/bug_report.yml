@@ -1,0 +1,49 @@
+name: 🐞 问题报告
+description: 报告 axios-miniprogram 的问题。
+labels: [pending triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间填写此错误报告！
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 描述错误
+      description: 对错误是什么的清晰简洁的描述。如果您打算为此问题提交 PR，请在描述中告诉我们。谢谢！
+      placeholder: 发表评论
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 附加上下文
+      description: 有关问题的任何其他上下文或屏幕截图。
+  - type: dropdown
+    id: package-manager
+    attributes:
+      label: 使用过的包管理器
+      description: 选择使用的包管理器
+      options:
+        - npm
+        - yarn
+        - pnpm
+        - 源码包（指直接下载 zip 文件的方式）
+    validations:
+      required: true
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: 验证
+      description: 在提交问题之前，请确保您执行以下操作
+      options:
+        - label: 遵守我们的[行为准则 ](https://github.com/zjx0905/axios-miniprogram/blob/main/CODE_OF_CONDUCT.md)
+          required: true
+        - label: 阅读[贡献指南](https://github.com/zjx0905/axios-miniprogram/blob/main/CONTRIBUTING.md).
+          required: true
+        - label: 阅读[文档](https://axios-miniprogram.com).
+          required: true
+        - label: 检查是否还没有报告相同错误的[问题](https://github.com/zjx0905/axios-miniprogram/issues)以避免创建重复。
+          required: true
+        - label: 确保这是 axios-miniprogram 问题而不是特定于框架的问题。
+          required: true

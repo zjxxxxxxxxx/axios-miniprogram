@@ -4,7 +4,7 @@ import {
   isPlainObject,
   isUndefined,
 } from './helpers/isTypes';
-import { assert, throwError } from './helpers/error';
+import { assert } from './helpers/error';
 import {
   AxiosProgressCallback,
   AxiosRequestFormData,
@@ -203,8 +203,6 @@ export function createAdapter(platform: AxiosPlatform) {
         return processUpload(platform.upload, baseOptions);
       case 'download':
         return processDownload(platform.download, baseOptions);
-      default:
-        throwError(`无法识别的请求类型 ${config.type}`);
     }
   }
 

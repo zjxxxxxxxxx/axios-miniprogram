@@ -5,16 +5,10 @@ export function buildURL(
   params?: AnyObject,
   paramsSerializer = defaultSerializer,
 ): string {
-  const hashIndex = url.indexOf('#');
-  if (hashIndex !== -1) {
-    url = url.slice(0, hashIndex);
-  }
-
   const paramsStr = paramsSerializer(params);
   if (paramsStr) {
     url = `${url}${url.indexOf('?') === -1 ? '?' : '&'}${paramsStr}`;
   }
-
   return url;
 }
 
