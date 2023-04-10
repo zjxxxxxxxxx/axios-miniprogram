@@ -1,5 +1,7 @@
 import { describe, test, expect, vi } from 'vitest';
 import {
+  asyncNext,
+  asyncTimeout,
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
@@ -183,5 +185,89 @@ describe('src/core/request.ts', () => {
         method: a,
       });
     });
+  });
+
+  test('应该可以监听上传进度', () => {
+    const on = vi.fn();
+    const cb = vi.fn();
+
+    request({
+      adapter: () => ({
+        onProgressUpdate: on,
+      }),
+      url: 'test',
+      method: 'post',
+      upload: true,
+      onUploadProgress: cb,
+    });
+
+    expect(on).toBeCalled();
+    expect(on.mock.calls[0][0]).toBe(cb);
+  });
+
+  test('取消请求时应该可以取消监听上传进度', async () => {
+    const on = vi.fn();
+    const cb = vi.fn();
+    const { cancel, token } = axios.CancelToken.source();
+
+    cancel();
+
+    await request({
+      adapter: () => ({
+        offProgressUpdate: on,
+      }),
+      url: 'test',
+      method: 'post',
+      upload: true,
+      onUploadProgress: cb,
+      cancelToken: token,
+    }).catch((err) => {
+      expect(axios.isCancel(err)).toBeTruthy();
+    });
+
+    expect(on).toBeCalled();
+    expect(on.mock.calls[0][0]).toBe(cb);
+  });
+
+  test('应该可以监听下载进度', () => {
+    const on = vi.fn();
+    const cb = vi.fn();
+
+    request({
+      adapter: () => ({
+        onProgressUpdate: on,
+      }),
+      url: 'test',
+      method: 'get',
+      download: true,
+      onDownloadProgress: cb,
+    });
+
+    expect(on).toBeCalled();
+    expect(on.mock.calls[0][0]).toBe(cb);
+  });
+
+  test('取消请求时应该可以取消监听下载进度', async () => {
+    const on = vi.fn();
+    const cb = vi.fn();
+    const { cancel, token } = axios.CancelToken.source();
+
+    cancel();
+
+    await request({
+      adapter: () => ({
+        offProgressUpdate: on,
+      }),
+      url: 'test',
+      method: 'get',
+      download: true,
+      onDownloadProgress: cb,
+      cancelToken: token,
+    }).catch((err) => {
+      expect(axios.isCancel(err)).toBeTruthy();
+    });
+
+    expect(on).toBeCalled();
+    expect(on.mock.calls[0][0]).toBe(cb);
   });
 });

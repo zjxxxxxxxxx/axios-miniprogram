@@ -1,6 +1,7 @@
 import { describe, test, expect, vi } from 'vitest';
 import {
   asyncNext,
+  asyncTimeout,
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
@@ -119,13 +120,17 @@ describe('src/core/dispatchRequest.ts', () => {
       ...defaults,
       adapter: mockAdapterError(),
       url: 'test',
-      errorHandler: e1,
+      errorHandler: async (err: unknown) => {
+        e1(err);
+      },
     };
     const c2 = {
       ...defaults,
       adapter: mockAdapterFail(),
       url: 'test',
-      errorHandler: e2,
+      errorHandler: async (err: unknown) => {
+        e2(err);
+      },
     };
 
     try {

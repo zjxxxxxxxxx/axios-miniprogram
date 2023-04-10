@@ -17,12 +17,19 @@ describe('src/axios.ts', () => {
   });
 
   test('应该可以创建实例', () => {
-    const i1 = axios.create();
     const i2 = axios.create({
       baseURL: 'http://api.com',
     });
-    expect(i1.defaults).toEqual(defaults);
+
     expect(i2.defaults).toEqual({ ...defaults, baseURL: 'http://api.com' });
+    expect(i2.interceptors).toBeTypeOf('object');
+    expect(i2.getUri).toBeTypeOf('function');
+    expect(i2.fork).toBeTypeOf('function');
+    expect(i2.request).toBeTypeOf('function');
+
+    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
+      expect(i2[k]).toBeTypeOf('function');
+    });
   });
 
   test('创建的实例应该有这些实例属性及方法', () => {

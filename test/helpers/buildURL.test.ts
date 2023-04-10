@@ -27,12 +27,22 @@ describe('src/helpers/buildURL.ts', () => {
   test('应该对数组进行系列化', () => {
     expect(
       buildURL('/test', {
+        arr: [],
+      }),
+    ).toBe('/test');
+    expect(
+      buildURL('/test', {
         arr: [1, 2],
       }),
     ).toBe('/test?arr[]=1&arr[]=2');
   });
 
   test('应该对对象进行系列化', () => {
+    expect(
+      buildURL('/test', {
+        obj: {},
+      }),
+    ).toBe('/test');
     expect(
       buildURL('/test', {
         obj: {

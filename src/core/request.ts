@@ -32,7 +32,6 @@ function tryToggleProgressUpdate(
           progressUpdate(onDownloadProgress);
         }
         break;
-      default:
     }
   }
 }

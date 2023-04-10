@@ -97,6 +97,18 @@ describe('src/helpers/cancel.ts', () => {
     expect(() => s.token.throwIfRequested()).toThrowError();
   });
 
+  test('多次取消时应该只有第一次会生效', () => {
+    const s = CancelToken.source();
+
+    expect(s.token.throwIfRequested()).toBeUndefined();
+
+    s.cancel('1');
+    s.cancel('2');
+    s.cancel('3');
+
+    expect(() => s.token.throwIfRequested()).toThrowError('1');
+  });
+
   test('应该可以在请求发出之前取消', async () => {
     const cb = vi.fn();
     const s = CancelToken.source();

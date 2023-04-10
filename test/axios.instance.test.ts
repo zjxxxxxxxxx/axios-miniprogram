@@ -1,6 +1,7 @@
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 import { mockAdapter } from 'scripts/test.utils';
 import Axios from '@/core/Axios';
+import AxiosDomain from '@/core/AxiosDomain';
 import defaults from '@/defaults';
 import axios from '@/axios';
 
@@ -121,5 +122,6 @@ describe('src/axios.ts', () => {
       baseURL: 'test',
     });
     expect(a.defaults.baseURL).toBe('http://api.com/test');
+    expect(a instanceof AxiosDomain).toBeTruthy();
   });
 });
