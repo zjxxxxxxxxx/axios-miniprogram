@@ -1,14 +1,13 @@
 import { describe, test, expect, vi } from 'vitest';
 import {
-  asyncNext,
   asyncTimeout,
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
 } from 'scripts/test.utils';
 import { request } from '@/core/request';
-import axios from '@/axios';
 import Axios from '@/core/Axios';
+import axios from '@/axios';
 
 describe('src/core/request.ts', () => {
   test('应该正确的响应请求', async () => {
@@ -157,6 +156,24 @@ describe('src/core/request.ts', () => {
     expect(cb).toBeCalled();
   });
 
+  test('无 task 也应该可以取消请求', async () => {
+    const cb = vi.fn();
+
+    const { cancel, token } = axios.CancelToken.source();
+
+    cancel();
+
+    await request({
+      adapter: () => undefined,
+      url: '/test',
+      method: 'get' as const,
+      cancelToken: token,
+    }).catch(cb);
+
+    expect(cb).toBeCalled();
+    expect(axios.isCancel(cb.mock.calls[0][0])).toBeTruthy();
+  });
+
   test('应该发送不同类型的请求', () => {
     request({
       adapter: ({ type }) => {
@@ -225,11 +242,13 @@ describe('src/core/request.ts', () => {
       expect(axios.isCancel(err)).toBeTruthy();
     });
 
+    await asyncTimeout();
+
     expect(on).toBeCalled();
     expect(on.mock.calls[0][0]).toBe(cb);
   });
 
-  test('应该可以监听下载进度', () => {
+  test('应该可以监听下载进度', async () => {
     const on = vi.fn();
     const cb = vi.fn();
 
@@ -242,6 +261,8 @@ describe('src/core/request.ts', () => {
       download: true,
       onDownloadProgress: cb,
     });
+
+    await asyncTimeout();
 
     expect(on).toBeCalled();
     expect(on.mock.calls[0][0]).toBe(cb);
@@ -269,5 +290,35 @@ describe('src/core/request.ts', () => {
 
     expect(on).toBeCalled();
     expect(on.mock.calls[0][0]).toBe(cb);
+  });
+
+  test('上传不应该监听下载进度/下载不应该监听上传进度', async () => {
+    const on = vi.fn();
+    const cb = vi.fn();
+
+    request({
+      adapter: () => ({
+        onProgressUpdate: on,
+      }),
+      url: 'test',
+      method: 'post',
+      upload: true,
+      onDownloadProgress: cb,
+    });
+
+    request({
+      adapter: () => ({
+        onProgressUpdate: on,
+      }),
+      url: 'test',
+      method: 'get',
+      download: true,
+      onUploadProgress: cb,
+    });
+
+    await asyncTimeout();
+
+    expect(on).not.toBeCalled();
+    expect(cb).not.toBeCalled();
   });
 });

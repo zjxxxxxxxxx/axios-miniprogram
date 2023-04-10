@@ -9,10 +9,11 @@ export default defineConfig({
       '@': resolve('src'),
     },
     coverage: {
-      provider: 'c8',
+      provider: 'istanbul',
       reportsDirectory: resolve('test/coverage'),
-      enabled: true,
+      enabled: false,
+      include: ['src/**/*.ts'],
     },
-    include: ['./test/**/*.test.ts'],
+    include: ['test/**/*.test.ts'],
   },
 });

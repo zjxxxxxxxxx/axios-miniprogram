@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { ignore } from 'src/helpers/ignore';
+import { ignore } from '@/helpers/ignore';
 
 describe('src/helpers/ignore.ts', () => {
   test('不应该改变传入的对象', () => {

@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { captureError, checkStack } from 'scripts/test.utils';
-import { assert, throwError, cleanStack } from 'src/helpers/error';
+import { assert, throwError, cleanStack } from '@/helpers/error';
 
 describe('src/helpers/error.ts', () => {
   test('第一个参数为 true 时应该无事发生', () => {
@@ -20,6 +20,20 @@ describe('src/helpers/error.ts', () => {
       '"[axios-miniprogram]: error"',
     );
     expect(checkStack(captureError(() => throwError('error')))).toBeTruthy();
+  });
+
+  test('应该支持空错误栈', () => {
+    const ce = () => {
+      const error = new Error();
+      error.stack = undefined;
+      return error;
+    };
+    const error = ce();
+
+    cleanStack(error);
+
+    expect(checkStack(error)).toBeTruthy();
+    expect(error.stack).toBeUndefined();
   });
 
   test('应该清掉多余的错误栈', () => {

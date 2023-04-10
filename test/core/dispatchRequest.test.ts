@@ -1,14 +1,13 @@
 import { describe, test, expect, vi } from 'vitest';
 import {
   asyncNext,
-  asyncTimeout,
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
 } from 'scripts/test.utils';
 import { dispatchRequest } from '@/core/dispatchRequest';
-import _defaults from '@/defaults';
 import axios from '@/axios';
+import _defaults from '@/defaults';
 
 describe('src/core/dispatchRequest.ts', () => {
   const defaults = {
@@ -33,6 +32,21 @@ describe('src/core/dispatchRequest.ts', () => {
     ).toThrowErrorMatchingInlineSnapshot(
       '"[axios-miniprogram]: method 不是一个 string"',
     );
+    expect(() =>
+      dispatchRequest({ adapter: mockAdapter(), url: '/', method: 'get' }),
+    ).not.toThrowError();
+  });
+
+  test('坏的适配器', () => {
+    expect(() =>
+      dispatchRequest({
+        adapter: () => {
+          throw 'bad adapter';
+        },
+        url: '/',
+        method: 'get',
+      }),
+    ).toMatchInlineSnapshot('[Function]');
   });
 
   test('应该支持转换 URL', () => {

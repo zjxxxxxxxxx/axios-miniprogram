@@ -17,30 +17,21 @@ describe('src/axios.ts', () => {
   });
 
   test('应该可以创建实例', () => {
-    const i2 = axios.create({
+    const instance = axios.create({
       baseURL: 'http://api.com',
     });
 
-    expect(i2.defaults).toEqual({ ...defaults, baseURL: 'http://api.com' });
-    expect(i2.interceptors).toBeTypeOf('object');
-    expect(i2.getUri).toBeTypeOf('function');
-    expect(i2.fork).toBeTypeOf('function');
-    expect(i2.request).toBeTypeOf('function');
-
-    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
-      expect(i2[k]).toBeTypeOf('function');
+    expect(instance.defaults).toEqual({
+      ...defaults,
+      baseURL: 'http://api.com',
     });
-  });
-
-  test('创建的实例应该有这些实例属性及方法', () => {
-    expect(axios.defaults).toBe(defaults);
-    expect(axios.interceptors).toBeTypeOf('object');
-    expect(axios.getUri).toBeTypeOf('function');
-    expect(axios.fork).toBeTypeOf('function');
-    expect(axios.request).toBeTypeOf('function');
+    expect(instance.interceptors).toBeTypeOf('object');
+    expect(instance.getUri).toBeTypeOf('function');
+    expect(instance.fork).toBeTypeOf('function');
+    expect(instance.request).toBeTypeOf('function');
 
     [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
-      expect(axios[k]).toBeTypeOf('function');
+      expect(instance[k]).toBeTypeOf('function');
     });
   });
 });

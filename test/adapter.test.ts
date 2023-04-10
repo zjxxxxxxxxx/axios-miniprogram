@@ -155,14 +155,29 @@ describe('src/adapter.ts', () => {
       upload: vi.fn(),
       download: vi.fn((config) => {
         config.success({
-          filePath: config.filePath,
           tempFilePath: '/path/temp/file',
         });
       }),
     };
     const p2 = {
-      request: vi.fn(),
-      upload: vi.fn(),
+      ...p1,
+      download: vi.fn((config) => {
+        config.success({
+          apFilePath: '/path/temp/file',
+        });
+      }),
+    };
+    const p3 = {
+      ...p1,
+      download: vi.fn((config) => {
+        config.success({
+          filePath: config.filePath,
+          tempFilePath: '/path/temp/file',
+        });
+      }),
+    };
+    const p4 = {
+      ...p1,
       download: vi.fn((config) => {
         config.success({
           filePath: config.filePath,
@@ -170,37 +185,127 @@ describe('src/adapter.ts', () => {
         });
       }),
     };
-
-    createAdapter(p1)({
+    const c1 = {
       type: 'download' as const,
       url: 'test',
       method: 'GET' as const,
-      params: { filePath: '/test/file' },
       success: (response: any) => {
         expect(response.data).toMatchInlineSnapshot(`
           {
-            "filePath": "/test/file",
+            "filePath": undefined,
             "tempFilePath": "/path/temp/file",
           }
         `);
       },
       fail: noop,
-    });
-
-    createAdapter(p2)({
-      type: 'download' as const,
-      url: 'test',
-      method: 'GET' as const,
-      params: { filePath: '/test/file' },
+    };
+    const c2 = {
+      ...c1,
       success: (response: any) => {
         expect(response.data).toMatchInlineSnapshot(`
           {
-            "filePath": "/test/file",
+            "filePath": undefined,
             "tempFilePath": "/path/temp/file",
           }
         `);
       },
-      fail: noop,
-    });
+    };
+    const c3 = {
+      ...c1,
+      params: {
+        filePath: '/user/path',
+      },
+      success: (response: any) => {
+        expect(response.data).toMatchInlineSnapshot(`
+          {
+            "filePath": "/user/path",
+            "tempFilePath": "/path/temp/file",
+          }
+        `);
+      },
+    };
+    const c4 = {
+      ...c1,
+      params: {
+        filePath: '/user/path',
+      },
+      success: (response: any) => {
+        expect(response.data).toMatchInlineSnapshot(`
+          {
+            "filePath": "/user/path",
+            "tempFilePath": "/path/temp/file",
+          }
+        `);
+      },
+    };
+
+    createAdapter(p1)(c1);
+    createAdapter(p2)(c2);
+    createAdapter(p3)(c3);
+    createAdapter(p4)(c4);
+  });
+
+  test('应该支持转换失败的请求', () => {
+    const p1 = {
+      request: vi.fn(({ fail }) => fail({})),
+      upload: vi.fn(),
+      download: vi.fn(),
+    };
+    const p2 = {
+      ...p1,
+      request: vi.fn(({ fail }) => fail({ data: { result: null } })),
+    };
+    const p3 = {
+      ...p1,
+      request: vi.fn(({ fail }) =>
+        fail({ statusCode: 500, header: {}, errMsg: 'request:fail' }),
+      ),
+    };
+    const c1 = {
+      type: 'request' as const,
+      url: 'test',
+      method: 'GET' as const,
+      success: noop,
+      fail: (response: any) => {
+        expect(response).toMatchInlineSnapshot(`
+          {
+            "headers": undefined,
+            "status": 400,
+            "statusText": "Bad Adapter",
+          }
+        `);
+      },
+    };
+    const c2 = {
+      ...c1,
+      fail: (response: any) => {
+        expect(response).toMatchInlineSnapshot(`
+          {
+            "data": {
+              "result": null,
+            },
+            "headers": undefined,
+            "status": 200,
+            "statusText": "OK",
+          }
+        `);
+      },
+    };
+    const c3 = {
+      ...c1,
+      fail: (response: any) => {
+        expect(response).toMatchInlineSnapshot(`
+          {
+            "headers": {},
+            "status": 500,
+            "statusText": "request:fail",
+          }
+        `);
+      },
+    };
+
+    createAdapter(p1)(c1);
+    createAdapter(p2)(c2);
+    createAdapter(p3)(c3);
   });
 });

@@ -6,7 +6,12 @@ import { CancelToken } from '@/core/cancel';
 describe('src/core/mergeConfig.ts', () => {
   test('应该支持空参数', () => {
     expect(mergeConfig()).toEqual({});
+    expect(mergeConfig({})).toEqual({});
+    expect(mergeConfig(undefined, {})).toEqual({});
     expect(mergeConfig({ baseURL: '/api' })).toEqual({ baseURL: '/api' });
+    expect(mergeConfig(undefined, { baseURL: '/api' })).toEqual({
+      baseURL: '/api',
+    });
   });
 
   test('应该只取 config2', () => {
@@ -36,7 +41,7 @@ describe('src/core/mergeConfig.ts', () => {
 
   test('应该深度合并', () => {
     const o1 = {
-      v1: 1,
+      v1: {},
       v2: 1,
       v3: {
         v1: 1,
@@ -47,14 +52,16 @@ describe('src/core/mergeConfig.ts', () => {
       v3: {
         v2: 2,
       },
+      v4: {},
     };
     const o3 = {
-      v1: 1,
+      v1: {},
       v2: 2,
       v3: {
         v1: 1,
         v2: 2,
       },
+      v4: {},
     };
     const c1 = {
       headers: {
@@ -104,6 +111,21 @@ describe('src/core/mergeConfig.ts', () => {
         [key]: c1[key],
       });
     });
+  });
+
+  test('深度合并应该丢弃非普通对象值', () => {
+    const c1 = {
+      headers: 1,
+      params: '1',
+      data: [],
+    };
+    const c2 = {
+      headers: () => null,
+      params: null,
+      data: new Date(),
+    };
+
+    expect(mergeConfig(c1 as any, c2 as any)).toEqual({});
   });
 
   test('应该优先取 config2', () => {

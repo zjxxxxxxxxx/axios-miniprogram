@@ -1,6 +1,7 @@
 import { buildURL } from '../helpers/buildURL';
 import { isAbsoluteURL } from '../helpers/isAbsoluteURL';
 import { combineURL } from '../helpers/combineURL';
+import { isString } from '../helpers/isTypes';
 import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
@@ -232,10 +233,9 @@ export default class Axios extends AxiosDomain {
   /**
    * 派生领域
    */
-  fork(defaults: AxiosRequestConfig) {
-    const { baseURL = '' } = defaults;
-    if (!isAbsoluteURL(baseURL)) {
-      defaults.baseURL = combineURL(this.defaults.baseURL ?? '', baseURL);
+  fork(defaults: AxiosRequestConfig = {}) {
+    if (isString(defaults.baseURL) && !isAbsoluteURL(defaults.baseURL)) {
+      defaults.baseURL = combineURL(this.defaults.baseURL, defaults.baseURL);
     }
     return new AxiosDomain(mergeConfig(this.defaults, defaults), (config) =>
       this.#processRequest(config),

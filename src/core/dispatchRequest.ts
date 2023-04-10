@@ -1,12 +1,12 @@
 import { isFunction, isString } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
-import { isCancel, isCancelToken } from './cancel';
+import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
 import { request } from './request';
 import { AxiosRequestConfig, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
-import { isAxiosError } from './createError';
+import { AxiosErrorResponse } from './createError';
 
 function throwIfCancellationRequested(config: AxiosRequestConfig) {
   const { cancelToken } = config;
@@ -35,13 +35,10 @@ export function dispatchRequest(config: AxiosRequestConfig) {
     return response;
   }
 
-  function onError(reason: unknown) {
+  function onError(reason: Cancel | AxiosErrorResponse) {
     if (!isCancel(reason)) {
       throwIfCancellationRequested(config);
-
-      if (isAxiosError(reason)) {
-        transformer(reason.response as AxiosResponse, transformResponse);
-      }
+      transformer(reason.response, transformResponse);
     }
 
     if (isFunction(errorHandler)) {

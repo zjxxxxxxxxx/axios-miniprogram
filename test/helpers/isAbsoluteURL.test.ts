@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { isAbsoluteURL } from 'src/helpers/isAbsoluteURL';
+import { isAbsoluteURL } from '@/helpers/isAbsoluteURL';
 
 describe('src/helpers/isAbsoluteURL.ts', () => {
   test('应该不是绝对路径', () => {

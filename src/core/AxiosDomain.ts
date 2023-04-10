@@ -141,7 +141,7 @@ export default class AxiosDomain {
   connect!: AxiosDomainAsRequest;
 
   constructor(
-    defaults: AxiosRequestConfig = {},
+    defaults: AxiosRequestConfig,
     processRequest: (config: AxiosRequestConfig) => Promise<AxiosResponse>,
   ) {
     this.defaults = defaults;

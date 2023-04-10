@@ -290,13 +290,20 @@ describe('src/core/Axios.ts', () => {
     );
   });
 
-  test('应该可以派生领域', () => {
+  test('派生的领域应该为 AxiosDomain 的实例', () => {
+    expect(axios.fork() instanceof AxiosDomain).toBeTruthy();
+  });
+
+  test('应该支持 绝对路径/相对路径 派生领域', () => {
     const a1 = axios.fork({ baseURL: 'test' });
     const a2 = new Axios().fork({ baseURL: 'test' });
+    const a3 = axios.fork({ baseURL: 'https://api.com' });
+    const a4 = axios.fork();
 
     expect(a1.defaults.baseURL).toBe('http://api.com/test');
-    expect(a1 instanceof AxiosDomain).toBeTruthy();
     expect(a2.defaults.baseURL).toBe('/test');
+    expect(a3.defaults.baseURL).toBe('https://api.com');
+    expect(a4.defaults.baseURL).toBe('http://api.com');
   });
 
   test('基于当前实例派生的领域应该可以复用当前实例上的中间件', async () => {

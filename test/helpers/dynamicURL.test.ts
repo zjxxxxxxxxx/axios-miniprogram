@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { dynamicURL } from 'src/helpers/dynamicURL';
+import { dynamicURL } from '@/helpers/dynamicURL';
 
 describe('src/helpers/dynamicURL.ts', () => {
   test('应该替换关键字', () => {

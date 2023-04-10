@@ -1,8 +1,9 @@
 import { describe, test, expect } from 'vitest';
-import { buildURL } from 'src/helpers/buildURL';
+import { buildURL } from '@/helpers/buildURL';
 
 describe('src/helpers/buildURL.ts', () => {
   test('应该支持空参数', () => {
+    expect(buildURL()).toBe('');
     expect(buildURL('/test')).toBe('/test');
   });
 

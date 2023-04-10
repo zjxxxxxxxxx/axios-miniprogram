@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { deepMerge } from 'src/helpers/deepMerge';
+import { deepMerge } from '@/helpers/deepMerge';
 
 describe('src/helpers/deepMerge.ts', () => {
   test('应该支持空参数', () => {

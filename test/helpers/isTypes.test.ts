@@ -8,7 +8,7 @@ import {
   isNull,
   isUndefined,
   isString,
-} from 'src/helpers/isTypes';
+} from '@/helpers/isTypes';
 
 describe('src/helpers/isTypes.ts', () => {
   test('应该能判断是数组', () => {

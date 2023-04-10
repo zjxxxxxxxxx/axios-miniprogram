@@ -37,10 +37,10 @@ export function mergeConfig(
     else if (deepMergeConfigMap[key]) {
       if (isPlainObject(val1) && isPlainObject(val2)) {
         config[key] = deepMerge(val1, val2);
-      } else if (isPlainObject(val1)) {
-        config[key] = deepMerge(val1);
       } else if (isPlainObject(val2)) {
-        config[key] = deepMerge(val2);
+        config[key] = val2;
+      } else if (isPlainObject(val1)) {
+        config[key] = val1;
       }
     }
     // 优先从 config2 中取值，如果没有值就从 config1 中取值

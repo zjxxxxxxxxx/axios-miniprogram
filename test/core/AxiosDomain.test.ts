@@ -48,6 +48,25 @@ describe('src/core/AxiosDomain.ts', () => {
     });
   });
 
+  test('请求方法应该支持空参数', () => {
+    const cb = vi.fn();
+    const a = new AxiosDomain({}, cb);
+
+    a.request('test');
+
+    AxiosDomain.as.forEach((k) => a[k]('test'));
+    AxiosDomain.asp.forEach((k) => a[k]('test'));
+    AxiosDomain.asd.forEach((k) => a[k]('test'));
+
+    const l =
+      AxiosDomain.as.length +
+      AxiosDomain.asp.length +
+      AxiosDomain.asd.length +
+      1;
+    expect(cb.mock.calls.length).toBe(l);
+    cb.mock.calls.forEach(([config]) => expect(config.url).toBe('test'));
+  });
+
   test('应该可以调用请求方法', () => {
     const cb = vi.fn();
     const d = {

@@ -53,3 +53,17 @@ describe.each(platforms)('src/adapter.ts', (p) => {
     expect(getAdapterDefault()).toBeUndefined();
   });
 });
+
+describe.each(platforms)('src/adapter.ts', (p) => {
+  beforeEach(() => {
+    vi.stubGlobal(p, undefined);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  test('应该获取不到默认的平台适配器', () => {
+    expect(getAdapterDefault()).toBeUndefined();
+  });
+});
