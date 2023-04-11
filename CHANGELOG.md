@@ -1,3 +1,22 @@
+# [2.1.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.0.0...v2.1.0) (2023-04-11)
+
+
+### Bug Fixes
+
+* 修复 axios.fork() 无法访问私有方法 ([2254e73](https://github.com/zjx0905/axios-miniprogram/commit/2254e73cf76f1bc95d4850211e3fa34acae50136))
+* 移除 url 末尾的斜线 ([1c09ffd](https://github.com/zjx0905/axios-miniprogram/commit/1c09ffdd91d554078423cba57fe036106e9b0fa8))
+
+
+### Features
+
+* 适配器异常处理成响应异常 ([be17ba7](https://github.com/zjx0905/axios-miniprogram/commit/be17ba7e6881699aeb74b45c8b4b084e1e53a777))
+* 添加新功能 派生领域 axios.fork() ([222b935](https://github.com/zjx0905/axios-miniprogram/commit/222b935f6839ce8fcecfa951d937e6160211f7f9))
+* 修改 mergeConfig 中 data 的合并方式 ([ee6a31b](https://github.com/zjx0905/axios-miniprogram/commit/ee6a31b4bbc07e93f8754c83a1ff02495a23dfa7))
+* 支持深度合并 params & data ([22f65cf](https://github.com/zjx0905/axios-miniprogram/commit/22f65cf69c877f314b269d8c3d0fac8f1c8ab71f))
+* fileName 替换为 name ([69044f3](https://github.com/zjx0905/axios-miniprogram/commit/69044f35833d8d42a5f0c12b01687298c08f589b))
+
+
+
 # [2.0.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.0.0-beta.10...v2.0.0) (2023-04-05)
 
 
