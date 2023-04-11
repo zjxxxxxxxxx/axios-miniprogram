@@ -14,7 +14,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client", "vite-plugin-pwa/client", "vitepress"]
+    "types": ["vite-plugin-pwa/client", "vitepress"]
   },
   "include": [
     "./.vitepress/**/*.ts",

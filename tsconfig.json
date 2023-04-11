@@ -3,15 +3,18 @@
     "rootDir": ".",
     "baseUrl": ".",
     "lib": ["ESNext"],
-    "target": "ESNext",
+    "target": "es2015",
     "module": "ESNext",
     "strict": true,
     "noEmit": true,
     "moduleResolution": "node",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["vitest", "vitest/globals"]
   },
-  "include": ["./src", "./test", "./global.d.ts", "./global.variables.d.ts"],
-  "exclude": ["node_modules"]
+  "include": ["./src", "./global.d.ts", "./global.variables.d.ts"],
+  "exclude": ["node_modules", "**/*.md", "**/dist"]
 }

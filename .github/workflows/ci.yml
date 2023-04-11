@@ -45,6 +45,9 @@ jobs:
         run: pnpm build:asset
 
       - name: Test
+        run: pnpm typecheck
+
+      - name: Test
         run: pnpm test:cov
 
       - name: Upload coverage reports to Codecov
