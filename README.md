@@ -1,7 +1,6 @@
 # axios-miniprogram
 
-[![npm version](https://badge.fury.io/js/axios-miniprogram.svg)](https://badge.fury.io/js/axios-miniprogram)
-[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![codecov](https://codecov.io/gh/zjx0905/axios-miniprogram/branch/master/graph/badge.svg?token=WIQVYX2WIK)](https://codecov.io/gh/zjx0905/axios-miniprogram) [![npm version](https://badge.fury.io/js/axios-miniprogram.svg)](https://badge.fury.io/js/axios-miniprogram) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 [中文文档](https://axios-miniprogram.com)
 
