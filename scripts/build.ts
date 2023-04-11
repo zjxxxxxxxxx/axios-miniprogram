@@ -14,11 +14,16 @@ function main() {
   exec('rimraf dist');
 
   consola.info('Rollup');
-  exec(
-    `rollup -c ${
-      watch ? '-w' : ''
-    } --environment SOURCE_MAP:${sourceMap},DTS:${dts}`,
-  );
+  try {
+    exec(
+      `rollup -c ${
+        watch ? '-w' : ''
+      } --environment SOURCE_MAP:${sourceMap},DTS:${dts}`,
+    );
+  } catch {
+    consola.error('已退出');
+    process.exit();
+  }
 
   console.info('\n');
 }
