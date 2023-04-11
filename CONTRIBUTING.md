@@ -24,6 +24,13 @@ pnpm docs:dev
 pnpm test:watch
 ```
 
+我们使用 cz-git 以交互式完成 git commit。
+
+```bash
+git add .
+pnpm cz
+```
+
 ## 贡献
 
 ### 现有功能
