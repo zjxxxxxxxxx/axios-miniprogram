@@ -253,12 +253,14 @@ describe('src/adapter.ts', () => {
     };
     const p2 = {
       ...p1,
-      request: vi.fn(({ fail }) => fail({ data: { result: null } })),
+      request: vi.fn(({ fail }) =>
+        fail({ status: 500, data: { result: null } }),
+      ),
     };
     const p3 = {
       ...p1,
       request: vi.fn(({ fail }) =>
-        fail({ statusCode: 500, header: {}, errMsg: 'request:fail' }),
+        fail({ errMsg: 'request:fail', errno: 1000 }),
       ),
     };
     const c1 = {
@@ -269,9 +271,9 @@ describe('src/adapter.ts', () => {
       fail: (response: any) => {
         expect(response).toMatchInlineSnapshot(`
           {
-            "headers": undefined,
+            "headers": {},
             "status": 400,
-            "statusText": "Bad Adapter",
+            "statusText": "Fail Adapter",
           }
         `);
       },
@@ -284,8 +286,8 @@ describe('src/adapter.ts', () => {
             "data": {
               "result": null,
             },
-            "headers": undefined,
-            "status": 200,
+            "headers": {},
+            "status": 500,
             "statusText": "OK",
           }
         `);
@@ -296,9 +298,13 @@ describe('src/adapter.ts', () => {
       fail: (response: any) => {
         expect(response).toMatchInlineSnapshot(`
           {
+            "data": {
+              "errMsg": "request:fail",
+              "errno": 1000,
+            },
             "headers": {},
-            "status": 500,
-            "statusText": "request:fail",
+            "status": 400,
+            "statusText": "Fail Adapter",
           }
         `);
       },

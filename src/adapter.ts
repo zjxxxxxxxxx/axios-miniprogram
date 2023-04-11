@@ -2,6 +2,7 @@ import {
   isEmptyArray,
   isFunction,
   isPlainObject,
+  isString,
   isUndefined,
 } from './helpers/isTypes';
 import { assert } from './helpers/error';
@@ -57,6 +58,19 @@ export interface AxiosAdapterResponseError extends AnyObject {
    * 响应头
    */
   headers: AnyObject;
+  /**
+   * 错误数据
+   */
+  data?: {
+    /**
+     * 错误信息
+     */
+    errMsg: string;
+    /**
+     * Errno错误码
+     */
+    errno: number;
+  };
 }
 
 export interface AxiosAdapterRequestConfig extends AnyObject {
@@ -253,22 +267,25 @@ export function createAdapter(platform: AxiosPlatform) {
     return download(options);
   }
 
-  function transformResult(result: AnyObject): void {
-    result.status =
-      result.status ??
-      result.statusCode ??
-      (isUndefined(result.data) ? 400 : 200);
-    result.statusText =
-      result.status === 200
-        ? 'OK'
-        : result.status === 400
-        ? 'Bad Adapter'
-        : result.errMsg;
-    result.headers = result.headers || result.header;
+  function transformResponse(response: AnyObject): void {
+    response.status = response.status ?? response.statusCode;
+    response.statusText = 'OK';
 
-    if (result.statusCode) delete result.statusCode;
-    if (result.errMsg) delete result.errMsg;
-    if (result.header) delete result.header;
+    if (isUndefined(response.status)) {
+      response.status = 400;
+      response.statusText = 'Fail Adapter';
+    }
+
+    response.headers = response.headers ?? response.header ?? {};
+
+    if (isUndefined(response.data) && isString(response.errMsg)) {
+      response.data = {
+        errMsg: response.errMsg,
+        errno: response.errno,
+      };
+    }
+
+    cleanResponse(response, ['statusCode', 'errMsg', 'errno', 'header']);
   }
 
   function transformOptions(
@@ -278,11 +295,11 @@ export function createAdapter(platform: AxiosPlatform) {
       ...config,
       header: config.headers,
       success(response): void {
-        transformResult(response);
+        transformResponse(response);
         config.success(response);
       },
       fail(error: AxiosAdapterResponseError): void {
-        transformResult(error);
+        transformResponse(error);
         config.fail(error);
       },
     };
@@ -297,9 +314,16 @@ export function createAdapter(platform: AxiosPlatform) {
         response.apFilePath,
     };
 
-    if (response.tempFilePath) delete response.tempFilePath;
-    if (response.apFilePath) delete response.apFilePath;
-    if (response.filePath) delete response.filePath;
+    cleanResponse(response, ['tempFilePath', 'apFilePath', 'filePath']);
+  }
+
+  /**
+   * 清理 response 上多余的 key
+   */
+  function cleanResponse(response: AnyObject, keys: string[]) {
+    for (const key of keys) {
+      if (key in response) delete response[key];
+    }
   }
 
   return adapter;

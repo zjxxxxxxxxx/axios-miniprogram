@@ -37,16 +37,42 @@ describe('src/core/dispatchRequest.ts', () => {
     ).not.toThrowError();
   });
 
-  test('坏的适配器', () => {
-    expect(() =>
+  test('坏的适配器应该抛出异常', () => {
+    expect(
       dispatchRequest({
         adapter: () => {
           throw 'bad adapter';
         },
         url: '/',
         method: 'get',
-      }),
-    ).toMatchInlineSnapshot('[Function]');
+      }).catch((e) => ({ ...e })),
+    ).resolves.toMatchInlineSnapshot(`
+      {
+        "config": {
+          "adapter": [Function],
+          "data": undefined,
+          "headers": undefined,
+          "method": "get",
+          "url": "",
+        },
+        "request": undefined,
+        "response": {
+          "config": {
+            "adapter": [Function],
+            "data": undefined,
+            "headers": undefined,
+            "method": "get",
+            "url": "",
+          },
+          "data": undefined,
+          "headers": {},
+          "isFail": true,
+          "request": undefined,
+          "status": 400,
+          "statusText": "Bad Adapter",
+        },
+      }
+    `);
   });
 
   test('应该支持转换 URL', () => {

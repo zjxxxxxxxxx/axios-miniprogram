@@ -186,7 +186,7 @@ export interface AxiosResponse<
 
 export interface AxiosResponseError extends AxiosAdapterResponseError {
   /**
-   * 原生接口 fail 回调产生的响应错误
+   * 失败的请求，指没能够成功响应的请求
    */
   isFail: true;
   /**

@@ -19,7 +19,7 @@ lib/
 *.test.js
 *.test.d.ts
 *.test.js.map
-coverage
+.coverage
 
 # eslint
 .eslintcache

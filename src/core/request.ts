@@ -4,6 +4,7 @@ import {
   AxiosAdapterRequestMethod,
   AxiosAdapterResponse,
   AxiosAdapterResponseError,
+  AxiosAdapterTask,
 } from '../adapter';
 import {
   AxiosProgressCallback,
@@ -49,7 +50,16 @@ export function request(config: AxiosRequestConfig) {
       fail,
     };
 
-    const adapterTask = adapter!(adapterConfig);
+    let adapterTask: AxiosAdapterTask;
+    try {
+      adapterTask = adapter!(adapterConfig);
+    } catch {
+      fail({
+        status: 400,
+        statusText: 'Bad Adapter',
+        headers: {},
+      });
+    }
 
     function success(_: AxiosAdapterResponse): void {
       const response = _ as AxiosResponse;
