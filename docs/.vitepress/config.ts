@@ -47,6 +47,7 @@ export default defineConfig({
           { text: 'isAxiosError', link: '/api/is-axios-error' },
           { text: 'getUri', link: '/api/get-uri' },
           { text: 'create', link: '/api/create' },
+          { text: 'fork', link: '/api/fork' },
           { text: 'Axios', link: '/api/axios' },
         ],
       },
