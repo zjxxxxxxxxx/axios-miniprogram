@@ -131,6 +131,19 @@ export default defineConfig({
           },
         ],
       },
+      {
+        text: '致贡献者',
+        items: [
+          {
+            text: '行为准则',
+            link: 'https://github.com/zjx0905/axios-miniprogram/blob/main/CODE_OF_CONDUCT.md',
+          },
+          {
+            text: '贡献指南',
+            link: 'https://github.com/zjx0905/axios-miniprogram/blob/main/CONTRIBUTING.md',
+          },
+        ],
+      },
     ],
 
     socialLinks: [

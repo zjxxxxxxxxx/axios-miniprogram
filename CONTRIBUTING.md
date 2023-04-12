@@ -24,12 +24,21 @@ pnpm docs:dev
 pnpm test:watch
 ```
 
-我们使用 cz-git 以交互式完成 git commit。
+我们使用 cz-git 交互式进行 git commit。
 
 ```bash
 git add .
 pnpm cz
 ```
+
+脚本列表
+
+- `pnpm build` 打包源代码
+- `pnpm watch` 监听文件变更并运行 `build`
+- `pnpm test` 单元测试
+- `pnpm test:watch` 监听文件变更并运行 `test`
+- `pnpm test:cov` 运行 `test` 并输出测试覆盖率
+- `pnpm docs:dev` 启动开发环境的文档服务器
 
 ## 贡献
 
