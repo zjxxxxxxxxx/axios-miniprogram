@@ -1,28 +1,37 @@
----
-title: 简介
-sidebarDepth: 1
-lastUpdated: true
-sitemap:
-  priority: 0.8
----
-
 # axios-miniprogram
 
-[![npm version](https://badge.fury.io/js/axios-miniprogram.svg)](https://badge.fury.io/js/axios-miniprogram)
-[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+<p style="display: flex;">
+  <a href="https://codecov.io/gh/zjx0905/axios-miniprogram">
+    <img src='https://codecov.io/gh/zjx0905/axios-miniprogram/branch/master/graph/badge.svg?token=WIQVYX2WIK'/>
+  </a>
+  <a style="margin: 0 5px;" href="https://badge.fury.io/js/axios-miniprogram">
+    <img src='https://badge.fury.io/js/axios-miniprogram.svg'/>
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+  <img src='https://img.shields.io/badge/License-MIT-brightgreen.svg'/>
+  </a> 
+</p>
 
 [中文文档](https://axios-miniprogram.com)
 
 ## 安装
 
+使用 npm：
+
+```bash
+$ npm i axios-miniprogram
+```
+
+yarn
+
 ```bash
 $ yarn add axios-miniprogram
 ```
 
-或者
+pnpm
 
 ```bash
-$ npm i axios-miniprogram
+$ pnpm i axios-miniprogram
 ```
 
 [原生小程序也可以直接下载源码包](https://github.com/zjx0905/axios-miniprogram/releases)
@@ -45,6 +54,7 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 - 支持 自定义错误处理。
 - 支持 自定义平台适配器
 - 支持 上传/下载
+- 支持 派生领域
 
 ## 目前支持的平台
 

@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/zjx0905/axios-miniprogram/issues"
   },
-  "homepage": "https://github.com/zjx0905/axios-miniprogram#readme",
+  "homepage": "https://axios-miniprogram.com",
   "license": "MIT",
   "scripts": {
     "cz": "czg",
