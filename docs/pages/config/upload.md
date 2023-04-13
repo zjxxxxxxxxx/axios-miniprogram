@@ -6,7 +6,7 @@
 
 - 只有 post 请求才生效
 
-```typescript
+```ts
 axios.post(
   '/file',
   {

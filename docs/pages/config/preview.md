@@ -2,7 +2,7 @@
 
 ## 全局默认配置`axios.defaults`
 
-```typescript
+```ts
 axios.defaults.baseURL = 'https://www.api.com';
 axios.defaults.headers.common['Accept'] = 'application/json, test/plain, */*';
 axios.defaults.headers.post['Content-Type'] =
@@ -13,7 +13,7 @@ axios.defaults.headers.post['Content-Type'] =
 
 可以创建时传入。
 
-```typescript
+```ts
 const instance = axios.create({
   baseURL: 'https://www.api.com',
   headers: {
@@ -29,7 +29,7 @@ const instance = axios.create({
 
 也可以创建后修改。
 
-```typescript
+```ts
 instance.defaults.baseURL = 'https://www.api.com';
 instance.defaults.headers.common['Accept'] =
   'application/json, test/plain, */*';

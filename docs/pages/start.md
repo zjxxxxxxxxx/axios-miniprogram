@@ -30,7 +30,7 @@ pnpm install -D axios-miniprogram
 
 ### 如何引入
 
-```typescript
+```ts
 // esm
 import axios from 'axios-miniprogram';
 // cjs
@@ -43,7 +43,7 @@ axios('/user');
 
 可以通过将相关配置传递给`axios`来发送请求。
 
-```typescript
+```ts
 // 发送 GET 请求
 axios({
   url: '/user',
@@ -79,7 +79,7 @@ axios({
 
 也可以通过直接把`url`传给`axios`来发送请求。
 
-```typescript
+```ts
 // 默认发送 GET 请求
 axios('/user')
   .then((response) => {
@@ -115,7 +115,7 @@ axios('/user', {
 
 常用例子，其他同理：
 
-```typescript
+```ts
 // 发送 GET 请求
 axios.get('/user');
 
@@ -163,7 +163,7 @@ axios.post(
 
 您可以使用动态 URL 提高 RESTful API 的书写体验。
 
-```typescript
+```ts
 axios.get('/user/:id', {
   id: 1,
 });

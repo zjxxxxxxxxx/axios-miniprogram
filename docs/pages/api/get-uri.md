@@ -4,7 +4,7 @@
 
 根据配置中的`url`和`params`生成一个`URI`。
 
-```typescript
+```ts
 const uri = axios.getUri({
   url: '/user',
   params: {

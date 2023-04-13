@@ -6,7 +6,7 @@
 
 `自定义实例`拥有和`axios`相同的调用方式和请求方法的别名。
 
-```typescript
+```ts
 axios.defaults.baseURL = 'https://www.api.com';
 
 const instance = axios.create({

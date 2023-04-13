@@ -4,7 +4,7 @@
 
 可以先拦截请求或响应，然后再由 then 或 catch 处理。
 
-```typescript
+```ts
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
@@ -32,7 +32,7 @@ axios.interceptors.response.use(
 
 如果以后需要删除拦截器，则可以。
 
-```typescript
+```ts
 const myInterceptor = axios.interceptors.request.use(function () {
   // 在发送请求之前做些什么
 });
@@ -41,7 +41,7 @@ axios.interceptors.request.eject(myInterceptor);
 
 还可以将拦截器添加到`axios`的`自定义实例`中。
 
-```typescript
+```ts
 const myInterceptor = instance.interceptors.request.use(function () {
   // 在发送请求之前做些什么
 });

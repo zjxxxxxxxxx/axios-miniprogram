@@ -4,7 +4,7 @@
 
 可以使用`CancelToken`取消已经发出的请求。
 
-```typescript
+```ts
 let cancel;
 
 axios('/api', {
@@ -18,7 +18,7 @@ cancel('取消请求');
 
 还可以使用`CancelToken.source`工厂方法创建`CancelToken`。
 
-```typescript
+```ts
 const source = axios.CancelToken.source();
 
 axios('/api', {

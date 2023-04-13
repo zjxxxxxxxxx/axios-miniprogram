@@ -4,7 +4,7 @@
 
 可以在请求发出之前转换请求数据。
 
-```typescript
+```ts
 axios('/user', {
   transformRequest: [
     function transformRequest(data, headers) {

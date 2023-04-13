@@ -4,7 +4,7 @@
 
 可以让请求按照您的要求成功或者失败。
 
-```typescript
+```ts
 axios('/user', {
   validateStatus: function validateStatus(status) {
     // 这样，状态码在 200 到 400 之间都是请求成功

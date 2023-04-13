@@ -4,7 +4,7 @@
 
 可以添加到默认配置中，统一处理错误。
 
-```typescript
+```ts
 axios.defaults.errorHandler = function errorHandler(error) {
   // 做一些想做的事情
   return Promise.reject(error);
@@ -20,7 +20,7 @@ const instance = axios.create({
 
 也可以发送请求时通过自定义配置传入。
 
-```typescript
+```ts
 axios('/user', {
   errorHandler: function errorHandler(error) {
     // 做一些想做的事情

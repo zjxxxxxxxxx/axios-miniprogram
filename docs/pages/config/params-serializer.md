@@ -4,7 +4,7 @@
 
 可以使用自己的规则去序列化参数。
 
-```typescript
+```ts
 axios('/user', {
   paramsSerializer: function paramsSerializer(params) {
     return qs.stringify(params, {

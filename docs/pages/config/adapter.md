@@ -4,7 +4,7 @@
 
 您可以手动适配当前所处的平台。
 
-```typescript
+```ts
 axios.defaults.adapter = function adapter(adapterConfig) {
   const {
     // 请求类型

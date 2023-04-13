@@ -1,0 +1,139 @@
+.VPNavBar.has-sidebar {
+  background-color: var(--vp-nav-bg-color);
+  border-bottom-color: var(--vp-c-gutter) !important;
+}
+
+.VPNavBar .title {
+  border-bottom: none;
+}
+
+.VPNavBar .content-body {
+  background-color: transparent !important;
+}
+
+.VPNavBar .curtain,
+.VPSidebar .curtain {
+  display: none;
+}
+
+.VPSidebar {
+  margin-top: var(--vp-nav-height);
+  padding-top: 40px !important;
+  height: calc(100% - var(--vp-nav-height));
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1) !important;
+}
+
+.VPSidebar.open {
+  margin-top: 0;
+  height: 100%;
+  background-color: var(--vp-nav-bg-color);
+
+}
+
+.VPSidebar .nav {
+  overflow-x: hidden;
+}
+
+
+.VPSidebarItem.level-0 .text {
+  font-size: 15px;
+  font-weight: 500 !important;
+}
+
+.VPSidebarItem.level-1 .text {
+  padding-left: 1em;
+  font-size: 14px;
+  color: var(--vp-c-text-1) !important;
+  font-weight: normal !important;
+}
+
+.VPSidebarItem.level-1.is-active .text {
+  color: var(--vp-c-brand) !important;
+  font-weight: 500 !important;
+}
+
+.VPSidebarItem.level-1.is-active .text::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: #07c160;
+  position: absolute;
+  top: 15px;
+  left: 2px;
+}
+
+.VPBackdrop {
+  background-color: transparent !important;
+  transition: none !important;
+}
+
+.VPLocalNavOutlineDropdown .items {
+  overflow: auto;
+}
+
+.VPHero .tagline {
+  font-weight: normal;
+}
+
+.VPFeature {
+  border: none;
+  border-radius: 8px;
+}
+
+.VPFeature .box {
+  padding: 32px;
+}
+
+.VPFeature .icon {
+  margin-bottom: 24px;
+}
+
+.VPFeature .details {
+  font-weight: normal;
+}
+
+.VPFeature .box {
+  padding: 32px;
+}
+
+.VPFooter .message,
+.VPFooter .copyright {
+  color: var(--vp-c-text-3);
+  font-weight: normal;
+}
+
+.VPContent a {
+  color: var(--vp-c-link);
+}
+
+.language-sh,
+.language-bash,
+.language-ts {
+  border: 1px solid var(--vp-c-gutter);
+}
+
+.vp-code-group .tabs {
+  border-top: 1px;
+  border-left: 1px;
+  border-right: 1px;
+  border-bottom: 0;
+  border-style: solid;
+  border-color: var(--vp-c-gutter);
+}
+
+@media (min-width: 960px) {
+  .VPFeatures .item {
+    width: calc(100% / 2) !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .VPFeatures .item {
+    width: 100%;
+  }
+}
+
+
+@media (min-width: 1440px) {}

@@ -4,7 +4,7 @@
 
 可以判断当前错误是否来自请求响应，而不是语法错误或者用户主动抛出的错误
 
-```typescript
+```ts
 axios('/user').catch((error) => {
   if (axios.isAxiosError(error)) {
     // 错误是否来自原生接口的 fail 回调

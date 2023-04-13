@@ -6,7 +6,7 @@
 
 直接实例化`axios.Axios`可以得到一个`原始实例`，不能当函数调用，传入的自定义配置就是`原始实例`的默认配置，而不会像`axios.create(defaults)`一样去合并`axios`中的默认配置。
 
-```typescript
+```ts
 const instance = new axios.Axios({
   beseURL: 'https://www.api.com',
   params: {

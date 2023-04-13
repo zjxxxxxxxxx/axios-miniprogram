@@ -6,7 +6,7 @@
 
 - 只有 get 请求才生效
 
-```typescript
+```ts
 axios
   .get(
     '/file',

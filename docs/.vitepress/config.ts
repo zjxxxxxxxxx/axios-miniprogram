@@ -10,6 +10,7 @@ export default defineConfig({
   titleTemplate: ':title - axios',
   description: '基于 Promise 的 HTTP 请求库，适用于各大小程序平台。',
   srcDir: 'pages',
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -153,6 +154,11 @@ export default defineConfig({
     returnToTopLabel: '返回顶部',
     outlineTitle: '导航栏',
     darkModeSwitchLabel: '主题',
+    sidebarMenuLabel: '菜单',
+    docFooter: {
+      prev: '上一页',
+      next: '下一页',
+    },
     footer: {
       message:
         '根据 <a href="https://github.com/zjx0905/axios-miniprogram/blob/main/LICENSE">MIT License</a> 发布',
@@ -160,6 +166,14 @@ export default defineConfig({
         'Copyright © 2020-至今 <a href="https://github.com/zjx0905">zjx0905</a>',
     },
   },
+
+  markdown: {
+    theme: {
+      light: 'github-light',
+      dark: 'github-dark',
+    },
+  },
+
   vite: {
     plugins: [
       VitePWA({

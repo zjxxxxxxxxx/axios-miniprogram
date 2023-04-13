@@ -8,7 +8,7 @@
 
 `domain` 除了拥有和 `axios` 相同的调用方式和请求方法的别名之外，同时还可以复用 `axios` 上的拦截器，这一点是 `axios.create(defaults)` 做不到了。
 
-```typescript
+```ts
 axios.defaults.baseURL = 'https://www.api.com';
 
 const domain = axios.fork({
