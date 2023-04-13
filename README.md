@@ -1,15 +1,21 @@
 # axios-miniprogram
 
-<p style="display: flex;">
-  <a href="https://codecov.io/gh/zjx0905/axios-miniprogram">
-    <img src='https://codecov.io/gh/zjx0905/axios-miniprogram/branch/master/graph/badge.svg?token=WIQVYX2WIK'/>
+<p style="display: flex;margin-left:-5px;">
+  <a href="https://github.com/zjx0905/axios-miniprogram/actions/workflows/ci.yml">
+    <img src="https://github.com/zjx0905/axios-miniprogram/actions/workflows/ci.yml/badge.svg" alt="ci">
   </a>
-  <a style="margin: 0 5px;" href="https://badge.fury.io/js/axios-miniprogram">
-    <img src='https://badge.fury.io/js/axios-miniprogram.svg'/>
+  <a style="margin-left:5px;" href="https://www.npmjs.org/package/axios-miniprogram">
+    <img src="https://img.shields.io/npm/v/axios-miniprogram" alt="npm">
   </a>
-  <a href="https://opensource.org/licenses/MIT">
-  <img src='https://img.shields.io/badge/License-MIT-brightgreen.svg'/>
-  </a> 
+  <a style="margin-left:5px;" href="https://codecov.io/gh/zjx0905/axios-miniprogram" > 
+    <img src="https://codecov.io/gh/zjx0905/axios-miniprogram/branch/main/graph/badge.svg?token=WIQVYX2WIK" alt="codecov"/> 
+  </a>
+  <a style="margin-left:5px;" href="https://www.npmjs.org/package/axios-miniprogram">
+    <img src="https://img.shields.io/bundlephobia/min/axios-miniprogram" alt="npm bundle size">
+  </a>  
+  <a style="margin-left:5px;" href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/github/license/zjx0905/axios-miniprogram" alt="license">
+  </a>
 </p>
 
 [中文文档](https://axios-miniprogram.com)
