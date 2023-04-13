@@ -19,7 +19,7 @@
   --vp-code-block-bg-light: #ffffff;
   --vp-code-block-bg: #f9f9fa;
 
-  --vp-code-copy-code-active-text: #000000;
+  --vp-code-copy-code-active-text: #808080;
   --vp-code-copy-code-bg: #ffffff;
   --vp-code-copy-code-hover-bg: #f3f4f6;
   --vp-code-copy-code-border-color: rgba(31, 35, 40, 0.15);
@@ -28,6 +28,7 @@
   --vp-c-mute: #f9f9fa;
   --vp-c-gutter: rgba(0, 0, 0, 0.06);
   --vp-c-link: #576b95;
+  --vp-c-bg: #ffffff;
   --vp-c-bg-alt: #00000003;
   --vp-c-bg-soft: var(--vp-c-bg-alt);
   --vp-button-alt-bg: #ffffff;
@@ -44,8 +45,8 @@
 
   --vp-code-tab-active-text-color: var(--vp-c-text-dark-1);
   --vp-code-tab-hover-text-color: var(--vp-c-text-dark-1);
-
   --vp-code-block-bg: #0d1117;
+
   --vp-c-bg: #020409;
   --vp-c-bg-alt: #0d1117;
   --vp-nav-bg-color: #161b22;
@@ -55,7 +56,7 @@
   --vp-c-link: #2f81f7;
   --vp-button-alt-bg: #21262d;
 
-  --vp-code-copy-code-active-text: #ffffff;
+
   --vp-code-copy-code-bg: #21262d;
   --vp-code-copy-code-hover-bg: #21262d;
   --vp-code-copy-code-border-color: rgba(240, 246, 252, 0.1);

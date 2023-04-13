@@ -123,6 +123,10 @@
   border-color: var(--vp-c-gutter);
 }
 
+.vp-code-group .tabs label::after {
+  z-index: 1;
+}
+
 @media (min-width: 960px) {
   .VPFeatures .item {
     width: calc(100% / 2) !important;
