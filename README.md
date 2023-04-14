@@ -68,10 +68,11 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 - [支付宝小程序](https://opendocs.alipay.com/mini/developer/getting-started?from=axios-miniprogram)
 - [百度小程序](https://smartprogram.baidu.com/developer/index.html?from=axios-miniprogram)
 - [京东小程序](https://mp.jd.com?from=axios-miniprogram)
-- [字节跳动小程序](https://developer.open-douyin.com/docs/resource/zh-CN/mini-app/introduction/overview?from=axios-miniprogram)
+- [抖音小程序](https://developer.open-douyin.com/docs/resource/zh-CN/mini-app/introduction/overview?from=axios-miniprogram)
 - [QQ 小程序](https://q.qq.com/wiki/develop/miniprogram/frame/?from=axios-miniprogram)
 - [钉钉小程序](https://open.dingtalk.com/document/org/develop-org-mini-programs?from=axios-miniprogram)
 - [飞书小程序](https://open.feishu.cn/document/uYjL24iN/uMjNzUjLzYzM14yM2MTN?from=axios-miniprogram)
+- [快手小程序](https://mp.kuaishou.com/docs/introduction/quickStart.html)
 - [uni-app](https://uniapp.dcloud.net.cn?form=axios-miniprogram)
 
 ## 关于在跨端框架中使用时的支持度

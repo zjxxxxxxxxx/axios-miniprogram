@@ -11,7 +11,6 @@
   --vp-c-text-code: #000000;
   --vp-c-text-dark-3: #888;
 
-
   --vp-code-tab-text-color: var(--vp-c-text-light-2);
   --vp-code-tab-active-text-color: var(--vp-c-text-light-1);
   --vp-code-tab-hover-text-color: var(--vp-c-text-light-1);
@@ -36,6 +35,10 @@
   --vp-button-alt-hover-bg: var(--vp-c-bg-alt);
   --vp-nav-bg-color: #f7f7f7;
 
+  --vp-custom-block-tip-border: var(--vp-c-brand);
+  --vp-custom-block-tip-text: var(--vp-c-brand);
+  --vp-custom-block-tip-bg: var(--vp-c-bg);
+
   --vp-sidebar-width: 340px;
 }
 
@@ -55,7 +58,7 @@
   --vp-c-gutter: #30363d;
   --vp-c-link: #2f81f7;
   --vp-button-alt-bg: #21262d;
-
+  --vp-c-bg-elv: #0d1117;
 
   --vp-code-copy-code-bg: #21262d;
   --vp-code-copy-code-hover-bg: #21262d;

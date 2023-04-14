@@ -14,34 +14,32 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      {
-        text: '指南',
-        link: '/intro',
-      },
-      {
-        text: '配置',
-        link: '/config/preview',
-      },
-      {
-        text: 'API',
-        link: '/api/interceptors',
-      },
+      { text: '指南', link: '/intro' },
+      { text: '基础', link: '/basics/options' },
     ],
 
     sidebar: [
       {
         text: '指南',
         items: [
-          {
-            text: '简介',
-            link: '/intro',
-          },
-          {
-            text: '开始',
-            link: '/start',
-          },
+          { text: '简介', link: '/intro' },
+          { text: '开始', link: '/start' },
         ],
       },
+      {
+        text: '基础',
+        items: [
+          { text: 'OPTIONS 请求', link: '/basics/options' },
+          { text: 'GET 请求', link: '/basics/get' },
+          { text: 'HEAD 请求', link: '/basics/head' },
+          { text: 'POST 请求', link: '/basics/post' },
+          { text: 'PUT 请求', link: '/basics/put' },
+          { text: 'DELETE 请求', link: '/basics/delete' },
+          { text: 'TRACE 请求', link: '/basics/trace' },
+          { text: 'CONNECT 请求', link: '/basics/connect' },
+        ],
+      },
+
       {
         text: '配置',
         items: [

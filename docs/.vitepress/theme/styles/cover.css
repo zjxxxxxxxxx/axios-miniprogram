@@ -27,13 +27,11 @@
   margin-top: 0;
   height: 100%;
   background-color: var(--vp-nav-bg-color);
-
 }
 
 .VPSidebar .nav {
   overflow-x: hidden;
 }
-
 
 .VPSidebarItem.level-0 .text {
   font-size: 15px;
@@ -138,6 +136,3 @@
     width: 100%;
   }
 }
-
-
-@media (min-width: 1440px) {}

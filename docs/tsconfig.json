@@ -14,14 +14,15 @@
     "resolveJsonModule": true,
     "noUnusedLocals": true,
     "strictNullChecks": true,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["vitepress"]
   },
   "include": [
     "./.vitepress/**/*.ts",
     "./.vitepress/**/*.vue",
-    "./.vitepress/components.d.ts",
+    "./global.d.ts",
     "../global.d.ts"
   ],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["node_modules"]
 }
