@@ -20,6 +20,7 @@ export function flattenHeaders(
       'head',
       'post',
       'put',
+      'patch',
       'delete',
       'trace',
       'connect',

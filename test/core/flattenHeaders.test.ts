@@ -4,40 +4,9 @@ import Axios from '@/core/Axios';
 
 describe('src/core/flattenHeaders.ts', () => {
   const keys = [...Axios.as, ...Axios.asp, ...Axios.asd];
-  const baseHeaders = {
-    options: {
-      v1: 'options1',
-      v2: 'options2',
-    },
-    trace: {
-      v1: 'trace1',
-      v2: 'trace2',
-    },
-    connect: {
-      v1: 'connect1',
-      v2: 'connect2',
-    },
-    head: {
-      v1: 'head1',
-      v2: 'head2',
-    },
-    get: {
-      v1: 'get1',
-      v2: 'get2',
-    },
-    delete: {
-      v1: 'delete1',
-      v2: 'delete2',
-    },
-    post: {
-      v1: 'post1',
-      v2: 'post2',
-    },
-    put: {
-      v1: 'put1',
-      v2: 'put2',
-    },
-  };
+  const baseHeaders = Object.fromEntries(
+    keys.map((k) => [k, { v1: `${k}1`, v2: `${k}2` }]),
+  ) as unknown as Record<(typeof keys)[number], AnyObject>;
 
   test('应该支持空配置', () => {
     expect(flattenHeaders({})).toBeUndefined();

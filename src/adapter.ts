@@ -20,6 +20,7 @@ export type AxiosAdapterRequestMethod =
   | 'HEAD'
   | 'POST'
   | 'PUT'
+  | 'PATCH'
   | 'DELETE'
   | 'TRACE'
   | 'CONNECT';
@@ -61,16 +62,7 @@ export interface AxiosAdapterResponseError extends AnyObject {
   /**
    * 错误数据
    */
-  data?: {
-    /**
-     * 错误信息
-     */
-    errMsg: string;
-    /**
-     * Errno错误码
-     */
-    errno: number;
-  };
+  data?: AnyObject;
 }
 
 export interface AxiosAdapterRequestConfig extends AnyObject {

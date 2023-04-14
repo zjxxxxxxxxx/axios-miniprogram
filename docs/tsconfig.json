@@ -15,8 +15,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "isolatedModules": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": ["vitepress"]
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "./.vitepress/**/*.ts",

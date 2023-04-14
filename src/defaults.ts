@@ -12,6 +12,7 @@ const defaults: AxiosInstanceDefaults = {
     head: {},
     post: {},
     put: {},
+    patch: {},
     delete: {},
     trace: {},
     connect: {},

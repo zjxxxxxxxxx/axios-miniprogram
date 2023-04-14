@@ -25,6 +25,7 @@ export type AxiosRequestMethod =
   | 'head'
   | 'post'
   | 'put'
+  | 'patch'
   | 'delete'
   | 'trace'
   | 'connect';

@@ -34,6 +34,7 @@ export default defineConfig({
           { text: 'HEAD 请求', link: '/basics/head' },
           { text: 'POST 请求', link: '/basics/post' },
           { text: 'PUT 请求', link: '/basics/put' },
+          { text: 'PATCH 请求', link: '/basics/patch' },
           { text: 'DELETE 请求', link: '/basics/delete' },
           { text: 'TRACE 请求', link: '/basics/trace' },
           { text: 'CONNECT 请求', link: '/basics/connect' },

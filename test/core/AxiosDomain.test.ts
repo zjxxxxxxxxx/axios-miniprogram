@@ -7,7 +7,7 @@ describe('src/core/AxiosDomain.ts', () => {
   test('应该有这些静态属性', () => {
     expect(AxiosDomain.as).toEqual(['options', 'trace', 'connect']);
     expect(AxiosDomain.asp).toEqual(['head', 'get', 'delete']);
-    expect(AxiosDomain.asd).toEqual(['post', 'put']);
+    expect(AxiosDomain.asd).toEqual(['post', 'put', 'patch']);
   });
 
   test('应该有这些实例属性', () => {

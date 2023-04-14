@@ -55,7 +55,7 @@ import axios from 'axios-miniprogram';
 
 axios
   .put(
-    'https://api.com/test/id',
+    'https://api.com/test/:id',
     {
       id: 1,
       name: 'test',

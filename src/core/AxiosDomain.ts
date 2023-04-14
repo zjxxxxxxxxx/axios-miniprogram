@@ -88,7 +88,7 @@ export default class AxiosDomain {
   /**
    * 带请求数据的请求别名
    */
-  static asd = ['post', 'put'] as const;
+  static asd = ['post', 'put', 'patch'] as const;
 
   /**
    * 默认请求配置
@@ -124,6 +124,11 @@ export default class AxiosDomain {
    * 发送 put 请求
    */
   put!: AxiosDomainAsRequestWithData;
+
+  /**
+   * 发送 patch 请求
+   */
+  patch!: AxiosDomainAsRequestWithData;
 
   /**
    * 发送 delete 请求

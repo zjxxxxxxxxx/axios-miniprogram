@@ -12,9 +12,8 @@
     "skipDefaultLibCheck": true,
     "paths": {
       "@/*": ["src/*"]
-    },
-    "types": ["vitest", "vitest/globals"]
+    }
   },
-  "include": ["./src", "./global.d.ts", "./global.variables.d.ts"],
+  "include": ["./src", "./test", "./global.d.ts", "./global.variables.d.ts"],
   "exclude": ["node_modules", "**/*.md", "**/dist"]
 }
