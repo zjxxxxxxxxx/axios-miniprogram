@@ -1,9 +1,5 @@
 ---
 title: 快速上手
-sidebarDepth: 1
-lastUpdated: true
-sitemap:
-  priority: 0.8
 ---
 
 # 快速上手
@@ -12,16 +8,16 @@ sitemap:
 
 :::: code-group
 
-```sh [NPM]
-npm install -D axios-miniprogram
+```bash [NPM]
+$ npm install -D axios-miniprogram
 ```
 
-```sh [YARN]
-yarn add -D axios-miniprogram
+```bash [YARN]
+$ yarn add -D axios-miniprogram
 ```
 
-```sh [PNPM]
-pnpm install -D axios-miniprogram
+```bash [PNPM]
+$ pnpm install -D axios-miniprogram
 ```
 
 ::::

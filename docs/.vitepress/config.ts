@@ -10,12 +10,13 @@ export default defineConfig({
   titleTemplate: ':title - axios',
   description: '基于 Promise 的 HTTP 请求库，适用于各大小程序平台。',
   srcDir: 'pages',
+  lastUpdated: true,
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '指南', link: '/intro' },
-      { text: '基础', link: '/basics/options' },
+      { text: '基础', link: '/basics/request' },
     ],
 
     sidebar: [
@@ -29,6 +30,7 @@ export default defineConfig({
       {
         text: '基础',
         items: [
+          { text: '发送请求', link: '/basics/request' },
           { text: 'OPTIONS 请求', link: '/basics/options' },
           { text: 'GET 请求', link: '/basics/get' },
           { text: 'HEAD 请求', link: '/basics/head' },
@@ -150,10 +152,17 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/zjx0905/axios-miniprogram' },
     ],
 
+    editLink: {
+      pattern:
+        'https://github.com/zjx0905/axios-miniprogram/edit/main/docs/pages/:path',
+      text: '在 GitHub 上编辑此页面',
+    },
+
     returnToTopLabel: '返回顶部',
     outlineTitle: '导航栏',
     darkModeSwitchLabel: '主题',
     sidebarMenuLabel: '菜单',
+    lastUpdatedText: '最后一次更新',
     docFooter: {
       prev: '上一页',
       next: '下一页',
