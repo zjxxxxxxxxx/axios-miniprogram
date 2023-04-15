@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { ignore } from '@/helpers/ignore';
 
 describe('src/helpers/ignore.ts', () => {
-  test('不应该改变传入的对象', () => {
+  test('不应该改变传递的对象', () => {
     expect(ignore({ v1: 1 })).toEqual({ v1: 1 });
   });
 

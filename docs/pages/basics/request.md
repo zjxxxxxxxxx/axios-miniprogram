@@ -10,7 +10,7 @@ title: 发送请求
 
 ## 基础用法
 
-您可以直接传入 `url` 发送请求，默认发送的是 `GET` 方法请求。
+您可以直接传递 `url` 发送请求，默认发送的是 `GET` 方法请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -27,7 +27,7 @@ axios
 
 ## 携带自定义配置
 
-您也可以传入第二个参数 `config`，用于指定请求方法以及其他配置项。
+您也可以传递第二个参数 `config`，用于指定请求方法以及其他配置项。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -50,7 +50,7 @@ axios
 
 ## 仅有自定义配置
 
-您也可以忽略以上示例，直接传入 `config` 发送请求。
+您也可以忽略以上示例，直接传递 `config` 发送请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -69,3 +69,9 @@ axios
     // 失败之后做些什么
   });
 ```
+
+## 说明
+
+您可能发现 `axios.request()` 和 `axios()` 使用方式完全一致，为什么？
+
+其实他们本就是同一个请求函数，`axios` 是基于 `axios.request` 添加了一系列工具函数改造而来，其目的是为了简化使用。

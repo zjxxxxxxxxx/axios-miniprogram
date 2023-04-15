@@ -20,33 +20,9 @@
 
 [中文文档](https://axios-miniprogram.com)
 
-## 安装
+## 什么是 axios-miniprogram ？
 
-使用 npm：
-
-```bash
-$ npm i axios-miniprogram
-```
-
-yarn
-
-```bash
-$ yarn add axios-miniprogram
-```
-
-pnpm
-
-```bash
-$ pnpm i axios-miniprogram
-```
-
-[原生小程序也可以直接下载源码包](https://github.com/zjx0905/axios-miniprogram/releases)
-
-# 简介
-
-## 什么是 axios-miniprogram？
-
-axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库，支持跨平台使用，同时也支持多种导入方式，可用于原生小程序项目，也可用于第三方框架项目，用法上同 [axios](git@github.com:axios/axios.git) 类似。
+axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库，支持跨平台使用，同时也支持多种导入方式，可用于原生小程序项目，也可用于第三方框架项目，用法上同 [axios](https://github.com/axios/axios.git) 类似。
 
 ## 特性
 
@@ -58,11 +34,11 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 - 支持 自定义参数序列化。
 - 支持 自定义转换数据。
 - 支持 自定义错误处理。
-- 支持 自定义平台适配器
-- 支持 上传/下载
-- 支持 派生领域
+- 支持 自定义平台适配器。
+- 支持 上传/下载。
+- 支持 派生领域。
 
-## 目前支持的平台
+## 目前内部支持的平台
 
 - [微信小程序](https://developers.weixin.qq.com/miniprogram/dev/framework/?from=axios-miniprogram)
 - [支付宝小程序](https://opendocs.alipay.com/mini/developer/getting-started?from=axios-miniprogram)

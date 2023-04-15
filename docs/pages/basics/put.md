@@ -10,7 +10,7 @@ HTTP PUT 请求方法使用请求中的数据创建或者替换目标资源。
 
 ## 普通的 `PUT` 请求
 
-您可以传入第一个参数 `url` 发送 `PUT` 请求。
+您可以传递第一个参数 `url` 发送 `PUT` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -27,7 +27,7 @@ axios
 
 ## 携带数据的 `PUT` 请求
 
-您也可以额外传入第二个参数 `data` 发送携带数据的 `PUT` 请求。
+您也可以额外传递第二个参数 `data` 发送携带数据的 `PUT` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -48,7 +48,7 @@ axios
 
 ## 携带自定义配置的 `PUT` 请求
 
-您也可以额外传入第三个参数 `config` 发送携带自定义配置的 `PUT` 请求。
+您也可以额外传递第三个参数 `config` 发送携带自定义配置的 `PUT` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';

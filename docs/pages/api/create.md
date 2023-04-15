@@ -2,7 +2,7 @@
 
 ## `axios.create(defaults)`
 
-创建一个`自定义实例`，传入的自定义默认配置`defaults`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
+创建一个`自定义实例`，传递的自定义默认配置`defaults`会和`axios`的默认配置`axios.defaults`合并成`自定义实例`的默认配置。
 
 `自定义实例`拥有和`axios`相同的调用方式和请求方法的别名。
 

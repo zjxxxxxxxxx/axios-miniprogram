@@ -10,7 +10,7 @@ HTTP TRACE 方法实现沿通向目标资源的路径的消息环回（loop-back
 
 ## 普通的 `TRACE` 请求
 
-您可以传入第一个参数 `url` 发送 `TRACE` 请求。
+您可以传递第一个参数 `url` 发送 `TRACE` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -27,7 +27,7 @@ axios
 
 ## 携带自定义配置的 `TRACE` 请求
 
-您也可以额外传入第二个参数 `config` 发送携带自定义配置的 `TRACE` 请求。
+您也可以额外传递第二个参数 `config` 发送携带自定义配置的 `TRACE` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';

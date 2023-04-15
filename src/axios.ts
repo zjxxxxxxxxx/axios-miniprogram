@@ -41,8 +41,6 @@ export interface AxiosStatic extends AxiosInstance {
   create(defaults?: AxiosRequestConfig): AxiosInstance;
   /**
    * 创建适配器
-   *
-   * @param platform 平台
    */
   createAdapter: typeof createAdapter;
   /**

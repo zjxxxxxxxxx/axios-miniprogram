@@ -17,7 +17,7 @@ describe('src/helpers/cancel.ts', () => {
     expect(c.toString()).toBe('Cancel');
   });
 
-  test('传入参数时应该有正确的返回结果', () => {
+  test('传递参数时应该有正确的返回结果', () => {
     const c = new Cancel('error');
 
     expect(c.message).toBe('error');

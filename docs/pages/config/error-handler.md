@@ -18,7 +18,7 @@ const instance = axios.create({
 });
 ```
 
-也可以发送请求时通过自定义配置传入。
+也可以发送请求时通过自定义配置传递。
 
 ```ts
 axios('/user', {

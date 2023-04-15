@@ -99,6 +99,7 @@ function sidebar() {
         { text: 'DELETE 请求', link: '/basics/delete' },
         { text: 'TRACE 请求', link: '/basics/trace' },
         { text: 'CONNECT 请求', link: '/basics/connect' },
+        { text: '响应体', link: '/basics/response' },
       ],
     },
 

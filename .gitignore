@@ -5,6 +5,7 @@ node_modules
 # Docs
 dist
 docs/.vitepress/cache
+docs/pages/intro.md
 
 # Mac OS
 .DS_Store

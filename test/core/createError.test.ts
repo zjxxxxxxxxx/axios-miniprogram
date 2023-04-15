@@ -14,7 +14,7 @@ describe('src/core/createError.ts', () => {
     expect(checkStack(err)).toBeTruthy();
   });
 
-  test('应该支持传入更多参数', () => {
+  test('应该支持传递更多参数', () => {
     const c = {};
     const res = {};
     const req = {} as any;

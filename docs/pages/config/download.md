@@ -19,7 +19,7 @@ axios
     },
   )
   .then((response) => {
-    // 用户文件路径 (本地路径)。传入 filePath 时会返回，跟传入的 filePath 一致
+    // 用户文件路径 (本地路径)。传递 filePath 时会返回，跟传递的 filePath 一致
     response.data.filePath;
     // 用户文件路径 (本地临时路径)。
     response.data.tempFilePath;

@@ -11,7 +11,7 @@ axios.defaults.headers.post['Content-Type'] =
 
 ## 自定义实例默认配置
 
-可以创建时传入。
+可以创建时传递。
 
 ```ts
 const instance = axios.create({

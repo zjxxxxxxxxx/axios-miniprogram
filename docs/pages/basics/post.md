@@ -10,7 +10,7 @@ HTTP POST 方法发送数据给服务器。请求主体的类型由 Content-Type
 
 ## 普通的 `POST` 请求
 
-您可以传入第一个参数 `url` 发送 `POST` 请求。
+您可以传递第一个参数 `url` 发送 `POST` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -27,7 +27,7 @@ axios
 
 ## 携带数据的 `POST` 请求
 
-您也可以额外传入第二个参数 `data` 发送携带数据的 `POST` 请求。
+您也可以额外传递第二个参数 `data` 发送携带数据的 `POST` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -47,7 +47,7 @@ axios
 
 ## 携带自定义配置的 `POST` 请求
 
-您也可以额外传入第三个参数 `config` 发送携带自定义配置的 `POST` 请求。
+您也可以额外传递第三个参数 `config` 发送携带自定义配置的 `POST` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
