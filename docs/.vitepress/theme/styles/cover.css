@@ -125,6 +125,27 @@
   z-index: 1;
 }
 
+.DocSearch-Container {
+  backdrop-filter: blur(8px);
+}
+
+.DocSearch-Button {
+  border: 1px solid var(--vp-c-gutter);
+}
+
+.DocSearch-Modal {
+  --docsearch-modal-background: var(--vp-code-copy-code-bg);
+  box-shadow: none;
+}
+
+.dark .DocSearch-Modal {
+  --docsearch-modal-background: var(--vp-c-bg-soft);
+}
+
+.dark .DocSearch-Form {
+  background-color: var(--vp-code-block-bg);
+}
+
 @media (min-width: 960px) {
   .VPFeatures .item {
     width: calc(100% / 2) !important;

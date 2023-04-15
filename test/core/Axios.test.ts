@@ -306,7 +306,7 @@ describe('src/core/Axios.ts', () => {
     expect(a4.defaults.baseURL).toBe('http://api.com');
   });
 
-  test('基于当前实例派生的领域应该可以复用当前实例上的中间件', async () => {
+  test('派生自当前实例的领域应该可以复用当前实例的拦截器', async () => {
     const axios = new Axios();
     const req = vi.fn((v) => v);
     const res = vi.fn((v) => v);

@@ -61,7 +61,7 @@ function createInstance(defaults: AxiosRequestConfig) {
 
   Object.assign(instance, context, {
     // instance.fork 内部调用了 context 的私有方法
-    // 所以直接调用 instance.fork 会导致程序抛出无法访问私有方法的异常
+    // 所以直接调用 instance.fork 会导致程序抛出无法访问 context 私有方法的异常
     // instance.fork 调用时 this 重新指向 context，解决此问题
     fork: context.fork.bind(context),
   });

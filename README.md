@@ -1,7 +1,3 @@
----
-editLink: false
----
-
 # axios-miniprogram
 
 <p style="display: flex;margin-left:-5px;">
