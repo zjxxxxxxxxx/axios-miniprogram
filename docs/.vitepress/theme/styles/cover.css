@@ -64,6 +64,7 @@
 }
 
 .VPBackdrop {
+  backdrop-filter: blur(16px);
   background-color: transparent !important;
   transition: none !important;
 }
@@ -126,11 +127,7 @@
 }
 
 .DocSearch-Container {
-  backdrop-filter: blur(8px);
-}
-
-.DocSearch-Button {
-  border: 1px solid var(--vp-c-gutter);
+  backdrop-filter: blur(16px);
 }
 
 .DocSearch-Modal {
@@ -149,6 +146,12 @@
 @media (min-width: 960px) {
   .VPFeatures .item {
     width: calc(100% / 2) !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .DocSearch-Button {
+    border: 1px solid var(--vp-c-gutter);
   }
 }
 

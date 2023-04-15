@@ -108,15 +108,15 @@ axios({
 也可以使用请求方法简化请求。
 
 - [axios.request(url, config?) | axios.request(config)](/basics/request)
-- [axios.options(url, config?)](/request/OPTIONS)
-- [axios.get(url, params?, config?)](/request/GET)
-- [axios.head(url, params?, config?)](/request/HEAD)
-- [axios.post(url, data?, config?)](/request/POST)
-- [axios.put(url, data?, config?)](/request/PUT)
-- [axios.patch(url, data?, config?)](/request/PATCH)
-- [axios.delete(url, params?, config?)](/request/DELETE)
-- [axios.trace(url, config?)](/request/TRACE)
-- [axios.connect(url, config?)](/request/CONNECT)
+- [axios.options(url, config?)](/method/OPTIONS)
+- [axios.get(url, params?, config?)](/method/GET)
+- [axios.head(url, params?, config?)](/method/HEAD)
+- [axios.post(url, data?, config?)](/method/POST)
+- [axios.put(url, data?, config?)](/method/PUT)
+- [axios.patch(url, data?, config?)](/method/PATCH)
+- [axios.delete(url, params?, config?)](/method/DELETE)
+- [axios.trace(url, config?)](/method/TRACE)
+- [axios.connect(url, config?)](/method/CONNECT)
 
 还提供了一系列工具方法。
 

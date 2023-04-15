@@ -48,8 +48,8 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 - [QQ 小程序](https://q.qq.com/wiki/develop/miniprogram/frame/?from=axios-miniprogram)
 - [钉钉小程序](https://open.dingtalk.com/document/org/develop-org-mini-programs?from=axios-miniprogram)
 - [飞书小程序](https://open.feishu.cn/document/uYjL24iN/uMjNzUjLzYzM14yM2MTN?from=axios-miniprogram)
-- [快手小程序](https://mp.kuaishou.com/docs/introduction/quickStart.html)
-- [uni-app](https://uniapp.dcloud.net.cn?form=axios-miniprogram)
+- [快手小程序](https://mp.kuaishou.com/docs/introduction/quickStart.html?from=axios-miniprogram)
+- [360 小程序](https://mp.360.cn/doc/miniprogram/dev/#/f4b41f0cc5683bce78dfadfa7f3c73e7?from=axios-miniprogram)
 
 ## 关于在跨端框架中使用时的支持度
 
@@ -60,3 +60,7 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 有问题欢迎反馈，请尽量把问题提到 [github issues](https://github.com/zjx0905/axios-miniprogram/issues) 中，这样更容易被我注意到。
 
 [提问点这里](https://github.com/zjx0905/axios-miniprogram/issues)
+
+## 未来计划
+
+2023 年 6 月 1 日 起该库将不再内部支持第三方框架，内置的 uni-app 即将移除，您可以使用适配器兼容 uni-app。

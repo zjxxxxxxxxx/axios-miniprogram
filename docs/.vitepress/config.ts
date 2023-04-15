@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress';
 import { VitePWA } from 'vite-plugin-pwa';
-import { createIntroMD } from './utils/createIntroMD';
+import { linkIntro } from './utils/link-intro';
 
-createIntroMD();
+linkIntro();
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -18,8 +18,13 @@ export default defineConfig({
 
     nav: [
       { text: '指南', link: '/guide/intro', activeMatch: '/guide/' },
-      { text: '请求', link: '/request/options', activeMatch: '/request/' },
+      { text: '请求方法', link: '/method/OPTIONS', activeMatch: '/method/' },
       { text: '基础', link: '/basics/config', activeMatch: '/basics/' },
+      {
+        text: '高级',
+        link: '/advanced/request-interceptor',
+        activeMatch: '/advanced/',
+      },
     ],
 
     sidebar: sidebar(),
@@ -89,17 +94,17 @@ function sidebar() {
       ],
     },
     {
-      text: '请求',
+      text: '请求方法',
       items: [
-        { text: 'OPTIONS', link: '/request/OPTIONS' },
-        { text: 'GET', link: '/request/GET' },
-        { text: 'HEAD', link: '/request/HEAD' },
-        { text: 'POST', link: '/request/POST' },
-        { text: 'PUT', link: '/request/PUT' },
-        { text: 'PATCH', link: '/request/PATCH' },
-        { text: 'DELETE', link: '/request/DELETE' },
-        { text: 'TRACE', link: '/request/TRACE' },
-        { text: 'CONNECT', link: '/request/CONNECT' },
+        { text: 'OPTIONS', link: '/method/OPTIONS' },
+        { text: 'GET', link: '/method/GET' },
+        { text: 'HEAD', link: '/method/HEAD' },
+        { text: 'POST', link: '/method/POST' },
+        { text: 'PUT', link: '/method/PUT' },
+        { text: 'PATCH', link: '/method/PATCH' },
+        { text: 'DELETE', link: '/method/DELETE' },
+        { text: 'TRACE', link: '/method/TRACE' },
+        { text: 'CONNECT', link: '/method/CONNECT' },
       ],
     },
     {
@@ -110,8 +115,21 @@ function sidebar() {
         { text: '发送请求', link: '/basics/request' },
         { text: '上传文件', link: '/basics/upload' },
         { text: '下载文件', link: '/basics/download' },
+        { text: '错误处理', link: '/basics/error-handler' },
+        { text: '取消请求', link: '/basics/cancel' },
       ],
     },
+    {
+      text: '高级',
+      items: [
+        { text: '请求拦截器', link: '/advanced/request-interceptor' },
+        { text: '响应拦截器', link: '/advanced/response-interceptor' },
+        { text: '创建实例', link: '/advanced/instance' },
+        { text: '派生领域', link: '/advanced/fork' },
+        { text: '适配器', link: '/advanced/adapter' },
+      ],
+    },
+
     {
       text: '致贡献者',
       items: [

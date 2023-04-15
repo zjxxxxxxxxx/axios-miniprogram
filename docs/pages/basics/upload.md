@@ -17,7 +17,7 @@ import axios from 'axios-miniprogram';
 
 axios
   .post(
-    'https//api.com/test',
+    'https://api.com/test',
     {
       // 文件对应的 key，开发者在服务端可以通过这个 key 获取文件的二进制内容
       name: 'fileName',
@@ -49,7 +49,7 @@ import axios from 'axios-miniprogram';
 
 axios
   .post(
-    'https//api.com/test',
+    'https://api.com/test',
     {
       // 文件对应的 key，开发者在服务端可以通过这个 key 获取文件的二进制内容
       name: 'fileName',
@@ -87,7 +87,7 @@ import axios from 'axios-miniprogram';
 
 axios
   .post(
-    'https//api.com/test',
+    'https://api.com/test',
     {
       // 文件对应的 key，开发者在服务端可以通过这个 key 获取文件的二进制内容
       name: 'fileName',

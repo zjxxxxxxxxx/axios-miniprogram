@@ -73,4 +73,4 @@ axios
 
 ## 兼容性
 
-<VPCompatibility wx swan tt='1.0.0' qq tt2 />
+<VPCompatibility wx swan tt='1.0.0' qq tt2 qh />

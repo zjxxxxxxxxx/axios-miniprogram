@@ -13,6 +13,7 @@ interface VPCompatibilityProps {
   ks?: Support;
   dd?: Support;
   jd?: Support;
+  qh?: Support;
 }
 
 const props = defineProps<VPCompatibilityProps>();
@@ -27,6 +28,8 @@ const metas = [
   { name: '钉钉小程序', id: 'dd' },
   { name: '飞书小程序', id: 'tt2' },
   { name: '快手小程序', id: 'ks' },
+  { name: '360 小程序', id: 'qh' },
+
 ];
 
 const platforms = computed(() => {

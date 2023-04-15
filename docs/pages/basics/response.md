@@ -51,7 +51,7 @@ axios('https//api.com')
 ```ts
 import axios from 'axios-miniprogram';
 
-axios('https//api.com')
+axios('https://api.com')
   .then((response) => {
     const {
       // 开发者服务器返回的 cookies，格式为字符串数组
