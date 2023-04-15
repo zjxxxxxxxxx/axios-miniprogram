@@ -20,7 +20,7 @@
 
 [中文文档](https://axios-miniprogram.com)
 
-## 什么是 axios-miniprogram ？
+## axios-miniprogram 是什么？
 
 axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库，支持跨平台使用，同时也支持多种导入方式，可用于原生小程序项目，也可用于第三方框架项目，用法上同 [axios](https://github.com/axios/axios.git) 类似。
 

@@ -85,8 +85,17 @@ export type AxiosRequestData = AnyObject | AxiosRequestFormData;
 export type AxiosResponseData = undefined | number | AxiosAdapterResponseData;
 
 export interface AxiosProgressEvent {
+  /**
+   * 下载进度
+   */
   progress: number;
+  /**
+   * 已经下载的数据长度
+   */
   totalBytesSent: number;
+  /**
+   * 预期需要下载的数据总长度
+   */
   totalBytesExpectedToSend: number;
 }
 

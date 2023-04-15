@@ -10,7 +10,7 @@ HTTP OPTIONS 方法用于获取目的资源所支持的通信选项。客户端�
 
 ## 普通的 `OPTIONS` 请求
 
-您可以传递第一个参数 `url` 发送 `OPTIONS` 请求。
+可以传递第一个参数 `url` 发送 `OPTIONS` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -25,9 +25,9 @@ axios
   });
 ```
 
-## 携带自定义配置的 `OPTIONS` 请求
+## 携带请求配置的 `OPTIONS` 请求
 
-您也可以额外传递第二个参数 `config` 发送携带自定义配置的 `OPTIONS` 请求。
+也可以额外传递第二个参数 `config` 发送携带请求配置的 `OPTIONS` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';

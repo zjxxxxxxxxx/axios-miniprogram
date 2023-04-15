@@ -12,13 +12,13 @@
 pnpm install
 ```
 
-我们使用 VitePress 进行快速开发和文档编制。您可以通过以下方式在本地启动它。
+我们使用 VitePress 进行快速开发和文档编制。可以通过以下方式在本地启动它。
 
 ```bash
 pnpm docs:dev
 ```
 
-我们使用 Vitest 进行单元测试。您可以通过以下方式在本地启动它。
+我们使用 Vitest 进行单元测试。可以通过以下方式在本地启动它。
 
 ```bash
 pnpm test:watch

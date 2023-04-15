@@ -5,7 +5,7 @@ title: 响应体
 # {{ $frontmatter.title }}
 
 ::: tip {{ $frontmatter.title }}
-response 是响应正文。返回的数据类型为 String/Object/ArrayBuffer。这取决于请求的 responseType 属性。
+`response` 是响应正文。返回的数据类型为 `String/Object/ArrayBuffer`。这取决于请求配置的 `responseType` 属性。
 :::
 
 ## 通用属性
@@ -20,14 +20,19 @@ axios('https//api.com')
     const {
       // 开发者服务器返回的 HTTP 状态码
       status,
+
       // 状态文本
       statusText,
+
       // 开发者服务器返回的数据
       data,
+
       // 开发者服务器返回的响应头
       headers,
+
       // 请求配置
       config,
+
       // 请求任务
       request,
     } = response;
@@ -51,9 +56,9 @@ axios('https//api.com')
     const {
       // 开发者服务器返回的 cookies，格式为字符串数组
       cookies,
+
       // 网络请求过程中一些调试信息
       profile,
-      // 开发者服务器返回的数据
     } = response;
   })
   .catch((error) => {
@@ -61,4 +66,4 @@ axios('https//api.com')
   });
 ```
 
-想要了解更多请自行参阅对应的小程序文档。
+想要了解更多请自行参阅对应平台文档。

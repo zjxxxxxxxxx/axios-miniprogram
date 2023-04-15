@@ -174,7 +174,7 @@ describe('src/core/mergeConfig.ts', () => {
     });
   });
 
-  test('应该支持自定义配置', () => {
+  test('应该支持请求配置', () => {
     const c1 = {
       custom1: 1,
       custom2: 'c1',

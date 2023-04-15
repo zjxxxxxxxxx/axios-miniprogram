@@ -9,10 +9,10 @@ hero:
   actions:
     - theme: alt
       text: 简介
-      link: /intro
+      link: /guide/intro
     - theme: brand
-      text: 开始
-      link: /start
+      text: 快速开始
+      link: /guide/quick-start
 
 features:
   - title: 节省空间

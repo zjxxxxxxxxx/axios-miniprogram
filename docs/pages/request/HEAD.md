@@ -10,7 +10,7 @@ HTTP HEAD 方法请求资源的头部信息，并且这些头部与 HTTP GET 方
 
 ## 普通的 `HEAD` 请求
 
-您可以传递第一个参数 `url` 发送 `HEAD` 请求。
+可以传递第一个参数 `url` 发送 `HEAD` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -27,7 +27,7 @@ axios
 
 ## 携带参数的 `HEAD` 请求
 
-您也可以额外传递第二个参数 `params` 发送携带参数的 `HEAD` 请求。
+也可以额外传递第二个参数 `params` 发送携带参数的 `HEAD` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -44,9 +44,9 @@ axios
   });
 ```
 
-## 携带自定义配置的 `HEAD` 请求
+## 携带请求配置的 `HEAD` 请求
 
-您也可以额外传递第三个参数 `config` 发送携带自定义配置的 `HEAD` 请求。
+也可以额外传递第三个参数 `config` 发送携带请求配置的 `HEAD` 请求。
 
 ```ts
 import axios from 'axios-miniprogram';

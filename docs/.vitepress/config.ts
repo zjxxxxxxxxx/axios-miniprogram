@@ -11,13 +11,15 @@ export default defineConfig({
   description: '基于 Promise 的 HTTP 请求库，适用于各大小程序平台。',
   srcDir: 'pages',
   lastUpdated: true,
+  cleanUrls: true,
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
 
     nav: [
-      { text: '指南', link: '/intro' },
-      { text: '基础', link: '/basics/request' },
+      { text: '指南', link: '/guide/intro', activeMatch: '/guide/' },
+      { text: '请求', link: '/request/options', activeMatch: '/request/' },
+      { text: '基础', link: '/basics/config', activeMatch: '/basics/' },
     ],
 
     sidebar: sidebar(),
@@ -82,115 +84,32 @@ function sidebar() {
     {
       text: '指南',
       items: [
-        { text: '简介', link: '/intro' },
-        { text: '开始', link: '/start' },
+        { text: '简介', link: '/guide/intro' },
+        { text: '开始', link: '/guide/quick-start' },
+      ],
+    },
+    {
+      text: '请求',
+      items: [
+        { text: 'OPTIONS', link: '/request/OPTIONS' },
+        { text: 'GET', link: '/request/GET' },
+        { text: 'HEAD', link: '/request/HEAD' },
+        { text: 'POST', link: '/request/POST' },
+        { text: 'PUT', link: '/request/PUT' },
+        { text: 'PATCH', link: '/request/PATCH' },
+        { text: 'DELETE', link: '/request/DELETE' },
+        { text: 'TRACE', link: '/request/TRACE' },
+        { text: 'CONNECT', link: '/request/CONNECT' },
       ],
     },
     {
       text: '基础',
       items: [
-        { text: '发送请求', link: '/basics/request' },
-        { text: 'OPTIONS 请求', link: '/basics/options' },
-        { text: 'GET 请求', link: '/basics/get' },
-        { text: 'HEAD 请求', link: '/basics/head' },
-        { text: 'POST 请求', link: '/basics/post' },
-        { text: 'PUT 请求', link: '/basics/put' },
-        { text: 'PATCH 请求', link: '/basics/patch' },
-        { text: 'DELETE 请求', link: '/basics/delete' },
-        { text: 'TRACE 请求', link: '/basics/trace' },
-        { text: 'CONNECT 请求', link: '/basics/connect' },
+        { text: '请求配置', link: '/basics/config' },
         { text: '响应体', link: '/basics/response' },
-      ],
-    },
-
-    {
-      text: '配置',
-      items: [
-        {
-          text: '默认配置',
-          link: '/config/preview',
-        },
-        {
-          text: 'method',
-          link: '/config/method',
-        },
-        {
-          text: 'dataType',
-          link: '/config/data-type',
-        },
-        {
-          text: 'responseType',
-          link: '/config/response-type',
-        },
-        {
-          text: 'validateStatus',
-          link: '/config/validate-status',
-        },
-        {
-          text: 'paramsSerializer',
-          link: '/config/params-serializer',
-        },
-        {
-          text: 'transformRequest',
-          link: '/config/transform-request',
-        },
-        {
-          text: 'transformResponse',
-          link: '/config/transform-response',
-        },
-        {
-          text: 'errorHandler',
-          link: '/config/error-handler',
-        },
-        {
-          text: 'upload',
-          link: '/config/upload',
-        },
-        {
-          text: 'download',
-          link: '/config/download',
-        },
-        {
-          text: 'adapter',
-          link: '/config/adapter',
-        },
-      ],
-    },
-    {
-      text: 'API',
-      items: [
-        {
-          text: 'interceptors',
-          link: '/api/interceptors',
-        },
-        {
-          text: 'CancelToken',
-          link: '/api/cancel-token',
-        },
-        {
-          text: 'isCancel',
-          link: '/api/is-cancel',
-        },
-        {
-          text: 'isAxiosError',
-          link: '/api/is-axios-error',
-        },
-        {
-          text: 'getUri',
-          link: '/api/get-uri',
-        },
-        {
-          text: 'create',
-          link: '/api/create',
-        },
-        {
-          text: 'fork <Badge type="warning" text="2.1.0" />',
-          link: '/api/fork',
-        },
-        {
-          text: 'Axios',
-          link: '/api/axios',
-        },
+        { text: '发送请求', link: '/basics/request' },
+        { text: '上传文件', link: '/basics/upload' },
+        { text: '下载文件', link: '/basics/download' },
       ],
     },
     {

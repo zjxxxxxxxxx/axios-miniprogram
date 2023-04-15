@@ -1,8 +1,8 @@
 ---
-title: 快速上手
+title: 开始
 ---
 
-# 快速上手
+# {{ $frontmatter.title }}
 
 ## 安装
 
@@ -34,7 +34,7 @@ import axios from 'axios-miniprogram';
 axios('test');
 ```
 
-```ts [Commonjs]
+```ts [CommonJS]
 const axios = require('axios-miniprogram').default;
 
 axios('test');
@@ -105,18 +105,18 @@ axios({
   });
 ```
 
-还可以使用请求方法的别名来简化请求。
+也可以使用请求方法简化请求。
 
-- [axios.request(url, config?) | axios.request(config)](./basics/request.md)
-- [axios.options(url, config?)](./basics/options.md)
-- [axios.get(url, params?, config?)](./basics/get.md)
-- [axios.head(url, params?, config?)](./basics/head.md)
-- [axios.post(url, data?, config?)](./basics/post.md)
-- [axios.put(url, data?, config?)](./basics/put.md)
-- [axios.patch(url, data?, config?)](./basics/patch.md)
-- [axios.delete(url, params?, config?)](./basics/delete.md)
-- [axios.trace(url, config?)](./basics/trace.md)
-- [axios.connect(url, config?)](./basics/connect.md)
+- [axios.request(url, config?) | axios.request(config)](/basics/request)
+- [axios.options(url, config?)](/request/OPTIONS)
+- [axios.get(url, params?, config?)](/request/GET)
+- [axios.head(url, params?, config?)](/request/HEAD)
+- [axios.post(url, data?, config?)](/request/POST)
+- [axios.put(url, data?, config?)](/request/PUT)
+- [axios.patch(url, data?, config?)](/request/PATCH)
+- [axios.delete(url, params?, config?)](/request/DELETE)
+- [axios.trace(url, config?)](/request/TRACE)
+- [axios.connect(url, config?)](/request/CONNECT)
 
 还提供了一系列工具方法。
 
