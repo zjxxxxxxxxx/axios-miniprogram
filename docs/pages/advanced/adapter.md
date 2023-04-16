@@ -237,9 +237,9 @@ axios.defaults.adapter = (config) => {
 };
 ```
 
-## 使用 `createAdapter` 实现适配
+## 使用 `createAdapter` 创建适配器
 
-可以使用 `createAdapter` 简化适配流程，但这不能保证完美适配小程序以外的其他平台，如 h5，APP。
+可以使用 `createAdapter` 简化适配流程，直接使用可以完美适配小程序平台，但不能保证完美适配小程序以外的其他平台，如 h5，APP。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -247,6 +247,37 @@ import axios from 'axios-miniprogram';
 axios.defaults.adapter = axios.createAdapter({
   request: uni.request,
   upload: uni.uploadFile,
+  download: uni.downloadFile,
+});
+```
+
+可以使用 `createAdapter` 彻底抹平存在差异的部分，实现完美适配全平台。
+
+```ts
+import axios from 'axios-miniprogram';
+
+axios.defaults.adapter = axios.createAdapter({
+  request: uni.request,
+  upload: (config) => {
+    const {
+      // 需要上传的文件列表
+      // App、H5（ 2.6.15+）
+      files,
+
+      // 要上传的文件对象
+      // 仅H5（2.6.15+）支持
+      file,
+
+      ...formData
+    } = config.formData;
+
+    return uni.uploadFile({
+      ...config,
+      files,
+      file,
+      formData,
+    });
+  },
   download: uni.downloadFile,
 });
 ```
