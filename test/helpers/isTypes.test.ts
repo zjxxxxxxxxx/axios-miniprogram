@@ -2,7 +2,6 @@ import { describe, test, expect } from 'vitest';
 import {
   isArray,
   isDate,
-  isEmptyArray,
   isPlainObject,
   isFunction,
   isNull,
@@ -16,12 +15,6 @@ describe('src/helpers/isTypes.ts', () => {
     expect(isArray(new Array(1))).toBeTruthy();
     expect(isArray([])).toBeTruthy();
     expect(isArray([1])).toBeTruthy();
-  });
-
-  test('应该能判断是空数组', () => {
-    expect(isEmptyArray([1])).toBeFalsy();
-    expect(isArray(new Array(0))).toBeTruthy();
-    expect(isEmptyArray([])).toBeTruthy();
   });
 
   test('应该能判断是普通对象', () => {

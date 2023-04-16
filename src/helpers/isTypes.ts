@@ -22,10 +22,6 @@ export function isArray<T = unknown>(value: any): value is T[] {
   return Array.isArray(value);
 }
 
-export function isEmptyArray<T = unknown>(value: any): value is [] {
-  return isArray<T>(value) && value.length === 0;
-}
-
 export function isDate(date: any): date is Date {
   return _toString.call(date) === '[object Date]';
 }
