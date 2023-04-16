@@ -36,6 +36,7 @@ function checkBranch() {
   const releaseBranch = 'main';
   const currentBranch = exec('git branch --show-current', {
     stdio: 'pipe',
+    encoding: 'utf-8',
   })
     .toString()
     .trim();

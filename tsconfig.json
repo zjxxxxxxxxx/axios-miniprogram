@@ -10,10 +10,18 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["./src", "./test", "./global.d.ts", "./global.variables.d.ts"],
+  "include": [
+    "./src",
+    "./test",
+    "./rollup.config.ts",
+    "./vitest.config.ts",
+    "./global.d.ts",
+    "./global.variables.d.ts"
+  ],
   "exclude": ["node_modules", "**/*.md", "**/dist"]
 }

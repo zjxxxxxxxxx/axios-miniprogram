@@ -17,12 +17,8 @@
     "axios",
     "miniprogram",
     "request",
-    "promise",
-    "alipay",
     "uni-app",
-    "wechat",
-    "fetch",
-    "network"
+    "wechat"
   ],
   "author": "zjx0905 <954270063@qq.com>",
   "bugs": {
@@ -54,6 +50,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
+    "@rollup/plugin-typescript": "^11.1.0",
     "@types/node": "^18.15.5",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
@@ -78,6 +75,7 @@
     "rollup-plugin-esbuild": "^5.0.0",
     "semver": "^7.3.8",
     "simple-git-hooks": "^2.8.1",
+    "tslib": "^2.5.0",
     "typescript": "^5.0.2",
     "vitest": "^0.30.0"
   },

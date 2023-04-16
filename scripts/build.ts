@@ -16,7 +16,7 @@ function main() {
   consola.info('Rollup');
   try {
     exec(
-      `rollup -c ${
+      `rollup -c rollup.config.ts --configPlugin typescript ${
         watch ? '-w' : ''
       } --environment SOURCE_MAP:${sourceMap},DTS:${dts}`,
     );

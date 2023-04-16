@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
+import { RollupOptions, OutputOptions, Plugin, ModuleFormat } from 'rollup';
 import esbuildPlugin from 'rollup-plugin-esbuild';
 import dtsPlugin from 'rollup-plugin-dts';
-import { __dirname, distPath, getPkgJSON, resolve } from './scripts/utils.js';
+import { __dirname, distPath, getPkgJSON, resolve } from './scripts/utils';
 
 const pkg = getPkgJSON();
 const inputPath = resolve('src/index.ts');
@@ -19,9 +20,9 @@ function main() {
   return configs;
 }
 
-function buildConfig(format) {
+function buildConfig(format: ModuleFormat | 'dts'): RollupOptions {
   const isDts = format === 'dts';
-  const output = {
+  const output: OutputOptions = {
     file: resolveOutput(format, isDts),
     format: isDts ? 'es' : format,
     name: pkg.name,
@@ -43,7 +44,7 @@ function buildConfig(format) {
           ]
         : esbuildPlugin({
             tsconfig: resolve('tsconfig.json'),
-            sourceMap: output.sourcemap,
+            sourceMap: output.sourcemap as boolean,
             target: 'es2015',
             minify: true,
           }),
@@ -51,11 +52,11 @@ function buildConfig(format) {
   };
 }
 
-function resolveOutput(format, isDts) {
+function resolveOutput(format: string, isDts?: boolean) {
   return resolve(distPath, `${pkg.name}${isDts ? '.d.ts' : `.${format}.js`}`);
 }
 
-function compleTypePlugin(files) {
+function compleTypePlugin(files: string[]): Plugin {
   return {
     name: 'comple-type',
     renderChunk: (code) =>
