@@ -6,11 +6,13 @@ title: 默认配置
 
 ::: tip {{ $frontmatter.title }}
 默认配置 `defaults` 会作用于每个请求。
+
+[合并策略](/basics/defaults#合并策略)
 :::
 
 ## 默认值
 
-在不更改默认配置 `defaults` 的情况下，它依然会存在一些默认值，在 [defaults.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/defaults.ts) 中定义，大概长下面这样。
+在不更改 `defaults` 的情况下，它依然会存在一些默认值，在 [defaults.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/defaults.ts) 中定义，大概长下面这样。
 
 ```ts
 {
@@ -68,7 +70,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 // POST 方法请求头
 axios.defaults.headers.post['Content-Type'] =
-  'applicatioapplication/x-www-form-urlencoded';
+  'application/x-www-form-urlencoded';
 
 // 超时时间
 axios.defaults.timeout = '60000';
@@ -121,7 +123,7 @@ axios.defaults.forceCellularNetwork = false;
 
 ## 设置自定义属性
 
-也可以给自定义属性设置默认值，实现一些自定义功能。
+也可以给自定义属性设置默认值，从而实现一些自定义功能。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -165,7 +167,7 @@ axios.interceptors.response.use((response) => {
 
 ## 合并策略
 
-在发送请求时，默认配置 `defaults` 和请求配置配 `config` 将会按优先级进行合并。
+`defaults` 和 `config` 将会按优先级进行合并。
 
 其中 `url/method/data/upload/download` 只从 `config` 取值，`headers/params` 进行深度合并，其余属性则会优先从 `config` 取值。
 

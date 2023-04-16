@@ -7,7 +7,7 @@ title: 响应拦截器
 ::: tip {{ $frontmatter.title }}
 用于 `response` 到达 `then` 之前，或 `error` 到达 `catch` 之前拦截响应。
 
-通常会用于处理错误，但对于处理错误而言，使用 `errorhandler` 会是更好的选择。
+通常会用于处理错误，但对于处理错误而言，使用 `errorHandler` 会是更好的选择。
 :::
 
 ## 添加响应拦截器
