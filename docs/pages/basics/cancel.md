@@ -55,9 +55,9 @@ axios('https://api.com/test', {
 cancel('request canceled');
 ```
 
-## 判断异常是否来自取消请求
+## 判断取消请求
 
-也可以用 `axios.isCancel` 判断异常是否来自取消请求，从而做出相应的处理。
+也可以用 `axios.isCancel` 判断请求错误是否来自取消请求，从而做出相应的处理。
 
 ```ts
 import axios from 'axios-miniprogram';

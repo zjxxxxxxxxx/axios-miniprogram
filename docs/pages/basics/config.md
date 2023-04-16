@@ -146,19 +146,49 @@ axios({
 
 ## 自定义属性
 
-也可以设置自定义属性。
+也可以设置自定义属性，从而实现一些自定义功能。
 
 自定义属性可以根据需要随意设置。
 
 ```ts
 import axios from 'axios-miniprogram';
 
-axios({
-  // 这是一个自定义配置
-  user: '123',
+// 错误处理
+axios.defaults.errorHandler = (error) => {
+  if (axios.isAxiosError(error)) {
+    // 显示错误信息
+    if (error.config.showError) {
+      wx.showToast({
+        title: error.response.data.errMsg,
+      });
+    }
+  }
+};
 
-  // 这也是一个自定义配置
+// 请求拦截器
+axios.interceptors.request.use((config) => {
+  // 自动显示 loading
+  if (config.showLoading) {
+    wx.showLoading();
+  }
+  return config;
+});
+
+// 响应拦截器
+axios.interceptors.response.use((response) => {
+  // 自动隐藏 loading
+  if (response.config.showLoading) {
+    wx.hideLoading();
+  }
+  return response;
+});
+
+axios({
+  // 请求时自动 loading
   showLoading: true,
+
+  // 出错时显示错误信息
+  showError: true,
 })
   .then((response) => {
     // 成功之后做些什么

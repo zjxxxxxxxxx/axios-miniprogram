@@ -112,6 +112,7 @@ function sidebar() {
       text: '基础',
       items: [
         { text: '请求配置', link: '/basics/config' },
+        { text: '默认配置', link: '/basics/defaults' },
         { text: '响应体', link: '/basics/response' },
         { text: '发送请求', link: '/basics/request' },
         { text: '上传文件', link: '/basics/upload' },

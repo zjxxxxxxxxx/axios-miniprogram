@@ -71,7 +71,7 @@ axios('https://api.com/test')
   });
 ```
 
-## 使用 `errorHandler` 处理错误。
+## 使用 `errorHandler` 处理错误
 
 可以使用 `errorHandler` 处理不同类型的错误。
 
