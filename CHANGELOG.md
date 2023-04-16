@@ -1,3 +1,18 @@
+# [2.2.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.1.0...v2.2.0) (2023-04-16)
+
+
+### Bug Fixes
+
+* 修复 Proxy uni 错误 ([021e052](https://github.com/zjx0905/axios-miniprogram/commit/021e05233a95ebc5c5f93d114d225cc45a22675f))
+
+
+### Features
+
+* 仅 post/put/patch 方法允许设置请求数据 ([2c3ff56](https://github.com/zjx0905/axios-miniprogram/commit/2c3ff567c19197f6377645cd9f7109806cd93b77))
+* 支持 HTTP PATCH 请求 ([22bcefc](https://github.com/zjx0905/axios-miniprogram/commit/22bcefcb97e50400403b131d307c97eb4cbb6071))
+
+
+
 # [2.1.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.0.0...v2.1.0) (2023-04-11)
 
 
