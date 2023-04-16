@@ -38,7 +38,7 @@ export default defineConfig({
         if (relativePath === 'intro.md') {
           return 'https://github.com/zjx0905/axios-miniprogram/edit/main/README.md';
         }
-        return 'https://github.com/zjx0905/axios-miniprogram/edit/main/docs/pages/:path';
+        return `https://github.com/zjx0905/axios-miniprogram/edit/main/docs/pages/${relativePath}`;
       },
       text: '在 GitHub 上编辑此页面',
     },
@@ -115,6 +115,9 @@ function sidebar() {
         { text: '默认配置', link: '/basics/defaults' },
         { text: '响应体', link: '/basics/response' },
         { text: '发送请求', link: '/basics/request' },
+        { text: '动态地址', link: '/basics/dynamic-url' },
+        { text: '参数系列化', link: '/basics/params-serializer' },
+        { text: '转换数据', link: '/basics/transform-data' },
         { text: '上传文件', link: '/basics/upload' },
         { text: '下载文件', link: '/basics/download' },
         { text: '错误处理', link: '/basics/error-handler' },
@@ -129,7 +132,7 @@ function sidebar() {
         { text: '响应拦截器', link: '/advanced/response-interceptor' },
         { text: '创建实例', link: '/advanced/instance' },
         { text: '派生领域', link: '/advanced/fork' },
-        { text: '适配器', link: '/advanced/adapter' },
+        { text: '平台适配器', link: '/advanced/adapter' },
       ],
       collapsed: false,
     },

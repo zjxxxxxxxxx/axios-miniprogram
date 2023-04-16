@@ -87,7 +87,7 @@ domain.defaults.timeout = 1000;
 
 基于 `instance` 派生出的 `domain`，在发送请求时会使用 `instance` 的拦截器。
 
-无法为 `domain` 单独添加拦截器。
+目前上不支持为 `domain` 单独添加拦截器。
 
 ## 使用
 

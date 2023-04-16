@@ -1,5 +1,5 @@
 ---
-title: 适配器
+title: 平台适配器
 ---
 
 # {{ $frontmatter.title }}
@@ -239,7 +239,9 @@ axios.defaults.adapter = (config) => {
 
 ## 使用 `createAdapter` 创建适配器
 
-可以使用 `createAdapter` 简化适配流程，直接使用可以完美适配小程序平台，但不能保证完美适配小程序以外的其他平台，如 h5，APP。
+可以使用 `createAdapter` 简化适配流程。
+
+直接使用可以完美适配小程序平台，但不能保证完美适配小程序以外的其他平台，如 App、H5。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -265,7 +267,7 @@ axios.defaults.adapter = axios.createAdapter({
       files,
 
       // 要上传的文件对象
-      // 仅H5（2.6.15+）支持
+      // 仅 H5（2.6.15+）支持
       file,
 
       ...formData
