@@ -106,6 +106,7 @@ function sidebar() {
         { text: 'TRACE', link: '/method/TRACE' },
         { text: 'CONNECT', link: '/method/CONNECT' },
       ],
+      collapsed: false,
     },
     {
       text: '基础',
@@ -118,6 +119,7 @@ function sidebar() {
         { text: '错误处理', link: '/basics/error-handler' },
         { text: '取消请求', link: '/basics/cancel' },
       ],
+      collapsed: false,
     },
     {
       text: '高级',
@@ -128,6 +130,7 @@ function sidebar() {
         { text: '派生领域', link: '/advanced/fork' },
         { text: '适配器', link: '/advanced/adapter' },
       ],
+      collapsed: false,
     },
 
     {

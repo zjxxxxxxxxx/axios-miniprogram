@@ -1,9 +1,9 @@
-import { isFunction, isString } from '../helpers/isTypes';
+import { isFunction, isPromise, isString } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
 import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
-import { request } from './request';
+import { request, withDataRE } from './request';
 import { AxiosRequestConfig, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
 import { AxiosErrorResponse } from './createError';
@@ -27,7 +27,9 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   config.url = transformURL(config);
   config.headers = flattenHeaders(config);
 
-  transformer(config, transformRequest);
+  if (withDataRE.test(config.method!)) {
+    transformer(config, transformRequest);
+  }
 
   function onSuccess(response: AxiosResponse) {
     throwIfCancellationRequested(config);
@@ -43,10 +45,8 @@ export function dispatchRequest(config: AxiosRequestConfig) {
 
     if (isFunction(errorHandler)) {
       const promise = errorHandler(reason);
-      if (promise) {
-        return promise.then(() => {
-          throw reason;
-        });
+      if (isPromise(promise)) {
+        return promise.then(() => Promise.reject(reason));
       }
     }
 

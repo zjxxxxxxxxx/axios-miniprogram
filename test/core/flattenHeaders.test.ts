@@ -9,7 +9,7 @@ describe('src/core/flattenHeaders.ts', () => {
   ) as unknown as Record<(typeof keys)[number], AnyObject>;
 
   test('应该支持空配置', () => {
-    expect(flattenHeaders({})).toBeUndefined();
+    expect(flattenHeaders({})).toEqual({});
   });
 
   test('应该支持自定义 headers', () => {

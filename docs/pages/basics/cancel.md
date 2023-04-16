@@ -16,13 +16,12 @@ title: 取消请求
 import axios from 'axios-miniprogram';
 let cancel;
 
-axios
-  .get('/test', {
-    cancelToken: new axios.CancelToken((c) => {
-      // executor 函数接收一个 cancel 函数作为参数
-      cancel = c;
-    }),
-  })
+axios('https://api.com/test', {
+  cancelToken: new axios.CancelToken((c) => {
+    // executor 函数接收一个 cancel 函数作为参数
+    cancel = c;
+  }),
+})
   .then((response) => {
     // 成功之后做些什么
   })
@@ -42,10 +41,9 @@ cancel('request canceled');
 import axios from 'axios-miniprogram';
 const { cancel, token } = axios.CancelToken.source();
 
-axios
-  .get('https://api.com/test', {
-    cancelToken: token,
-  })
+axios('https://api.com/test', {
+  cancelToken: token,
+})
   .then((response) => {
     // 成功之后做些什么
   })
@@ -65,10 +63,9 @@ cancel('request canceled');
 import axios from 'axios-miniprogram';
 const { cancel, token } = axios.CancelToken.source();
 
-axios
-  .get('https://api.com/test', {
-    cancelToken: token,
-  })
+axios('https://api.com/test', {
+  cancelToken: token,
+})
   .then((response) => {
     // 成功之后做些什么
   })

@@ -4,9 +4,9 @@ import { AxiosRequestConfig, AxiosRequestHeaders } from './Axios';
 
 export function flattenHeaders(
   config: AxiosRequestConfig,
-): AxiosRequestHeaders | undefined {
+): AxiosRequestHeaders {
   if (!isPlainObject(config.headers)) {
-    return config.headers;
+    return {};
   }
 
   return {

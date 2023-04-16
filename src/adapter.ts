@@ -314,7 +314,7 @@ export function createAdapter(platform: AxiosPlatform) {
    */
   function cleanResponse(response: AnyObject, keys: string[]) {
     for (const key of keys) {
-      if (key in response) delete response[key];
+      delete response[key];
     }
   }
 

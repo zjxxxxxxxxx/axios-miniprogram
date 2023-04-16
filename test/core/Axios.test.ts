@@ -144,18 +144,18 @@ describe('src/core/Axios.ts', () => {
     const axios = new Axios();
 
     const cb1 = vi.fn((v) => {
-      expect(v.data.index).toBe(2);
-      v.data.index = 3;
+      expect(v.params.index).toBe(2);
+      v.params.index = 3;
       return v;
     });
     const cb2 = vi.fn((v) => {
-      expect(v.data.index).toBe(1);
-      v.data.index = 2;
+      expect(v.params.index).toBe(1);
+      v.params.index = 2;
       return v;
     });
     const cb3 = vi.fn((v) => {
-      expect(v.data.index).toBe(0);
-      v.data.index = 1;
+      expect(v.params.index).toBe(0);
+      v.params.index = 1;
       return v;
     });
 
@@ -165,9 +165,9 @@ describe('src/core/Axios.ts', () => {
 
     axios.request('/test', {
       adapter: (config) => {
-        expect(config.data!.index).toBe(3);
+        expect(config.params!.index).toBe(3);
       },
-      data: {
+      params: {
         index: 0,
       },
     });

@@ -5,6 +5,7 @@ import {
   mockAdapterError,
   mockAdapterFail,
 } from 'scripts/test.utils';
+import Axios from '@/core/Axios';
 import { dispatchRequest } from '@/core/dispatchRequest';
 import axios from '@/axios';
 import _defaults from '@/defaults';
@@ -50,8 +51,7 @@ describe('src/core/dispatchRequest.ts', () => {
       {
         "config": {
           "adapter": [Function],
-          "data": undefined,
-          "headers": undefined,
+          "headers": {},
           "method": "get",
           "url": "",
         },
@@ -59,8 +59,7 @@ describe('src/core/dispatchRequest.ts', () => {
         "response": {
           "config": {
             "adapter": [Function],
-            "data": undefined,
-            "headers": undefined,
+            "headers": {},
             "method": "get",
             "url": "",
           },
@@ -136,9 +135,11 @@ describe('src/core/dispatchRequest.ts', () => {
       transformRequest: () => ({ id: 1 }),
     };
 
-    dispatchRequest(c);
-
-    expect(c.data).toEqual({ id: 1 });
+    Axios.asd.forEach((k) => {
+      const s = { ...c, method: k };
+      dispatchRequest(s);
+      expect(s.data).toEqual({ id: 1 });
+    });
   });
 
   test('应该支持转换响应数据', async () => {
@@ -153,24 +154,20 @@ describe('src/core/dispatchRequest.ts', () => {
     expect(r.data).toEqual({ result: 1 });
   });
 
-  test('应该支持自定义异常处理器', async () => {
+  test('应该支持错误处理', async () => {
     const e1 = vi.fn();
     const e2 = vi.fn();
     const c1 = {
       ...defaults,
       adapter: mockAdapterError(),
       url: 'test',
-      errorHandler: async (err: unknown) => {
-        e1(err);
-      },
+      errorHandler: e1,
     };
     const c2 = {
       ...defaults,
       adapter: mockAdapterFail(),
       url: 'test',
-      errorHandler: async (err: unknown) => {
-        e2(err);
-      },
+      errorHandler: e2,
     };
 
     try {
@@ -190,20 +187,24 @@ describe('src/core/dispatchRequest.ts', () => {
     }
   });
 
-  test('应该支持异步的自定义异常处理器', async () => {
+  test('应该支持异步错误处理', async () => {
     const e1 = vi.fn();
     const e2 = vi.fn();
     const c1 = {
       ...defaults,
       adapter: mockAdapterError(),
       url: 'test',
-      errorHandler: e1,
+      errorHandler: async (err: unknown) => {
+        e1(err);
+      },
     };
     const c2 = {
       ...defaults,
       adapter: mockAdapterFail(),
       url: 'test',
-      errorHandler: e2,
+      errorHandler: async (err: unknown) => {
+        e2(err);
+      },
     };
 
     try {

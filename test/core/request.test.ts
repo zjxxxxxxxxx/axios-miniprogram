@@ -174,6 +174,20 @@ describe('src/core/request.ts', () => {
     expect(axios.isCancel(cb.mock.calls[0][0])).toBeTruthy();
   });
 
+  test('应该删除请求数据', () => {
+    const c = {
+      adapter: mockAdapter(),
+      url: 'test',
+      data: {},
+    };
+
+    [...Axios.as, ...Axios.asp].forEach((k) => {
+      const s = { ...c, method: k };
+      request(s);
+      expect(s.data).toBeUndefined();
+    });
+  });
+
   test('应该发送不同类型的请求', () => {
     request({
       adapter: ({ type }) => {

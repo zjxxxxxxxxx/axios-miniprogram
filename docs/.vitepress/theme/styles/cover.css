@@ -30,8 +30,8 @@
   background-color: var(--vp-nav-bg-color);
 }
 
-.VPSidebar .nav {
-  overflow-x: hidden;
+.VPSidebar .group {
+  width: 100%;
 }
 
 .VPSidebarItem.level-0 .text {
@@ -57,7 +57,7 @@
   width: 4px;
   height: 4px;
   border-radius: 2px;
-  background-color: #07c160;
+  background-color: var(--vp-c-brand);
   position: absolute;
   top: 15px;
   left: 2px;
@@ -71,6 +71,12 @@
 
 .VPLocalNavOutlineDropdown .items {
   overflow: auto;
+}
+
+.VPMenu {
+  border: 1px solid var(--vp-c-gutter) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
 }
 
 .VPHero .tagline {
@@ -110,7 +116,8 @@
 
 .language-bash,
 .language-ts {
-  border: 1px solid var(--vp-c-gutter);
+  border-radius: none;
+  border: none;
 }
 
 .vp-code-group .tabs {
@@ -133,6 +140,10 @@
 .DocSearch-Modal {
   --docsearch-modal-background: var(--vp-code-copy-code-bg);
   box-shadow: none;
+}
+
+.custom-block {
+  border-radius: 6px;
 }
 
 .dark .DocSearch-Modal {
@@ -158,5 +169,11 @@
 @media (min-width: 640px) {
   .VPFeatures .item {
     width: 100%;
+  }
+
+  .language-bash,
+  .language-ts {
+    border-radius: 6px;
+    border: 1px solid var(--vp-c-gutter);
   }
 }

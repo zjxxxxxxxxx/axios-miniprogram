@@ -18,12 +18,18 @@ describe('src/core/mergeConfig.ts', () => {
     const c1 = {
       url: 'a',
       method: 'get' as const,
+      data: {
+        v1: '1',
+      },
       upload: true,
       download: true,
     };
     const c2 = {
       url: 'b',
       method: 'post' as const,
+      data: {
+        v1: '2',
+      },
       upload: false,
       download: false,
     };
@@ -71,7 +77,6 @@ describe('src/core/mergeConfig.ts', () => {
         v1: 1,
       },
       params: o1,
-      data: o1,
     };
     const c2 = {
       headers: {
@@ -81,7 +86,6 @@ describe('src/core/mergeConfig.ts', () => {
         v2: 2,
       },
       params: o2,
-      data: o2,
     };
     const mc = {
       headers: {
@@ -93,7 +97,6 @@ describe('src/core/mergeConfig.ts', () => {
         v2: 2,
       },
       params: o3,
-      data: o3,
     };
 
     expect(mergeConfig(c1, {})).toEqual(c1);
@@ -117,12 +120,10 @@ describe('src/core/mergeConfig.ts', () => {
     const c1 = {
       headers: 1,
       params: '1',
-      data: [],
     };
     const c2 = {
       headers: () => null,
       params: null,
-      data: new Date(),
     };
 
     expect(mergeConfig(c1 as any, c2 as any)).toEqual({});

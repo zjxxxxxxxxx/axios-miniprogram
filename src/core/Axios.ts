@@ -156,7 +156,7 @@ export interface AxiosRequestConfig
    */
   transformResponse?: AxiosTransformer<AxiosResponseData>;
   /**
-   * 异常处理
+   * 错误处理
    */
   errorHandler?: (error: unknown) => Promise<void> | void;
   /**

@@ -8,6 +8,7 @@ import {
   isNull,
   isUndefined,
   isString,
+  isPromise,
 } from '@/helpers/isTypes';
 
 describe('src/helpers/isTypes.ts', () => {
@@ -59,5 +60,24 @@ describe('src/helpers/isTypes.ts', () => {
     expect(isString(new String())).toBeTruthy();
     expect(isString('')).toBeTruthy();
     expect(isString(``)).toBeTruthy();
+  });
+
+  test('应该能判断是 Promise', () => {
+    expect(isPromise({})).toBeFalsy();
+    expect(isPromise(Promise.resolve())).toBeTruthy();
+    expect(
+      isPromise(
+        new Promise(function () {
+          return;
+        }),
+      ),
+    ).toBeTruthy();
+    expect(
+      isPromise({
+        then() {
+          return;
+        },
+      }),
+    ).toBeTruthy();
   });
 });

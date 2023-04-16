@@ -85,7 +85,7 @@ axios({
     console.log(status);
   },
 
-  // 异常处理
+  // 错误处理
   errorHandler(error) {
     console.log(error);
   },
@@ -112,29 +112,28 @@ axios({
 ```ts
 import axios from 'axios-miniprogram';
 
-axios
-  .request({
-    // 开启 http2
-    enableHttp2: false,
+axios({
+  // 开启 http2
+  enableHttp2: false,
 
-    // 开启 quic
-    enableQuic: false,
+  // 开启 quic
+  enableQuic: false,
 
-    // 开启 cache
-    enableCache: false,
+  // 开启 cache
+  enableCache: false,
 
-    // 是否开启 HttpDNS 服务。如开启，需要同时填入 httpDNSServiceId 。
-    enableHttpDNS: false,
+  // 是否开启 HttpDNS 服务。如开启，需要同时填入 httpDNSServiceId 。
+  enableHttpDNS: false,
 
-    // HttpDNS 服务商 Id。
-    httpDNSServiceId: '123',
+  // HttpDNS 服务商 Id。
+  httpDNSServiceId: '123',
 
-    // 开启 transfer-encoding chunked。
-    enableChunked: false,
+  // 开启 transfer-encoding chunked。
+  enableChunked: false,
 
-    // wifi 下使用移动网络发送请求
-    forceCellularNetwork: false,
-  })
+  // wifi 下使用移动网络发送请求
+  forceCellularNetwork: false,
+})
   .then((response) => {
     // 成功之后做些什么
   })
@@ -154,14 +153,13 @@ axios
 ```ts
 import axios from 'axios-miniprogram';
 
-axios
-  .request({
-    // 这是一个自定义配置
-    user: '123',
+axios({
+  // 这是一个自定义配置
+  user: '123',
 
-    // 这也是一个自定义配置
-    showLoading: true,
-  })
+  // 这也是一个自定义配置
+  showLoading: true,
+})
   .then((response) => {
     // 成功之后做些什么
   })

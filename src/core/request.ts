@@ -15,6 +15,7 @@ import {
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';
+import AxiosDomain from './AxiosDomain';
 
 function tryToggleProgressUpdate(
   adapterConfig: AxiosAdapterRequestConfig,
@@ -37,9 +38,18 @@ function tryToggleProgressUpdate(
   }
 }
 
+/**
+ * 可以携带 data 的请求方法
+ */
+export const withDataRE = new RegExp(`^${AxiosDomain.asd.join('|')}$`, 'i');
+
 export function request(config: AxiosRequestConfig) {
   return new Promise<AxiosResponse>((resolve, reject) => {
     const { adapter, url, method, cancelToken } = config;
+
+    if (!withDataRE.test(method!)) {
+      delete config.data;
+    }
 
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...config,
