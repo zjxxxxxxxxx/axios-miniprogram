@@ -8,4 +8,25 @@ title: 参数系列化
 支持自定义参数系列化器。
 :::
 
-未完待续...
+## 自定义参数系列化器
+
+可以用自己的方式对参数进行系列化。
+
+```ts
+import axios from 'axios-miniprogram';
+
+axios('https://api.com', {
+  params: {
+    id: 1,
+  },
+  paramsSerializer(params) {
+    return qs.stringify(params);
+  },
+})
+  .then((response) => {
+    // 请求成功后做些什么
+  })
+  .catch((error) => {
+    // 请求失败后做些什么
+  });
+```

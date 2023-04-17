@@ -116,3 +116,42 @@ axios('https://api.com/test', {
     // 失败之后做些什么
   });
 ```
+
+## 全局错误处理
+
+可以把 `errorHandler` 设置到默认配置中，每一个请求都可以进行错误处理。
+
+```ts
+import axios from 'axios-miniprogram';
+
+// 全局错误处理
+axios.defaults.errorHandler = (error) => {
+  if (axios.isAxiosError(error)) {
+    // 响应错误
+
+    const {
+      // 错误消息
+      message,
+
+      // 请求配置
+      config,
+
+      // 请求任务，也就是请求函数返回的结果
+      request,
+
+      // 响应体
+      response,
+    } = error;
+
+    if (response.isFail) {
+      // 平台或适配器错误
+    } else {
+      // 使用 `validateStatus` 自定义抛出的错误
+    }
+  } else if (axios.isCancel(error)) {
+    // 取消请求
+  } else {
+    // 其他错误
+  }
+};
+```

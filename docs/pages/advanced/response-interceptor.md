@@ -80,3 +80,36 @@ const ejectId = axios.interceptors.response.use(
 // 移除响应拦截器
 axios.interceptors.response.eject(ejectId);
 ```
+
+## 移除所有响应拦截器
+
+可以移除所有响应拦截器。
+
+```ts
+import axios from 'axios-miniprogram';
+
+axios.interceptors.request.use(
+  function (response) {
+    // 在 then 之前做些什么
+    return response;
+  },
+  function (error) {
+    // 在 catch 之前做些什么
+    return Promise.reject(error);
+  },
+);
+
+axios.interceptors.request.use(
+  function (response) {
+    // 在 then 之前做些什么
+    return response;
+  },
+  function (error) {
+    // 在 catch 之前做些什么
+    return Promise.reject(error);
+  },
+);
+
+// 移除所有响应拦截器
+axios.interceptors.request.clear();
+```

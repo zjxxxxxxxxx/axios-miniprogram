@@ -42,7 +42,7 @@ describe('src/core/transformURL.ts', () => {
           type: 0,
         },
       }),
-    ).toBe('http://api.com/test/axios/0?name=axios&type=0');
+    ).toBe('http://api.com/test/axios/0');
     expect(
       transformURL({
         baseURL: 'http://api.com',

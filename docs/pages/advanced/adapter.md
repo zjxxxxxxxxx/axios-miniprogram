@@ -140,7 +140,7 @@ axios.defaults.adapter = (config) => {
         fail: (error) => {
           config.fail({
             // 状态码
-            status: '400',
+            status: 400,
 
             // 状态文本
             statusText: 'Fail Adapter',
@@ -185,7 +185,7 @@ axios.defaults.adapter = (config) => {
         fail: (error) => {
           config.fail({
             // 状态码
-            status: '400',
+            status: 400,
 
             // 状态文本
             statusText: 'Fail Adapter',
@@ -226,7 +226,7 @@ axios.defaults.adapter = (config) => {
         fail: (error) => {
           config.fail({
             // 状态码
-            status: '400',
+            status: 400,
 
             // 状态文本
             statusText: 'Fail Adapter',
@@ -259,7 +259,7 @@ axios.defaults.adapter = axios.createAdapter({
 });
 ```
 
-可以进一步抹平存在差异的部分，实现完美适配全平台。
+也可以进一步抹平存在差异的部分，实现完美适配全平台。
 
 ```ts
 import axios from 'axios-miniprogram';

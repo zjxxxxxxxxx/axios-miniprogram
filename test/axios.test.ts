@@ -9,7 +9,7 @@ describe('src/axios.ts', () => {
         headers: { type: 'json' },
         data: { v1: 1 },
         before: (config) => {
-          expect(config.url).toBe('http://api.com/test/1?id=1');
+          expect(config.url).toBe('http://api.com/test/1');
         },
       }),
       baseURL: 'http://api.com',

@@ -68,8 +68,8 @@ describe('src/core/Axios.ts', () => {
     const c2 = {
       adapter: mockAdapter({
         before: (config) => {
-          expect(config.url).toBe('http://api.com/test/1?id=1');
-          expect(config.params).toEqual(p);
+          expect(config.url).toBe('http://api.com/test/1');
+          expect(config.params).toEqual({});
         },
         data,
       }),
@@ -79,7 +79,7 @@ describe('src/core/Axios.ts', () => {
       axios[a]('test', p, c1).then((res) => {
         expect(res.data).toEqual(data);
       });
-      axios[a]('test/:id', p, c2).then((res) => {
+      axios[a]('test/:id', { ...p }, c2).then((res) => {
         expect(res.data).toEqual(data);
       });
     });

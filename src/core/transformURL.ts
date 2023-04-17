@@ -8,7 +8,7 @@ export function transformURL(config: AxiosRequestConfig) {
   let url = config.url ?? '';
 
   if (!isAbsoluteURL(url)) url = combineURL(config.baseURL ?? '', url);
-  url = dynamicURL(url, Object.assign({}, config.params, config.data));
+  url = dynamicURL(url, config.params, config.data);
   url = buildURL(url, config.params, config.paramsSerializer);
 
   return url;

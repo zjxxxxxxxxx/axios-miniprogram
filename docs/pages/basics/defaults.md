@@ -57,7 +57,7 @@ title: 默认配置
 
 可以给属性设置默认值。
 
-部分示例：
+列举部分示例：
 
 ```ts
 import axios from 'axios-miniprogram';

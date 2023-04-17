@@ -99,7 +99,7 @@ describe('src/core/dispatchRequest.ts', () => {
     dispatchRequest(c3);
 
     expect(c1.url).toBe('http://api.com/test');
-    expect(c2.url).toBe('http://api.com/test/1?id=1');
+    expect(c2.url).toBe('http://api.com/test/1');
     expect(c3.url).toBe('http://api.com/test/1');
   });
 
