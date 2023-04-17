@@ -16,7 +16,11 @@ describe('src/core/InterceptorManager.ts', () => {
     const rej = vi.fn();
     const cb = vi.fn();
 
+    expect(i.size).toBe(0);
+
     const id = i.use(res, rej);
+
+    expect(i.size).toBe(1);
 
     i.forEach(({ resolved, rejected }) => {
       expect(resolved).toBe(res);
@@ -26,10 +30,31 @@ describe('src/core/InterceptorManager.ts', () => {
     i.eject(id);
     i.forEach(cb);
 
+    expect(i.size).toBe(0);
+
     expect(cb).not.toBeCalled();
   });
 
-  test('应该可以依次执行拦截处理函数', () => {
+  test('应该可以清理所有拦截处理函数', () => {
+    const i = new InterceptorManager();
+    const res = vi.fn();
+    const rej = vi.fn();
+    const cb = vi.fn();
+
+    expect(i.size).toBe(0);
+
+    i.use(res, rej);
+    i.use(res, rej);
+    i.use(res, rej);
+
+    expect(i.size).toBe(3);
+
+    i.clear();
+
+    expect(i.size).toBe(0);
+  });
+
+  test('应该可以调用 forEach', () => {
     const i = new InterceptorManager();
     const res1 = vi.fn();
     const rej1 = vi.fn();
@@ -48,28 +73,6 @@ describe('src/core/InterceptorManager.ts', () => {
     expect(cb.mock.calls[1][0]).toEqual({
       resolved: res2,
       rejected: rej2,
-    });
-  });
-
-  test('应该可以反向依次执行拦截处理函数', () => {
-    const i = new InterceptorManager();
-    const res1 = vi.fn();
-    const rej1 = vi.fn();
-    const res2 = vi.fn();
-    const rej2 = vi.fn();
-    const cb = vi.fn();
-
-    i.use(res1, rej1);
-    i.use(res2, rej2);
-    i.forEach(cb, true);
-
-    expect(cb.mock.calls[0][0]).toEqual({
-      resolved: res2,
-      rejected: rej2,
-    });
-    expect(cb.mock.calls[1][0]).toEqual({
-      resolved: res1,
-      rejected: rej1,
     });
   });
 });

@@ -167,38 +167,36 @@ export default class AxiosDomain {
 
       return processRequest(mergeConfig(this.defaults, config));
     };
-
-    this.#createAsRequests();
-    this.#createAspRequests();
-    this.#createAsdRequests();
   }
+}
 
-  #createAsRequests() {
-    for (const alias of AxiosDomain.as) {
-      this[alias] = function processAsRequest(url, config = {}) {
-        config.method = alias;
-        return this.request(url, config);
-      };
-    }
-  }
+for (const alias of AxiosDomain.as) {
+  AxiosDomain.prototype[alias] = function processAsRequest(url, config = {}) {
+    config.method = alias;
+    return this.request(url, config);
+  };
+}
 
-  #createAspRequests() {
-    for (const alias of AxiosDomain.asp) {
-      this[alias] = function processAspRequest(url, params = {}, config = {}) {
-        config.method = alias;
-        config.params = deepMerge(params, config.params ?? {});
-        return this.request(url, config);
-      };
-    }
-  }
+for (const alias of AxiosDomain.asp) {
+  AxiosDomain.prototype[alias] = function processAspRequest(
+    url,
+    params = {},
+    config = {},
+  ) {
+    config.method = alias;
+    config.params = deepMerge(params, config.params ?? {});
+    return this.request(url, config);
+  };
+}
 
-  #createAsdRequests() {
-    for (const alias of AxiosDomain.asd) {
-      this[alias] = function processAsdRequest(url, data = {}, config = {}) {
-        config.method = alias;
-        config.data = deepMerge(data, config.data ?? {});
-        return this.request(url, config);
-      };
-    }
-  }
+for (const alias of AxiosDomain.asd) {
+  AxiosDomain.prototype[alias] = function processAsdRequest(
+    url,
+    data = {},
+    config = {},
+  ) {
+    config.method = alias;
+    config.data = deepMerge(data, config.data ?? {});
+    return this.request(url, config);
+  };
 }

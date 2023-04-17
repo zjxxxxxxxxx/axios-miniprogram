@@ -337,7 +337,7 @@ export function createAdapter(platform: AxiosPlatform) {
   return adapter;
 }
 
-export function isPlatform(value: unknown): value is AxiosPlatform {
+export function isPlatform(value: any): value is AxiosPlatform {
   return (
     isPlainObject(value) &&
     isFunction(value.request) &&
