@@ -3,16 +3,7 @@ name: Deploy Docs
 on:
   push:
     branches:
-      - main
-    paths:
-      - 'docs/**'
-      - '**.md'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'docs/**'
-      - '**.md'
+      - docs
   workflow_dispatch:
 
 jobs:

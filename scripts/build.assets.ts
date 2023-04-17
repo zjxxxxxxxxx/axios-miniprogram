@@ -10,7 +10,7 @@ main();
 async function main() {
   exec('pnpm build');
 
-  consola.info('Generate asset\n');
+  consola.info('Generate assets\n');
   for (const filePath of await fg(`${distPath}/**.js`)) {
     await generateZip(filePath, filePath.replace(/\.js$/, '.zip'));
   }

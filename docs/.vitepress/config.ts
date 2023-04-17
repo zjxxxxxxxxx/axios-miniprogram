@@ -46,7 +46,7 @@ export default defineConfig({
     algolia: algolia(),
 
     returnToTopLabel: '返回顶部',
-    outlineTitle: '导航栏',
+    outlineTitle: '导航',
     darkModeSwitchLabel: '主题',
     sidebarMenuLabel: '菜单',
     lastUpdatedText: '最后一次更新',

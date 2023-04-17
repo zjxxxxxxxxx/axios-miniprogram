@@ -26,6 +26,9 @@ jobs:
       - name: Install
         run: pnpm i
 
+      - name: Build Release Assets
+        run: pnpm build:asset
+
       - name: Create releaselog
         run: pnpm releaselog
 
@@ -36,22 +39,12 @@ jobs:
           script: return /-/.test("${{ github.ref }}")
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body_path: 'RELEASELOG.md'
           prerelease: ${{ steps.prerelease.outputs.result }}
-
-      - name: Build Release Asset
-        run: pnpm build:asset
-
-      - name: Upload Release Asset
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_ID: ${{ steps.create_release.outputs.id }}
-          UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
-        run: pnpm upload:asset
+          body_path: 'RELEASELOG.md'
+          files: 'dist/**.zip'

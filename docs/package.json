@@ -7,11 +7,11 @@
     "preview": "vitepress preview"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.7",
     "vite-plugin-pwa": "^0.14.7",
     "vitepress": "1.0.0-alpha.61"
   },
   "dependencies": {
-    "@types/lodash-es": "^4.17.7",
     "lodash-es": "^4.17.21",
     "vue": "^3.2.47"
   }

@@ -15,10 +15,10 @@
   },
   "keywords": [
     "axios",
-    "miniprogram",
     "request",
-    "uni-app",
-    "wechat"
+    "wechat",
+    "miniprogram",
+    "uni-app"
   ],
   "author": "zjx0905 <954270063@qq.com>",
   "bugs": {
@@ -29,13 +29,12 @@
   "scripts": {
     "cz": "czg",
     "build": "esno scripts/build.ts",
-    "build:asset": "esno scripts/build-asset.ts",
+    "build:assets": "esno scripts/build.assets.ts",
     "watch": "pnpm build -a -w",
     "release": "esno scripts/release.ts",
     "publish:ci": "esno scripts/publish.ts",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "releaselog": "esno scripts/releaselog.ts",
-    "upload:asset": "esno scripts/upload-asset.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
@@ -55,7 +54,6 @@
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "@vitest/coverage-istanbul": "^0.30.0",
-    "actions-toolkit": "^6.0.1",
     "chalk": "^5.2.0",
     "consola": "^2.15.3",
     "conventional-changelog-cli": "^2.2.2",
@@ -101,7 +99,8 @@
     "peerDependencyRules": {
       "ignoreMissing": [
         "@algolia/client-search",
-        "esbuild"
+        "esbuild",
+        "vite"
       ]
     }
   }

@@ -38,11 +38,11 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Build
+      - name: Build all
         run: pnpm build -a
 
-      - name: Build asset
-        run: pnpm build:asset
+      - name: Build assets
+        run: pnpm build:assets
 
       - name: Typecheck
         run: pnpm typecheck

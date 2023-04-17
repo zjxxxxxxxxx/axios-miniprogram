@@ -63,6 +63,34 @@
   left: 2px;
 }
 
+.VPDocAside .content {
+  border-left: none;
+}
+
+.VPDocAside .outline-title {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.VPDocAside .outline-marker {
+  left: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  transform: translateY(7px);
+}
+
+.VPDocAside .outline-link {
+  position: relative;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.VPDocAside .outline-link.active {
+  color: var(--vp-c-brand);
+  font-weight: bold;
+}
+
 .VPBackdrop {
   backdrop-filter: blur(16px);
   background-color: transparent !important;
@@ -175,5 +203,14 @@
   .language-ts {
     border-radius: 6px;
     border: 1px solid var(--vp-c-gutter);
+  }
+
+  .prev-next {
+    justify-content: space-between;
+  }
+
+  .pager {
+    width: auto !important;
+    min-width: 180px;
   }
 }

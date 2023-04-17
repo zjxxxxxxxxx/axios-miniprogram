@@ -6,6 +6,8 @@ title: 平台适配器
 
 ::: tip {{ $frontmatter.title }}
 用于支持更多小程序平台或小程序框架。
+
+适配器是一个函数，它可以接收 `config` 参数。
 :::
 
 ## 基本配置
@@ -80,7 +82,7 @@ axios('https://api.com', {
 
 ## 实现一个适配器
 
-适配的本质就是对配置项进行转换，甚至可以零逻辑完成适配。
+适配的本质是对配置项进行转换，甚至可以零逻辑完成适配。
 
 这里用适配 uni-app 举例，适配其他平台其实大同小异。
 
@@ -89,9 +91,13 @@ import axios from 'axios-miniprogram';
 
 // 适配器
 axios.defaults.adapter = (config) => {
+  // 可以先看看 config 都有哪些东西
+  console.log(config);
+
+  // 开始适配不同类型的请求
   switch (config.type) {
     case 'request':
-      // 适配请求数据
+      // 适配数据请求
       return uni.request({
         url: config.url,
         data: config.data,
@@ -253,7 +259,7 @@ axios.defaults.adapter = axios.createAdapter({
 });
 ```
 
-可以使用 `createAdapter` 彻底抹平存在差异的部分，实现完美适配全平台。
+可以使用 `createAdapter` 彻底抹平存在差异的部分，实现全平台完美适配。
 
 ```ts
 import axios from 'axios-miniprogram';
