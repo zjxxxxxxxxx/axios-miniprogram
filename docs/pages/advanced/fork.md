@@ -152,7 +152,7 @@ domain
   });
 ```
 
-- [domain.request(url, config?) | instance.request(config)](/basics/request)
+- [domain.request(url, config?) | domain.request(config)](/basics/request)
 - [domain.options(url, config?)](/method/OPTIONS)
 - [domain.get(url, params?, config?)](/method/GET)
 - [domain.head(url, params?, config?)](/method/HEAD)

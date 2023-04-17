@@ -27,7 +27,7 @@
   "homepage": "https://axios-miniprogram.com",
   "license": "MIT",
   "scripts": {
-    "cz": "czg",
+    "cz": "simple-git-hooks && czg",
     "build": "esno scripts/build.ts",
     "build:assets": "esno scripts/build.assets.ts",
     "watch": "pnpm build -a -w",
@@ -43,8 +43,7 @@
     "lint:fix": "pnpm lint --fix",
     "docs:dev": "pnpm -C docs dev",
     "docs:build": "pnpm -C docs build",
-    "docs:preview": "pnpm -C docs preview",
-    "postinstall": "simple-git-hooks"
+    "docs:preview": "pnpm -C docs preview"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
