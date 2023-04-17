@@ -26,8 +26,8 @@ export function mergeConfig(
   );
 
   for (const key of keysSet) {
-    const val1 = config1[key] as any;
-    const val2 = config2[key] as any;
+    const val1 = config1[key];
+    const val2 = config2[key];
 
     // 只从 config2 中取值
     if (fromConfig2Map[key]) {

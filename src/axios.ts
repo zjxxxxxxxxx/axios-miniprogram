@@ -57,13 +57,8 @@ function createInstance(defaults: AxiosRequestConfig) {
   const context = new Axios(defaults);
   const instance = context.request as AxiosInstance;
 
-  Object.assign(instance, context, {
-    // instance.fork 内部调用了 context 的私有方法
-    // 所以直接调用 instance.fork 会导致程序抛出无法访问 context 私有方法的异常
-    // instance.fork 调用时 this 重新指向 context，解决此问题
-    fork: context.fork.bind(context),
-  });
-  Object.setPrototypeOf(instance, Object.getPrototypeOf(context));
+  Object.assign(instance, context);
+  Object.setPrototypeOf(instance, Axios.prototype);
 
   return instance;
 }

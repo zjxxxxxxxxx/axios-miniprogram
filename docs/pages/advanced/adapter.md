@@ -259,7 +259,7 @@ axios.defaults.adapter = axios.createAdapter({
 });
 ```
 
-可以使用 `createAdapter` 彻底抹平存在差异的部分，实现全平台完美适配。
+可以进一步抹平存在差异的部分，实现完美适配全平台。
 
 ```ts
 import axios from 'axios-miniprogram';

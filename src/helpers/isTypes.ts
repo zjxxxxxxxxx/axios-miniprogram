@@ -14,7 +14,7 @@ export function isString(value: any): value is string {
   );
 }
 
-export function isPlainObject(value: any): value is object & AnyObject {
+export function isPlainObject<T extends AnyObject>(value: any): value is T {
   return _toString.call(value) === '[object Object]';
 }
 

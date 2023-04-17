@@ -11,12 +11,13 @@ import {
   AxiosAdapterResponseError,
   AxiosAdapterResponseData,
 } from '../adapter';
+import InterceptorManager, { Interceptor } from './InterceptorManager';
 import { mergeConfig } from './mergeConfig';
 import { CancelToken } from './cancel';
 import { dispatchRequest } from './dispatchRequest';
 import { AxiosTransformer } from './transformData';
+
 import AxiosDomain from './AxiosDomain';
-import InterceptorManager from './InterceptorManager';
 
 export type AxiosRequestMethod =
   | AxiosAdapterRequestMethod
@@ -243,26 +244,36 @@ export default class Axios extends AxiosDomain {
   /**
    * 派生领域
    */
-  fork(defaults: AxiosRequestConfig = {}) {
+  fork = (defaults: AxiosRequestConfig = {}) => {
     if (isString(defaults.baseURL) && !isAbsoluteURL(defaults.baseURL)) {
       defaults.baseURL = combineURL(this.defaults.baseURL, defaults.baseURL);
     }
     return new AxiosDomain(mergeConfig(this.defaults, defaults), (config) =>
       this.#processRequest(config),
     );
-  }
+  };
 
   #processRequest(config: AxiosRequestConfig) {
-    const { request, response } = this.interceptors;
+    const chain: [
+      Interceptor<AxiosRequestConfig> | Interceptor<AxiosResponse>,
+    ] = [
+      {
+        resolved: dispatchRequest,
+      },
+    ];
 
-    let promiseRequest = Promise.resolve(config);
-    request.forEach(({ resolved, rejected }) => {
-      promiseRequest = promiseRequest.then(resolved, rejected);
-    }, true);
-    let promiseResponse = promiseRequest.then(dispatchRequest);
-    response.forEach(({ resolved, rejected }) => {
-      promiseResponse = promiseResponse.then(resolved, rejected);
-    });
-    return promiseResponse;
+    this.interceptors.request.forEach(chain.unshift.bind(chain));
+    this.interceptors.response.forEach(chain.push.bind(chain));
+
+    let next = Promise.resolve(config);
+    for (const { resolved, rejected } of chain) {
+      next = next.then(
+        // @ts-ignore
+        resolved,
+        rejected,
+      );
+    }
+
+    return next as Promise<AxiosResponse>;
   }
 }

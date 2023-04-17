@@ -18,27 +18,33 @@ export interface InterceptorExecutor<T = unknown> {
 export default class InterceptorManager<T = unknown> {
   #id = 0;
 
-  #interceptors: AnyObject<Interceptor<T>> = {};
+  #interceptors = new Map<number, Interceptor<T>>();
+
+  get size() {
+    return this.#interceptors.size;
+  }
 
   use(
     resolved: InterceptorResolved<T>,
     rejected?: InterceptorRejected<T>,
   ): number {
-    this.#interceptors[++this.#id] = {
+    this.#interceptors.set(++this.#id, {
       resolved,
       rejected,
-    };
+    });
 
     return this.#id;
   }
 
-  eject(id: number): void {
-    delete this.#interceptors[id];
+  eject(id: number): boolean {
+    return this.#interceptors.delete(id);
   }
 
-  forEach(executor: InterceptorExecutor<T>, reverse?: boolean): void {
-    let interceptors: Interceptor<T>[] = Object.values(this.#interceptors);
-    if (reverse) interceptors = interceptors.reverse();
-    interceptors.forEach(executor);
+  clear() {
+    this.#interceptors.clear();
+  }
+
+  forEach(executor: InterceptorExecutor<T>): void {
+    this.#interceptors.forEach(executor);
   }
 }
