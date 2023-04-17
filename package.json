@@ -43,7 +43,8 @@
     "lint:fix": "pnpm lint --fix",
     "docs:dev": "pnpm -C docs dev",
     "docs:build": "pnpm -C docs build",
-    "docs:preview": "pnpm -C docs preview"
+    "docs:preview": "pnpm -C docs preview",
+    "docs:deploy": "esno scripts/docs.deploy.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",

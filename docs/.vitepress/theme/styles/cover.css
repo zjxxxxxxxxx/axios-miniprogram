@@ -172,6 +172,7 @@
 
 .custom-block {
   border-radius: 6px;
+  background-color: var(--vp-custom-block-tip-bg);
 }
 
 .dark .DocSearch-Modal {
