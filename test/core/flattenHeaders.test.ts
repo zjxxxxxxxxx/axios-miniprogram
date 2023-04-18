@@ -1,9 +1,17 @@
 import { describe, test, expect } from 'vitest';
 import { flattenHeaders } from '@/core/flattenHeaders';
-import Axios from '@/core/Axios';
+import {
+  requestMethodNames,
+  requestMethodWithDataNames,
+  requestMethodWithParamsNames,
+} from '@/core/AxiosDomain';
 
 describe('src/core/flattenHeaders.ts', () => {
-  const keys = [...Axios.as, ...Axios.asp, ...Axios.asd];
+  const keys = [
+    ...requestMethodNames,
+    ...requestMethodWithParamsNames,
+    ...requestMethodWithDataNames,
+  ];
   const baseHeaders = Object.fromEntries(
     keys.map((k) => [k, { v1: `${k}1`, v2: `${k}2` }]),
   ) as unknown as Record<(typeof keys)[number], AnyObject>;

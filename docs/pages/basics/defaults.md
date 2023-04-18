@@ -18,7 +18,7 @@ title: 默认配置
 {
   // 适配器，在支持的平台中有值。
   // 对于不支持平台而言，此值始终为 undefined，需要您手动适配。
-  adapter: getAdapterDefault(),
+  adapter: getDefaultAdapter(),
 
   // 请求头
   headers: {

@@ -39,7 +39,6 @@ describe('src/core/InterceptorManager.ts', () => {
     const i = new InterceptorManager();
     const res = vi.fn();
     const rej = vi.fn();
-    const cb = vi.fn();
 
     expect(i.size).toBe(0);
 

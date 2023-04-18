@@ -1,13 +1,17 @@
 import { describe, test, expect, vi } from 'vitest';
 import { ignore } from '@/helpers/ignore';
-import AxiosDomain from '@/core/AxiosDomain';
+import AxiosDomain, {
+  requestMethodNames,
+  requestMethodWithParamsNames,
+  requestMethodWithDataNames,
+} from '@/core/AxiosDomain';
 import { AxiosResponse } from '@/core/Axios';
 
 describe('src/core/AxiosDomain.ts', () => {
-  test('应该有这些静态属性', () => {
-    expect(AxiosDomain.as).toEqual(['options', 'trace', 'connect']);
-    expect(AxiosDomain.asp).toEqual(['head', 'get', 'delete']);
-    expect(AxiosDomain.asd).toEqual(['post', 'put', 'patch']);
+  test('应该有这些常量', () => {
+    expect(requestMethodNames).toEqual(['options', 'trace', 'connect']);
+    expect(requestMethodWithParamsNames).toEqual(['head', 'get', 'delete']);
+    expect(requestMethodWithDataNames).toEqual(['post', 'put', 'patch']);
   });
 
   test('应该有这些实例属性', () => {
@@ -19,7 +23,11 @@ describe('src/core/AxiosDomain.ts', () => {
     expect(a.defaults).toEqual(c);
     expect(a.request).toBeTypeOf('function');
 
-    [...AxiosDomain.as, ...AxiosDomain.asp, ...AxiosDomain.asd].forEach((k) => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithParamsNames,
+      ...requestMethodWithDataNames,
+    ].forEach((k) => {
       expect(a[k]).toBeTypeOf('function');
     });
   });
@@ -54,14 +62,14 @@ describe('src/core/AxiosDomain.ts', () => {
 
     a.request('test');
 
-    AxiosDomain.as.forEach((k) => a[k]('test'));
-    AxiosDomain.asp.forEach((k) => a[k]('test'));
-    AxiosDomain.asd.forEach((k) => a[k]('test'));
+    requestMethodNames.forEach((k) => a[k]('test'));
+    requestMethodWithParamsNames.forEach((k) => a[k]('test'));
+    requestMethodWithDataNames.forEach((k) => a[k]('test'));
 
     const l =
-      AxiosDomain.as.length +
-      AxiosDomain.asp.length +
-      AxiosDomain.asd.length +
+      requestMethodNames.length +
+      requestMethodWithParamsNames.length +
+      requestMethodWithDataNames.length +
       1;
     expect(cb.mock.calls.length).toBe(l);
     cb.mock.calls.forEach(([config]) => expect(config.url).toBe('test'));
@@ -94,14 +102,18 @@ describe('src/core/AxiosDomain.ts', () => {
 
     a.request(u, c);
 
-    AxiosDomain.as.forEach((k) => a[k](u, c));
-    AxiosDomain.asp.forEach((k) => a[k](u, c.params, ignore(c, 'params')));
-    AxiosDomain.asd.forEach((k) => a[k](u, c.data, ignore(c, 'data')));
+    requestMethodNames.forEach((k) => a[k](u, c));
+    requestMethodWithParamsNames.forEach((k) =>
+      a[k](u, c.params, ignore(c, 'params')),
+    );
+    requestMethodWithDataNames.forEach((k) =>
+      a[k](u, c.data, ignore(c, 'data')),
+    );
 
     const l =
-      AxiosDomain.as.length +
-      AxiosDomain.asp.length +
-      AxiosDomain.asd.length +
+      requestMethodNames.length +
+      requestMethodWithParamsNames.length +
+      requestMethodWithDataNames.length +
       1;
     expect(cb.mock.calls.length).toBe(l);
   });
@@ -133,18 +145,18 @@ describe('src/core/AxiosDomain.ts', () => {
 
     a.request(c);
 
-    AxiosDomain.as.forEach((k) => a[k](c.url, ignore(c, 'url')));
-    AxiosDomain.asp.forEach((k) =>
+    requestMethodNames.forEach((k) => a[k](c.url, ignore(c, 'url')));
+    requestMethodWithParamsNames.forEach((k) =>
       a[k](c.url, c.params, ignore(c, 'url', 'params')),
     );
-    AxiosDomain.asd.forEach((k) =>
+    requestMethodWithDataNames.forEach((k) =>
       a[k](c.url, c.data, ignore(c, 'url', 'data')),
     );
 
     const l =
-      AxiosDomain.as.length +
-      AxiosDomain.asp.length +
-      AxiosDomain.asd.length +
+      requestMethodNames.length +
+      requestMethodWithParamsNames.length +
+      requestMethodWithDataNames.length +
       1;
     expect(cb.mock.calls.length).toBe(l);
   });
@@ -181,7 +193,7 @@ describe('src/core/AxiosDomain.ts', () => {
       return {} as AxiosResponse;
     });
 
-    AxiosDomain.asp.forEach((k) => a[k]('test', p, c));
+    requestMethodWithParamsNames.forEach((k) => a[k]('test', p, c));
   });
 
   test('应该支持深度合并 data', () => {
@@ -216,6 +228,6 @@ describe('src/core/AxiosDomain.ts', () => {
       return {} as AxiosResponse;
     });
 
-    AxiosDomain.asd.forEach((k) => a[k]('test', d, c));
+    requestMethodWithDataNames.forEach((k) => a[k]('test', d, c));
   });
 });

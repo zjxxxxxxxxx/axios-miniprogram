@@ -1,4 +1,4 @@
-import { isFunction, isPlainObject, isUndefined } from '../helpers/isTypes';
+import { isFunction, isPlainObject } from '../helpers/isTypes';
 import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
@@ -15,7 +15,6 @@ import {
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';
-import AxiosDomain from './AxiosDomain';
 
 function tryToggleProgressUpdate(
   adapterConfig: AxiosAdapterRequestConfig,
@@ -38,18 +37,9 @@ function tryToggleProgressUpdate(
   }
 }
 
-/**
- * 可以携带 data 的请求方法
- */
-export const withDataRE = new RegExp(`^${AxiosDomain.asd.join('|')}$`, 'i');
-
 export function request(config: AxiosRequestConfig) {
   return new Promise<AxiosResponse>((resolve, reject) => {
     const { adapter, url, method, cancelToken } = config;
-
-    if (!withDataRE.test(method!)) {
-      delete config.data;
-    }
 
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...config,
@@ -63,28 +53,20 @@ export function request(config: AxiosRequestConfig) {
     let adapterTask: AxiosAdapterTask;
     try {
       adapterTask = adapter!(adapterConfig);
-    } catch {
+    } catch (err) {
       fail({
         status: 400,
         statusText: 'Bad Adapter',
-        headers: {},
       });
     }
 
-    function success(_: AxiosAdapterResponse): void {
-      const response = _ as AxiosResponse;
+    function success(adapterResponse: AxiosAdapterResponse): void {
+      const response = adapterResponse as AxiosResponse;
+      response.status = response.status ?? 200;
+      response.statusText = response.statusText ?? 'OK';
+      response.headers = response.headers ?? {};
       response.config = config;
       response.request = adapterTask;
-
-      if (isUndefined(response.status)) {
-        response.status = 200;
-      }
-      if (isUndefined(response.statusText)) {
-        response.statusText = 'OK';
-      }
-      if (isUndefined(response.headers)) {
-        response.headers = {};
-      }
 
       if (config.validateStatus?.(response.status) ?? true) {
         resolve(response);
@@ -93,21 +75,14 @@ export function request(config: AxiosRequestConfig) {
       }
     }
 
-    function fail(_: AxiosAdapterResponseError): void {
-      const responseError = _ as AxiosResponseError;
+    function fail(adapterResponseError: AxiosAdapterResponseError): void {
+      const responseError = adapterResponseError as AxiosResponseError;
       responseError.isFail = true;
+      responseError.status = responseError.status ?? 400;
+      responseError.statusText = responseError.statusText ?? 'Fail Adapter';
+      responseError.headers = responseError.headers ?? {};
       responseError.config = config;
       responseError.request = adapterTask;
-
-      if (isUndefined(responseError.status)) {
-        responseError.status = 400;
-      }
-      if (isUndefined(responseError.statusText)) {
-        responseError.statusText = 'Fail Adapter';
-      }
-      if (isUndefined(responseError.headers)) {
-        responseError.headers = {};
-      }
 
       catchError('request fail', responseError);
     }

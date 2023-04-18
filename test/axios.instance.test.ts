@@ -1,5 +1,9 @@
 import { describe, test, expect } from 'vitest';
-import Axios from '@/core/Axios';
+import {
+  requestMethodNames,
+  requestMethodWithDataNames,
+  requestMethodWithParamsNames,
+} from '@/core/AxiosDomain';
 import axios from '@/axios';
 import defaults from '@/defaults';
 
@@ -11,7 +15,11 @@ describe('src/axios.ts', () => {
     expect(axios.fork).toBeTypeOf('function');
     expect(axios.request).toBeTypeOf('function');
 
-    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithParamsNames,
+      ...requestMethodWithDataNames,
+    ].forEach((k) => {
       expect(axios[k]).toBeTypeOf('function');
     });
   });

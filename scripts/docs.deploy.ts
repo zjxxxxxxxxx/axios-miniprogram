@@ -4,9 +4,6 @@ import { exec } from './utils';
 main();
 
 function main() {
-  exec('pnpm docs:build');
-
-  console.log('');
   consola.info('Clean');
   const exist = exec('git branch --list docs', {
     stdio: 'pipe',
@@ -18,9 +15,13 @@ function main() {
   }
   console.log('');
 
-  consola.info('Create docs\n');
+  consola.info('Check build');
+  exec('pnpm docs:build');
+  console.log('');
+
+  consola.info('Git branch docs\n');
   exec('git branch docs');
 
-  consola.info('Push docs\n');
+  consola.info('Git push docs\n');
   exec('git push origin docs -f');
 }

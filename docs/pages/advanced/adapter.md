@@ -124,7 +124,7 @@ axios.defaults.adapter = (config) => {
             // 状态码
             status: response.statusCode,
 
-            // 状态文本
+            // 状态文本，选填，不传默认 'OK'
             statusText: 'OK',
 
             // 响应头
@@ -139,16 +139,17 @@ axios.defaults.adapter = (config) => {
         },
         fail: (error) => {
           config.fail({
-            // 状态码
+            // 状态码，选填，不传默认 400
             status: 400,
 
-            // 状态文本
+            // 状态文本，选填，不传默认 'Fail Adapter'
             statusText: 'Fail Adapter',
 
-            // 响应头
+            // 响应头，选填，不传默认 {}
             headers: {},
 
             // 响应数据
+            // 平台 api 错误 error 通常是一个包含 errMsg 属性的对象
             data: error,
           });
         },
@@ -172,11 +173,11 @@ axios.defaults.adapter = (config) => {
             // 状态码
             status: response.statusCode,
 
-            // 状态文本
+            // 状态文本，选填，不传默认 'OK'
             statusText: 'OK',
 
             // 响应头
-            headers: response.header ?? {},
+            headers: response.header,
 
             // 响应数据
             data: response.data,
@@ -184,16 +185,17 @@ axios.defaults.adapter = (config) => {
         },
         fail: (error) => {
           config.fail({
-            // 状态码
+            // 状态码，选填，不传默认 400
             status: 400,
 
-            // 状态文本
+            // 状态文本，选填，不传默认 'Fail Adapter'
             statusText: 'Fail Adapter',
 
-            // 响应头
+            // 响应头，选填，不传默认 {}
             headers: {},
 
             // 响应数据
+            // 平台 api 错误 error 通常是一个包含 errMsg 属性的对象
             data: error,
           });
         },
@@ -210,7 +212,7 @@ axios.defaults.adapter = (config) => {
             // 状态码
             status: response.statusCode,
 
-            // 状态文本
+            // 状态文本，选填，不传默认 'OK'
             statusText: 'OK',
 
             // 响应头
@@ -225,16 +227,17 @@ axios.defaults.adapter = (config) => {
         },
         fail: (error) => {
           config.fail({
-            // 状态码
+            // 状态码，选填，不传默认 400
             status: 400,
 
-            // 状态文本
+            // 状态文本，选填，不传默认 'Fail Adapter'
             statusText: 'Fail Adapter',
 
-            // 响应头
+            // 响应头，选填，不传默认 {}
             headers: {},
 
             // 响应数据
+            // 平台 api 错误 error 通常是一个包含 errMsg 属性的对象
             data: error,
           });
         },

@@ -1,9 +1,13 @@
 import { describe, test, expect, vi } from 'vitest';
 import { asyncNext, mockAdapter } from 'scripts/test.utils';
-import Axios from '@/core/Axios';
 import { dispatchRequest } from '@/core/dispatchRequest';
 import axios from '@/axios';
 import _defaults from '@/defaults';
+import {
+  requestMethodNames,
+  requestMethodWithDataNames,
+  requestMethodWithParamsNames,
+} from '@/core/AxiosDomain';
 
 describe('src/core/dispatchRequest.ts', () => {
   const defaults = {
@@ -130,10 +134,25 @@ describe('src/core/dispatchRequest.ts', () => {
       transformRequest: () => ({ id: 1 }),
     };
 
-    Axios.asd.forEach((k) => {
+    requestMethodWithDataNames.forEach((k) => {
       const s = { ...c, method: k };
       dispatchRequest(s);
       expect(s.data).toEqual({ id: 1 });
+    });
+  });
+
+  test('不能带数据的请求方法应该删除数据', () => {
+    const c = {
+      ...defaults,
+      url: 'test',
+      data: {},
+      transformRequest: () => ({ id: 1 }),
+    };
+
+    [...requestMethodNames, ...requestMethodWithParamsNames].forEach((k) => {
+      const s = { ...c, method: k };
+      dispatchRequest(s);
+      expect(s.data).toBeUndefined();
     });
   });
 

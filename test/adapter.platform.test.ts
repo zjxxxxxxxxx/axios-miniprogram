@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
-import { getAdapterDefault } from '@/adapter';
+import { getDefaultAdapter } from '@/adapter';
 
 const platforms = [
   'uni',
@@ -29,7 +29,7 @@ describe.each(platforms)('src/adapter.ts', (p) => {
   });
 
   test('应该可以获取到默认的平台适配器', () => {
-    const a = getAdapterDefault();
+    const a = getDefaultAdapter();
     if (p !== 'unknown') {
       expect(a).toBeTypeOf('function');
       (expect(a).property('name') as any).toBe('adapter');
@@ -50,7 +50,7 @@ describe.each(platforms)('src/adapter.ts', (p) => {
   });
 
   test('应该获取不到默认的平台适配器', () => {
-    expect(getAdapterDefault()).toBeUndefined();
+    expect(getDefaultAdapter()).toBeUndefined();
   });
 });
 
@@ -64,6 +64,6 @@ describe.each(platforms)('src/adapter.ts', (p) => {
   });
 
   test('应该获取不到默认的平台适配器', () => {
-    expect(getAdapterDefault()).toBeUndefined();
+    expect(getDefaultAdapter()).toBeUndefined();
   });
 });

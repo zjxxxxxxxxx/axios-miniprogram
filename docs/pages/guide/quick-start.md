@@ -24,7 +24,7 @@ $ pnpm install -D axios-miniprogram
 
 原生小程序也可以直接[下载源码包](https://github.com/zjx0905/axios-miniprogram/releases)，但是这样是失去类型提示和 `sourceMap` 定位功能。
 
-在条件允许的情况下建议优先使用包管理工具安装的方式，而不是使用下载源码包的方式。
+建议在条件允许的情况下优先使用包管理工具安装的方式，而不是使用下载源码包的方式。
 
 ## 引用
 
@@ -45,6 +45,65 @@ axios('test');
 ::::
 
 ## 使用
+
+### 引用
+
+可以导入需要使用的功能。
+
+```ts
+import axios, {
+  // 取消令牌
+  CancelToken,
+
+  // 判断取消请求错误
+  isCancel,
+
+  // 原始 Axios 类
+  Axios,
+
+  // 判断请求响应错误
+  isAxiosError,
+
+  // 创建平台适配器
+  createAdapter,
+} from 'axios-miniprogram';
+```
+
+axios 上也有同样的功能。
+
+```ts
+import axios from 'axios-miniprogram';
+
+// axios 同样也有这些功能
+const {
+  // 取消令牌
+  CancelToken,
+
+  // 判断取消请求错误
+  isCancel,
+
+  // 原始 Axios 类
+  Axios,
+
+  // 判断请求响应错误
+  isAxiosError,
+
+  // 创建平台适配器
+  createAdapter,
+} = axios;
+```
+
+axios 上还有一些额外的功能。
+
+```ts
+const {
+  // 创建实例
+  create,
+
+  // 获取已处理的 URL
+  getUri,
+} = axios;
+```
 
 ### `axios(url, config?)`
 
@@ -119,10 +178,3 @@ axios({
 - [axios.delete(url, params?, config?)](/method/DELETE)
 - [axios.trace(url, config?)](/method/TRACE)
 - [axios.connect(url, config?)](/method/CONNECT)
-
-还提供了一系列工具方法。
-
-- `axios.create(defaults?)` 创建新的 `axios` 实例
-- `axios.createAdapter(platform)` 创建平台适配器
-- `axios.isCancel(error)` 判断异常是否来自取消请求
-- `axios.isAxiosError(error)` 判断异常是否来自请求响应

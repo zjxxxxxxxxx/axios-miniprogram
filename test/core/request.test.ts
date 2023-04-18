@@ -6,113 +6,137 @@ import {
   mockAdapterFail,
 } from 'scripts/test.utils';
 import { request } from '@/core/request';
-import Axios from '@/core/Axios';
+import {
+  requestMethodNames,
+  requestMethodWithDataNames,
+  requestMethodWithParamsNames,
+} from '@/core/AxiosDomain';
 import axios from '@/axios';
 
 describe('src/core/request.ts', () => {
-  test('应该正确的响应请求', async () => {
-    const s = request({
-      adapter: mockAdapter(),
-      url: '/test',
-      method: 'get',
+  test('应该返回正确的响应体结构', () => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithDataNames,
+      ...requestMethodWithParamsNames,
+    ].forEach((k) => {
+      request({
+        adapter: mockAdapter(),
+        url: '/test',
+        method: k,
+      }).then((response) => {
+        expect(response.status).toBeTypeOf('number');
+        expect(response.statusText).toBeTypeOf('string');
+        expect(response.headers).toBeTypeOf('object');
+        expect(response.data).toBeTypeOf('object');
+        expect(response.config).toBeTypeOf('object');
+        expect(response.request).toBeTypeOf('object');
+      });
     });
-    const e = request({
-      adapter: mockAdapterError(),
-      url: '/test',
-      method: 'get',
-      validateStatus: () => false,
+  });
+
+  test('应该支持补全响应体结构', () => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithDataNames,
+      ...requestMethodWithParamsNames,
+    ].forEach((k) => {
+      request({
+        adapter: ({ success }) => {
+          success({
+            data: {},
+          });
+        },
+        url: '/test',
+        method: k,
+      }).then((response) => {
+        expect(response.status).toBeTypeOf('number');
+        expect(response.statusText).toBeTypeOf('string');
+        expect(response.headers).toBeTypeOf('object');
+        expect(response.data).toBeTypeOf('object');
+        expect(response.isFail).toBeTypeOf('undefined');
+        expect(response.config).toBeTypeOf('object');
+        expect(response.request).toBeTypeOf('undefined');
+      });
     });
-    const f = request({
-      adapter: mockAdapterFail(),
-      url: '/test',
-      method: 'get',
+  });
+
+  test('应该返回正确的响应错误结构', () => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithDataNames,
+      ...requestMethodWithParamsNames,
+    ].forEach((k) => {
+      request({
+        adapter: mockAdapterError(),
+        validateStatus: () => false,
+        url: '/test',
+        method: k,
+      }).catch((error) => {
+        expect(error.message).toBeTypeOf('string');
+        expect(error.config).toBeTypeOf('object');
+        expect(error.request).toBeTypeOf('object');
+        expect(error.response.status).toBeTypeOf('number');
+        expect(error.response.statusText).toBeTypeOf('string');
+        expect(error.response.headers).toBeTypeOf('object');
+        expect(error.response.data).toBeTypeOf('object');
+        expect(error.response.isFail).toBeTypeOf('undefined');
+        expect(error.response.config).toBeTypeOf('object');
+        expect(error.response.request).toBeTypeOf('object');
+      });
     });
+  });
 
-    await expect(s).resolves.toMatchInlineSnapshot(`
-      {
-        "config": {
-          "adapter": [Function],
-          "method": "get",
-          "url": "/test",
-        },
-        "data": {
-          "result": null,
-        },
-        "headers": {},
-        "request": {
-          "abort": [Function],
-        },
-        "status": 200,
-        "statusText": "OK",
-      }
-    `);
+  test('应该返回正确的平台错误结构', () => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithDataNames,
+      ...requestMethodWithParamsNames,
+    ].forEach((k) => {
+      request({
+        adapter: mockAdapterFail(),
+        validateStatus: () => false,
+        url: '/test',
+        method: k,
+      }).catch((error) => {
+        expect(error.message).toBeTypeOf('string');
+        expect(error.config).toBeTypeOf('object');
+        expect(error.request).toBeTypeOf('object');
+        expect(error.response.status).toBeTypeOf('number');
+        expect(error.response.statusText).toBeTypeOf('string');
+        expect(error.response.headers).toBeTypeOf('object');
+        expect(error.response.data).toBeTypeOf('object');
+        expect(error.response.isFail).toBeTruthy();
+        expect(error.response.config).toBeTypeOf('object');
+        expect(error.response.request).toBeTypeOf('object');
+      });
+    });
+  });
 
-    await expect(e).rejects.toMatchInlineSnapshot(
-      '[Error: validate status fail]',
-    );
-    await expect(e.catch((e) => Object.assign({}, e))).resolves
-      .toMatchInlineSnapshot(`
-      {
-        "config": {
-          "adapter": [Function],
-          "method": "get",
-          "url": "/test",
-          "validateStatus": [Function],
+  test('应该支持补全错误体结构', () => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithDataNames,
+      ...requestMethodWithParamsNames,
+    ].forEach((k) => {
+      request({
+        adapter: ({ fail }) => {
+          fail({
+            data: {},
+          });
         },
-        "request": {
-          "abort": [Function],
-        },
-        "response": {
-          "config": {
-            "adapter": [Function],
-            "method": "get",
-            "url": "/test",
-            "validateStatus": [Function],
-          },
-          "data": {
-            "result": null,
-          },
-          "headers": {},
-          "request": {
-            "abort": [Function],
-          },
-          "status": 500,
-          "statusText": "ERROR",
-        },
-      }
-    `);
-
-    await expect(f).rejects.toMatchInlineSnapshot('[Error: request fail]');
-    await expect(f.catch((e) => Object.assign({}, e))).resolves
-      .toMatchInlineSnapshot(`
-      {
-        "config": {
-          "adapter": [Function],
-          "method": "get",
-          "url": "/test",
-        },
-        "request": {
-          "abort": [Function],
-        },
-        "response": {
-          "config": {
-            "adapter": [Function],
-            "method": "get",
-            "url": "/test",
-          },
-          "data": {
-            "result": null,
-          },
-          "headers": {},
-          "isFail": true,
-          "request": {
-            "abort": [Function],
-          },
-          "status": 400,
-          "statusText": "FAIL",
-        },
-      }
-    `);
+        url: '/test',
+        method: k,
+      }).catch((error) => {
+        expect(error.response.status).toBeTypeOf('number');
+        expect(error.response.statusText).toBeTypeOf('string');
+        expect(error.response.headers).toBeTypeOf('object');
+        expect(error.response.data).toBeTypeOf('object');
+        expect(error.response.isFail).toBeTruthy();
+        expect(error.response.config).toBeTypeOf('object');
+        expect(error.response.request).toBeTypeOf('undefined');
+      });
+    });
   });
 
   test('应该支持请求发送前取消请求', async () => {
@@ -174,20 +198,6 @@ describe('src/core/request.ts', () => {
     expect(axios.isCancel(cb.mock.calls[0][0])).toBeTruthy();
   });
 
-  test('应该删除请求数据', () => {
-    const c = {
-      adapter: mockAdapter(),
-      url: 'test',
-      data: {},
-    };
-
-    [...Axios.as, ...Axios.asp].forEach((k) => {
-      const s = { ...c, method: k };
-      request(s);
-      expect(s.data).toBeUndefined();
-    });
-  });
-
   test('应该发送不同类型的请求', () => {
     request({
       adapter: ({ type }) => {
@@ -207,7 +217,11 @@ describe('src/core/request.ts', () => {
       download: true,
     });
 
-    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((a) => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithParamsNames,
+      ...requestMethodWithDataNames,
+    ].forEach((a) => {
       request({
         adapter: ({ type }) => {
           expect(type).toBe('request');

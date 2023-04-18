@@ -170,7 +170,7 @@ export interface AxiosAdapter {
   (config: AxiosAdapterRequestConfig): AxiosAdapterTask;
 }
 
-export function getAdapterDefault() {
+export function getDefaultAdapter() {
   const platform = revisePlatformApiNames(getPlatform());
 
   function getPlatform() {

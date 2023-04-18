@@ -65,11 +65,12 @@ function createInstance(defaults: AxiosRequestConfig) {
 
 const axios = createInstance(defaults) as AxiosStatic;
 
-axios.Axios = Axios;
-axios.CancelToken = CancelToken;
 axios.create = function create(defaults) {
   return createInstance(mergeConfig(axios.defaults, defaults));
 };
+
+axios.Axios = Axios;
+axios.CancelToken = CancelToken;
 axios.createAdapter = createAdapter;
 axios.isCancel = isCancel;
 axios.isAxiosError = isAxiosError;

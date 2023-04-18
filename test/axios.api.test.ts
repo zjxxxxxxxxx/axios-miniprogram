@@ -2,6 +2,11 @@ import { describe, test, expect } from 'vitest';
 import Axios from '@/core/Axios';
 import { CancelToken, isCancel } from '@/core/cancel';
 import { isAxiosError } from '@/core/createError';
+import {
+  requestMethodNames,
+  requestMethodWithDataNames,
+  requestMethodWithParamsNames,
+} from '@/core/AxiosDomain';
 import { createAdapter } from '@/adapter';
 import axios from '@/axios';
 import defaults from '@/defaults';
@@ -30,7 +35,11 @@ describe('src/axios.ts', () => {
     expect(instance.fork).toBeTypeOf('function');
     expect(instance.request).toBeTypeOf('function');
 
-    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithParamsNames,
+      ...requestMethodWithDataNames,
+    ].forEach((k) => {
       expect(instance[k]).toBeTypeOf('function');
     });
   });

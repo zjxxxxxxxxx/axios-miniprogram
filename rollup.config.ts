@@ -26,7 +26,7 @@ function buildConfig(format: ModuleFormat | 'dts'): RollupOptions {
     file: resolveOutput(format, isDts),
     format: isDts ? 'es' : format,
     name: pkg.name,
-    exports: 'default',
+    exports: 'named',
     indent: false,
     sourcemap: isDts ? false : sourceMap,
   };

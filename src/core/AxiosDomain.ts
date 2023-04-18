@@ -27,7 +27,7 @@ export interface AxiosDomainRequest {
   ): Promise<AxiosResponse<TData>>;
 }
 
-export interface AxiosDomainAsRequest {
+export interface AxiosDomainRequestMethod {
   <TData extends AxiosResponseData>(
     /**
      * 请求地址
@@ -40,7 +40,7 @@ export interface AxiosDomainAsRequest {
   ): Promise<AxiosResponse<TData>>;
 }
 
-export interface AxiosDomainAsRequestWithParams {
+export interface AxiosDomainRequestMethodWithParams {
   <TData extends AxiosResponseData>(
     /**
      * 请求地址
@@ -57,7 +57,7 @@ export interface AxiosDomainAsRequestWithParams {
   ): Promise<AxiosResponse<TData>>;
 }
 
-export interface AxiosDomainAsRequestWithData {
+export interface AxiosDomainRequestMethodWithData {
   <TData extends AxiosResponseData>(
     /**
      * 请求地址
@@ -74,22 +74,22 @@ export interface AxiosDomainAsRequestWithData {
   ): Promise<AxiosResponse<TData>>;
 }
 
+/**
+ * 普通的请求方法名称
+ */
+export const requestMethodNames = ['options', 'trace', 'connect'] as const;
+
+/**
+ * 带参数的请求方法名称
+ */
+export const requestMethodWithParamsNames = ['head', 'get', 'delete'] as const;
+
+/**
+ * 带数据的请求方法名称
+ */
+export const requestMethodWithDataNames = ['post', 'put', 'patch'] as const;
+
 export default class AxiosDomain {
-  /**
-   * 普通请求别名
-   */
-  static as = ['options', 'trace', 'connect'] as const;
-
-  /**
-   * 带请求参数的请求别名
-   */
-  static asp = ['head', 'get', 'delete'] as const;
-
-  /**
-   * 带请求数据的请求别名
-   */
-  static asd = ['post', 'put', 'patch'] as const;
-
   /**
    * 默认请求配置
    */
@@ -103,47 +103,47 @@ export default class AxiosDomain {
   /**
    * 发送 options 请求
    */
-  options!: AxiosDomainAsRequest;
+  options!: AxiosDomainRequestMethod;
 
   /**
    * 发送 get 请求
    */
-  get!: AxiosDomainAsRequestWithParams;
+  get!: AxiosDomainRequestMethodWithParams;
 
   /**
    * 发送 head 请求
    */
-  head!: AxiosDomainAsRequestWithParams;
+  head!: AxiosDomainRequestMethodWithParams;
 
   /**
    * 发送 post 请求
    */
-  post!: AxiosDomainAsRequestWithData;
+  post!: AxiosDomainRequestMethodWithData;
 
   /**
    * 发送 put 请求
    */
-  put!: AxiosDomainAsRequestWithData;
+  put!: AxiosDomainRequestMethodWithData;
 
   /**
    * 发送 patch 请求
    */
-  patch!: AxiosDomainAsRequestWithData;
+  patch!: AxiosDomainRequestMethodWithData;
 
   /**
    * 发送 delete 请求
    */
-  delete!: AxiosDomainAsRequestWithParams;
+  delete!: AxiosDomainRequestMethodWithParams;
 
   /**
    * 发送 trace 请求
    */
-  trace!: AxiosDomainAsRequest;
+  trace!: AxiosDomainRequestMethod;
 
   /**
    * 发送 connect 请求
    */
-  connect!: AxiosDomainAsRequest;
+  connect!: AxiosDomainRequestMethod;
 
   constructor(
     defaults: AxiosRequestConfig,
@@ -170,33 +170,36 @@ export default class AxiosDomain {
   }
 }
 
-for (const alias of AxiosDomain.as) {
-  AxiosDomain.prototype[alias] = function processAsRequest(url, config = {}) {
-    config.method = alias;
+for (const method of requestMethodNames) {
+  AxiosDomain.prototype[method] = function processRequestMethod(
+    url,
+    config = {},
+  ) {
+    config.method = method;
     return this.request(url, config);
   };
 }
 
-for (const alias of AxiosDomain.asp) {
-  AxiosDomain.prototype[alias] = function processAspRequest(
+for (const method of requestMethodWithParamsNames) {
+  AxiosDomain.prototype[method] = function processRequestMethodWithParams(
     url,
     params = {},
     config = {},
   ) {
-    config.method = alias;
-    config.params = deepMerge(params, config.params ?? {});
+    config.method = method;
+    config.params = config.params ? deepMerge(params, config.params) : params;
     return this.request(url, config);
   };
 }
 
-for (const alias of AxiosDomain.asd) {
-  AxiosDomain.prototype[alias] = function processAsdRequest(
+for (const method of requestMethodWithDataNames) {
+  AxiosDomain.prototype[method] = function processRequestMethodWithData(
     url,
     data = {},
     config = {},
   ) {
-    config.method = alias;
-    config.data = deepMerge(data, config.data ?? {});
+    config.method = method;
+    config.data = config.data ? deepMerge(data, config.data) : data;
     return this.request(url, config);
   };
 }

@@ -3,10 +3,11 @@ import { assert } from '../helpers/error';
 import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
-import { request, withDataRE } from './request';
+import { request } from './request';
 import { AxiosRequestConfig, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
 import { AxiosErrorResponse } from './createError';
+import { requestMethodWithDataNames } from './AxiosDomain';
 
 function throwIfCancellationRequested(config: AxiosRequestConfig) {
   const { cancelToken } = config;
@@ -14,6 +15,14 @@ function throwIfCancellationRequested(config: AxiosRequestConfig) {
     cancelToken.throwIfRequested();
   }
 }
+
+/**
+ * 可以携带 data 的请求方法
+ */
+const requestMethodWithDataRE = new RegExp(
+  `^${requestMethodWithDataNames.join('|')}`,
+  'i',
+);
 
 export function dispatchRequest(config: AxiosRequestConfig) {
   throwIfCancellationRequested(config);
@@ -25,13 +34,17 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   config.url = transformURL(config);
   config.headers = flattenHeaders(config);
 
-  if (withDataRE.test(config.method!)) {
-    transformer(config, config.transformRequest);
+  // 可以携带 data 的请求方法，转换 data
+  // 否则，删除 data
+  if (requestMethodWithDataRE.test(config.method!)) {
+    dataTransformer(config, config.transformRequest);
+  } else {
+    delete config.data;
   }
 
   function onSuccess(response: AxiosResponse) {
     throwIfCancellationRequested(config);
-    transformer(response, config.transformResponse);
+    dataTransformer(response, config.transformResponse);
 
     return response;
   }
@@ -39,13 +52,13 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   function onError(reason: Cancel | AxiosErrorResponse) {
     if (!isCancel(reason)) {
       throwIfCancellationRequested(config);
-      transformer(reason.response, config.transformResponse);
+      dataTransformer(reason.response, config.transformResponse);
     }
 
     return Promise.reject(reason);
   }
 
-  function transformer<TData = unknown>(
+  function dataTransformer<TData = unknown>(
     target: { data?: TData; headers?: AnyObject },
     fn?: AxiosTransformer<TData>,
   ) {

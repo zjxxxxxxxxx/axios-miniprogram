@@ -6,9 +6,7 @@ import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
   AxiosAdapterTask,
-  AxiosAdapterResponse,
   AxiosAdapterRequestConfig,
-  AxiosAdapterResponseError,
   AxiosAdapterResponseData,
 } from '../adapter';
 import InterceptorManager, { Interceptor } from './InterceptorManager';

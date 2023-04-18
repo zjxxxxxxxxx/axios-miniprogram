@@ -4,7 +4,11 @@ import {
   mockAdapterError,
   mockAdapterFail,
 } from 'scripts/test.utils';
-import AxiosDomain from '@/core/AxiosDomain';
+import AxiosDomain, {
+  requestMethodNames,
+  requestMethodWithDataNames,
+  requestMethodWithParamsNames,
+} from '@/core/AxiosDomain';
 import Axios from '@/core/Axios';
 import axios from '@/axios';
 
@@ -20,12 +24,6 @@ describe('src/core/Axios.ts', () => {
     expect(new Axios() instanceof AxiosDomain).toBeTruthy();
   });
 
-  test('应该有这些静态属性', () => {
-    expect(Axios.as).toEqual(['options', 'trace', 'connect']);
-    expect(Axios.asp).toEqual(['head', 'get', 'delete']);
-    expect(Axios.asd).toEqual(['post', 'put', 'patch']);
-  });
-
   test('应该有这些实例属性及方法', () => {
     const c = {
       baseURL: 'http://api.com',
@@ -37,7 +35,11 @@ describe('src/core/Axios.ts', () => {
     expect(axiosObj.getUri).toBeTypeOf('function');
     expect(axiosObj.fork).toBeTypeOf('function');
 
-    [...Axios.as, ...Axios.asp, ...Axios.asd].forEach((k) => {
+    [
+      ...requestMethodNames,
+      ...requestMethodWithParamsNames,
+      ...requestMethodWithDataNames,
+    ].forEach((k) => {
       expect(axiosObj[k]).toBeTypeOf('function');
     });
   });
@@ -52,7 +54,7 @@ describe('src/core/Axios.ts', () => {
       }),
     };
 
-    Axios.as.forEach((a) => {
+    requestMethodNames.forEach((a) => {
       axiosObj[a]('test', c).then((res) => {
         expect(res.data).toEqual(data);
       });
@@ -80,7 +82,7 @@ describe('src/core/Axios.ts', () => {
       }),
     };
 
-    Axios.asp.forEach((a) => {
+    requestMethodWithParamsNames.forEach((a) => {
       axiosObj[a]('test', p, c1).then((res) => {
         expect(res.data).toEqual(data);
       });
@@ -111,7 +113,7 @@ describe('src/core/Axios.ts', () => {
       }),
     };
 
-    Axios.asd.forEach((a) => {
+    requestMethodWithDataNames.forEach((a) => {
       axiosObj[a]('test', d, c1).then((res) => {
         expect(res.data).toEqual(data);
       });
