@@ -1,10 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import {
-  asyncNext,
-  mockAdapter,
-  mockAdapterError,
-  mockAdapterFail,
-} from 'scripts/test.utils';
+import { asyncNext, mockAdapter } from 'scripts/test.utils';
 import Axios from '@/core/Axios';
 import { dispatchRequest } from '@/core/dispatchRequest';
 import axios from '@/axios';
@@ -152,76 +147,6 @@ describe('src/core/dispatchRequest.ts', () => {
     const r = await dispatchRequest(c);
 
     expect(r.data).toEqual({ result: 1 });
-  });
-
-  test('应该支持错误处理', async () => {
-    const e1 = vi.fn();
-    const e2 = vi.fn();
-    const c1 = {
-      ...defaults,
-      adapter: mockAdapterError(),
-      url: 'test',
-      errorHandler: e1,
-    };
-    const c2 = {
-      ...defaults,
-      adapter: mockAdapterFail(),
-      url: 'test',
-      errorHandler: e2,
-    };
-
-    try {
-      await dispatchRequest(c1);
-    } catch (err) {
-      expect(e1).toBeCalled();
-      expect(e1.mock.calls[0][0]).toBe(err);
-      expect(axios.isAxiosError(err)).toBeTruthy();
-    }
-
-    try {
-      await dispatchRequest(c2);
-    } catch (err) {
-      expect(e2).toBeCalled();
-      expect(e2.mock.calls[0][0]).toBe(err);
-      expect(axios.isAxiosError(err)).toBeTruthy();
-    }
-  });
-
-  test('应该支持异步错误处理', async () => {
-    const e1 = vi.fn();
-    const e2 = vi.fn();
-    const c1 = {
-      ...defaults,
-      adapter: mockAdapterError(),
-      url: 'test',
-      errorHandler: async (err: unknown) => {
-        e1(err);
-      },
-    };
-    const c2 = {
-      ...defaults,
-      adapter: mockAdapterFail(),
-      url: 'test',
-      errorHandler: async (err: unknown) => {
-        e2(err);
-      },
-    };
-
-    try {
-      await dispatchRequest(c1);
-    } catch (err) {
-      expect(e1).toBeCalled();
-      expect(e1.mock.calls[0][0]).toBe(err);
-      expect(axios.isAxiosError(err)).toBeTruthy();
-    }
-
-    try {
-      await dispatchRequest(c2);
-    } catch (err) {
-      expect(e2).toBeCalled();
-      expect(e2.mock.calls[0][0]).toBe(err);
-      expect(axios.isAxiosError(err)).toBeTruthy();
-    }
   });
 
   test('请求发送前取消请求应该抛出异常', async () => {

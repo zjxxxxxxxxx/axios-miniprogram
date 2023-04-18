@@ -88,7 +88,7 @@ axios.interceptors.response.eject(ejectId);
 ```ts
 import axios from 'axios-miniprogram';
 
-axios.interceptors.request.use(
+axios.interceptors.response.use(
   function (response) {
     // 在 then 之前做些什么
     return response;
@@ -99,7 +99,7 @@ axios.interceptors.request.use(
   },
 );
 
-axios.interceptors.request.use(
+axios.interceptors.response.use(
   function (response) {
     // 在 then 之前做些什么
     return response;
@@ -111,5 +111,5 @@ axios.interceptors.request.use(
 );
 
 // 移除所有响应拦截器
-axios.interceptors.request.clear();
+axios.interceptors.response.clear();
 ```

@@ -1,4 +1,4 @@
-import { isFunction, isPromise, isString } from '../helpers/isTypes';
+import { isFunction, isString } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
 import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
@@ -22,47 +22,35 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   assert(isString(config.url), 'url 不是一个 string');
   assert(isString(config.method), 'method 不是一个 string');
 
-  const { errorHandler, transformRequest, transformResponse } = config;
-
   config.url = transformURL(config);
   config.headers = flattenHeaders(config);
 
   if (withDataRE.test(config.method!)) {
-    transformer(config, transformRequest);
+    transformer(config, config.transformRequest);
   }
 
   function onSuccess(response: AxiosResponse) {
     throwIfCancellationRequested(config);
-    transformer(response, transformResponse);
+    transformer(response, config.transformResponse);
+
     return response;
   }
 
   function onError(reason: Cancel | AxiosErrorResponse) {
     if (!isCancel(reason)) {
       throwIfCancellationRequested(config);
-      transformer(reason.response, transformResponse);
-    }
-
-    if (isFunction(errorHandler)) {
-      const promise = errorHandler(reason);
-      if (isPromise(promise)) {
-        return promise.then(() => Promise.reject(reason));
-      }
+      transformer(reason.response, config.transformResponse);
     }
 
     return Promise.reject(reason);
   }
 
   function transformer<TData = unknown>(
-    targetObject: { data?: TData; headers?: AnyObject },
-    transformer?: AxiosTransformer<TData>,
+    target: { data?: TData; headers?: AnyObject },
+    fn?: AxiosTransformer<TData>,
   ) {
-    targetObject.data = transformData(
-      targetObject.data,
-      targetObject.headers,
-      transformer,
-    );
+    target.data = transformData(target.data, target.headers, fn);
   }
 
-  return request(config).then(onSuccess).catch(onError);
+  return request(config).then(onSuccess, onError);
 }

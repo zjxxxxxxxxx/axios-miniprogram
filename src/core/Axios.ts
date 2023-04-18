@@ -1,7 +1,7 @@
 import { buildURL } from '../helpers/buildURL';
 import { isAbsoluteURL } from '../helpers/isAbsoluteURL';
 import { combineURL } from '../helpers/combineURL';
-import { isString } from '../helpers/isTypes';
+import { isFunction, isPromise, isString } from '../helpers/isTypes';
 import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
@@ -273,6 +273,20 @@ export default class Axios extends AxiosDomain {
         rejected,
       );
     }
+
+    // 错误处理
+    next = next.catch((reason) => {
+      const { errorHandler } = config;
+
+      if (isFunction(errorHandler)) {
+        const promise = errorHandler(reason);
+        if (isPromise(promise)) {
+          return promise.then(() => Promise.reject(reason));
+        }
+      }
+
+      return Promise.reject(reason);
+    });
 
     return next as Promise<AxiosResponse>;
   }
