@@ -1,3 +1,21 @@
+# [2.3.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.2.0...v2.3.0) (2023-04-18)
+
+
+### Bug Fixes
+
+* 错误处理不是每次出错都执行 ([fb4762d](https://github.com/zjx0905/axios-miniprogram/commit/fb4762d01a0d304ce6c291d6487dce1507a985c5))
+* data 不支持对象以外的类型 ([4d8ec80](https://github.com/zjx0905/axios-miniprogram/commit/4d8ec80f29b85e3419d1bc5112886a397ee2cc48))
+
+
+### Features
+
+* 从参数中删除动态地址属性 ([b0eaa04](https://github.com/zjx0905/axios-miniprogram/commit/b0eaa04c66dc82de944769893f62ecd0c4ae76d8))
+* 提供更多可使用的类型 ([0dc58a4](https://github.com/zjx0905/axios-miniprogram/commit/0dc58a4b0cdd5d36c1b16f13697d8180952cb093))
+* 支持具名导入工具函数 ([d714ed2](https://github.com/zjx0905/axios-miniprogram/commit/d714ed23c0f3b8ea3abecfb042c67bcf9adb29a7))
+* 支持清空拦截器 ([cbcc43a](https://github.com/zjx0905/axios-miniprogram/commit/cbcc43ad77f0e79223e524aa6bb4502ee4b989c9))
+
+
+
 # [2.2.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.1.0...v2.2.0) (2023-04-16)
 
 
