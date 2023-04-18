@@ -35,7 +35,7 @@ export default defineConfig({
 
     editLink: {
       pattern: ({ relativePath }) => {
-        if (relativePath === 'intro.md') {
+        if (relativePath.endsWith('/intro.md')) {
           return 'https://github.com/zjx0905/axios-miniprogram/edit/main/README.md';
         }
         return `https://github.com/zjx0905/axios-miniprogram/edit/main/docs/pages/${relativePath}`;
