@@ -6,7 +6,7 @@ main();
 function main() {
   exec('pnpm docs:build');
 
-  console.log('\n');
+  console.log('');
   consola.info('Clean');
   const exist = exec('git branch --list docs', {
     stdio: 'pipe',
@@ -17,7 +17,7 @@ function main() {
   if (exist) {
     exec('git branch -D docs');
   }
-  console.log('\n');
+  console.log('');
 
   consola.info('Create docs\n');
   exec('git branch docs');

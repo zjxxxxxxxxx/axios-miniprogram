@@ -31,24 +31,29 @@ function buildConfig(format: ModuleFormat | 'dts'): RollupOptions {
     sourcemap: isDts ? false : sourceMap,
   };
 
+  const plugins: Plugin[] = [];
+  if (isDts) {
+    plugins.push(
+      dtsPlugin({
+        tsconfig: resolve('tsconfig.json'),
+      }),
+      patchTypePlugin([resolve('global.d.ts')]),
+    );
+  } else {
+    plugins.push(
+      esbuildPlugin({
+        tsconfig: resolve('tsconfig.json'),
+        sourceMap: output.sourcemap as boolean,
+        target: 'es2015',
+        minify: true,
+      }),
+    );
+  }
+
   return {
     input: inputPath,
     output,
-    plugins: [
-      isDts
-        ? [
-            dtsPlugin({
-              tsconfig: resolve('tsconfig.json'),
-            }),
-            compleTypePlugin([resolve('global.d.ts')]),
-          ]
-        : esbuildPlugin({
-            tsconfig: resolve('tsconfig.json'),
-            sourceMap: output.sourcemap as boolean,
-            target: 'es2015',
-            minify: true,
-          }),
-    ],
+    plugins,
   };
 }
 
@@ -56,9 +61,9 @@ function resolveOutput(format: string, isDts?: boolean) {
   return resolve(distPath, `${pkg.name}${isDts ? '.d.ts' : `.${format}.js`}`);
 }
 
-function compleTypePlugin(files: string[]): Plugin {
+function patchTypePlugin(files: string[]): Plugin {
   return {
-    name: 'comple-type',
+    name: 'patch-type',
     renderChunk: (code) =>
       `${files
         .map(
