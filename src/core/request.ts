@@ -4,7 +4,7 @@ import {
   AxiosAdapterRequestMethod,
   AxiosAdapterResponse,
   AxiosAdapterResponseError,
-  AxiosAdapterTask,
+  AxiosAdapterPlatformTask,
 } from '../adapter';
 import {
   AxiosProgressCallback,
@@ -16,27 +16,13 @@ import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';
 
-function tryToggleProgressUpdate(
-  adapterConfig: AxiosAdapterRequestConfig,
-  progressUpdate?: (callback: AxiosProgressCallback) => void,
-) {
-  const { onUploadProgress, onDownloadProgress } = adapterConfig;
-  if (isFunction(progressUpdate)) {
-    switch (adapterConfig.type) {
-      case 'upload':
-        if (isFunction(onUploadProgress)) {
-          progressUpdate(onUploadProgress);
-        }
-        break;
-      case 'download':
-        if (isFunction(onDownloadProgress)) {
-          progressUpdate(onDownloadProgress);
-        }
-        break;
-    }
-  }
-}
-
+/**
+ * 开始请求
+ *
+ * 创建适配器配置并调用适配器，监听取消请求，注册监听回调，处理响应体和错误体，抛出异常。
+ *
+ * @param config 请求配置
+ */
 export function request(config: AxiosRequestConfig) {
   return new Promise<AxiosResponse>((resolve, reject) => {
     const { adapter, url, method, cancelToken } = config;
@@ -50,7 +36,7 @@ export function request(config: AxiosRequestConfig) {
       fail,
     };
 
-    let adapterTask: AxiosAdapterTask;
+    let adapterTask: AxiosAdapterPlatformTask;
     try {
       adapterTask = adapter!(adapterConfig);
     } catch (err) {
@@ -60,8 +46,8 @@ export function request(config: AxiosRequestConfig) {
       });
     }
 
-    function success(adapterResponse: AxiosAdapterResponse): void {
-      const response = adapterResponse as AxiosResponse;
+    function success(baseResponse: AxiosAdapterResponse): void {
+      const response = baseResponse as AxiosResponse;
       response.status = response.status ?? 200;
       response.statusText = response.statusText ?? 'OK';
       response.headers = response.headers ?? {};
@@ -75,8 +61,8 @@ export function request(config: AxiosRequestConfig) {
       }
     }
 
-    function fail(adapterResponseError: AxiosAdapterResponseError): void {
-      const responseError = adapterResponseError as AxiosResponseError;
+    function fail(baseResponseError: AxiosAdapterResponseError): void {
+      const responseError = baseResponseError as AxiosResponseError;
       responseError.isFail = true;
       responseError.status = responseError.status ?? 400;
       responseError.statusText = responseError.statusText ?? 'Fail Adapter';
@@ -110,4 +96,25 @@ export function request(config: AxiosRequestConfig) {
       });
     }
   });
+}
+
+function tryToggleProgressUpdate(
+  adapterConfig: AxiosAdapterRequestConfig,
+  progressUpdate?: (callback: AxiosProgressCallback) => void,
+) {
+  const { onUploadProgress, onDownloadProgress } = adapterConfig;
+  if (isFunction(progressUpdate)) {
+    switch (adapterConfig.type) {
+      case 'upload':
+        if (isFunction(onUploadProgress)) {
+          progressUpdate(onUploadProgress);
+        }
+        break;
+      case 'download':
+        if (isFunction(onDownloadProgress)) {
+          progressUpdate(onDownloadProgress);
+        }
+        break;
+    }
+  }
 }

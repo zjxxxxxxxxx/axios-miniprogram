@@ -5,7 +5,7 @@ import { isFunction, isPromise, isString } from '../helpers/isTypes';
 import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
-  AxiosAdapterTask,
+  AxiosAdapterPlatformTask,
   AxiosAdapterRequestConfig,
   AxiosAdapterResponseData,
 } from '../adapter';
@@ -14,9 +14,11 @@ import { mergeConfig } from './mergeConfig';
 import { CancelToken } from './cancel';
 import { dispatchRequest } from './dispatchRequest';
 import { AxiosTransformer } from './transformData';
-
 import AxiosDomain from './AxiosDomain';
 
+/**
+ * 请求方法
+ */
 export type AxiosRequestMethod =
   | AxiosAdapterRequestMethod
   | 'options'
@@ -29,6 +31,9 @@ export type AxiosRequestMethod =
   | 'trace'
   | 'connect';
 
+/**
+ * 请求头
+ */
 export interface AxiosRequestHeaders extends AnyObject {
   /**
    * 通用请求头
@@ -68,6 +73,9 @@ export interface AxiosRequestHeaders extends AnyObject {
   connect?: AnyObject;
 }
 
+/**
+ * 表单数据（上传会用到）
+ */
 export interface AxiosRequestFormData extends AnyObject {
   /**
    * 文件名
@@ -79,10 +87,23 @@ export interface AxiosRequestFormData extends AnyObject {
   filePath: string;
 }
 
-export type AxiosRequestData = AnyObject | AxiosRequestFormData;
+/**
+ * 请求数据
+ */
+export type AxiosRequestData =
+  | string
+  | AnyObject
+  | ArrayBuffer
+  | AxiosRequestFormData;
 
+/**
+ * 响应数据
+ */
 export type AxiosResponseData = undefined | number | AxiosAdapterResponseData;
 
+/**
+ * 监听进度回调事件对象
+ */
 export interface AxiosProgressEvent {
   /**
    * 下载进度
@@ -98,10 +119,21 @@ export interface AxiosProgressEvent {
   totalBytesExpectedToSend: number;
 }
 
+/**
+ * 监听进度回调
+ */
 export interface AxiosProgressCallback {
-  (event: AxiosProgressEvent): void;
+  (
+    /**
+     * 事件对象
+     */
+    event: AxiosProgressEvent,
+  ): void;
 }
 
+/**
+ * 请求配置
+ */
 export interface AxiosRequestConfig
   extends Partial<
     Omit<AxiosAdapterRequestConfig, 'type' | 'success' | 'fail'>
@@ -176,6 +208,9 @@ export interface AxiosRequestConfig
   validateStatus?: (status: number) => boolean;
 }
 
+/**
+ * 响应体
+ */
 export interface AxiosResponse<
   TData extends AxiosResponseData = AxiosResponseData,
 > extends AnyObject {
@@ -202,9 +237,12 @@ export interface AxiosResponse<
   /**
    * 请求任务
    */
-  request?: AxiosAdapterTask;
+  request?: AxiosAdapterPlatformTask;
 }
 
+/**
+ * 错误体
+ */
 export interface AxiosResponseError extends AnyObject {
   /**
    * 状态码
@@ -233,9 +271,12 @@ export interface AxiosResponseError extends AnyObject {
   /**
    * 请求任务
    */
-  request?: AxiosAdapterTask;
+  request?: AxiosAdapterPlatformTask;
 }
 
+/**
+ * Axios 构造函数
+ */
 export interface AxiosConstructor {
   new (config: AxiosRequestConfig): Axios;
 }

@@ -196,38 +196,57 @@ describe('src/core/AxiosDomain.ts', () => {
     requestMethodWithParamsNames.forEach((k) => a[k]('test', p, c));
   });
 
-  test('应该支持深度合并 data', () => {
+  test('应该只取传入的 data', () => {
     const ds = {
       baseURL: 'http://api.com',
     };
     const d = {
-      v1: 1,
-      v2: {
-        v1: 1,
-      },
+      v: 1,
     };
     const c = {
-      data: {
-        v2: {
-          v2: 2,
-        },
-        v3: 3,
-      },
+      v: 2,
     };
 
     const a = new AxiosDomain(ds, async (config) => {
       expect(config.data).toEqual({
-        v1: 1,
-        v2: {
-          v1: 1,
-          v2: 2,
-        },
-        v3: 3,
+        v: 1,
       });
 
       return {} as AxiosResponse;
     });
 
     requestMethodWithDataNames.forEach((k) => a[k]('test', d, c));
+  });
+
+  test('应该支持多种类型 data', () => {
+    const ds = {
+      baseURL: 'http://api.com',
+    };
+
+    const str = '11';
+    const obj = {};
+    const buff = new ArrayBuffer(0);
+
+    const testStr = new AxiosDomain(ds, async (config) => {
+      expect(config.data).toBe(str);
+
+      return {} as AxiosResponse;
+    });
+    const testObj = new AxiosDomain(ds, async (config) => {
+      expect(config.data).toBe(obj);
+
+      return {} as AxiosResponse;
+    });
+    const testBuff = new AxiosDomain(ds, async (config) => {
+      expect(config.data).toBe(buff);
+
+      return {} as AxiosResponse;
+    });
+
+    requestMethodWithDataNames.forEach((k) => {
+      testStr[k]('test', str);
+      testObj[k]('test', obj);
+      testBuff[k]('test', buff);
+    });
   });
 });

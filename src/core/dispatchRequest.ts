@@ -9,13 +9,6 @@ import { transformURL } from './transformURL';
 import { AxiosErrorResponse } from './createError';
 import { requestMethodWithDataNames } from './AxiosDomain';
 
-function throwIfCancellationRequested(config: AxiosRequestConfig) {
-  const { cancelToken } = config;
-  if (isCancelToken(cancelToken)) {
-    cancelToken.throwIfRequested();
-  }
-}
-
 /**
  * 可以携带 data 的请求方法
  */
@@ -24,6 +17,13 @@ const requestMethodWithDataRE = new RegExp(
   'i',
 );
 
+/**
+ * 发送请求
+ *
+ * 校验配置，转换配置，转换数据，捕获取消请求。
+ *
+ * @param config 请求配置
+ */
 export function dispatchRequest(config: AxiosRequestConfig) {
   throwIfCancellationRequested(config);
 
@@ -66,4 +66,11 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   }
 
   return request(config).then(onSuccess, onError);
+}
+
+function throwIfCancellationRequested(config: AxiosRequestConfig) {
+  const { cancelToken } = config;
+  if (isCancelToken(cancelToken)) {
+    cancelToken.throwIfRequested();
+  }
 }

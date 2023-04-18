@@ -11,8 +11,14 @@ import {
   AxiosRequestHeaders,
 } from './core/Axios';
 
+/**
+ * 适配器请求类型
+ */
 export type AxiosAdapterRequestType = 'request' | 'download' | 'upload';
 
+/**
+ * 适配器请求方法
+ */
 export type AxiosAdapterRequestMethod =
   | 'OPTIONS'
   | 'GET'
@@ -24,8 +30,19 @@ export type AxiosAdapterRequestMethod =
   | 'TRACE'
   | 'CONNECT';
 
+/**
+ * 适配器请求数据
+ */
+export type AxiosAdapterRequestData = string | AnyObject | ArrayBuffer;
+
+/**
+ * 适配器响应数据
+ */
 export type AxiosAdapterResponseData = string | ArrayBuffer | AnyObject;
 
+/**
+ * 适配器响应体
+ */
 export interface AxiosAdapterResponse extends AnyObject {
   /**
    * 状态码
@@ -45,6 +62,9 @@ export interface AxiosAdapterResponse extends AnyObject {
   data: AxiosAdapterResponseData;
 }
 
+/**
+ * 适配器错误体
+ */
 export interface AxiosAdapterResponseError extends AnyObject {
   /**
    * 状态码
@@ -64,6 +84,9 @@ export interface AxiosAdapterResponseError extends AnyObject {
   data?: AnyObject;
 }
 
+/**
+ * 适配器请求配置
+ */
 export interface AxiosAdapterRequestConfig extends AnyObject {
   /**
    * 请求类型
@@ -84,7 +107,7 @@ export interface AxiosAdapterRequestConfig extends AnyObject {
   /**
    * 请求数据
    */
-  data?: AnyObject;
+  data?: AxiosAdapterRequestData;
   /**
    * 请求头
    */
@@ -111,14 +134,30 @@ export interface AxiosAdapterRequestConfig extends AnyObject {
   fail(error: AxiosAdapterResponseError): void;
 }
 
+/**
+ * 请求函数基本选项
+ */
 export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
   header?: AxiosRequestHeaders;
   success(response: AxiosAdapterResponse): void;
   fail(error: AxiosAdapterResponseError): void;
 }
 
+/**
+ * 请求函数选项
+ */
 export type AxiosAdapterRequestOptions = AxiosAdapterBaseOptions;
 
+/**
+ * 下载函数选项
+ */
+export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
+  filePath?: string;
+}
+
+/**
+ * 上传函数选项
+ */
 export interface AxiosAdapterUploadOptions
   extends AxiosAdapterBaseOptions,
     AxiosRequestFormData {
@@ -126,22 +165,30 @@ export interface AxiosAdapterUploadOptions
   formData?: AnyObject;
 }
 
-export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
-  filePath?: string;
-}
-
+/**
+ * 请求函数
+ */
 export interface AxiosAdapterRequest {
-  (config: AxiosAdapterRequestOptions): AxiosAdapterTask;
+  (config: AxiosAdapterRequestOptions): AxiosAdapterPlatformTask;
 }
 
-export interface AxiosAdapterUpload {
-  (config: AxiosAdapterUploadOptions): AxiosAdapterTask;
-}
-
+/**
+ * 下载函数
+ */
 export interface AxiosAdapterDownload {
-  (config: AxiosAdapterDownloadOptions): AxiosAdapterTask;
+  (config: AxiosAdapterDownloadOptions): AxiosAdapterPlatformTask;
 }
 
+/**
+ * 上传函数
+ */
+export interface AxiosAdapterUpload {
+  (config: AxiosAdapterUploadOptions): AxiosAdapterPlatformTask;
+}
+
+/**
+ * 适配器平台
+ */
 export interface AxiosAdapterPlatform {
   /**
    * 发送请求
@@ -157,7 +204,10 @@ export interface AxiosAdapterPlatform {
   upload: AxiosAdapterUpload;
 }
 
-export type AxiosAdapterTask =
+/**
+ * 适配器平台请求任务
+ */
+export type AxiosAdapterPlatformTask =
   | undefined
   | void
   | {
@@ -166,10 +216,16 @@ export type AxiosAdapterTask =
       offProgressUpdate?(callback: AxiosProgressCallback): void;
     };
 
+/**
+ * 适配器函数
+ */
 export interface AxiosAdapter {
-  (config: AxiosAdapterRequestConfig): AxiosAdapterTask;
+  (config: AxiosAdapterRequestConfig): AxiosAdapterPlatformTask;
 }
 
+/**
+ * 获取支持的平台适配器
+ */
 export function getDefaultAdapter() {
   const platform = revisePlatformApiNames(getPlatform());
 
@@ -220,13 +276,20 @@ export function getDefaultAdapter() {
   return createAdapter(platform);
 }
 
+/**
+ * 创建适配器
+ *
+ * @param platform 平台 API 对象
+ */
 export function createAdapter(platform: AxiosAdapterPlatform) {
   assert(isPlainObject(platform), 'platform 不是一个 object');
   assert(isFunction(platform.request), 'request 不是一个 function');
   assert(isFunction(platform.upload), 'upload 不是一个 function');
   assert(isFunction(platform.download), 'download 不是一个 function');
 
-  function adapter(config: AxiosAdapterRequestConfig): AxiosAdapterTask {
+  function adapter(
+    config: AxiosAdapterRequestConfig,
+  ): AxiosAdapterPlatformTask {
     const baseOptions = transformOptions(config);
 
     switch (config.type) {
@@ -242,14 +305,14 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   function processRequest(
     request: AxiosAdapterRequest,
     baseOptions: AxiosAdapterBaseOptions,
-  ): AxiosAdapterTask {
+  ): AxiosAdapterPlatformTask {
     return request(baseOptions);
   }
 
   function processUpload(
     upload: AxiosAdapterUpload,
     baseOptions: AxiosAdapterBaseOptions,
-  ): AxiosAdapterTask {
+  ): AxiosAdapterPlatformTask {
     const { name, filePath, fileType, ...formData } =
       baseOptions.data as AxiosRequestFormData;
     const options = {
@@ -273,7 +336,7 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   function processDownload(
     download: AxiosAdapterDownload,
     baseOptions: AxiosAdapterBaseOptions,
-  ): AxiosAdapterTask {
+  ): AxiosAdapterPlatformTask {
     const options: AxiosAdapterDownloadOptions = {
       ...baseOptions,
       filePath: baseOptions.params?.filePath,

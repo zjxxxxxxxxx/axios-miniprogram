@@ -1,19 +1,19 @@
 import { cleanStack } from '../helpers/error';
-import { AxiosAdapterTask } from '../adapter';
+import { AxiosAdapterPlatformTask } from '../adapter';
 import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 
 export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
 
 class AxiosError extends Error {
   config: AxiosRequestConfig;
-  request: AxiosAdapterTask;
+  request: AxiosAdapterPlatformTask;
   response: AxiosErrorResponse;
 
   constructor(
     message: string,
     config: AxiosRequestConfig,
     response: AxiosErrorResponse,
-    request: AxiosAdapterTask,
+    request: AxiosAdapterPlatformTask,
   ) {
     super(message);
 
@@ -29,7 +29,7 @@ export function createError(
   message: string,
   config: AxiosRequestConfig,
   response: AxiosErrorResponse,
-  request: AxiosAdapterTask,
+  request: AxiosAdapterPlatformTask,
 ) {
   const axiosError = new AxiosError(message, config, response, request);
   cleanStack(axiosError);

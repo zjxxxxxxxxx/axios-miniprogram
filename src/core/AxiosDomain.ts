@@ -8,71 +8,48 @@ import {
   AxiosResponseData,
 } from './Axios';
 
+/**
+ * 请求函数
+ */
 export interface AxiosDomainRequest {
+  <TData extends AxiosResponseData>(config: AxiosRequestConfig): Promise<
+    AxiosResponse<TData>
+  >;
   <TData extends AxiosResponseData>(
-    /**
-     * 请求配置
-     */
-    config: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
-  <TData extends AxiosResponseData>(
-    /**
-     * 请求地址
-     */
     url: string,
-    /**
-     * 请求配置
-     */
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<TData>>;
 }
 
-export interface AxiosDomainRequestMethod {
-  <TData extends AxiosResponseData>(
-    /**
-     * 请求地址
-     */
-    url: string,
-    /**
-     * 请求配置
-     */
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
-}
+/**
+ * 普通的请求方法
+ */
+export type AxiosDomainRequestMethod = <TData extends AxiosResponseData>(
+  url: string,
+  config?: AxiosRequestConfig,
+) => Promise<AxiosResponse<TData>>;
 
-export interface AxiosDomainRequestMethodWithParams {
-  <TData extends AxiosResponseData>(
-    /**
-     * 请求地址
-     */
-    url: string,
-    /**
-     * 请求参数
-     */
-    params?: AnyObject,
-    /**
-     * 请求配置
-     */
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
-}
+/**
+ * 带参数的请求方法
+ */
+export type AxiosDomainRequestMethodWithParams = <
+  TData extends AxiosResponseData,
+>(
+  url: string,
+  params?: AnyObject,
+  config?: AxiosRequestConfig,
+) => Promise<AxiosResponse<TData>>;
 
-export interface AxiosDomainRequestMethodWithData {
-  <TData extends AxiosResponseData>(
-    /**
-     * 请求地址
-     */
-    url: string,
-    /**
-     * 请求数据
-     */
-    data?: AxiosRequestData,
-    /**
-     * 请求配置
-     */
-    config?: AxiosRequestConfig,
-  ): Promise<AxiosResponse<TData>>;
-}
+/**
+ * 带数据的请求方法
+ */
+export type AxiosDomainRequestMethodWithData = <
+  TData extends AxiosResponseData,
+>(
+  url: string,
+  data?: AxiosRequestData,
+  config?: AxiosRequestConfig,
+) => Promise<AxiosResponse<TData>>;
 
 /**
  * 普通的请求方法名称
@@ -187,7 +164,7 @@ for (const method of requestMethodWithParamsNames) {
     config = {},
   ) {
     config.method = method;
-    config.params = config.params ? deepMerge(params, config.params) : params;
+    config.params = deepMerge(params, config.params ?? {});
     return this.request(url, config);
   };
 }
@@ -195,11 +172,11 @@ for (const method of requestMethodWithParamsNames) {
 for (const method of requestMethodWithDataNames) {
   AxiosDomain.prototype[method] = function processRequestMethodWithData(
     url,
-    data = {},
+    data,
     config = {},
   ) {
     config.method = method;
-    config.data = config.data ? deepMerge(data, config.data) : data;
+    config.data = data;
     return this.request(url, config);
   };
 }

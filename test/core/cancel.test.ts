@@ -7,7 +7,13 @@ import {
   asyncTimeout,
 } from 'scripts/test.utils';
 import axios from 'src/axios';
-import { Cancel, isCancel, CancelToken, isCancelToken } from '@/core/cancel';
+import {
+  Cancel,
+  isCancel,
+  CancelToken,
+  isCancelToken,
+  CancelAction,
+} from '@/core/cancel';
 
 describe('src/helpers/cancel.ts', () => {
   test('应该支持空参数', () => {
@@ -31,7 +37,7 @@ describe('src/helpers/cancel.ts', () => {
   });
 
   test('应该可以取消', () => {
-    let ca!: () => void;
+    let ca!: CancelAction;
     const ct = new CancelToken((a) => (ca = a));
 
     expect(ct.throwIfRequested()).toBeUndefined();

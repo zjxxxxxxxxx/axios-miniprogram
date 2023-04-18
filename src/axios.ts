@@ -10,6 +10,9 @@ import { mergeConfig } from './core/mergeConfig';
 import { createAdapter } from './adapter';
 import defaults from './defaults';
 
+/**
+ * axios 实例默认配置
+ */
 export interface AxiosInstanceDefaults extends AxiosRequestConfig {
   /**
    * 请求头
@@ -17,6 +20,9 @@ export interface AxiosInstanceDefaults extends AxiosRequestConfig {
   headers: Required<AxiosRequestHeaders>;
 }
 
+/**
+ * axios 实例
+ */
 export interface AxiosInstance extends AxiosDomainRequest, Axios {
   /**
    * 默认请求配置
@@ -24,6 +30,9 @@ export interface AxiosInstance extends AxiosDomainRequest, Axios {
   defaults: AxiosInstanceDefaults;
 }
 
+/**
+ * axios 静态对象
+ */
 export interface AxiosStatic extends AxiosInstance {
   /**
    * Axios 类
@@ -44,11 +53,11 @@ export interface AxiosStatic extends AxiosInstance {
    */
   createAdapter: typeof createAdapter;
   /**
-   * 判断 Cancel
+   * 传入取消请求错误返回 true
    */
   isCancel: typeof isCancel;
   /**
-   * 判断 AxiosError
+   * 传入响应错误返回 true
    */
   isAxiosError: typeof isAxiosError;
 }

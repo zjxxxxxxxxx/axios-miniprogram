@@ -19,14 +19,14 @@ export type {
   AxiosAdapterResponse,
   AxiosAdapterResponseData,
   AxiosAdapterResponseError,
-  AxiosAdapterPlatform,
   AxiosAdapterRequest,
   AxiosAdapterRequestOptions,
   AxiosAdapterDownload,
   AxiosAdapterDownloadOptions,
   AxiosAdapterUpload,
   AxiosAdapterUploadOptions,
-  AxiosAdapterTask,
+  AxiosAdapterPlatform,
+  AxiosAdapterPlatformTask,
 } from './adapter';
 export type {
   AxiosInstanceDefaults,
