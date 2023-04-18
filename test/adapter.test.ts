@@ -1,21 +1,21 @@
 import { describe, test, expect, vi } from 'vitest';
 import { noop } from 'scripts/test.utils';
-import { AxiosPlatform, createAdapter } from '@/adapter';
+import { AxiosAdapterPlatform, createAdapter } from '@/adapter';
 
 describe('src/adapter.ts', () => {
   test('应该抛出异常', () => {
     expect(() =>
-      createAdapter(undefined as unknown as AxiosPlatform),
+      createAdapter(undefined as unknown as AxiosAdapterPlatform),
     ).toThrowErrorMatchingInlineSnapshot(
       '"[axios-miniprogram]: platform 不是一个 object"',
     );
     expect(() =>
-      createAdapter({} as unknown as AxiosPlatform),
+      createAdapter({} as unknown as AxiosAdapterPlatform),
     ).toThrowErrorMatchingInlineSnapshot(
       '"[axios-miniprogram]: request 不是一个 function"',
     );
     expect(() =>
-      createAdapter({ request: vi.fn() } as unknown as AxiosPlatform),
+      createAdapter({ request: vi.fn() } as unknown as AxiosAdapterPlatform),
     ).toThrowErrorMatchingInlineSnapshot(
       '"[axios-miniprogram]: upload 不是一个 function"',
     );
@@ -23,7 +23,7 @@ describe('src/adapter.ts', () => {
       createAdapter({
         request: vi.fn(),
         upload: vi.fn(),
-      } as unknown as AxiosPlatform),
+      } as unknown as AxiosAdapterPlatform),
     ).toThrowErrorMatchingInlineSnapshot(
       '"[axios-miniprogram]: download 不是一个 function"',
     );

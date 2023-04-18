@@ -180,22 +180,50 @@ export interface AxiosRequestConfig
 
 export interface AxiosResponse<
   TData extends AxiosResponseData = AxiosResponseData,
-> extends Omit<AxiosAdapterResponse, 'data'> {
+> extends AnyObject {
   /**
-   * 请求配置
+   * 状态码
    */
-  config?: AxiosRequestConfig;
+  status: number;
   /**
-   * 请求任务
+   * 状态字符
    */
-  request?: AxiosAdapterTask;
+  statusText: string;
+  /**
+   * 响应头
+   */
+  headers: AnyObject;
   /**
    * 响应数据
    */
   data: TData;
+  /**
+   * 请求配置
+   */
+  config: AxiosRequestConfig;
+  /**
+   * 请求任务
+   */
+  request?: AxiosAdapterTask;
 }
 
-export interface AxiosResponseError extends AxiosAdapterResponseError {
+export interface AxiosResponseError extends AnyObject {
+  /**
+   * 状态码
+   */
+  status: number;
+  /**
+   * 状态字符
+   */
+  statusText: string;
+  /**
+   * 响应头
+   */
+  headers: AnyObject;
+  /**
+   * 错误数据
+   */
+  data?: AnyObject;
   /**
    * 失败的请求，指没能够成功响应的请求
    */
@@ -203,7 +231,7 @@ export interface AxiosResponseError extends AxiosAdapterResponseError {
   /**
    * 请求配置
    */
-  config?: AxiosRequestConfig;
+  config: AxiosRequestConfig;
   /**
    * 请求任务
    */

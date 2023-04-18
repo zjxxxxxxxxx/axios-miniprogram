@@ -10,7 +10,6 @@ function main() {
   consola.info('Clean');
   const exist = exec('git branch --list docs', {
     stdio: 'pipe',
-    encoding: 'utf-8',
   })
     .toString()
     .trim();

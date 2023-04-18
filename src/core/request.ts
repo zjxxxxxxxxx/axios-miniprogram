@@ -1,4 +1,4 @@
-import { isFunction, isPlainObject } from '../helpers/isTypes';
+import { isFunction, isPlainObject, isUndefined } from '../helpers/isTypes';
 import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
@@ -76,6 +76,16 @@ export function request(config: AxiosRequestConfig) {
       response.config = config;
       response.request = adapterTask;
 
+      if (isUndefined(response.status)) {
+        response.status = 200;
+      }
+      if (isUndefined(response.statusText)) {
+        response.statusText = 'OK';
+      }
+      if (isUndefined(response.headers)) {
+        response.headers = {};
+      }
+
       if (config.validateStatus?.(response.status) ?? true) {
         resolve(response);
       } else {
@@ -88,6 +98,17 @@ export function request(config: AxiosRequestConfig) {
       responseError.isFail = true;
       responseError.config = config;
       responseError.request = adapterTask;
+
+      if (isUndefined(responseError.status)) {
+        responseError.status = 400;
+      }
+      if (isUndefined(responseError.statusText)) {
+        responseError.statusText = 'Fail Adapter';
+      }
+      if (isUndefined(responseError.headers)) {
+        responseError.headers = {};
+      }
+
       catchError('request fail', responseError);
     }
 

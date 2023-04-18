@@ -30,15 +30,15 @@ export interface AxiosAdapterResponse extends AnyObject {
   /**
    * 状态码
    */
-  status: number;
+  status?: number;
   /**
    * 状态字符
    */
-  statusText: string;
+  statusText?: string;
   /**
    * 响应头
    */
-  headers: AnyObject;
+  headers?: AnyObject;
   /**
    * 响应数据
    */
@@ -49,15 +49,15 @@ export interface AxiosAdapterResponseError extends AnyObject {
   /**
    * 状态码
    */
-  status: number;
+  status?: number;
   /**
    * 状态字符
    */
-  statusText: string;
+  statusText?: string;
   /**
    * 响应头
    */
-  headers: AnyObject;
+  headers?: AnyObject;
   /**
    * 错误数据
    */
@@ -117,6 +117,8 @@ export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
   fail(error: AxiosAdapterResponseError): void;
 }
 
+export type AxiosAdapterRequestOptions = AxiosAdapterBaseOptions;
+
 export interface AxiosAdapterUploadOptions
   extends AxiosAdapterBaseOptions,
     AxiosRequestFormData {
@@ -129,7 +131,7 @@ export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
 }
 
 export interface AxiosAdapterRequest {
-  (config: AxiosAdapterBaseOptions): AxiosAdapterTask;
+  (config: AxiosAdapterRequestOptions): AxiosAdapterTask;
 }
 
 export interface AxiosAdapterUpload {
@@ -140,10 +142,19 @@ export interface AxiosAdapterDownload {
   (config: AxiosAdapterDownloadOptions): AxiosAdapterTask;
 }
 
-export interface AxiosPlatform {
+export interface AxiosAdapterPlatform {
+  /**
+   * 发送请求
+   */
   request: AxiosAdapterRequest;
-  upload: AxiosAdapterUpload;
+  /**
+   * 下载文件
+   */
   download: AxiosAdapterDownload;
+  /**
+   * 上传文件
+   */
+  upload: AxiosAdapterUpload;
 }
 
 export type AxiosAdapterTask =
@@ -168,8 +179,8 @@ export function getAdapterDefault() {
     if (typeof uni !== undef) {
       return {
         request: uni.request,
-        uploadFile: uni.uploadFile,
         downloadFile: uni.downloadFile,
+        uploadFile: uni.uploadFile,
       };
     } else if (typeof wx !== undef) {
       return wx;
@@ -209,7 +220,7 @@ export function getAdapterDefault() {
   return createAdapter(platform);
 }
 
-export function createAdapter(platform: AxiosPlatform) {
+export function createAdapter(platform: AxiosAdapterPlatform) {
   assert(isPlainObject(platform), 'platform 不是一个 object');
   assert(isFunction(platform.request), 'request 不是一个 function');
   assert(isFunction(platform.upload), 'upload 不是一个 function');
@@ -221,10 +232,10 @@ export function createAdapter(platform: AxiosPlatform) {
     switch (config.type) {
       case 'request':
         return processRequest(platform.request, baseOptions);
-      case 'upload':
-        return processUpload(platform.upload, baseOptions);
       case 'download':
         return processDownload(platform.download, baseOptions);
+      case 'upload':
+        return processUpload(platform.upload, baseOptions);
     }
   }
 
@@ -337,7 +348,7 @@ export function createAdapter(platform: AxiosPlatform) {
   return adapter;
 }
 
-export function isPlatform(value: any): value is AxiosPlatform {
+export function isPlatform(value: any): value is AxiosAdapterPlatform {
   return (
     isPlainObject(value) &&
     isFunction(value.request) &&
