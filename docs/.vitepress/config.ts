@@ -158,7 +158,7 @@ function sidebar() {
 function algolia() {
   return {
     appId: 'B2V3TSSQ2T',
-    apiKey: 'c3edeb2daf09a254ec07ad98abfd84b5',
+    apiKey: '2eddc4539ada25bf664eddcb91930736',
     indexName: 'axios-miniprogram',
     placeholder: '搜索文档',
     translations: {
