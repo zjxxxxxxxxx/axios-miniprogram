@@ -38,5 +38,6 @@ export { CancelToken, isCancel } from './core/cancel';
 export { default as Axios } from './core/Axios';
 export { isAxiosError } from './core/createError';
 export { createAdapter } from './adapter';
+export { version } from './version';
 
 export default axios;

@@ -170,6 +170,10 @@
   box-shadow: none;
 }
 
+.DocSearch-Logo svg > * {
+  fill: currentColor;
+}
+
 .custom-block {
   border-radius: 6px;
   background-color: var(--vp-custom-block-tip-bg) !important;
@@ -181,6 +185,10 @@
 
 .dark .DocSearch-Form {
   background-color: var(--vp-code-block-bg);
+}
+
+.dark .DocSearch-Logo svg > * {
+  fill: currentColor;
 }
 
 @media (min-width: 960px) {

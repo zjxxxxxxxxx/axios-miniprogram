@@ -1,10 +1,11 @@
-import fs from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import semver from 'semver';
 import enquirer from 'enquirer';
 import consola from 'consola';
-import { exec, pkgPath, getPkgJSON } from './utils';
+import { exec, pkgPath, getPkgJSON, resolve } from './utils';
 
 const pkg = getPkgJSON();
+const versionTSPath = resolve('src/version.ts');
 const { version: currentVersion } = pkg;
 
 main().catch((err) => exit(err.message));
@@ -115,5 +116,7 @@ function exit(msg: string) {
 
 function updateVersion(version: string) {
   pkg.version = version;
-  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+
+  writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+  writeFileSync(versionTSPath, `export const version = ${version};`);
 }

@@ -70,6 +70,20 @@ axios
   });
 ```
 
+## 请求方法
+
+提供一系列基于 `axios.request()` 的请求方法，可以使用请求方法简化请求。
+
+- [axios.options(url, config?)](/method/OPTIONS)
+- [axios.get(url, params?, config?)](/method/GET)
+- [axios.head(url, params?, config?)](/method/HEAD)
+- [axios.post(url, data?, config?)](/method/POST)
+- [axios.put(url, data?, config?)](/method/PUT)
+- [axios.patch(url, data?, config?)](/method/PATCH)
+- [axios.delete(url, params?, config?)](/method/DELETE)
+- [axios.trace(url, config?)](/method/TRACE)
+- [axios.connect(url, config?)](/method/CONNECT)
+
 ## 说明
 
 您可能发现 `axios.request()` 和 `axios()` 使用方式完全一致，为什么用法是一样的？

@@ -9,6 +9,7 @@ import { isAxiosError } from './core/createError';
 import { mergeConfig } from './core/mergeConfig';
 import { createAdapter } from './adapter';
 import defaults from './defaults';
+import { version } from './version';
 
 /**
  * axios 实例默认配置
@@ -34,6 +35,10 @@ export interface AxiosInstance extends AxiosDomainRequest, Axios {
  * axios 静态对象
  */
 export interface AxiosStatic extends AxiosInstance {
+  /**
+   * 版本号
+   */
+  version: string;
   /**
    * Axios 类
    */
@@ -78,6 +83,7 @@ axios.create = function create(config) {
   return createInstance(mergeConfig(axios.defaults, config));
 };
 
+axios.version = version;
 axios.Axios = Axios;
 axios.CancelToken = CancelToken;
 axios.createAdapter = createAdapter;

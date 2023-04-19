@@ -168,6 +168,10 @@ axios.interceptors.response.use((response) => {
 
 默认配置和请求配置将会按优先级进行合并。
 
-其中 `url`、`method`、`data`、`upload`、`download` 只从 `config` 取值，`headers`、`params` 会进行深度合并，其余属性则会优先从 `config` 取值。
+其中：
+
+1. `url`、`method`、`data`、`upload`、`download` 只从 `config` 取值。
+2. `headers`、`params` 会分别进行深度合并。
+3. 其余属性则会优先从 `config` 取值。
 
 具体配置合并策略请参阅 [mergeConfig.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/core/mergeConfig.ts) 。

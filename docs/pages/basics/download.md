@@ -5,7 +5,11 @@ title: 下载文件
 # {{ $frontmatter.title }}
 
 ::: tip {{ $frontmatter.title }}
-下载文件资源到本地，必须使用 `GET` 方法请求，并将配置项 `download` 设置为 `true`。
+下载文件资源到本地。
+:::
+
+::: warning 注意
+下载文件只能使用 `GET` 方法请求，并将配置项 `download` 设置为 `true`。
 :::
 
 ## 普通的下载请求
@@ -15,14 +19,9 @@ title: 下载文件
 ```ts
 import axios from 'axios-miniprogram';
 
-axios
-  .get(
-    'https://api.com/test',
-    {},
-    {
-      download: true,
-    },
-  )
+axios('https://api.com/test', {
+  download: true,
+})
   .then((response) => {
     const {
       // 临时文件路径 (本地路径)。没传入 filePath 指定文件存储路径时会返回，下载后的文件会存储到一个临时文件
@@ -41,16 +40,12 @@ axios
 ```ts
 import axios from 'axios-miniprogram';
 
-axios
-  .get(
-    'https://api.com/test',
-    {
-      filePath: '你的本地路径',
-    },
-    {
-      download: true,
-    },
-  )
+axios('https://api.com/test', {
+  download: true,
+  params: {
+    filePath: '你的本地路径',
+  },
+})
   .then((response) => {
     const {
       // 指定文件下载后存储的路径 (本地路径)
@@ -69,28 +64,24 @@ axios
 ```ts
 import axios from 'axios-miniprogram';
 
-axios
-  .get(
-    'https://api.com/test',
-    {
-      filePath: '你的本地路径',
-    },
-    {
-      download: true,
-      onDownloadProgress(event) {
-        const {
-          // 下载进度
-          progress,
+axios('https://api.com/test', {
+  download: true,
+  params: {
+    filePath: '你的本地路径',
+  },
+  onDownloadProgress(event) {
+    const {
+      // 下载进度
+      progress,
 
-          // 已经下载的数据长度
-          totalBytesSent,
+      // 已经下载的数据长度
+      totalBytesSent,
 
-          // 预期需要下载的数据总长度
-          totalBytesExpectedToSend,
-        } = event;
-      },
-    },
-  )
+      // 预期需要下载的数据总长度
+      totalBytesExpectedToSend,
+    } = event;
+  },
+})
   .then((response) => {
     const {
       // 指定文件下载后存储的路径 (本地路径)

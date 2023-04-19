@@ -28,29 +28,11 @@ $ pnpm install -D axios-miniprogram
 
 ## 引用
 
+可以在不同的模块系统导入需要用到的功能。
+
 :::: code-group
 
 ```ts [ES Module]
-import axios from 'axios-miniprogram';
-
-axios('test');
-```
-
-```ts [CommonJS]
-const axios = require('axios-miniprogram').default;
-
-axios('test');
-```
-
-::::
-
-## 使用
-
-### 引用
-
-可以导入需要使用的功能。
-
-```ts
 import axios, {
   // 取消令牌
   CancelToken,
@@ -67,14 +49,7 @@ import axios, {
   // 创建平台适配器
   createAdapter,
 } from 'axios-miniprogram';
-```
 
-axios 上也有同样的功能。
-
-```ts
-import axios from 'axios-miniprogram';
-
-// axios 同样也有这些功能
 const {
   // 取消令牌
   CancelToken,
@@ -90,20 +65,67 @@ const {
 
   // 创建平台适配器
   createAdapter,
-} = axios;
-```
 
-axios 上还有一些额外的功能。
-
-```ts
-const {
   // 创建实例
   create,
 
-  // 获取已处理的 URL
+  // 获取系列化后的 URL
+  getUri,
+} = axios;
+
+axios('test');
+```
+
+```ts [CommonJS]
+const {
+  // 静态对象
+  // 注意：默认导出的 axios 在 CommonJS 里是以 default 属性的方式存在
+  // import axios from 'axios-miniprogram' 等于 const axios = require('axios-miniprogram').default
+  default: axios,
+
+  // 取消令牌
+  CancelToken,
+
+  // 判断取消请求错误
+  isCancel,
+
+  // 原始 Axios 类
+  Axios,
+
+  // 判断请求响应错误
+  isAxiosError,
+
+  // 创建平台适配器
+  createAdapter,
+} = require('axios-miniprogram');
+
+const {
+  // 取消令牌
+  CancelToken,
+
+  // 判断取消请求错误
+  isCancel,
+
+  // 原始 Axios 类
+  Axios,
+
+  // 判断请求响应错误
+  isAxiosError,
+
+  // 创建平台适配器
+  createAdapter,
+
+  // 创建实例
+  create,
+
+  // 获取系列化后的 URL
   getUri,
 } = axios;
 ```
+
+::::
+
+## 使用
 
 ### `axios(url, config?)`
 

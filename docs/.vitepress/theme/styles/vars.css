@@ -39,7 +39,8 @@
   --vp-custom-block-tip-text: var(--vp-c-brand);
   --vp-custom-block-tip-bg: var(--vp-c-bg);
 
-  --docsearch-container-background: rgba(0, 0, 0, 0.1);
+  --docsearch-container-background: rgba(0, 0, 0, 0.02);
+  --docsearch-logo-color: var(--vp-c-brand);
 
   --vp-sidebar-width: 340px;
 }
@@ -67,5 +68,9 @@
   --vp-code-copy-code-border-color: rgba(240, 246, 252, 0.1);
   --vp-code-copy-code-hover-border-color: #8b949e;
 
-  --docsearch-container-background: rgba(255, 255, 255, 0.1);
+  --docsearch-container-background: rgba(255, 255, 255, 0.08);
+}
+
+.dark .DocSearch {
+  --docsearch-logo-color: var(--vp-c-brand);
 }

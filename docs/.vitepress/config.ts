@@ -18,13 +18,13 @@ export default defineConfig({
 
     nav: [
       { text: '指南', link: '/guide/intro', activeMatch: '/guide/' },
-      { text: '请求方法', link: '/method/OPTIONS', activeMatch: '/method/' },
-      { text: '基础', link: '/basics/config', activeMatch: '/basics/' },
+      { text: '入门', link: '/basics/request', activeMatch: '/basics/' },
       {
-        text: '高级',
+        text: '进阶',
         link: '/advanced/request-interceptor',
         activeMatch: '/advanced/',
       },
+      { text: '请求方法', link: '/method/OPTIONS', activeMatch: '/method/' },
     ],
 
     sidebar: sidebar(),
@@ -93,6 +93,37 @@ function sidebar() {
         { text: '开始', link: '/guide/quick-start' },
       ],
     },
+
+    {
+      text: '入门',
+      items: [
+        { text: '发送请求', link: '/basics/request' },
+        { text: '响应体', link: '/basics/response' },
+        { text: '错误处理', link: '/basics/error-handler' },
+        { text: '动态地址', link: '/basics/dynamic-url' },
+        { text: '请求配置', link: '/basics/config' },
+        { text: '默认配置', link: '/basics/defaults' },
+        { text: '参数系列化', link: '/basics/params-serializer' },
+        { text: '转换数据', link: '/basics/transform-data' },
+        { text: '下载文件', link: '/basics/download' },
+        { text: '上传文件', link: '/basics/upload' },
+      ],
+      collapsed: false,
+    },
+
+    {
+      text: '进阶',
+      items: [
+        { text: '请求拦截器', link: '/advanced/request-interceptor' },
+        { text: '响应拦截器', link: '/advanced/response-interceptor' },
+        { text: '取消请求', link: '/advanced/cancel' },
+        { text: '创建实例', link: '/advanced/instance' },
+        { text: '派生领域', link: '/advanced/fork' },
+        { text: '平台适配器', link: '/advanced/adapter' },
+      ],
+      collapsed: false,
+    },
+
     {
       text: '请求方法',
       items: [
@@ -105,34 +136,6 @@ function sidebar() {
         { text: 'DELETE', link: '/method/DELETE' },
         { text: 'TRACE', link: '/method/TRACE' },
         { text: 'CONNECT', link: '/method/CONNECT' },
-      ],
-      collapsed: false,
-    },
-    {
-      text: '基础',
-      items: [
-        { text: '请求配置', link: '/basics/config' },
-        { text: '默认配置', link: '/basics/defaults' },
-        { text: '响应体', link: '/basics/response' },
-        { text: '发送请求', link: '/basics/request' },
-        { text: '动态地址', link: '/basics/dynamic-url' },
-        { text: '参数系列化', link: '/basics/params-serializer' },
-        { text: '转换数据', link: '/basics/transform-data' },
-        { text: '下载文件', link: '/basics/download' },
-        { text: '上传文件', link: '/basics/upload' },
-        { text: '错误处理', link: '/basics/error-handler' },
-        { text: '取消请求', link: '/basics/cancel' },
-      ],
-      collapsed: false,
-    },
-    {
-      text: '高级',
-      items: [
-        { text: '请求拦截器', link: '/advanced/request-interceptor' },
-        { text: '响应拦截器', link: '/advanced/response-interceptor' },
-        { text: '创建实例', link: '/advanced/instance' },
-        { text: '派生领域', link: '/advanced/fork' },
-        { text: '平台适配器', link: '/advanced/adapter' },
       ],
       collapsed: false,
     },

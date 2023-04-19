@@ -100,19 +100,19 @@ export function request(config: AxiosRequestConfig) {
 
 function tryToggleProgressUpdate(
   adapterConfig: AxiosAdapterRequestConfig,
-  progressUpdate?: (callback: AxiosProgressCallback) => void,
+  adapterProgress?: (callback: AxiosProgressCallback) => void,
 ) {
   const { onUploadProgress, onDownloadProgress } = adapterConfig;
-  if (isFunction(progressUpdate)) {
+  if (isFunction(adapterProgress)) {
     switch (adapterConfig.type) {
       case 'upload':
         if (isFunction(onUploadProgress)) {
-          progressUpdate(onUploadProgress);
+          adapterProgress(onUploadProgress);
         }
         break;
       case 'download':
         if (isFunction(onDownloadProgress)) {
-          progressUpdate(onDownloadProgress);
+          adapterProgress(onDownloadProgress);
         }
         break;
     }

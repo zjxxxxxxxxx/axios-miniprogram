@@ -20,7 +20,13 @@ axios('test', {
   transformRequest(data, headers) {
     return JSON.stringify(data);
   },
-});
+})
+  .then((response) => {
+    // 成功之后做些什么
+  })
+  .catch((error) => {
+    // 失败之后做些什么
+  });
 ```
 
 也支持多次转换。
@@ -38,7 +44,13 @@ axios('test', {
       return encodeURIComponent(data);
     },
   ],
-});
+})
+  .then((response) => {
+    // 成功之后做些什么
+  })
+  .catch((error) => {
+    // 失败之后做些什么
+  });
 ```
 
 ## 全局转换请求数据
@@ -64,7 +76,13 @@ axios('test', {
   transformResponse(data, headers) {
     return JSON.parse(data);
   },
-});
+})
+  .then((response) => {
+    // 成功之后做些什么
+  })
+  .catch((error) => {
+    // 失败之后做些什么
+  });
 ```
 
 也支持多次转换。
@@ -81,7 +99,13 @@ axios('test', {
       return JSON.parse(data);
     },
   ],
-});
+})
+  .then((response) => {
+    // 成功之后做些什么
+  })
+  .catch((error) => {
+    // 失败之后做些什么
+  });
 ```
 
 ## 全局转换响应数据
