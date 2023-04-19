@@ -5,7 +5,7 @@ title: 上传文件
 # {{ $frontmatter.title }}
 
 ::: tip {{ $frontmatter.title }}
-将本地资源上传到服务器，必须使用 `POST` 方法请求，并将请求配置的 `upload` 属性设置为 `true`。
+将本地资源上传到服务器，必须使用 `POST` 方法请求，并将请求配置项 `upload` 设置为 `true`。
 :::
 
 ## 普通的上传请求

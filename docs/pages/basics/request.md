@@ -27,7 +27,7 @@ axios
 
 ## 携带请求配置
 
-也可以传递第二个参数 `config`，用于指定请求方法以及其他配置项。
+可以额外传递第二个参数 `config`，用于指定请求方法以及其他配置项。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -50,7 +50,7 @@ axios
 
 ## 仅有请求配置
 
-也可以忽略以上示例，直接传递 `config` 发送请求。
+可以直接传递 `config` 发送请求。
 
 ```ts
 import axios from 'axios-miniprogram';

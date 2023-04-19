@@ -8,17 +8,16 @@ title: 错误处理
 当请求失败时，可以对错误进行处理。
 :::
 
-## 使用 `validateStatus` 抛出错误
+## 校验状态抛出错误
 
-可以使用 `validateStatus` 自定义抛出错误的 HTTP code。
+可以设置校验状态，自定义抛出错误的状态码。
 
 ```ts
 import axios from 'axios-miniprogram';
 
 axios('https://api.com/test', {
   validateStatus(status) {
-    // status 小于 200 大于 299 会抛出错误
-    return status >= 200 && status < 300;
+    return status === 200;
   },
 })
   .then((response) => {
@@ -29,7 +28,7 @@ axios('https://api.com/test', {
   });
 ```
 
-## 在 `catch` 中处理错误
+## 用 `catch` 处理错误
 
 可以处理不同类型的错误。
 
@@ -71,7 +70,7 @@ axios('https://api.com/test')
   });
 ```
 
-## 使用 `errorHandler` 处理错误
+## 用 `errorHandler` 处理错误
 
 可以使用 `errorHandler` 处理不同类型的错误。
 
@@ -119,7 +118,7 @@ axios('https://api.com/test', {
 
 ## 全局错误处理
 
-可以把 `errorHandler` 设置到默认配置中，每一个请求都可以进行错误处理。
+可以设置全局错误处理，对每个请求生效。
 
 ```ts
 import axios from 'axios-miniprogram';

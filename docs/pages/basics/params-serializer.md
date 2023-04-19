@@ -10,10 +10,11 @@ title: 参数系列化
 
 ## 自定义参数系列化器
 
-可以用自己的方式对参数进行系列化。
+可以用自己的方式系列化参数。
 
 ```ts
 import axios from 'axios-miniprogram';
+import qs from 'qs';
 
 axios('https://api.com', {
   params: {

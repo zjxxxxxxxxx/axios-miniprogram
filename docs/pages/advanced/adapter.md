@@ -270,6 +270,7 @@ import axios from 'axios-miniprogram';
 axios.defaults.adapter = axios.createAdapter({
   request: uni.request,
   upload: (config) => {
+    // 其实差异只有一点点，抹平可以很轻易~
     const {
       // 需要上传的文件列表
       // App、H5（ 2.6.15+）

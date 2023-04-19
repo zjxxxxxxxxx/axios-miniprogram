@@ -171,13 +171,21 @@ export interface AxiosRequestConfig
    */
   cancelToken?: CancelToken;
   /**
-   * 上传
+   * 下载文件
+   */
+  download?: boolean;
+  /**
+   * 上传文件
    */
   upload?: boolean;
   /**
-   * 下载
+   * 请求参数系列化函数
    */
-  download?: boolean;
+  paramsSerializer?: (params?: AnyObject) => string;
+  /**
+   * 校验状态码
+   */
+  validateStatus?: (status: number) => boolean;
   /**
    * 转换请求数据
    */
@@ -198,14 +206,6 @@ export interface AxiosRequestConfig
    * 监听下载进度
    */
   onDownloadProgress?: AxiosProgressCallback;
-  /**
-   * 请求参数系列化函数
-   */
-  paramsSerializer?: (params?: AnyObject) => string;
-  /**
-   * 校验状态码
-   */
-  validateStatus?: (status: number) => boolean;
 }
 
 /**
@@ -311,11 +311,11 @@ export default class Axios extends AxiosDomain {
   /**
    * 派生领域
    */
-  fork = (defaults: AxiosRequestConfig = {}) => {
-    if (isString(defaults.baseURL) && !isAbsoluteURL(defaults.baseURL)) {
-      defaults.baseURL = combineURL(this.defaults.baseURL, defaults.baseURL);
+  fork = (config: AxiosRequestConfig = {}) => {
+    if (isString(config.baseURL) && !isAbsoluteURL(config.baseURL)) {
+      config.baseURL = combineURL(this.defaults.baseURL, config.baseURL);
     }
-    return new AxiosDomain(mergeConfig(this.defaults, defaults), (config) =>
+    return new AxiosDomain(mergeConfig(this.defaults, config), (config) =>
       this.#processRequest(config),
     );
   };

@@ -45,9 +45,9 @@ export interface AxiosStatic extends AxiosInstance {
   /**
    * 创建 axios 实例
    *
-   * @param defaults 默认配置
+   * @param config 默认配置
    */
-  create(defaults?: AxiosRequestConfig): AxiosInstance;
+  create(config?: AxiosRequestConfig): AxiosInstance;
   /**
    * 创建适配器
    */
@@ -62,8 +62,8 @@ export interface AxiosStatic extends AxiosInstance {
   isAxiosError: typeof isAxiosError;
 }
 
-function createInstance(defaults: AxiosRequestConfig) {
-  const context = new Axios(defaults);
+function createInstance(config: AxiosRequestConfig) {
+  const context = new Axios(config);
   const instance = context.request as AxiosInstance;
 
   Object.assign(instance, context);
@@ -74,8 +74,8 @@ function createInstance(defaults: AxiosRequestConfig) {
 
 const axios = createInstance(defaults) as AxiosStatic;
 
-axios.create = function create(defaults) {
-  return createInstance(mergeConfig(axios.defaults, defaults));
+axios.create = function create(config) {
+  return createInstance(mergeConfig(axios.defaults, config));
 };
 
 axios.Axios = Axios;

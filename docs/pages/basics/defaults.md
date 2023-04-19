@@ -5,14 +5,14 @@ title: 默认配置
 # {{ $frontmatter.title }}
 
 ::: tip {{ $frontmatter.title }}
-默认配置 `defaults` 会作用于每个请求。
+用于设置作用于每个请求的配置项默认值。
 
-[合并策略](/basics/defaults#合并策略)
+[配置合并策略](/basics/defaults#配置合并策略)
 :::
 
 ## 默认值
 
-在不更改 `defaults` 的情况下，它依然会存在一些默认值，在 [defaults.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/defaults.ts) 中定义，大概长下面这样。
+在不更改默认配置的情况下，它依然会存在一些默认值，在 [defaults.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/defaults.ts) 中定义，大概长下面这样。
 
 ```ts
 {
@@ -53,9 +53,9 @@ title: 默认配置
 }
 ```
 
-## 设置属性
+## 设置配置项
 
-可以给属性设置默认值。
+可以设置配置项默认值。
 
 列举部分示例：
 
@@ -91,9 +91,9 @@ axios.defaults.onUploadProgress = (event) => {
 };
 ```
 
-## 设置平台属性
+## 设置平台配置项
 
-也可以给平台特有属性设置默认值，具体情况取决于平台特性。
+可以设置平台特有配置项默认值，具体情况取决于平台特性。
 
 微信小程序示例：
 
@@ -121,15 +121,17 @@ axios.defaults.forceCellularNetwork = false;
 
 想要了解更多请自行参阅对应平台文档。
 
-## 设置自定义属性
+## 设置自定义配置项
 
-也可以给自定义属性设置默认值，从而实现一些自定义功能。
+可以设置自定义配置项默认值。
 
 ```ts
 import axios from 'axios-miniprogram';
 
 // 出错时显示错误信息
 axios.defaults.showError = true;
+// 请求时自动 loading
+axios.defaults.showLoading = true;
 
 // 错误处理
 axios.defaults.errorHandler = (error) => {
@@ -142,9 +144,6 @@ axios.defaults.errorHandler = (error) => {
     }
   }
 };
-
-// 请求时自动 loading
-axios.defaults.showLoading = true;
 
 // 请求拦截器
 axios.interceptors.request.use((config) => {
@@ -165,10 +164,10 @@ axios.interceptors.response.use((response) => {
 });
 ```
 
-## 合并策略
+## 配置合并策略
 
-`defaults` 和 `config` 将会按优先级进行合并。
+默认配置和请求配置将会按优先级进行合并。
 
-其中 `url/method/data/upload/download` 只从 `config` 取值，`headers/params` 进行深度合并，其余属性则会优先从 `config` 取值。
+其中 `url`、`method`、`data`、`upload`、`download` 只从 `config` 取值，`headers`、`params` 会进行深度合并，其余属性则会优先从 `config` 取值。
 
-具体合并策略请参阅 [mergeConfig.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/core/mergeConfig.ts) 。
+具体配置合并策略请参阅 [mergeConfig.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/core/mergeConfig.ts) 。

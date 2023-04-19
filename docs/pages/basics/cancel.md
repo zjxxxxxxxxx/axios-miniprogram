@@ -35,7 +35,7 @@ cancel('request canceled');
 
 ## 工厂方法
 
-也可以用 `CancelToken.source` 工厂方法创建 `CancelToken` 实例用来取消请求。
+可以用 `CancelToken.source` 工厂方法创建 `CancelToken` 实例用来取消请求。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -57,7 +57,7 @@ cancel('request canceled');
 
 ## 判断取消请求
 
-也可以用 `axios.isCancel` 判断请求错误是否来自取消请求，从而做出相应的处理。
+可以判断请求错误是否来自取消请求，从而做出相应的处理。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -70,6 +70,7 @@ axios('https://api.com/test', {
     // 成功之后做些什么
   })
   .catch((error) => {
+    // 判断取消请求
     if (axios.isCancel(error)) {
       console.log(error, '请求已被取消');
     }

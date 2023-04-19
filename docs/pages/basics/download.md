@@ -5,7 +5,7 @@ title: 下载文件
 # {{ $frontmatter.title }}
 
 ::: tip {{ $frontmatter.title }}
-下载文件资源到本地，必须使用 `GET` 方法请求，并将请求配置的 `download` 属性设置为 `true`。
+下载文件资源到本地，必须使用 `GET` 方法请求，并将配置项 `download` 设置为 `true`。
 :::
 
 ## 普通的下载请求
@@ -36,7 +36,7 @@ axios
 
 ## 携带参数的下载请求
 
-也可以指定文件下载后存储的路径 (本地路径)。
+可以指定文件下载后存储的路径 (本地路径)。
 
 ```ts
 import axios from 'axios-miniprogram';
@@ -64,7 +64,7 @@ axios
 
 ## 监听下载进度
 
-也可以监听下载进度变化。
+可以监听下载进度变化。
 
 ```ts
 import axios from 'axios-miniprogram';

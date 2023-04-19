@@ -5,22 +5,21 @@ title: 创建实例
 # {{ $frontmatter.title }}
 
 ::: tip {{ $frontmatter.title }}
-创建全新的 `instance` 实例。
+创建新的实例。
 
-`defaults` 和创建 `instance` 时传入的 `config` 将会按优先级合并成 `instance.defaults` 。
-
-[合并策略](/basics/defaults#合并策略)
 :::
 
 ## 创建实例
 
-可以使用 `axios.create(config)` 创建 `instance`。
+可以使用 `axios.create(config)` 创建新的实例。
+
+全局默认配置 `axios.defaults` 和创建实例时传入的配置 `config` 将会按优先级[合并](/basics/defaults#配置合并策略)成实例默认配置 `instance.defaults`。
 
 ```ts
 import axios from 'axios-miniprogram';
 
 const instance = axios.create({
-  baseURL: 'https"//api2.com',
+  baseURL: 'https://api2.com',
   headers: {
     common: {
       ['Content-Type']: 'application/json',
@@ -35,13 +34,13 @@ const instance = axios.create({
 
 ## 默认配置
 
-可以设置 `instance.defaults` 属性默认值。
+可以设置配置项默认值。
 
 ```ts
 import axios from 'axios-miniprogram';
 
 const instance = axios.create({
-  baseURL: 'https"//api2.com',
+  baseURL: 'https://api2.com',
 });
 
 instance.defaults.headers.common['Content-Type'] = 'application/json';
@@ -50,13 +49,13 @@ instance.defaults.timeout = 1000;
 
 ## 添加拦截器
 
-可以在 `instance`上添加 [请求拦截器](/advanced/request-interceptor) 和 [响应拦截器](/advanced/response-interceptor)。
+可以添加实例的[请求拦截器](/advanced/request-interceptor)和[响应拦截器](/advanced/response-interceptor)。
 
 ```ts
 import axios from 'axios-miniprogram';
 
 const instance = axios.create({
-  baseURL: 'https"//api2.com',
+  baseURL: 'https://api2.com',
 });
 
 // 请求拦截器
@@ -86,13 +85,15 @@ instance.interceptors.response.use(
 
 ## 派生领域
 
-可以基于 `instance` [派生领域](/advanced/fork)。
+可以基于实例[派生领域](/advanced/fork)。
+
+实例默认配置 `instance.defaults` 和派生领域时传入的配置 `config` 将会按优先级[合并](/basics/defaults#配置合并策略)成领域默认配置 `domain.defaults`。
 
 ```ts
 import axios from 'axios-miniprogram';
 
 const instance = axios.create({
-  baseURL: 'https"//api2.com',
+  baseURL: 'https://api2.com',
 });
 
 const domain = instance.fork({
@@ -109,7 +110,7 @@ domain.get('/');
 
 ```ts
 const instance = axios.create({
-  baseURL: 'https"//api2.com',
+  baseURL: 'https://api2.com',
 });
 
 instance('test')
