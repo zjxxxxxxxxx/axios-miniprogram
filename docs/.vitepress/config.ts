@@ -24,7 +24,6 @@ export default defineConfig({
         link: '/advanced/request-interceptor',
         activeMatch: '/advanced/',
       },
-      { text: '请求方法', link: '/method/OPTIONS', activeMatch: '/method/' },
     ],
 
     sidebar: sidebar(),

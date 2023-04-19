@@ -59,7 +59,7 @@ axios('https://api.com/:id', {
 
 ## 同时设置请求参数和请求数据
 
-可以同时同时设置请求参数和请求数据，会优先从请求参数中获取对应的值。
+可以同时设置请求参数和请求数据，会优先从请求参数中获取对应的值。
 
 ```ts
 import axios from 'axios-miniprogram';
