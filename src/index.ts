@@ -9,8 +9,10 @@ export type {
   AxiosResponse,
   AxiosResponseData,
   AxiosResponseError,
-  AxiosProgressEvent,
-  AxiosProgressCallback,
+  AxiosDownloadProgressEvent,
+  AxiosDownloadProgressCallback,
+  AxiosUploadProgressEvent,
+  AxiosUploadProgressCallback,
 } from './core/Axios';
 export type {
   AxiosAdapter,

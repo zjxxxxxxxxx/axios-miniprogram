@@ -3,11 +3,12 @@ import {
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
+  testEachMethods,
 } from 'scripts/test.utils';
 import AxiosDomain, {
   requestMethodNames,
-  requestMethodWithDataNames,
   requestMethodWithParamsNames,
+  requestMethodWithDataNames,
 } from '@/core/AxiosDomain';
 import Axios from '@/core/Axios';
 import axios from '@/axios';
@@ -34,14 +35,10 @@ describe('src/core/Axios.ts', () => {
     expect(axiosObj.request).toBeTypeOf('function');
     expect(axiosObj.getUri).toBeTypeOf('function');
     expect(axiosObj.fork).toBeTypeOf('function');
+  });
 
-    [
-      ...requestMethodNames,
-      ...requestMethodWithParamsNames,
-      ...requestMethodWithDataNames,
-    ].forEach((k) => {
-      expect(axiosObj[k]).toBeTypeOf('function');
-    });
+  testEachMethods('%s 应该是一个函数', (k) => {
+    expect(axiosObj[k]).toBeTypeOf('function');
   });
 
   test('应该可以发送普通别名请求', () => {
@@ -162,6 +159,7 @@ describe('src/core/Axios.ts', () => {
       url: 'test',
       errorHandler: async (err: unknown) => {
         e1(err);
+        return Promise.reject(err);
       },
     };
     const c2 = {
@@ -169,6 +167,7 @@ describe('src/core/Axios.ts', () => {
       url: 'test',
       errorHandler: async (err: unknown) => {
         e2(err);
+        return Promise.reject(err);
       },
     };
 

@@ -30,10 +30,3 @@ export function isDate(date: any): date is Date {
 export function isFunction<T extends Function>(value: any): value is T {
   return typeof value === 'function';
 }
-
-export function isPromise<T = unknown>(value: any): value is Promise<T> {
-  return (
-    _toString.call(value) === '[object Promise]' ||
-    (isPlainObject(value) && isFunction(value.then))
-  );
-}

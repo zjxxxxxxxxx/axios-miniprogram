@@ -2,14 +2,10 @@ import { describe, test, expect } from 'vitest';
 import Axios from '@/core/Axios';
 import { CancelToken, isCancel } from '@/core/cancel';
 import { isAxiosError } from '@/core/createError';
-import {
-  requestMethodNames,
-  requestMethodWithDataNames,
-  requestMethodWithParamsNames,
-} from '@/core/AxiosDomain';
 import { createAdapter } from '@/adapter';
 import axios from '@/axios';
 import defaults from '@/defaults';
+import { eachMethods } from 'scripts/test.utils';
 
 describe('src/axios.ts', () => {
   test('应该有这些静态属性', () => {
@@ -35,11 +31,7 @@ describe('src/axios.ts', () => {
     expect(instance.fork).toBeTypeOf('function');
     expect(instance.request).toBeTypeOf('function');
 
-    [
-      ...requestMethodNames,
-      ...requestMethodWithParamsNames,
-      ...requestMethodWithDataNames,
-    ].forEach((k) => {
+    eachMethods((k) => {
       expect(instance[k]).toBeTypeOf('function');
     });
   });

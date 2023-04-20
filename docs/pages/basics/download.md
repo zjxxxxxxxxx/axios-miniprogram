@@ -71,14 +71,14 @@ axios('https://api.com/test', {
   },
   onDownloadProgress(event) {
     const {
-      // 下载进度
+      // 下载进度百分比
       progress,
 
-      // 已经下载的数据长度
-      totalBytesSent,
+      // 已经下载的数据长度，单位 Bytes
+      totalBytesWritten,
 
-      // 预期需要下载的数据总长度
-      totalBytesExpectedToSend,
+      // 预预期需要下载的数据总长度，单位 Bytes
+      totalBytesExpectedToWrite,
     } = event;
   },
 })

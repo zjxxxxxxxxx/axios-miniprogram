@@ -1,7 +1,7 @@
 import { buildURL } from '../helpers/buildURL';
 import { isAbsoluteURL } from '../helpers/isAbsoluteURL';
 import { combineURL } from '../helpers/combineURL';
-import { isFunction, isPromise, isString } from '../helpers/isTypes';
+import { isString } from '../helpers/isTypes';
 import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
@@ -102,33 +102,55 @@ export type AxiosRequestData =
 export type AxiosResponseData = number | AxiosAdapterResponseData;
 
 /**
- * 监听进度回调事件对象
+ * 进度对象
  */
-export interface AxiosProgressEvent {
+export interface AxiosProgressEvent extends AnyObject {
   /**
-   * 下载进度
+   * 上传进度百分比
    */
   progress: number;
+}
+
+/**
+ * 下载进度对象
+ */
+export interface AxiosDownloadProgressEvent extends AxiosProgressEvent {
   /**
-   * 已经下载的数据长度
+   * 已经下载的数据长度，单位 Bytes
+   */
+  totalBytesWritten: number;
+  /**
+   * 预预期需要下载的数据总长度，单位 Bytes
+   */
+  totalBytesExpectedToWrite: number;
+}
+
+/**
+ * 监听下载进度
+ */
+export interface AxiosDownloadProgressCallback {
+  (event: AxiosDownloadProgressEvent): void;
+}
+
+/**
+ * 上传进度对象
+ */
+export interface AxiosUploadProgressEvent extends AxiosProgressEvent {
+  /**
+   * 已经上传的数据长度，单位 Bytes
    */
   totalBytesSent: number;
   /**
-   * 预期需要下载的数据总长度
+   * 预期需要上传的数据总长度，单位 Bytes
    */
   totalBytesExpectedToSend: number;
 }
 
 /**
- * 监听进度回调
+ * 监听上传进度
  */
-export interface AxiosProgressCallback {
-  (
-    /**
-     * 事件对象
-     */
-    event: AxiosProgressEvent,
-  ): void;
+export interface AxiosUploadProgressCallback {
+  (event: AxiosUploadProgressEvent): void;
 }
 
 /**
@@ -197,15 +219,15 @@ export interface AxiosRequestConfig
   /**
    * 错误处理
    */
-  errorHandler?: (error: unknown) => Promise<void> | void;
-  /**
-   * 监听上传进度
-   */
-  onUploadProgress?: AxiosProgressCallback;
+  errorHandler?: (error: unknown) => Promise<AxiosResponse>;
   /**
    * 监听下载进度
    */
-  onDownloadProgress?: AxiosProgressCallback;
+  onDownloadProgress?: AxiosUploadProgressCallback;
+  /**
+   * 监听上传进度
+   */
+  onUploadProgress?: AxiosUploadProgressCallback;
 }
 
 /**
@@ -321,40 +343,34 @@ export default class Axios extends AxiosDomain {
   };
 
   #processRequest(config: AxiosRequestConfig) {
-    const chain: [
-      Interceptor<AxiosRequestConfig> | Interceptor<AxiosResponse>,
-    ] = [
-      {
-        resolved: dispatchRequest,
-      },
-    ];
+    const requestHandler = {
+      resolved: dispatchRequest,
+    };
+    const errorHandler = {
+      rejected: config.errorHandler,
+    };
+    const chain: (
+      | Partial<Interceptor<AxiosRequestConfig>>
+      | Partial<Interceptor<AxiosResponse>>
+    )[] = [];
 
-    this.interceptors.request.forEach(chain.unshift.bind(chain));
-    this.interceptors.response.forEach(chain.push.bind(chain));
-
-    let next = Promise.resolve(config);
-    for (const { resolved, rejected } of chain) {
-      next = next.then(
-        // @ts-ignore
-        resolved,
-        rejected,
-      );
-    }
-
-    // 错误处理
-    next = next.catch((reason) => {
-      const { errorHandler } = config;
-
-      if (isFunction(errorHandler)) {
-        const promise = errorHandler(reason);
-        if (isPromise(promise)) {
-          return promise.then(() => Promise.reject(reason));
-        }
-      }
-
-      return Promise.reject(reason);
+    this.interceptors.request.forEach((requestInterceptor) => {
+      chain.unshift(requestInterceptor);
     });
+    chain.push(requestHandler);
+    this.interceptors.response.forEach((responseInterceptor) => {
+      chain.push(responseInterceptor);
+    });
+    chain.push(errorHandler);
 
-    return next as Promise<AxiosResponse>;
+    return chain.reduce(
+      (next, { resolved, rejected }) =>
+        next.then(
+          // @ts-ignore
+          resolved,
+          rejected,
+        ),
+      Promise.resolve(config),
+    ) as Promise<AxiosResponse>;
   }
 }

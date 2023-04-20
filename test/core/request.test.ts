@@ -1,17 +1,13 @@
 import { describe, test, expect, vi } from 'vitest';
 import {
   asyncTimeout,
+  eachMethods,
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
   testEachMethods,
 } from 'scripts/test.utils';
 import { request } from '@/core/request';
-import {
-  requestMethodNames,
-  requestMethodWithDataNames,
-  requestMethodWithParamsNames,
-} from '@/core/AxiosDomain';
 import axios from '@/axios';
 
 describe('src/core/request.ts', () => {
@@ -200,11 +196,7 @@ describe('src/core/request.ts', () => {
       download: true,
     });
 
-    [
-      ...requestMethodNames,
-      ...requestMethodWithParamsNames,
-      ...requestMethodWithDataNames,
-    ].forEach((a) => {
+    eachMethods((a) => {
       request({
         adapter: ({ type }) => {
           expect(type).toBe('request');

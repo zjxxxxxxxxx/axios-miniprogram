@@ -80,7 +80,6 @@ axios('test');
 const {
   // 静态对象
   // 注意：默认导出的 axios 在 CommonJS 里是以 default 属性的方式存在
-  // import axios from 'axios-miniprogram' 等于 const axios = require('axios-miniprogram').default
   default: axios,
 
   // 取消令牌
@@ -124,6 +123,36 @@ const {
 ```
 
 ::::
+
+不同的模块系统存在一些小差异，`esm` 会自动处理默认导入，但 `cjs` 不会处理默认导入。
+
+```ts
+// 默认导入，esm 和 cjs 这两种写法是等价关系
+import axios from 'axios-miniprogram';
+const axios = require('axios-miniprogram').default;
+
+// 别名导入，esm 和 cjs 这两种写法是等价关系
+import * as axios from 'axios-miniprogram';
+const axios = require('axios-miniprogram');
+
+// 具名导入，esm 和 cjs 这两种写法是等价关系
+import {
+  default as axios,
+  CancelToken,
+  isCancel,
+  Axios,
+  isAxiosError,
+  createAdapter,
+} from 'axios-miniprogram';
+const {
+  default: axios,
+  CancelToken,
+  isCancel,
+  Axios,
+  isAxiosError,
+  createAdapter,
+} = require('axios-miniprogram');
+```
 
 ## 使用
 

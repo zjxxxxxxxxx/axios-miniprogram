@@ -1,7 +1,7 @@
 import { isFunction, isPlainObject } from './helpers/isTypes';
 import { assert } from './helpers/error';
 import {
-  AxiosProgressCallback,
+  AxiosProgressEvent,
   AxiosRequestFormData,
   AxiosRequestHeaders,
 } from './core/Axios';
@@ -229,8 +229,8 @@ export type AxiosAdapterPlatformTask =
   | void
   | {
       abort?(): void;
-      onProgressUpdate?(callback: AxiosProgressCallback): void;
-      offProgressUpdate?(callback: AxiosProgressCallback): void;
+      onProgressUpdate?(callback: (event: AxiosProgressEvent) => void): void;
+      offProgressUpdate?(callback: (event: AxiosProgressEvent) => void): void;
     };
 
 /**

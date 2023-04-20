@@ -1,20 +1,11 @@
 import { describe, test, expect } from 'vitest';
 import { flattenHeaders } from '@/core/flattenHeaders';
-import {
-  requestMethodNames,
-  requestMethodWithDataNames,
-  requestMethodWithParamsNames,
-} from '@/core/AxiosDomain';
+import { eachMethods, methods } from 'scripts/test.utils';
 
 describe('src/core/flattenHeaders.ts', () => {
-  const keys = [
-    ...requestMethodNames,
-    ...requestMethodWithParamsNames,
-    ...requestMethodWithDataNames,
-  ];
   const baseHeaders = Object.fromEntries(
-    keys.map((k) => [k, { v1: `${k}1`, v2: `${k}2` }]),
-  ) as unknown as Record<(typeof keys)[number], AnyObject>;
+    methods.map((k) => [k, { v1: `${k}1`, v2: `${k}2` }]),
+  ) as unknown as Record<(typeof methods)[number], AnyObject>;
 
   test('应该支持空配置', () => {
     expect(flattenHeaders({})).toEqual({});
@@ -33,7 +24,7 @@ describe('src/core/flattenHeaders.ts', () => {
     const h2 = { v1: 1, v2: 2 };
     const h3 = { ...h1, ...h2 };
 
-    keys.forEach((a) => {
+    eachMethods((a) => {
       expect(flattenHeaders({ headers: h1, method: a })).toEqual(h1[a]);
       expect(flattenHeaders({ headers: h3, method: a })).toEqual(h2);
     });
@@ -48,14 +39,14 @@ describe('src/core/flattenHeaders.ts', () => {
     };
     const h2 = { ...baseHeaders, ...h1 };
 
-    keys.forEach((a) => {
+    eachMethods((a) => {
       expect(flattenHeaders({ headers: h1, method: a })).toEqual(h1.common);
       expect(flattenHeaders({ headers: h2, method: a })).toEqual(h2[a]);
     });
   });
 
   test.each(
-    keys.map((k) => [
+    methods.map((k) => [
       k,
       {
         common: {
@@ -83,7 +74,7 @@ describe('src/core/flattenHeaders.ts', () => {
       v4: `${k}2`,
     };
 
-    keys.forEach((a) => {
+    methods.forEach((a) => {
       expect(flattenHeaders({ headers: h, method: a })).toEqual(
         a !== k ? h1 : h2,
       );

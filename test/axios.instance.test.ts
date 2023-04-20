@@ -1,11 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import {
-  requestMethodNames,
-  requestMethodWithDataNames,
-  requestMethodWithParamsNames,
-} from '@/core/AxiosDomain';
 import axios from '@/axios';
 import defaults from '@/defaults';
+import { testEachMethods } from 'scripts/test.utils';
 
 describe('src/axios.ts', () => {
   test('应该有这些实例属性及方法', () => {
@@ -14,13 +10,9 @@ describe('src/axios.ts', () => {
     expect(axios.getUri).toBeTypeOf('function');
     expect(axios.fork).toBeTypeOf('function');
     expect(axios.request).toBeTypeOf('function');
+  });
 
-    [
-      ...requestMethodNames,
-      ...requestMethodWithParamsNames,
-      ...requestMethodWithDataNames,
-    ].forEach((k) => {
-      expect(axios[k]).toBeTypeOf('function');
-    });
+  testEachMethods('%s 应该是一个函数', (k) => {
+    expect(axios[k]).toBeTypeOf('function');
   });
 });

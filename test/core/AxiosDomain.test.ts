@@ -6,6 +6,7 @@ import AxiosDomain, {
   requestMethodWithDataNames,
 } from '@/core/AxiosDomain';
 import { AxiosResponse } from '@/core/Axios';
+import { eachMethods } from 'scripts/test.utils';
 
 describe('src/core/AxiosDomain.ts', () => {
   test('应该有这些常量', () => {
@@ -23,11 +24,7 @@ describe('src/core/AxiosDomain.ts', () => {
     expect(a.defaults).toEqual(c);
     expect(a.request).toBeTypeOf('function');
 
-    [
-      ...requestMethodNames,
-      ...requestMethodWithParamsNames,
-      ...requestMethodWithDataNames,
-    ].forEach((k) => {
+    eachMethods((k) => {
       expect(a[k]).toBeTypeOf('function');
     });
   });

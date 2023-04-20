@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import { asyncNext, mockAdapter } from 'scripts/test.utils';
+import { asyncNext, mockAdapter, testEachMethods } from 'scripts/test.utils';
 import { dispatchRequest } from '@/core/dispatchRequest';
 import {
   requestMethodNames,
@@ -38,11 +38,7 @@ describe('src/core/dispatchRequest.ts', () => {
     ).not.toThrowError();
   });
 
-  test.each([
-    ...requestMethodNames,
-    ...requestMethodWithDataNames,
-    ...requestMethodWithParamsNames,
-  ])('应该支持 %s 转全大写', (k) => {
+  testEachMethods('应该支持 %s 转全大写', (k) => {
     const c = {
       adapter: mockAdapter(),
       url: '/',

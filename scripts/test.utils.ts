@@ -113,8 +113,14 @@ export function mockAdapterFail(options: MockAdapterOptions = {}) {
   return mockAdapterBase('fail', options);
 }
 
-export const testEachMethods = test.each([
+export const methods = [
   ...requestMethodNames,
   ...requestMethodWithParamsNames,
   ...requestMethodWithDataNames,
-]);
+];
+
+export const testEachMethods = test.each(methods);
+
+export function eachMethods(cb: (k: (typeof methods)[number]) => void) {
+  methods.forEach(cb);
+}

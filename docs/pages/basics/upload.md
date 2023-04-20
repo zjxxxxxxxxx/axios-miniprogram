@@ -101,13 +101,13 @@ axios('https://api.com/test', {
   },
   onUploadProgress(event) {
     const {
-      // 上传进度
+      // 上传进度百分比
       progress,
 
-      // 已经上传的数据长度
+      // 已经上传的数据长度，单位 Bytes
       totalBytesSent,
 
-      // 预期需要上传的数据总长度
+      // 预期需要上传的数据总长度，单位 Bytes
       totalBytesExpectedToSend,
     } = event;
   },

@@ -1,20 +1,10 @@
 import { describe, test, expect } from 'vitest';
 import { generateType } from '@/core/generateType';
-import {
-  requestMethodNames,
-  requestMethodWithDataNames,
-  requestMethodWithParamsNames,
-} from '@/core/AxiosDomain';
+import { testEachMethods } from 'scripts/test.utils';
 
 describe('src/core/generateType.ts', () => {
-  test('应该是一个 reuqest', () => {
-    for (const a of [
-      ...requestMethodNames,
-      ...requestMethodWithParamsNames,
-      ...requestMethodWithDataNames,
-    ]) {
-      expect(generateType({ method: a })).toBe('request');
-    }
+  testEachMethods('%s 应该是一个 reuqest', (k) => {
+    expect(generateType({ method: k })).toBe('request');
   });
 
   test('应该是一个 upload', () => {

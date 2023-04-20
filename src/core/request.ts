@@ -6,12 +6,7 @@ import {
   AxiosAdapterResponseError,
   AxiosAdapterPlatformTask,
 } from '../adapter';
-import {
-  AxiosProgressCallback,
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosResponseError,
-} from './Axios';
+import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';
@@ -103,7 +98,7 @@ export function request(config: AxiosRequestConfig) {
 
 function tryToggleProgressUpdate(
   adapterConfig: AxiosAdapterRequestConfig,
-  adapterProgress?: (callback: AxiosProgressCallback) => void,
+  adapterProgress?: (cb: (event: AnyObject) => void) => void,
 ) {
   const { onUploadProgress, onDownloadProgress } = adapterConfig;
   if (isFunction(adapterProgress)) {
