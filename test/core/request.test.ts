@@ -4,6 +4,7 @@ import {
   mockAdapter,
   mockAdapterError,
   mockAdapterFail,
+  testEachMethods,
 } from 'scripts/test.utils';
 import { request } from '@/core/request';
 import {
@@ -14,128 +15,110 @@ import {
 import axios from '@/axios';
 
 describe('src/core/request.ts', () => {
-  test('应该返回正确的响应体结构', () => {
-    [
-      ...requestMethodNames,
-      ...requestMethodWithDataNames,
-      ...requestMethodWithParamsNames,
-    ].forEach((k) => {
-      request({
-        adapter: mockAdapter(),
-        url: '/test',
-        method: k,
-      }).then((response) => {
-        expect(response.status).toBeTypeOf('number');
-        expect(response.statusText).toBeTypeOf('string');
-        expect(response.headers).toBeTypeOf('object');
-        expect(response.data).toBeTypeOf('object');
-        expect(response.config).toBeTypeOf('object');
-        expect(response.request).toBeTypeOf('object');
-      });
+  testEachMethods('%s 方法应该返回正确的响应体结构', (k) => {
+    const c = {
+      adapter: mockAdapter(),
+      url: '/test',
+      method: k,
+    };
+
+    request(c).then((response) => {
+      expect(response.status).toBeTypeOf('number');
+      expect(response.statusText).toBeTypeOf('string');
+      expect(response.headers).toBeTypeOf('object');
+      expect(response.data).toBeTypeOf('object');
+      expect(response.config).toBeTypeOf('object');
+      expect(response.request).toBeTypeOf('object');
     });
   });
 
-  test('应该支持补全响应体结构', () => {
-    [
-      ...requestMethodNames,
-      ...requestMethodWithDataNames,
-      ...requestMethodWithParamsNames,
-    ].forEach((k) => {
-      request({
-        adapter: ({ success }) => {
-          success({
-            data: {},
-          });
-        },
-        url: '/test',
-        method: k,
-      }).then((response) => {
-        expect(response.status).toBeTypeOf('number');
-        expect(response.statusText).toBeTypeOf('string');
-        expect(response.headers).toBeTypeOf('object');
-        expect(response.data).toBeTypeOf('object');
-        expect(response.isFail).toBeTypeOf('undefined');
-        expect(response.config).toBeTypeOf('object');
-        expect(response.request).toBeTypeOf('undefined');
-      });
+  testEachMethods('%s 方法应该支持补全响应体结构', (k) => {
+    const c = {
+      // @ts-ignore
+      adapter: ({ success }) => {
+        success({
+          data: {},
+        });
+      },
+      url: '/test',
+      method: k,
+    };
+
+    request(c).then((response) => {
+      expect(response.status).toBeTypeOf('number');
+      expect(response.statusText).toBeTypeOf('string');
+      expect(response.headers).toBeTypeOf('object');
+      expect(response.data).toBeTypeOf('object');
+      expect(response.isFail).toBeTypeOf('undefined');
+      expect(response.config).toBeTypeOf('object');
+      expect(response.request).toBeTypeOf('undefined');
     });
   });
 
-  test('应该返回正确的响应错误结构', () => {
-    [
-      ...requestMethodNames,
-      ...requestMethodWithDataNames,
-      ...requestMethodWithParamsNames,
-    ].forEach((k) => {
-      request({
-        adapter: mockAdapterError(),
-        validateStatus: () => false,
-        url: '/test',
-        method: k,
-      }).catch((error) => {
-        expect(error.message).toBeTypeOf('string');
-        expect(error.config).toBeTypeOf('object');
-        expect(error.request).toBeTypeOf('object');
-        expect(error.response.status).toBeTypeOf('number');
-        expect(error.response.statusText).toBeTypeOf('string');
-        expect(error.response.headers).toBeTypeOf('object');
-        expect(error.response.data).toBeTypeOf('object');
-        expect(error.response.isFail).toBeTypeOf('undefined');
-        expect(error.response.config).toBeTypeOf('object');
-        expect(error.response.request).toBeTypeOf('object');
-      });
+  testEachMethods('%s 方法应该返回正确的响应错误结构', (k) => {
+    const c = {
+      adapter: mockAdapterError(),
+      validateStatus: () => false,
+      url: '/test',
+      method: k,
+    };
+
+    request(c).catch((error) => {
+      expect(error.message).toBeTypeOf('string');
+      expect(error.config).toBeTypeOf('object');
+      expect(error.request).toBeTypeOf('object');
+      expect(error.response.status).toBeTypeOf('number');
+      expect(error.response.statusText).toBeTypeOf('string');
+      expect(error.response.headers).toBeTypeOf('object');
+      expect(error.response.data).toBeTypeOf('object');
+      expect(error.response.isFail).toBeTypeOf('undefined');
+      expect(error.response.config).toBeTypeOf('object');
+      expect(error.response.request).toBeTypeOf('object');
     });
   });
 
-  test('应该返回正确的平台错误结构', () => {
-    [
-      ...requestMethodNames,
-      ...requestMethodWithDataNames,
-      ...requestMethodWithParamsNames,
-    ].forEach((k) => {
-      request({
-        adapter: mockAdapterFail(),
-        validateStatus: () => false,
-        url: '/test',
-        method: k,
-      }).catch((error) => {
-        expect(error.message).toBeTypeOf('string');
-        expect(error.config).toBeTypeOf('object');
-        expect(error.request).toBeTypeOf('object');
-        expect(error.response.status).toBeTypeOf('number');
-        expect(error.response.statusText).toBeTypeOf('string');
-        expect(error.response.headers).toBeTypeOf('object');
-        expect(error.response.data).toBeTypeOf('object');
-        expect(error.response.isFail).toBeTruthy();
-        expect(error.response.config).toBeTypeOf('object');
-        expect(error.response.request).toBeTypeOf('object');
-      });
+  testEachMethods('%s 方法应该返回正确的平台错误结构', (k) => {
+    const c = {
+      adapter: mockAdapterFail(),
+      validateStatus: () => false,
+      url: '/test',
+      method: k,
+    };
+
+    request(c).catch((error) => {
+      expect(error.message).toBeTypeOf('string');
+      expect(error.config).toBeTypeOf('object');
+      expect(error.request).toBeTypeOf('object');
+      expect(error.response.status).toBeTypeOf('number');
+      expect(error.response.statusText).toBeTypeOf('string');
+      expect(error.response.headers).toBeTypeOf('object');
+      expect(error.response.data).toBeTypeOf('object');
+      expect(error.response.isFail).toBeTruthy();
+      expect(error.response.config).toBeTypeOf('object');
+      expect(error.response.request).toBeTypeOf('object');
     });
   });
 
-  test('应该支持补全错误体结构', () => {
-    [
-      ...requestMethodNames,
-      ...requestMethodWithDataNames,
-      ...requestMethodWithParamsNames,
-    ].forEach((k) => {
-      request({
-        adapter: ({ fail }) => {
-          fail({
-            data: {},
-          });
-        },
-        url: '/test',
-        method: k,
-      }).catch((error) => {
-        expect(error.response.status).toBeTypeOf('number');
-        expect(error.response.statusText).toBeTypeOf('string');
-        expect(error.response.headers).toBeTypeOf('object');
-        expect(error.response.data).toBeTypeOf('object');
-        expect(error.response.isFail).toBeTruthy();
-        expect(error.response.config).toBeTypeOf('object');
-        expect(error.response.request).toBeTypeOf('undefined');
-      });
+  testEachMethods('%s 方法应该支持补全错误体结构', (k) => {
+    const c = {
+      // @ts-ignore
+      adapter: ({ fail }) => {
+        fail({
+          data: {},
+        });
+      },
+      url: '/test',
+      method: k,
+    };
+
+    request(c).catch((error) => {
+      expect(error.response.status).toBeTypeOf('number');
+      expect(error.response.statusText).toBeTypeOf('string');
+      expect(error.response.headers).toBeTypeOf('object');
+      expect(error.response.data).toBeTypeOf('object');
+      expect(error.response.isFail).toBeTruthy();
+      expect(error.response.config).toBeTypeOf('object');
+      expect(error.response.request).toBeTypeOf('undefined');
     });
   });
 

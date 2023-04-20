@@ -1,4 +1,10 @@
-import { AxiosAdapterRequestConfig } from 'src';
+import { test } from 'vitest';
+import {
+  requestMethodNames,
+  requestMethodWithParamsNames,
+  requestMethodWithDataNames,
+} from '@/core/AxiosDomain';
+import { AxiosAdapterRequestConfig } from '@/adapter';
 
 export function asyncNext() {
   return Promise.resolve().then;
@@ -106,3 +112,9 @@ export function mockAdapterError(options: MockAdapterOptions = {}) {
 export function mockAdapterFail(options: MockAdapterOptions = {}) {
   return mockAdapterBase('fail', options);
 }
+
+export const testEachMethods = test.each([
+  ...requestMethodNames,
+  ...requestMethodWithParamsNames,
+  ...requestMethodWithDataNames,
+]);

@@ -31,7 +31,7 @@ export function request(config: AxiosRequestConfig) {
       ...config,
       url: url!,
       type: generateType(config),
-      method: method!.toUpperCase() as AxiosAdapterRequestMethod,
+      method: method as AxiosAdapterRequestMethod,
       success,
       fail,
     };
@@ -44,6 +44,8 @@ export function request(config: AxiosRequestConfig) {
         status: 400,
         statusText: 'Bad Adapter',
       });
+
+      console.error(err);
     }
 
     function success(baseResponse: AxiosAdapterResponse): void {

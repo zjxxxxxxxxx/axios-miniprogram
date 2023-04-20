@@ -4,7 +4,7 @@ import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
 import { request } from './request';
-import { AxiosRequestConfig, AxiosResponse } from './Axios';
+import { AxiosRequestConfig, AxiosRequestMethod, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
 import { AxiosErrorResponse } from './createError';
 import { requestMethodWithDataNames } from './AxiosDomain';
@@ -32,6 +32,7 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   assert(isString(config.method), 'method 不是一个 string');
 
   config.url = transformURL(config);
+  config.method = config.method!.toUpperCase() as AxiosRequestMethod;
   config.headers = flattenHeaders(config);
 
   // 可以携带 data 的请求方法，转换 data
@@ -49,13 +50,13 @@ export function dispatchRequest(config: AxiosRequestConfig) {
     return response;
   }
 
-  function onError(reason: Cancel | AxiosErrorResponse) {
-    if (!isCancel(reason)) {
+  function onError(error: Cancel | AxiosErrorResponse) {
+    if (!isCancel(error)) {
       throwIfCancellationRequested(config);
-      dataTransformer(reason.response, config.transformResponse);
+      dataTransformer(error.response, config.transformResponse);
     }
 
-    return Promise.reject(reason);
+    return Promise.reject(error);
   }
 
   function dataTransformer<TData = unknown>(

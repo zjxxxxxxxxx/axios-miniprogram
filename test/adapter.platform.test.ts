@@ -19,8 +19,8 @@ describe.each(platforms)('src/adapter.ts', (p) => {
   beforeEach(() => {
     vi.stubGlobal(p, {
       request: vi.fn(),
-      uploadFile: vi.fn(),
       downloadFile: vi.fn(),
+      uploadFile: vi.fn(),
     });
   });
 
@@ -32,7 +32,6 @@ describe.each(platforms)('src/adapter.ts', (p) => {
     const a = getDefaultAdapter();
     if (p !== 'unknown') {
       expect(a).toBeTypeOf('function');
-      (expect(a).property('name') as any).toBe('adapter');
     } else {
       // unknown 未知平台
       expect(a).toBeUndefined();

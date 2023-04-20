@@ -1,13 +1,14 @@
 import { describe, test, expect, vi } from 'vitest';
 import { asyncNext, mockAdapter } from 'scripts/test.utils';
 import { dispatchRequest } from '@/core/dispatchRequest';
-import axios from '@/axios';
-import _defaults from '@/defaults';
 import {
   requestMethodNames,
   requestMethodWithDataNames,
   requestMethodWithParamsNames,
 } from '@/core/AxiosDomain';
+
+import axios from '@/axios';
+import _defaults from '@/defaults';
 
 describe('src/core/dispatchRequest.ts', () => {
   const defaults = {
@@ -37,6 +38,22 @@ describe('src/core/dispatchRequest.ts', () => {
     ).not.toThrowError();
   });
 
+  test.each([
+    ...requestMethodNames,
+    ...requestMethodWithDataNames,
+    ...requestMethodWithParamsNames,
+  ])('应该支持 %s 转全大写', (k) => {
+    const c = {
+      adapter: mockAdapter(),
+      url: '/',
+      method: k,
+    };
+
+    dispatchRequest(c);
+
+    expect(c.method).toBe(k.toUpperCase());
+  });
+
   test('坏的适配器应该抛出异常', () => {
     expect(
       dispatchRequest({
@@ -51,7 +68,7 @@ describe('src/core/dispatchRequest.ts', () => {
         "config": {
           "adapter": [Function],
           "headers": {},
-          "method": "get",
+          "method": "GET",
           "url": "",
         },
         "request": undefined,
@@ -59,7 +76,7 @@ describe('src/core/dispatchRequest.ts', () => {
           "config": {
             "adapter": [Function],
             "headers": {},
-            "method": "get",
+            "method": "GET",
             "url": "",
           },
           "data": undefined,
@@ -126,19 +143,18 @@ describe('src/core/dispatchRequest.ts', () => {
     });
   });
 
-  test('应该支持转换请求数据', () => {
+  test.each(requestMethodWithDataNames)('%s 方法应该支持转换请求数据', (k) => {
     const c = {
       ...defaults,
       url: 'test',
+      method: k,
       data: {},
       transformRequest: () => ({ id: 1 }),
     };
 
-    requestMethodWithDataNames.forEach((k) => {
-      const s = { ...c, method: k };
-      dispatchRequest(s);
-      expect(s.data).toEqual({ id: 1 });
-    });
+    dispatchRequest(c);
+
+    expect(c.data).toEqual({ id: 1 });
   });
 
   test('不能带数据的请求方法应该删除数据', () => {
