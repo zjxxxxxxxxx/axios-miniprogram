@@ -1,9 +1,4 @@
-import {
-  isFunction,
-  isPlainObject,
-  isString,
-  isUndefined,
-} from './helpers/isTypes';
+import { isFunction, isPlainObject } from './helpers/isTypes';
 import { assert } from './helpers/error';
 import {
   AxiosProgressCallback,
@@ -138,8 +133,17 @@ export interface AxiosAdapterRequestConfig extends AnyObject {
  * 请求函数基本选项
  */
 export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
+  /**
+   * 请求头，同 headers
+   */
   header?: AxiosRequestHeaders;
+  /**
+   * 成功的回调
+   */
   success(response: AxiosAdapterResponse): void;
+  /**
+   * 失败的回调
+   */
   fail(error: AxiosAdapterResponseError): void;
 }
 
@@ -152,6 +156,9 @@ export type AxiosAdapterRequestOptions = AxiosAdapterBaseOptions;
  * 下载函数选项
  */
 export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
+  /**
+   * 文件下载后存储的路径
+   */
   filePath?: string;
 }
 
@@ -161,7 +168,17 @@ export interface AxiosAdapterDownloadOptions extends AxiosAdapterBaseOptions {
 export interface AxiosAdapterUploadOptions
   extends AxiosAdapterBaseOptions,
     AxiosRequestFormData {
+  /**
+   * [钉钉小程序用 fileName 代替 name](https://open.dingtalk.com/document/orgapp/dd-upload-objects#title-ngk-rr1-eow)
+   */
   fileName: string;
+  /**
+   * 钉钉小程序|支付宝小程序特有参数
+   */
+  fileType?: 'image' | 'video' | 'audie';
+  /**
+   * 额外的数据
+   */
   formData?: AnyObject;
 }
 
@@ -290,15 +307,42 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   function adapter(
     config: AxiosAdapterRequestConfig,
   ): AxiosAdapterPlatformTask {
-    const baseOptions = transformOptions(config);
-
+    const options = transformOptions(config);
     switch (config.type) {
       case 'request':
-        return processRequest(platform.request, baseOptions);
+        return processRequest(platform.request, options);
       case 'download':
-        return processDownload(platform.download, baseOptions);
+        return processDownload(platform.download, options);
       case 'upload':
-        return processUpload(platform.upload, baseOptions);
+        return processUpload(platform.upload, options);
+    }
+  }
+
+  function transformOptions(
+    config: AxiosAdapterRequestConfig,
+  ): AxiosAdapterBaseOptions {
+    return {
+      ...config,
+      success(response) {
+        transformResponse(response);
+        config.success(response);
+      },
+      fail(responseError) {
+        responseError.data = {
+          errMsg: responseError.errMsg,
+          errno: responseError.errno,
+        };
+        transformResponse(responseError);
+        config.fail(responseError);
+      },
+    };
+
+    function transformResponse(
+      response: AxiosAdapterResponse | AxiosAdapterResponseError,
+    ) {
+      response.status = response.status ?? response.statusCode;
+      response.headers = response.headers ?? response.header;
+      clean(response, ['statusCode', 'errMsg', 'errno', 'header']);
     }
   }
 
@@ -313,22 +357,14 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     upload: AxiosAdapterUpload,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterPlatformTask {
-    const { name, filePath, fileType, ...formData } =
-      baseOptions.data as AxiosRequestFormData;
-    const options = {
-      ...baseOptions,
-      name,
-      /**
-       * [钉钉小程序用 fileName 代替 name](https://open.dingtalk.com/document/orgapp/dd-upload-objects#title-ngk-rr1-eow)
-       */
-      fileName: name,
-      filePath,
-      /**
-       * 钉钉小程序|支付宝小程序特有参数
-       */
-      fileType,
-      formData,
-    };
+    const options = baseOptions as AxiosAdapterUploadOptions;
+    const { name, filePath, fileType, ...formData } = options.data as AnyObject;
+
+    options.name = name;
+    options.fileName = name;
+    options.filePath = filePath;
+    options.fileType = fileType;
+    options.formData = formData;
 
     return upload(options);
   }
@@ -337,74 +373,28 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     download: AxiosAdapterDownload,
     baseOptions: AxiosAdapterBaseOptions,
   ): AxiosAdapterPlatformTask {
-    const options: AxiosAdapterDownloadOptions = {
-      ...baseOptions,
-      filePath: baseOptions.params?.filePath,
-      success(response): void {
-        injectDownloadData(response);
-        baseOptions.success(response);
-      },
+    const options = baseOptions as AxiosAdapterDownloadOptions;
+    const { params, success } = options;
+
+    options.filePath = params?.filePath;
+    options.success = (response) => {
+      response.data = {
+        filePath: response.filePath,
+        tempFilePath:
+          response.tempFilePath ||
+          // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
+          response.apFilePath,
+      };
+      clean(response, ['tempFilePath', 'apFilePath', 'filePath']);
+      success(response);
     };
 
     return download(options);
   }
 
-  function transformResponse(response: AnyObject): void {
-    response.status = response.status ?? response.statusCode;
-    response.statusText = 'OK';
-
-    if (isUndefined(response.status)) {
-      response.status = 400;
-      response.statusText = 'Fail Adapter';
-    }
-
-    response.headers = response.headers ?? response.header ?? {};
-
-    if (isUndefined(response.data) && isString(response.errMsg)) {
-      response.data = {
-        errMsg: response.errMsg,
-        errno: response.errno,
-      };
-    }
-
-    cleanResponse(response, ['statusCode', 'errMsg', 'errno', 'header']);
-  }
-
-  function transformOptions(
-    config: AxiosAdapterRequestConfig,
-  ): AxiosAdapterBaseOptions {
-    return {
-      ...config,
-      header: config.headers,
-      success(response): void {
-        transformResponse(response);
-        config.success(response);
-      },
-      fail(error: AxiosAdapterResponseError): void {
-        transformResponse(error);
-        config.fail(error);
-      },
-    };
-  }
-
-  function injectDownloadData(response: AnyObject): void {
-    response.data = {
-      filePath: response.filePath,
-      tempFilePath:
-        response.tempFilePath ||
-        // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
-        response.apFilePath,
-    };
-
-    cleanResponse(response, ['tempFilePath', 'apFilePath', 'filePath']);
-  }
-
-  /**
-   * 清理 response 上多余的 key
-   */
-  function cleanResponse(response: AnyObject, keys: string[]) {
+  function clean(obj: AnyObject, keys: string[]) {
     for (const key of keys) {
-      delete response[key];
+      delete obj[key];
     }
   }
 

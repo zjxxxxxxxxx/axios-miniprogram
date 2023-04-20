@@ -56,10 +56,11 @@ export function request(config: AxiosRequestConfig) {
       response.config = config;
       response.request = adapterTask;
 
-      if (config.validateStatus?.(response.status) ?? true) {
+      const { validateStatus } = config;
+      if (!isFunction(validateStatus) || validateStatus(response.status)) {
         resolve(response);
       } else {
-        catchError('validate status fail', response);
+        catchError('validate status error', response);
       }
     }
 
@@ -67,7 +68,7 @@ export function request(config: AxiosRequestConfig) {
       const responseError = baseResponseError as AxiosResponseError;
       responseError.isFail = true;
       responseError.status = responseError.status ?? 400;
-      responseError.statusText = responseError.statusText ?? 'Fail Adapter';
+      responseError.statusText = responseError.statusText ?? 'Fail';
       responseError.headers = responseError.headers ?? {};
       responseError.config = config;
       responseError.request = adapterTask;

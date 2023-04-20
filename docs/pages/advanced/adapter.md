@@ -91,7 +91,7 @@ import axios from 'axios-miniprogram';
 
 // 适配器
 axios.defaults.adapter = (config) => {
-  // 可以先看看 config 都有哪些东西
+  // 可以先看看 config 上都有哪些属性
   console.log(config);
 
   // 开始适配不同类型的请求
@@ -122,13 +122,16 @@ axios.defaults.adapter = (config) => {
         success: (response) => {
           config.success({
             // 状态码
+            // 默认值：200
             status: response.statusCode,
 
-            // 状态文本，选填，不传默认 'OK'
+            // 状态文本
+            // 默认值：'OK'
             statusText: 'OK',
 
             // 响应头
-            headers: response.header ?? {},
+            // 默认值：{}
+            headers: response.header,
 
             // 响应数据
             data: response.data,
@@ -139,13 +142,16 @@ axios.defaults.adapter = (config) => {
         },
         fail: (error) => {
           config.fail({
-            // 状态码，选填，不传默认 400
+            // 状态码
+            // 默认值：400
             status: 400,
 
-            // 状态文本，选填，不传默认 'Fail Adapter'
-            statusText: 'Fail Adapter',
+            // 状态文本
+            // 默认值：'Fail'
+            statusText: 'Fail',
 
-            // 响应头，选填，不传默认 {}
+            // 响应头
+            // 默认值：{}
             headers: {},
 
             // 响应数据
@@ -171,12 +177,15 @@ axios.defaults.adapter = (config) => {
         success: (response) => {
           config.success({
             // 状态码
+            // 默认值：200
             status: response.statusCode,
 
-            // 状态文本，选填，不传默认 'OK'
+            // 状态文本
+            // 默认值：'OK'
             statusText: 'OK',
 
             // 响应头
+            // 默认值：{}
             headers: response.header,
 
             // 响应数据
@@ -185,13 +194,16 @@ axios.defaults.adapter = (config) => {
         },
         fail: (error) => {
           config.fail({
-            // 状态码，选填，不传默认 400
+            // 状态码
+            // 默认值：400
             status: 400,
 
-            // 状态文本，选填，不传默认 'Fail Adapter'
-            statusText: 'Fail Adapter',
+            // 状态文本
+            // 默认值：'Fail'
+            statusText: 'Fail',
 
-            // 响应头，选填，不传默认 {}
+            // 响应头
+            // 默认值：{}
             headers: {},
 
             // 响应数据
@@ -210,13 +222,16 @@ axios.defaults.adapter = (config) => {
         success: (response) => {
           config.success({
             // 状态码
+            // 默认值：200
             status: response.statusCode,
 
-            // 状态文本，选填，不传默认 'OK'
+            // 状态文本
+            // 默认值：'OK'
             statusText: 'OK',
 
             // 响应头
-            headers: response.header ?? {},
+            // 默认值：{}
+            headers: response.header,
 
             // 响应数据
             data: {
@@ -227,13 +242,16 @@ axios.defaults.adapter = (config) => {
         },
         fail: (error) => {
           config.fail({
-            // 状态码，选填，不传默认 400
+            // 状态码
+            // 默认值：400
             status: 400,
 
-            // 状态文本，选填，不传默认 'Fail Adapter'
-            statusText: 'Fail Adapter',
+            // 状态文本
+            // 默认值：'Fail'
+            statusText: 'Fail',
 
-            // 响应头，选填，不传默认 {}
+            // 响应头
+            // 默认值：{}
             headers: {},
 
             // 响应数据

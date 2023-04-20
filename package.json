@@ -5,7 +5,6 @@
   "main": "dist/axios-miniprogram.cjs.js",
   "module": "dist/axios-miniprogram.esm.js",
   "types": "dist/axios-miniprogram.d.ts",
-  "type": "module",
   "files": [
     "dist"
   ],
@@ -25,6 +24,7 @@
   },
   "homepage": "https://axios-miniprogram.com",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "cz": "simple-git-hooks && czg",
     "build": "esno scripts/build.ts",

@@ -81,9 +81,6 @@ describe('src/adapter.ts', () => {
     expect(p.request.mock.calls[0][0]).toMatchInlineSnapshot(`
       {
         "fail": [Function],
-        "header": {
-          "Accept": "application/json, text/plain, */*",
-        },
         "headers": {
           "Accept": "application/json, text/plain, */*",
         },
@@ -112,9 +109,6 @@ describe('src/adapter.ts', () => {
           "id": 1,
           "user": "test",
         },
-        "header": {
-          "Accept": "application/json, text/plain, */*",
-        },
         "headers": {
           "Accept": "application/json, text/plain, */*",
         },
@@ -132,9 +126,6 @@ describe('src/adapter.ts', () => {
       {
         "fail": [Function],
         "filePath": "/path/file",
-        "header": {
-          "Accept": "application/json, text/plain, */*",
-        },
         "headers": {
           "Accept": "application/json, text/plain, */*",
         },
@@ -271,9 +262,12 @@ describe('src/adapter.ts', () => {
       fail: (response: any) => {
         expect(response).toMatchInlineSnapshot(`
           {
-            "headers": {},
-            "status": 400,
-            "statusText": "Fail Adapter",
+            "data": {
+              "errMsg": undefined,
+              "errno": undefined,
+            },
+            "headers": undefined,
+            "status": undefined,
           }
         `);
       },
@@ -284,11 +278,11 @@ describe('src/adapter.ts', () => {
         expect(response).toMatchInlineSnapshot(`
           {
             "data": {
-              "result": null,
+              "errMsg": undefined,
+              "errno": undefined,
             },
-            "headers": {},
+            "headers": undefined,
             "status": 500,
-            "statusText": "OK",
           }
         `);
       },
@@ -302,9 +296,8 @@ describe('src/adapter.ts', () => {
               "errMsg": "request:fail",
               "errno": 1000,
             },
-            "headers": {},
-            "status": 400,
-            "statusText": "Fail Adapter",
+            "headers": undefined,
+            "status": undefined,
           }
         `);
       },

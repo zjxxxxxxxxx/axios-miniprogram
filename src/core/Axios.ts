@@ -99,7 +99,7 @@ export type AxiosRequestData =
 /**
  * 响应数据
  */
-export type AxiosResponseData = undefined | number | AxiosAdapterResponseData;
+export type AxiosResponseData = number | AxiosAdapterResponseData;
 
 /**
  * 监听进度回调事件对象
@@ -259,7 +259,7 @@ export interface AxiosResponseError extends AnyObject {
   /**
    * 错误数据
    */
-  data?: AnyObject;
+  data: AnyObject;
   /**
    * 失败的请求，指没能够成功响应的请求
    */
