@@ -1,3 +1,18 @@
+## [2.3.1](https://github.com/zjx0905/axios-miniprogram/compare/v2.3.0...v2.3.1) (2023-04-21)
+
+
+### Bug Fixes
+
+* 控制台没有输出适配器错误 ([258954a](https://github.com/zjx0905/axios-miniprogram/commit/258954afc1c39483ff6b1828c8904c5b284890d2))
+* 下载进度/上传进度 类型错误 ([2d691b6](https://github.com/zjx0905/axios-miniprogram/commit/2d691b69cbb2d3e27be3698bf4a4188cf71ccb7e))
+
+
+### Features
+
+* 添加版本号 ([e3346a8](https://github.com/zjx0905/axios-miniprogram/commit/e3346a866f12ed8aa07695f45a8177d631973abd))
+
+
+
 # [2.3.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.2.0...v2.3.0) (2023-04-18)
 
 

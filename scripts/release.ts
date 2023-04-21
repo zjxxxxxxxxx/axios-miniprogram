@@ -118,5 +118,5 @@ function updateVersion(version: string) {
   pkg.version = version;
 
   writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  writeFileSync(versionTSPath, `export const version = ${version};`);
+  writeFileSync(versionTSPath, `export const version = '${version}';`);
 }
