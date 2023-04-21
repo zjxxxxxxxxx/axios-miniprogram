@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest';
-import { flattenHeaders } from '@/core/flattenHeaders';
 import { eachMethods, methods } from 'scripts/test.utils';
+import { flattenHeaders } from '@/request/flattenHeaders';
 
-describe('src/core/flattenHeaders.ts', () => {
+describe('src/request/flattenHeaders.ts', () => {
   const baseHeaders = Object.fromEntries(
     methods.map((k) => [k, { v1: `${k}1`, v2: `${k}2` }]),
   ) as unknown as Record<(typeof methods)[number], AnyObject>;

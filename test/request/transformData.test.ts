@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import { transformData } from '@/core/transformData';
+import { transformData } from '@/request/transformData';
 
-describe('src/core/transformData.ts', () => {
+describe('src/request/transformData.ts', () => {
   test('应该支持空配置', () => {
     expect(transformData()).toBeUndefined();
     expect(transformData({})).toEqual({});

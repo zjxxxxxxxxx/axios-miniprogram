@@ -2,6 +2,9 @@ import { buildURL } from '../helpers/buildURL';
 import { isAbsoluteURL } from '../helpers/isAbsoluteURL';
 import { combineURL } from '../helpers/combineURL';
 import { isString } from '../helpers/isTypes';
+import { CancelToken } from '../request/cancel';
+import { dispatchRequest } from '../request/dispatchRequest';
+import { AxiosTransformer } from '../request/transformData';
 import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
@@ -11,9 +14,6 @@ import {
 } from '../adapter';
 import InterceptorManager, { Interceptor } from './InterceptorManager';
 import { mergeConfig } from './mergeConfig';
-import { CancelToken } from './cancel';
-import { dispatchRequest } from './dispatchRequest';
-import { AxiosTransformer } from './transformData';
 import AxiosDomain from './AxiosDomain';
 
 /**

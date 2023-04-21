@@ -1,11 +1,11 @@
 import { describe, test, expect } from 'vitest';
+import { eachMethods } from 'scripts/test.utils';
+import { CancelToken, isCancel } from '@/request/cancel';
+import { isAxiosError } from '@/request/createError';
 import Axios from '@/core/Axios';
-import { CancelToken, isCancel } from '@/core/cancel';
-import { isAxiosError } from '@/core/createError';
+import defaults from '@/defaults';
 import { createAdapter } from '@/adapter';
 import axios from '@/axios';
-import defaults from '@/defaults';
-import { eachMethods } from 'scripts/test.utils';
 
 describe('src/axios.ts', () => {
   test('应该有这些静态属性', () => {

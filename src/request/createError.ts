@@ -1,6 +1,10 @@
 import { cleanStack } from '../helpers/error';
+import {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosResponseError,
+} from '../core/Axios';
 import { AxiosAdapterPlatformTask } from '../adapter';
-import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
 
 export type AxiosErrorResponse = AxiosResponse | AxiosResponseError;
 

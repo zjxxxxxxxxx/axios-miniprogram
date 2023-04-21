@@ -1,6 +1,6 @@
 import { isPlainObject } from '../helpers/isTypes';
 import { ignore } from '../helpers/ignore';
-import { AxiosRequestConfig, AxiosRequestHeaders } from './Axios';
+import { AxiosRequestConfig, AxiosRequestHeaders } from '../core/Axios';
 
 export function flattenHeaders(
   config: AxiosRequestConfig,

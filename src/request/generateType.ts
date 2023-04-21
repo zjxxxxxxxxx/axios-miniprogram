@@ -1,5 +1,5 @@
+import { AxiosRequestConfig } from '../core/Axios';
 import { AxiosAdapterRequestType } from '../adapter';
-import { AxiosRequestConfig } from './Axios';
 
 export function generateType(config: AxiosRequestConfig) {
   let requestType: AxiosAdapterRequestType = 'request';

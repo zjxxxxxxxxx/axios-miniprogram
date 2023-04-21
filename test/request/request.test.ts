@@ -7,10 +7,10 @@ import {
   mockAdapterFail,
   testEachMethods,
 } from 'scripts/test.utils';
-import { request } from '@/core/request';
+import { request } from '@/request/request';
 import axios from '@/axios';
 
-describe('src/core/request.ts', () => {
+describe('src/request/request.ts', () => {
   testEachMethods('%s 方法应该返回正确的响应体结构', (k) => {
     const c = {
       adapter: mockAdapter(),

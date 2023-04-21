@@ -1,12 +1,17 @@
 import { isFunction, isPlainObject } from '../helpers/isTypes';
 import {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosResponseError,
+} from '../core/Axios';
+import {
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,
   AxiosAdapterResponse,
   AxiosAdapterResponseError,
   AxiosAdapterPlatformTask,
 } from '../adapter';
-import { AxiosRequestConfig, AxiosResponse, AxiosResponseError } from './Axios';
+
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';

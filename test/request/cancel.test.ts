@@ -6,16 +6,16 @@ import {
   noop,
   asyncTimeout,
 } from 'scripts/test.utils';
-import axios from 'src/axios';
 import {
   Cancel,
   isCancel,
   CancelToken,
   isCancelToken,
   CancelAction,
-} from '@/core/cancel';
+} from '@/request/cancel';
+import axios from '@/axios';
 
-describe('src/helpers/cancel.ts', () => {
+describe('src/request/cancel.ts', () => {
   test('应该支持空参数', () => {
     const c = new Cancel();
 

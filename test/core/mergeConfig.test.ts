@@ -1,7 +1,7 @@
 import { describe, test, expect, vi } from 'vitest';
 import { ignore } from '@/helpers/ignore';
+import { CancelToken } from '@/request/cancel';
 import { mergeConfig } from '@/core/mergeConfig';
-import { CancelToken } from '@/core/cancel';
 
 describe('src/core/mergeConfig.ts', () => {
   test('应该支持空参数', () => {

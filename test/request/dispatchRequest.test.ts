@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from 'vitest';
 import { asyncNext, mockAdapter, testEachMethods } from 'scripts/test.utils';
-import { dispatchRequest } from '@/core/dispatchRequest';
+import { dispatchRequest } from '@/request/dispatchRequest';
 import {
   requestMethodNames,
   requestMethodWithDataNames,
@@ -10,7 +10,7 @@ import {
 import axios from '@/axios';
 import _defaults from '@/defaults';
 
-describe('src/core/dispatchRequest.ts', () => {
+describe('src/request/dispatchRequest.ts', () => {
   const defaults = {
     ..._defaults,
     adapter: mockAdapter(),

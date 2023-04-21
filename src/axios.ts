@@ -1,12 +1,16 @@
+import {
+  CancelToken,
+  CancelTokenConstructor,
+  isCancel,
+} from './request/cancel';
+import { isAxiosError } from './request/createError';
+import { mergeConfig } from './core/mergeConfig';
 import { AxiosDomainRequest } from './core/AxiosDomain';
 import Axios, {
   AxiosConstructor,
   AxiosRequestConfig,
   AxiosRequestHeaders,
 } from './core/Axios';
-import { CancelToken, CancelTokenConstructor, isCancel } from './core/cancel';
-import { isAxiosError } from './core/createError';
-import { mergeConfig } from './core/mergeConfig';
 import { createAdapter } from './adapter';
 import defaults from './defaults';
 import { version } from './version';

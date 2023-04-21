@@ -36,9 +36,9 @@ export type {
   AxiosStatic,
 } from './axios';
 
-export { CancelToken, isCancel } from './core/cancel';
+export { CancelToken, isCancel } from './request/cancel';
+export { isAxiosError } from './request/createError';
 export { default as Axios } from './core/Axios';
-export { isAxiosError } from './core/createError';
 export { createAdapter } from './adapter';
 export { version } from './version';
 

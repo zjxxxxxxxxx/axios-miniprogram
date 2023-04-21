@@ -1,13 +1,17 @@
 import { isFunction, isString } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
+import { requestMethodWithDataNames } from '../core/AxiosDomain';
+import {
+  AxiosRequestConfig,
+  AxiosRequestMethod,
+  AxiosResponse,
+} from '../core/Axios';
 import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
 import { request } from './request';
-import { AxiosRequestConfig, AxiosRequestMethod, AxiosResponse } from './Axios';
 import { transformURL } from './transformURL';
 import { AxiosErrorResponse } from './createError';
-import { requestMethodWithDataNames } from './AxiosDomain';
 
 /**
  * 可以携带 data 的请求方法
