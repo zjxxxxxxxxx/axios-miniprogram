@@ -3,8 +3,8 @@ import { eachMethods } from 'scripts/test.utils';
 import { CancelToken, isCancel } from '@/request/cancel';
 import { isAxiosError } from '@/request/createError';
 import Axios from '@/core/Axios';
+import { createAdapter } from '@/adpater/createAdapter';
 import defaults from '@/defaults';
-import { createAdapter } from '@/adapter';
 import axios from '@/axios';
 
 describe('src/axios.ts', () => {

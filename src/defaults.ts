@@ -1,4 +1,4 @@
-import { getDefaultAdapter } from './adapter';
+import { getDefaultAdapter } from './adpater/getDefaultAdapter';
 import { AxiosInstanceDefaults } from './axios';
 
 const defaults: AxiosInstanceDefaults = {

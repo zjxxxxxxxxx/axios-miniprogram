@@ -1,8 +1,8 @@
 import { describe, test, expect, vi } from 'vitest';
 import { noop } from 'scripts/test.utils';
-import { AxiosAdapterPlatform, createAdapter } from '@/adapter';
+import { AxiosAdapterPlatform, createAdapter } from '@/adpater/createAdapter';
 
-describe('src/adapter.ts', () => {
+describe('src/adapter/createAdapter.ts', () => {
   test('应该抛出异常', () => {
     expect(() =>
       createAdapter(undefined as unknown as AxiosAdapterPlatform),

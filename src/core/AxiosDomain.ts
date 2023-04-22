@@ -1,3 +1,8 @@
+import {
+  PLAIN_METHODS,
+  WITH_DATA_METHODS,
+  WITH_PARAMS_METHODS,
+} from '../constants/methods';
 import { isString, isUndefined } from '../helpers/isTypes';
 import { deepMerge } from '../helpers/deepMerge';
 import { mergeConfig } from './mergeConfig';
@@ -50,21 +55,6 @@ export type AxiosDomainRequestMethodWithData = <
   data?: AxiosRequestData,
   config?: AxiosRequestConfig,
 ) => Promise<AxiosResponse<TData>>;
-
-/**
- * 普通的请求方法名称
- */
-export const requestMethodNames = ['options', 'trace', 'connect'] as const;
-
-/**
- * 带参数的请求方法名称
- */
-export const requestMethodWithParamsNames = ['head', 'get', 'delete'] as const;
-
-/**
- * 带数据的请求方法名称
- */
-export const requestMethodWithDataNames = ['post', 'put', 'patch'] as const;
 
 export default class AxiosDomain {
   /**
@@ -147,7 +137,7 @@ export default class AxiosDomain {
   }
 }
 
-for (const method of requestMethodNames) {
+for (const method of PLAIN_METHODS) {
   AxiosDomain.prototype[method] = function processRequestMethod(
     url,
     config = {},
@@ -157,7 +147,7 @@ for (const method of requestMethodNames) {
   };
 }
 
-for (const method of requestMethodWithParamsNames) {
+for (const method of WITH_PARAMS_METHODS) {
   AxiosDomain.prototype[method] = function processRequestMethodWithParams(
     url,
     params = {},
@@ -169,7 +159,7 @@ for (const method of requestMethodWithParamsNames) {
   };
 }
 
-for (const method of requestMethodWithDataNames) {
+for (const method of WITH_DATA_METHODS) {
   AxiosDomain.prototype[method] = function processRequestMethodWithData(
     url,
     data,

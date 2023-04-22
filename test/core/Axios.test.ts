@@ -5,11 +5,12 @@ import {
   mockAdapterFail,
   testEachMethods,
 } from 'scripts/test.utils';
-import AxiosDomain, {
-  requestMethodNames,
-  requestMethodWithParamsNames,
-  requestMethodWithDataNames,
-} from '@/core/AxiosDomain';
+import {
+  PLAIN_METHODS,
+  WITH_DATA_METHODS,
+  WITH_PARAMS_METHODS,
+} from '@/constants/methods';
+import AxiosDomain from '@/core/AxiosDomain';
 import Axios from '@/core/Axios';
 import axios from '@/axios';
 
@@ -51,7 +52,7 @@ describe('src/core/Axios.ts', () => {
       }),
     };
 
-    requestMethodNames.forEach((a) => {
+    PLAIN_METHODS.forEach((a) => {
       axiosObj[a]('test', c).then((res) => {
         expect(res.data).toEqual(data);
       });
@@ -79,7 +80,7 @@ describe('src/core/Axios.ts', () => {
       }),
     };
 
-    requestMethodWithParamsNames.forEach((a) => {
+    WITH_PARAMS_METHODS.forEach((a) => {
       axiosObj[a]('test', p, c1).then((res) => {
         expect(res.data).toEqual(data);
       });
@@ -110,7 +111,7 @@ describe('src/core/Axios.ts', () => {
       }),
     };
 
-    requestMethodWithDataNames.forEach((a) => {
+    WITH_DATA_METHODS.forEach((a) => {
       axiosObj[a]('test', d, c1).then((res) => {
         expect(res.data).toEqual(data);
       });

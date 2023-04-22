@@ -1,11 +1,11 @@
 import { describe, test, expect, vi } from 'vitest';
 import { asyncNext, mockAdapter, testEachMethods } from 'scripts/test.utils';
-import { dispatchRequest } from '@/request/dispatchRequest';
 import {
-  requestMethodNames,
-  requestMethodWithDataNames,
-  requestMethodWithParamsNames,
-} from '@/core/AxiosDomain';
+  PLAIN_METHODS,
+  WITH_DATA_METHODS,
+  WITH_PARAMS_METHODS,
+} from '@/constants/methods';
+import { dispatchRequest } from '@/request/dispatchRequest';
 
 import axios from '@/axios';
 import _defaults from '@/defaults';
@@ -139,7 +139,7 @@ describe('src/request/dispatchRequest.ts', () => {
     });
   });
 
-  test.each(requestMethodWithDataNames)('%s 方法应该支持转换请求数据', (k) => {
+  test.each(WITH_DATA_METHODS)('%s 方法应该支持转换请求数据', (k) => {
     const c = {
       ...defaults,
       url: 'test',
@@ -161,7 +161,7 @@ describe('src/request/dispatchRequest.ts', () => {
       transformRequest: () => ({ id: 1 }),
     };
 
-    [...requestMethodNames, ...requestMethodWithParamsNames].forEach((k) => {
+    [...PLAIN_METHODS, ...WITH_PARAMS_METHODS].forEach((k) => {
       const s = { ...c, method: k };
       dispatchRequest(s);
       expect(s.data).toBeUndefined();

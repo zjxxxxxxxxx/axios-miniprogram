@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
-import { getDefaultAdapter } from '@/adapter';
+import { getDefaultAdapter } from '@/adpater/getDefaultAdapter';
 
 const platforms = [
   'uni',
@@ -15,7 +15,7 @@ const platforms = [
   'unknown',
 ];
 
-describe.each(platforms)('src/adapter.ts', (p) => {
+describe.each(platforms)('src/adapter/getDefaultAdapter.ts', (p) => {
   beforeEach(() => {
     vi.stubGlobal(p, {
       request: vi.fn(),

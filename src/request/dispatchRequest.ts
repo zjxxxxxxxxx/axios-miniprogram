@@ -1,6 +1,6 @@
+import { WITH_DATA_RE } from '../constants/methods';
 import { isFunction, isString } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
-import { requestMethodWithDataNames } from '../core/AxiosDomain';
 import {
   AxiosRequestConfig,
   AxiosRequestMethod,
@@ -12,14 +12,6 @@ import { AxiosTransformer, transformData } from './transformData';
 import { request } from './request';
 import { transformURL } from './transformURL';
 import { AxiosErrorResponse } from './createError';
-
-/**
- * 可以携带 data 的请求方法
- */
-const requestMethodWithDataRE = new RegExp(
-  `^${requestMethodWithDataNames.join('|')}`,
-  'i',
-);
 
 /**
  * 发送请求
@@ -41,7 +33,7 @@ export function dispatchRequest(config: AxiosRequestConfig) {
 
   // 可以携带 data 的请求方法，转换 data
   // 否则，删除 data
-  if (requestMethodWithDataRE.test(config.method!)) {
+  if (WITH_DATA_RE.test(config.method!)) {
     dataTransformer(config, config.transformRequest);
   } else {
     delete config.data;

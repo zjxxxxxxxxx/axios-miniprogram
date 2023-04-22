@@ -29,7 +29,7 @@ export type {
   AxiosAdapterUploadOptions,
   AxiosAdapterPlatform,
   AxiosAdapterPlatformTask,
-} from './adapter';
+} from './adpater/createAdapter';
 export type {
   AxiosInstanceDefaults,
   AxiosInstance,
@@ -39,7 +39,7 @@ export type {
 export { CancelToken, isCancel } from './request/cancel';
 export { isAxiosError } from './request/createError';
 export { default as Axios } from './core/Axios';
-export { createAdapter } from './adapter';
+export { createAdapter } from './adpater/createAdapter';
 export { version } from './version';
 
 export default axios;

@@ -10,8 +10,7 @@ import {
   AxiosAdapterResponse,
   AxiosAdapterResponseError,
   AxiosAdapterPlatformTask,
-} from '../adapter';
-
+} from '../adpater/createAdapter';
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';

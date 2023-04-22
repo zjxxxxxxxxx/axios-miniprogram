@@ -1,20 +1,15 @@
 import { describe, test, expect, vi } from 'vitest';
 import { ignore } from '@/helpers/ignore';
-import AxiosDomain, {
-  requestMethodNames,
-  requestMethodWithParamsNames,
-  requestMethodWithDataNames,
-} from '@/core/AxiosDomain';
+import {
+  PLAIN_METHODS,
+  WITH_DATA_METHODS,
+  WITH_PARAMS_METHODS,
+} from '@/constants/methods';
+import AxiosDomain from '@/core/AxiosDomain';
 import { AxiosResponse } from '@/core/Axios';
 import { eachMethods } from 'scripts/test.utils';
 
 describe('src/core/AxiosDomain.ts', () => {
-  test('应该有这些常量', () => {
-    expect(requestMethodNames).toEqual(['options', 'trace', 'connect']);
-    expect(requestMethodWithParamsNames).toEqual(['head', 'get', 'delete']);
-    expect(requestMethodWithDataNames).toEqual(['post', 'put', 'patch']);
-  });
-
   test('应该有这些实例属性', () => {
     const c = {
       baseURL: 'http://api.com',
@@ -59,14 +54,14 @@ describe('src/core/AxiosDomain.ts', () => {
 
     a.request('test');
 
-    requestMethodNames.forEach((k) => a[k]('test'));
-    requestMethodWithParamsNames.forEach((k) => a[k]('test'));
-    requestMethodWithDataNames.forEach((k) => a[k]('test'));
+    PLAIN_METHODS.forEach((k) => a[k]('test'));
+    WITH_PARAMS_METHODS.forEach((k) => a[k]('test'));
+    WITH_DATA_METHODS.forEach((k) => a[k]('test'));
 
     const l =
-      requestMethodNames.length +
-      requestMethodWithParamsNames.length +
-      requestMethodWithDataNames.length +
+      PLAIN_METHODS.length +
+      WITH_PARAMS_METHODS.length +
+      WITH_DATA_METHODS.length +
       1;
     expect(cb.mock.calls.length).toBe(l);
     cb.mock.calls.forEach(([config]) => expect(config.url).toBe('test'));
@@ -99,18 +94,14 @@ describe('src/core/AxiosDomain.ts', () => {
 
     a.request(u, c);
 
-    requestMethodNames.forEach((k) => a[k](u, c));
-    requestMethodWithParamsNames.forEach((k) =>
-      a[k](u, c.params, ignore(c, 'params')),
-    );
-    requestMethodWithDataNames.forEach((k) =>
-      a[k](u, c.data, ignore(c, 'data')),
-    );
+    PLAIN_METHODS.forEach((k) => a[k](u, c));
+    WITH_PARAMS_METHODS.forEach((k) => a[k](u, c.params, ignore(c, 'params')));
+    WITH_DATA_METHODS.forEach((k) => a[k](u, c.data, ignore(c, 'data')));
 
     const l =
-      requestMethodNames.length +
-      requestMethodWithParamsNames.length +
-      requestMethodWithDataNames.length +
+      PLAIN_METHODS.length +
+      WITH_PARAMS_METHODS.length +
+      WITH_DATA_METHODS.length +
       1;
     expect(cb.mock.calls.length).toBe(l);
   });
@@ -142,18 +133,18 @@ describe('src/core/AxiosDomain.ts', () => {
 
     a.request(c);
 
-    requestMethodNames.forEach((k) => a[k](c.url, ignore(c, 'url')));
-    requestMethodWithParamsNames.forEach((k) =>
+    PLAIN_METHODS.forEach((k) => a[k](c.url, ignore(c, 'url')));
+    WITH_PARAMS_METHODS.forEach((k) =>
       a[k](c.url, c.params, ignore(c, 'url', 'params')),
     );
-    requestMethodWithDataNames.forEach((k) =>
+    WITH_DATA_METHODS.forEach((k) =>
       a[k](c.url, c.data, ignore(c, 'url', 'data')),
     );
 
     const l =
-      requestMethodNames.length +
-      requestMethodWithParamsNames.length +
-      requestMethodWithDataNames.length +
+      PLAIN_METHODS.length +
+      WITH_PARAMS_METHODS.length +
+      WITH_DATA_METHODS.length +
       1;
     expect(cb.mock.calls.length).toBe(l);
   });
@@ -190,7 +181,7 @@ describe('src/core/AxiosDomain.ts', () => {
       return {} as AxiosResponse;
     });
 
-    requestMethodWithParamsNames.forEach((k) => a[k]('test', p, c));
+    WITH_PARAMS_METHODS.forEach((k) => a[k]('test', p, c));
   });
 
   test('应该只取传入的 data', () => {
@@ -212,7 +203,7 @@ describe('src/core/AxiosDomain.ts', () => {
       return {} as AxiosResponse;
     });
 
-    requestMethodWithDataNames.forEach((k) => a[k]('test', d, c));
+    WITH_DATA_METHODS.forEach((k) => a[k]('test', d, c));
   });
 
   test('应该支持多种类型 data', () => {
@@ -240,7 +231,7 @@ describe('src/core/AxiosDomain.ts', () => {
       return {} as AxiosResponse;
     });
 
-    requestMethodWithDataNames.forEach((k) => {
+    WITH_DATA_METHODS.forEach((k) => {
       testStr[k]('test', str);
       testObj[k]('test', obj);
       testBuff[k]('test', buff);

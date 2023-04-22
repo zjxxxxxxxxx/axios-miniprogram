@@ -1,10 +1,10 @@
 import { test } from 'vitest';
 import {
-  requestMethodNames,
-  requestMethodWithParamsNames,
-  requestMethodWithDataNames,
-} from '@/core/AxiosDomain';
-import { AxiosAdapterRequestConfig } from '@/adapter';
+  PLAIN_METHODS,
+  WITH_PARAMS_METHODS,
+  WITH_DATA_METHODS,
+} from '@/constants/methods';
+import { AxiosAdapterRequestConfig } from '@/adpater/createAdapter';
 
 export function asyncNext() {
   return Promise.resolve().then;
@@ -114,9 +114,9 @@ export function mockAdapterFail(options: MockAdapterOptions = {}) {
 }
 
 export const methods = [
-  ...requestMethodNames,
-  ...requestMethodWithParamsNames,
-  ...requestMethodWithDataNames,
+  ...PLAIN_METHODS,
+  ...WITH_PARAMS_METHODS,
+  ...WITH_DATA_METHODS,
 ];
 
 export const testEachMethods = test.each(methods);

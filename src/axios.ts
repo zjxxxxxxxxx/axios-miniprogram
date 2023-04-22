@@ -11,7 +11,7 @@ import Axios, {
   AxiosRequestConfig,
   AxiosRequestHeaders,
 } from './core/Axios';
-import { createAdapter } from './adapter';
+import { createAdapter } from './adpater/createAdapter';
 import defaults from './defaults';
 import { version } from './version';
 

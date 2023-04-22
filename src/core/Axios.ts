@@ -11,7 +11,7 @@ import {
   AxiosAdapterPlatformTask,
   AxiosAdapterRequestConfig,
   AxiosAdapterResponseData,
-} from '../adapter';
+} from '../adpater/createAdapter';
 import InterceptorManager, { Interceptor } from './InterceptorManager';
 import { mergeConfig } from './mergeConfig';
 import AxiosDomain from './AxiosDomain';
