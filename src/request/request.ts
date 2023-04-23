@@ -6,7 +6,6 @@ import {
 } from '../core/Axios';
 import {
   AxiosAdapterRequestConfig,
-  AxiosAdapterRequestMethod,
   AxiosAdapterResponse,
   AxiosAdapterResponseError,
   AxiosAdapterPlatformTask,

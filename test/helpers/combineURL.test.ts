@@ -14,6 +14,12 @@ describe('src/helpers/combineURL.ts', () => {
     expect(combineURL('unknow://api.com', '')).toBe('unknow://api.com');
   });
 
+  test('应该直接返回第二个参数', () => {
+    expect(combineURL('', 'http://api.com')).toBe('http://api.com');
+    expect(combineURL('', 'file://api.com')).toBe('file://api.com');
+    expect(combineURL('', 'unknow://api.com')).toBe('unknow://api.com');
+  });
+
   test('应该得到拼接后的结果', () => {
     expect(combineURL('http://api.com', 'test')).toBe('http://api.com/test');
     expect(combineURL('file://api.com', '/test')).toBe('file://api.com/test');

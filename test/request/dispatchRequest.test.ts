@@ -100,6 +100,7 @@ describe('src/request/dispatchRequest.ts', () => {
     };
     const c3 = {
       ...defaults,
+      method: 'post' as const,
       url: 'test/:id',
       data: {
         id: 1,

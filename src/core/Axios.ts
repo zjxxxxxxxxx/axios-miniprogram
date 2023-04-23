@@ -1,9 +1,6 @@
 import { buildURL } from '../helpers/buildURL';
-import { isAbsoluteURL } from '../helpers/isAbsoluteURL';
 import { combineURL } from '../helpers/combineURL';
-import { isString } from '../helpers/isTypes';
 import { CancelToken } from '../request/cancel';
-import { dispatchRequest } from '../request/dispatchRequest';
 import { AxiosTransformer } from '../request/transformData';
 import {
   AxiosAdapter,
@@ -14,7 +11,7 @@ import {
 } from '../adpater/createAdapter';
 import InterceptorManager, { Interceptor } from './InterceptorManager';
 import { mergeConfig } from './mergeConfig';
-import AxiosDomain from './AxiosDomain';
+import AxiosDomain, { AxiosDomainRequestHandler } from './AxiosDomain';
 
 /**
  * 请求方法
@@ -319,7 +316,7 @@ export default class Axios extends AxiosDomain {
   };
 
   constructor(defaults: AxiosRequestConfig = {}) {
-    super(defaults, (config) => this.#processRequest(config));
+    super(defaults, (...args) => this.#processRequest(...args));
   }
 
   getUri(config: AxiosRequestConfig): string {
@@ -334,17 +331,21 @@ export default class Axios extends AxiosDomain {
    * 派生领域
    */
   fork = (config: AxiosRequestConfig = {}) => {
-    if (isString(config.baseURL) && !isAbsoluteURL(config.baseURL)) {
-      config.baseURL = combineURL(this.defaults.baseURL, config.baseURL);
-    }
-    return new AxiosDomain(mergeConfig(this.defaults, config), (config) =>
-      this.#processRequest(config),
+    config.baseURL = combineURL(this.defaults.baseURL, config.baseURL);
+    const domain = new AxiosDomain(
+      mergeConfig(this.defaults, config),
+      (...args) => this.#processRequest(...args),
     );
+    domain.flush = this.middleware.wrap(domain.flush);
+    return domain;
   };
 
-  #processRequest(config: AxiosRequestConfig) {
+  #processRequest(
+    config: AxiosRequestConfig,
+    requestHandlerFn: AxiosDomainRequestHandler,
+  ) {
     const requestHandler = {
-      resolved: dispatchRequest,
+      resolved: requestHandlerFn,
     };
     const errorHandler = {
       rejected: config.errorHandler,

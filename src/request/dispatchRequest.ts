@@ -27,7 +27,6 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   assert(isString(config.url), 'url 不是一个 string');
   assert(isString(config.method), 'method 不是一个 string');
 
-  config.url = transformURL(config);
   config.method = config.method!.toUpperCase() as AxiosRequestMethod;
   config.headers = flattenHeaders(config);
 
@@ -38,6 +37,8 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   } else {
     delete config.data;
   }
+
+  config.url = transformURL(config);
 
   function onSuccess(response: AxiosResponse) {
     throwIfCancellationRequested(config);

@@ -5,6 +5,8 @@ import {
 } from '../constants/methods';
 import { isString, isUndefined } from '../helpers/isTypes';
 import { deepMerge } from '../helpers/deepMerge';
+import { combineURL } from '../helpers/combineURL';
+import { dispatchRequest } from '../request/dispatchRequest';
 import { mergeConfig } from './mergeConfig';
 import {
   AxiosRequestConfig,
@@ -12,6 +14,10 @@ import {
   AxiosResponse,
   AxiosResponseData,
 } from './Axios';
+import MiddlewareManager, {
+  MiddlewareContext,
+  MiddlewareFlush,
+} from './MiddlewareManager';
 
 /**
  * 请求函数
@@ -56,11 +62,17 @@ export type AxiosDomainRequestMethodWithData = <
   config?: AxiosRequestConfig,
 ) => Promise<AxiosResponse<TData>>;
 
+export interface AxiosDomainRequestHandler {
+  (config: AxiosRequestConfig): Promise<AxiosResponse>;
+}
+
 export default class AxiosDomain {
   /**
    * 默认请求配置
    */
   defaults: AxiosRequestConfig;
+
+  middleware = new MiddlewareManager();
 
   /**
    * 发送请求
@@ -112,9 +124,14 @@ export default class AxiosDomain {
    */
   connect!: AxiosDomainRequestMethod;
 
+  flush: MiddlewareFlush;
+
   constructor(
     defaults: AxiosRequestConfig,
-    processRequest: (config: AxiosRequestConfig) => Promise<AxiosResponse>,
+    processRequest: (
+      config: AxiosRequestConfig,
+      requestHandler: AxiosDomainRequestHandler,
+    ) => Promise<AxiosResponse>,
   ) {
     this.defaults = defaults;
 
@@ -132,9 +149,25 @@ export default class AxiosDomain {
         config.method = 'get';
       }
 
-      return processRequest(mergeConfig(this.defaults, config));
+      return processRequest(
+        mergeConfig(this.defaults, config),
+        this.#requestHandler,
+      );
     };
+    this.flush = this.middleware.wrap(async (ctx) => {
+      ctx.res = await dispatchRequest(ctx.req);
+    });
   }
+
+  #requestHandler: AxiosDomainRequestHandler = async (config) => {
+    config.url = combineURL(config.baseURL, config.url);
+    const ctx: MiddlewareContext = {
+      req: config,
+      res: null,
+    };
+    await this.flush(ctx);
+    return ctx.res as AxiosResponse;
+  };
 }
 
 for (const method of PLAIN_METHODS) {

@@ -84,7 +84,9 @@ function createInstance(config: AxiosRequestConfig) {
 const axios = createInstance(defaults) as AxiosStatic;
 
 axios.create = function create(config) {
-  return createInstance(mergeConfig(axios.defaults, config));
+  const instance = createInstance(mergeConfig(axios.defaults, config));
+  instance.flush = axios.middleware.wrap(instance.flush);
+  return instance;
 };
 
 axios.version = version;

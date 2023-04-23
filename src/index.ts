@@ -15,6 +15,11 @@ export type {
   AxiosUploadProgressCallback,
 } from './core/Axios';
 export type {
+  MiddlewareContext,
+  MiddlewareCallback,
+  MiddlewareNext,
+} from './core/MiddlewareManager';
+export type {
   AxiosAdapter,
   AxiosAdapterRequestConfig,
   AxiosAdapterRequestMethod,

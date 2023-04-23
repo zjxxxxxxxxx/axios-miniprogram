@@ -37,6 +37,7 @@ describe('src/axios.ts', () => {
         },
       }),
       baseURL: 'http://api.com',
+      method: 'post',
       data: {
         id: 1,
       },
