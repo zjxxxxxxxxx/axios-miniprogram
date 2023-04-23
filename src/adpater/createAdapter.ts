@@ -270,6 +270,7 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   ): AxiosAdapterBaseOptions {
     return {
       ...config,
+      header: config.headers,
       success(response) {
         transformResponse(response);
         config.success(response);

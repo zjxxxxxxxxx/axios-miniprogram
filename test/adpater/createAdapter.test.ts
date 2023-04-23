@@ -81,6 +81,9 @@ describe('src/adapter/createAdapter.ts', () => {
     expect(p.request.mock.calls[0][0]).toMatchInlineSnapshot(`
       {
         "fail": [Function],
+        "header": {
+          "Accept": "application/json, text/plain, */*",
+        },
         "headers": {
           "Accept": "application/json, text/plain, */*",
         },
@@ -109,6 +112,9 @@ describe('src/adapter/createAdapter.ts', () => {
           "id": 1,
           "user": "test",
         },
+        "header": {
+          "Accept": "application/json, text/plain, */*",
+        },
         "headers": {
           "Accept": "application/json, text/plain, */*",
         },
@@ -126,6 +132,9 @@ describe('src/adapter/createAdapter.ts', () => {
       {
         "fail": [Function],
         "filePath": "/path/file",
+        "header": {
+          "Accept": "application/json, text/plain, */*",
+        },
         "headers": {
           "Accept": "application/json, text/plain, */*",
         },

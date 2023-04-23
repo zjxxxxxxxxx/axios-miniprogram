@@ -24,20 +24,16 @@ import { generateType } from './generateType';
  */
 export function request(config: AxiosRequestConfig) {
   return new Promise<AxiosResponse>((resolve, reject) => {
-    const { adapter, url, method, cancelToken } = config;
-
     const adapterConfig: AxiosAdapterRequestConfig = {
-      ...config,
-      url: url!,
+      ...(config as AxiosAdapterRequestConfig),
       type: generateType(config),
-      method: method as AxiosAdapterRequestMethod,
       success,
       fail,
     };
 
     let adapterTask: AxiosAdapterPlatformTask;
     try {
-      adapterTask = adapter!(adapterConfig);
+      adapterTask = config.adapter!(adapterConfig);
     } catch (err) {
       fail({
         status: 400,
@@ -86,6 +82,7 @@ export function request(config: AxiosRequestConfig) {
       tryToggleProgressUpdate(adapterConfig, adapterTask.onProgressUpdate);
     }
 
+    const { cancelToken } = config;
     if (isCancelToken(cancelToken)) {
       cancelToken.onCancel((reason) => {
         if (isPlainObject(adapterTask)) {
