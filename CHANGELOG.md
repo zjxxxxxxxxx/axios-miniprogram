@@ -1,3 +1,12 @@
+## [2.3.2](https://github.com/zjx0905/axios-miniprogram/compare/v2.3.1...v2.3.2) (2023-04-23)
+
+
+### Bug Fixes
+
+* 适配器请求头丢失 ([c0ca900](https://github.com/zjx0905/axios-miniprogram/commit/c0ca9001d2dc2b138a916c18da000b733d58ec7a)), closes [#43](https://github.com/zjx0905/axios-miniprogram/issues/43)
+
+
+
 ## [2.3.1](https://github.com/zjx0905/axios-miniprogram/compare/v2.3.0...v2.3.1) (2023-04-21)
 
 
