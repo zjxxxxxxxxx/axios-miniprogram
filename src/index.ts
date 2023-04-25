@@ -1,6 +1,11 @@
 import axios from './axios';
 
 export type {
+  MiddlewareContext,
+  MiddlewareCallback,
+  MiddlewareNext,
+} from './core/MiddlewareManager';
+export type {
   AxiosRequestConfig,
   AxiosRequestData,
   AxiosRequestFormData,
@@ -14,10 +19,6 @@ export type {
   AxiosUploadProgressEvent,
   AxiosUploadProgressCallback,
 } from './core/Axios';
-export type {
-  MiddlewareCallback,
-  MiddlewareNext,
-} from './core/MiddlewareManager';
 export type {
   AxiosInstanceDefaults,
   AxiosInstance,

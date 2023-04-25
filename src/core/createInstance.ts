@@ -57,7 +57,7 @@ export function createInstance(config: AxiosRequestConfig, parent?: Axios) {
   const context = new Axios(config, parent);
   const instance = context.request as AxiosInstance;
 
-  instance.getUri = function getUri(config: AxiosRequestConfig) {
+  instance.getUri = function getUri(config) {
     const { url, params, paramsSerializer } = mergeConfig(
       instance.defaults,
       config,
@@ -67,7 +67,7 @@ export function createInstance(config: AxiosRequestConfig, parent?: Axios) {
   instance.create = function create(config) {
     return createInstance(mergeConfig(instance.defaults, config));
   };
-  instance.extend = function extend(config: AxiosRequestConfig = {}) {
+  instance.extend = function extend(config) {
     config.baseURL = combineURL(instance.defaults.baseURL, config.baseURL);
     return createInstance(mergeConfig(instance.defaults, config), context);
   };

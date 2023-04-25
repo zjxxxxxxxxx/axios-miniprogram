@@ -29,6 +29,7 @@ describe('src/core/Axios.ts', () => {
     expect(axiosObj.defaults).toEqual(c);
     expect(axiosObj.interceptors).toBeTypeOf('object');
     expect(axiosObj.request).toBeTypeOf('function');
+    expect(axiosObj.use).toBeTypeOf('function');
   });
 
   testEachMethods('%s 应该是一个函数', (k) => {
@@ -36,23 +37,34 @@ describe('src/core/Axios.ts', () => {
   });
 
   test('应该可以发送普通别名请求', () => {
-    const c = {
+    const axiosObj = new Axios({
       adapter: mockAdapter({
-        before: (config) => {
-          expect(config.url).toBe('http://api.com/test');
-        },
         data,
       }),
+    });
+    const c = {
+      baseURL: 'https://api.com',
     };
 
     PLAIN_METHODS.forEach((a) => {
+      axiosObj[a]('test').then((res) => {
+        expect(res.config.baseURL).toBeUndefined();
+        expect(res.data).toEqual(data);
+      });
       axiosObj[a]('test', c).then((res) => {
+        expect(res.config.baseURL).toBe('https://api.com');
         expect(res.data).toEqual(data);
       });
     });
   });
 
   test('应该可以发送带参数的别名请求', () => {
+    const axiosObj = new Axios({
+      adapter: mockAdapter({
+        data,
+      }),
+      baseURL: 'http://api.com',
+    });
     const p = { id: 1 };
     const c1 = {
       adapter: mockAdapter({
@@ -74,6 +86,12 @@ describe('src/core/Axios.ts', () => {
     };
 
     WITH_PARAMS_METHODS.forEach((a) => {
+      axiosObj[a]('test').then((res) => {
+        expect(res.data).toEqual(data);
+      });
+      axiosObj[a]('test', p).then((res) => {
+        expect(res.data).toEqual(data);
+      });
       axiosObj[a]('test', p, c1).then((res) => {
         expect(res.data).toEqual(data);
       });
@@ -84,6 +102,12 @@ describe('src/core/Axios.ts', () => {
   });
 
   test('应该可以发送带数据的别名请求', () => {
+    const axiosObj = new Axios({
+      adapter: mockAdapter({
+        data,
+      }),
+      baseURL: 'http://api.com',
+    });
     const d = { id: 1 };
     const c1 = {
       adapter: mockAdapter({
@@ -105,6 +129,12 @@ describe('src/core/Axios.ts', () => {
     };
 
     WITH_DATA_METHODS.forEach((a) => {
+      axiosObj[a]('test').then((res) => {
+        expect(res.data).toEqual(data);
+      });
+      axiosObj[a]('test', d).then((res) => {
+        expect(res.data).toEqual(data);
+      });
       axiosObj[a]('test', d, c1).then((res) => {
         expect(res.data).toEqual(data);
       });
@@ -207,7 +237,7 @@ describe('src/core/Axios.ts', () => {
   });
 
   test('添加多个请求拦截器时应该按添加顺序从后往前依次执行', () => {
-    const axiosObj = new Axios();
+    const axiosObj = new Axios({});
 
     const cb1 = vi.fn((v) => {
       expect(v.params.index).toBe(2);
@@ -240,7 +270,7 @@ describe('src/core/Axios.ts', () => {
   });
 
   test('请求拦截器应该支持抛出异常', async () => {
-    const axiosObj = new Axios();
+    const axiosObj = new Axios({});
     const c = { adapter: vi.fn(), url: 'test' };
     const body = (v: any) => {
       throw { ...v, throw: true };
@@ -293,7 +323,7 @@ describe('src/core/Axios.ts', () => {
   });
 
   test('添加多个响应拦截器时应该按添加顺序从前往后依次执行', async () => {
-    const axiosObj = new Axios();
+    const axiosObj = new Axios({});
 
     const cb1 = vi.fn((v) => {
       expect(v.data.index).toBe(0);
@@ -323,7 +353,7 @@ describe('src/core/Axios.ts', () => {
   });
 
   test('响应拦截器应该支持抛出异常', async () => {
-    const axiosObj = new Axios();
+    const axiosObj = new Axios({});
     const c = { adapter: vi.fn(mockAdapter()), url: 'test' };
     const body = () => {
       throw { throw: true };
@@ -346,5 +376,22 @@ describe('src/core/Axios.ts', () => {
     expect(rej1).not.toBeCalled();
     expect(res2).not.toBeCalled();
     expect(rej2).toBeCalled();
+  });
+
+  test('应该支持中间件', async () => {
+    const axiosObj = new Axios({
+      adapter: mockAdapter(),
+    });
+    const cb = vi.fn(async (ctx, next) => {
+      expect(ctx.res).toBeNull();
+      await next();
+      expect(ctx.res).toBeTypeOf('object');
+    });
+
+    axiosObj.use(cb);
+
+    await axiosObj.get('test');
+
+    expect(cb).toBeCalled();
   });
 });

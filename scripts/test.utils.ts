@@ -35,10 +35,10 @@ export function noop() {
 }
 
 export function mockResponse(
-  status: number,
-  statusText: string,
-  headers: AnyObject,
-  data: AnyObject,
+  status = 200,
+  statusText = 'OK',
+  headers: AnyObject = {},
+  data: AnyObject = {},
 ) {
   return {
     status,

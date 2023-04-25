@@ -1,76 +1,55 @@
 import { assert } from '../helpers/error';
 import { combineURL } from '../helpers/combineURL';
 import { isFunction, isString } from '../helpers/isTypes';
+import { AxiosRequestConfig, AxiosResponse } from './Axios';
 
 export interface MiddlewareNext {
   (): Promise<void>;
 }
 
-export interface MiddlewareCallback<Context extends AnyObject> {
-  (ctx: Context, next: MiddlewareNext): Promise<void>;
+export interface MiddlewareContext {
+  req: AxiosRequestConfig;
+  res: null | AxiosResponse;
 }
 
-export interface MiddlewareUse<Context extends AnyObject> {
-  /**
-   * 添加中间件
-   *
-   * @param path 中间件路径
-   * @param callback 中间件回调
-   */
-  (
-    path: string,
-    callback: MiddlewareCallback<Context>,
-  ): MiddlewareManager<Context>;
+export interface MiddlewareCallback {
+  (ctx: MiddlewareContext, next: MiddlewareNext): Promise<void>;
+}
+
+export interface MiddlewareUse {
   /**
    * 添加中间件
    *
    * @param callback 中间件回调
    */
-  (callback: MiddlewareCallback<Context>): MiddlewareManager<Context>;
+  (callback: MiddlewareCallback): MiddlewareManager;
 }
 
-export default class MiddlewareManager<Context extends AnyObject = AnyObject> {
-  #map = new Map<string, MiddlewareCallback<Context>[]>();
+export default class MiddlewareManager {
+  /**
+   * 中间件
+   */
+  #middlewares: MiddlewareCallback[] = [];
 
   /**
    * 添加中间件
    */
-  use: MiddlewareUse<Context> = (
-    path: string | MiddlewareCallback<Context>,
-    callback?: MiddlewareCallback<Context>,
-  ) => {
-    if (isFunction(path)) {
-      callback = path;
-      path = '/';
-    }
-    assert(isString(path), 'path 不是一个 string');
-    assert(!!path, 'path 不是一个长度大于零的 string');
+  use: MiddlewareUse = (callback: MiddlewareCallback) => {
     assert(isFunction(callback), 'callback 不是一个 function');
-
-    const middlewares = this.#map.get(path) ?? [];
-    middlewares.push(callback!);
-    this.#map.set(path, middlewares);
-
+    this.#middlewares.push(callback!);
     return this;
   };
 
-  flush(ctx: Context, finish: MiddlewareNext) {
-    const allMiddlewares: MiddlewareCallback<Context>[] = [];
-
-    for (const [path, middlewares] of this.#map.entries()) {
-      const url = combineURL(ctx.req.baseURL, path);
-      const checkRE = new RegExp(`^${url}([/?].*)?`);
-
-      if (path === '/') {
-        allMiddlewares.push(...middlewares);
-      } else if (checkRE.test(ctx.req.url!)) {
-        allMiddlewares.push(...middlewares);
-      }
-    }
-
-    const tasks = [...allMiddlewares, finish];
+  /**
+   * 包装器
+   *
+   * @param ctx 中间件上下文
+   * @param flush 目标函数
+   */
+  wrap(ctx: MiddlewareContext, flush: MiddlewareNext) {
+    const runners = [...this.#middlewares, flush];
     return (function next(): Promise<void> {
-      return tasks.shift()!(ctx, next);
+      return runners.shift()!(ctx, next);
     })();
   }
 }

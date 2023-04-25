@@ -7,6 +7,7 @@ import {
 } from '@/constants/methods';
 import defaults from '@/defaults';
 import axios from '@/axios';
+import { createInstance } from '@/core/createInstance';
 
 describe('src/axios.ts', () => {
   const data = { result: null };
@@ -15,6 +16,9 @@ describe('src/axios.ts', () => {
     expect(axios.defaults).toBe(defaults);
     expect(axios.interceptors).toBeTypeOf('object');
     expect(axios.getUri).toBeTypeOf('function');
+    expect(axios.create).toBeTypeOf('function');
+    expect(axios.extend).toBeTypeOf('function');
+    expect(axios.use).toBeTypeOf('function');
     expect(axios.fork).toBeTypeOf('function');
     expect(axios.request).toBeTypeOf('function');
   });
@@ -161,5 +165,22 @@ describe('src/axios.ts', () => {
     expect(axios.getUri({ url: 'test', paramsSerializer: () => 'id=1' })).toBe(
       'test?id=1',
     );
+  });
+
+  test('应该支持中间件', async () => {
+    const axios = createInstance(defaults);
+    axios.defaults.adapter = mockAdapter();
+
+    const cb = vi.fn(async (ctx, next) => {
+      expect(ctx.res).toBeNull();
+      await next();
+      expect(ctx.res).toBeTypeOf('object');
+    });
+
+    axios.use(cb);
+
+    await axios.get('test');
+
+    expect(cb).toBeCalled();
   });
 });

@@ -22,6 +22,7 @@ import {
   WITH_PARAMS_METHODS,
 } from '../constants/methods';
 import MiddlewareManager, {
+  MiddlewareContext,
   MiddlewareNext,
   MiddlewareUse,
 } from './MiddlewareManager';
@@ -306,11 +307,6 @@ export interface AxiosResponseError extends AnyObject {
   request?: AxiosAdapterPlatformTask;
 }
 
-export interface AxiosContext {
-  req: AxiosRequestConfig;
-  res: null | AxiosResponse;
-}
-
 export interface AxiosRequest {
   <TData extends AxiosResponseData>(config: AxiosRequestConfig): Promise<
     AxiosResponse<TData>
@@ -382,7 +378,7 @@ export default class Axios {
   /**
    * 中间件
    */
-  #middleware = new MiddlewareManager<AxiosContext>();
+  #middleware = new MiddlewareManager();
 
   /**
    * 发送 options 请求
@@ -432,9 +428,9 @@ export default class Axios {
   /**
    * 添加中间件
    */
-  use: MiddlewareUse<AxiosContext>;
+  use: MiddlewareUse;
 
-  constructor(defaults: AxiosRequestConfig = {}, parent?: Axios) {
+  constructor(defaults: AxiosRequestConfig, parent?: Axios) {
     this.defaults = defaults;
     this.#parent = parent;
     this.use = this.#middleware.use;
@@ -504,24 +500,23 @@ export default class Axios {
   }
 
   #requestHandler = async (config: AxiosRequestConfig) => {
-    config.url = combineURL(config.baseURL, config.url);
-    const ctx: AxiosContext = {
+    const ctx: MiddlewareContext = {
       req: config,
       res: null,
     };
-    await this.#flush(ctx, async () => {
+    await this.#wrap(ctx, async () => {
       ctx.res = await dispatchRequest(ctx.req);
     });
     return ctx.res as AxiosResponse;
   };
 
-  #flush(ctx: AxiosContext, finish: MiddlewareNext): Promise<void> {
+  #wrap(ctx: MiddlewareContext, flush: MiddlewareNext): Promise<void> {
     if (this.#parent) {
-      return this.#parent.#flush(ctx, () => {
-        return this.#middleware.flush(ctx, finish);
+      return this.#parent.#wrap(ctx, () => {
+        return this.#middleware.wrap(ctx, flush);
       });
     }
-    return this.#middleware.flush(ctx, finish);
+    return this.#middleware.wrap(ctx, flush);
   }
 }
 
