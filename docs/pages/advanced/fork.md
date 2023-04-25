@@ -8,6 +8,10 @@ title: 派生领域
 派生新的领域简化 `URL`。
 :::
 
+::: warning 注意
+该接口即将废弃，请使用功能更强的[扩展实例](./extend)。
+:::
+
 ## 派生领域
 
 可以基于 `axios` 派生领域，配置项 `baseURL` 传相对地址时会和 `axios.defaults.baseURL` 一起组合成完整的服务端地址。

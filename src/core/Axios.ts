@@ -1,4 +1,3 @@
-import { combineURL } from '../helpers/combineURL';
 import { isString } from '../helpers/isTypes';
 import { dispatchRequest } from '../request/dispatchRequest';
 import { CancelToken } from '../request/cancel';

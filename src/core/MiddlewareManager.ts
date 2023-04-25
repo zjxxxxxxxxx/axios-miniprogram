@@ -1,6 +1,5 @@
 import { assert } from '../helpers/error';
-import { combineURL } from '../helpers/combineURL';
-import { isFunction, isString } from '../helpers/isTypes';
+import { isFunction } from '../helpers/isTypes';
 import { AxiosRequestConfig, AxiosResponse } from './Axios';
 
 export interface MiddlewareNext {

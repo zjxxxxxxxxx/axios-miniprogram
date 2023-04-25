@@ -6,7 +6,6 @@ title: 创建实例
 
 ::: tip {{ $frontmatter.title }}
 创建新的实例。
-
 :::
 
 ## 创建实例
@@ -83,25 +82,25 @@ instance.interceptors.response.use(
 );
 ```
 
-## 派生领域
+## 扩展实例
 
-可以基于实例[派生领域](/advanced/fork)。
+可以基于实例[扩展实例](/advanced/extend)。
 
-实例默认配置 `instance.defaults` 和派生领域时传入的配置 `config` 将会按优先级[合并](/basics/defaults#配置合并策略)成领域默认配置 `domain.defaults`。
+实例默认配置 `parent.defaults` 和派生领域时传入的配置 `config` 将会按优先级[合并](/basics/defaults#配置合并策略)成新实例默认配置 `child.defaults`。
 
 ```ts
 import axios from 'axios-miniprogram';
 
-const instance = axios.create({
+const parent = axios.create({
   baseURL: 'https://api2.com',
 });
 
-const domain = instance.fork({
+const child = instance.extend({
   baseURL: 'user',
 });
 
 // 请求的服务端地址 https://api2.com/uesr
-domain.get('/');
+child('/');
 ```
 
 ## 使用
@@ -109,8 +108,10 @@ domain.get('/');
 使用方式和 `axios` 完全一致。
 
 ```ts
+import axios from 'axios-miniprogram';
+
 const instance = axios.create({
-  baseURL: 'https://api2.com',
+  baseURL: 'https://api.com',
 });
 
 instance('test')
