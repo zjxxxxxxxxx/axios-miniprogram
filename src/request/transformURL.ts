@@ -5,13 +5,12 @@ import { dynamicURL } from '../helpers/dynamicURL';
 import { AxiosRequestConfig } from '../core/Axios';
 
 export function transformURL(config: AxiosRequestConfig) {
-  const data = isPlainObject(config.data) ? config.data : {};
-
-  let url = config.url ?? '/';
-
-  url = combineURL(config.baseURL ?? '', url);
-  url = dynamicURL(url, config.params, data);
+  let url = combineURL(config.baseURL, config.url);
+  url = dynamicURL(
+    url,
+    config.params,
+    isPlainObject(config.data) ? config.data : {},
+  );
   url = buildURL(url, config.params, config.paramsSerializer);
-
   return url;
 }

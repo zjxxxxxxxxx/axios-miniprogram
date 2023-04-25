@@ -65,7 +65,7 @@ describe('src/request/dispatchRequest.ts', () => {
           "adapter": [Function],
           "headers": {},
           "method": "GET",
-          "url": "",
+          "url": "/",
         },
         "request": undefined,
         "response": {
@@ -73,7 +73,7 @@ describe('src/request/dispatchRequest.ts', () => {
             "adapter": [Function],
             "headers": {},
             "method": "GET",
-            "url": "",
+            "url": "/",
           },
           "data": undefined,
           "headers": {},
