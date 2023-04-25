@@ -1,7 +1,9 @@
-import { buildURL } from '../helpers/buildURL';
 import { combineURL } from '../helpers/combineURL';
+import { isString } from '../helpers/isTypes';
+import { dispatchRequest } from '../request/dispatchRequest';
 import { CancelToken } from '../request/cancel';
 import { AxiosTransformer } from '../request/transformData';
+import { deepMerge } from '../helpers/deepMerge';
 import {
   AxiosAdapter,
   AxiosAdapterRequestMethod,
@@ -9,9 +11,17 @@ import {
   AxiosAdapterRequestConfig,
   AxiosAdapterResponseData,
 } from '../adpater/createAdapter';
-import InterceptorManager, { Interceptor } from './InterceptorManager';
+import InterceptorManager, {
+  Interceptor,
+  InterceptorExecutor,
+} from './InterceptorManager';
 import { mergeConfig } from './mergeConfig';
-import AxiosDomain, { AxiosDomainRequestHandler } from './AxiosDomain';
+import {
+  PLAIN_METHODS,
+  WITH_DATA_METHODS,
+  WITH_PARAMS_METHODS,
+} from '../constants/methods';
+import MiddlewareManager from './MiddlewareManager';
 
 /**
  * 请求方法
@@ -293,6 +303,51 @@ export interface AxiosResponseError extends AnyObject {
   request?: AxiosAdapterPlatformTask;
 }
 
+export interface AxiosContext {
+  req: AxiosRequestConfig;
+  res: null | AxiosResponse;
+}
+
+export interface AxiosRequest {
+  <TData extends AxiosResponseData>(config: AxiosRequestConfig): Promise<
+    AxiosResponse<TData>
+  >;
+  <TData extends AxiosResponseData>(
+    url: string,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<TData>>;
+}
+
+/**
+ * 普通的请求方法
+ */
+export type AxiosRequestMethodFn = <TData extends AxiosResponseData>(
+  url: string,
+  config?: AxiosRequestConfig,
+) => Promise<AxiosResponse<TData>>;
+
+/**
+ * 带参数的请求方法
+ */
+export type AxiosRequestMethodFnWithParams = <TData extends AxiosResponseData>(
+  url: string,
+  params?: AnyObject,
+  config?: AxiosRequestConfig,
+) => Promise<AxiosResponse<TData>>;
+
+/**
+ * 带数据的请求方法
+ */
+export type AxiosRequestMethodFnWithData = <TData extends AxiosResponseData>(
+  url: string,
+  data?: AxiosRequestData,
+  config?: AxiosRequestConfig,
+) => Promise<AxiosResponse<TData>>;
+
+export interface AxiosDomainRequestHandler {
+  (config: AxiosRequestConfig): Promise<AxiosResponse>;
+}
+
 /**
  * Axios 构造函数
  */
@@ -300,7 +355,13 @@ export interface AxiosConstructor {
   new (config: AxiosRequestConfig): Axios;
 }
 
-export default class Axios extends AxiosDomain {
+export default class Axios {
+  #parent?: Axios;
+  /**
+   * 默认请求配置
+   */
+  defaults: AxiosRequestConfig;
+
   /**
    * 拦截器
    */
@@ -315,37 +376,102 @@ export default class Axios extends AxiosDomain {
     response: new InterceptorManager<AxiosResponse>(),
   };
 
-  constructor(defaults: AxiosRequestConfig = {}) {
-    super(defaults, (...args) => this.#processRequest(...args));
-  }
+  /**
+   * 中间件
+   */
+  #middleware = new MiddlewareManager<AxiosContext>(async (ctx) => {
+    ctx.res = await dispatchRequest(ctx.req);
+  });
 
-  getUri(config: AxiosRequestConfig): string {
-    const { url, params, paramsSerializer } = mergeConfig(
-      this.defaults,
-      config,
-    );
-    return buildURL(url, params, paramsSerializer).replace(/^\?/, '');
+  /**
+   * 发送 options 请求
+   */
+  options!: AxiosRequestMethodFn;
+
+  /**
+   * 发送 get 请求
+   */
+  get!: AxiosRequestMethodFnWithParams;
+
+  /**
+   * 发送 head 请求
+   */
+  head!: AxiosRequestMethodFnWithParams;
+
+  /**
+   * 发送 post 请求
+   */
+  post!: AxiosRequestMethodFnWithData;
+
+  /**
+   * 发送 put 请求
+   */
+  put!: AxiosRequestMethodFnWithData;
+
+  /**
+   * 发送 patch 请求
+   */
+  patch!: AxiosRequestMethodFnWithData;
+
+  /**
+   * 发送 delete 请求
+   */
+  delete!: AxiosRequestMethodFnWithParams;
+
+  /**
+   * 发送 trace 请求
+   */
+  trace!: AxiosRequestMethodFn;
+
+  /**
+   * 发送 connect 请求
+   */
+  connect!: AxiosRequestMethodFn;
+
+  /**
+   * 添加中间件
+   */
+  use: MiddlewareManager<AxiosContext>['use'];
+
+  constructor(defaults: AxiosRequestConfig = {}, parent?: Axios) {
+    this.defaults = defaults;
+    this.#parent = parent;
+    if (this.#parent) {
+      this.#middleware.flush = this.#parent.#middleware.wrap(
+        this.#middleware.flush,
+      );
+    }
+    this.use = this.#middleware.use.bind(this.#middleware);
   }
 
   /**
-   * 派生领域
+   * 发送请求
    */
-  fork = (config: AxiosRequestConfig = {}) => {
-    config.baseURL = combineURL(this.defaults.baseURL, config.baseURL);
-    const domain = new AxiosDomain(
-      mergeConfig(this.defaults, config),
-      (...args) => this.#processRequest(...args),
-    );
-    domain.flush = this.middleware.wrap(domain.flush);
-    return domain;
+  request: AxiosRequest = (
+    urlOrConfig: string | AxiosRequestConfig,
+    config: AxiosRequestConfig = {},
+  ) => {
+    if (isString(urlOrConfig)) {
+      config.url = urlOrConfig;
+    } else {
+      config = urlOrConfig;
+    }
+    config.method = config.method || 'get';
+
+    return this.#processRequest(mergeConfig(this.defaults, config));
   };
 
-  #processRequest(
-    config: AxiosRequestConfig,
-    requestHandlerFn: AxiosDomainRequestHandler,
-  ) {
+  #processRequest(config: AxiosRequestConfig) {
     const requestHandler = {
-      resolved: requestHandlerFn,
+      resolved: async (config: AxiosRequestConfig) => {
+        config.url = combineURL(config.baseURL, config.url);
+        const ctx: AxiosContext = {
+          req: config,
+          res: null,
+        };
+        await this.#middleware.flush(ctx);
+        return ctx.res as AxiosResponse;
+      },
     };
     const errorHandler = {
       rejected: config.errorHandler,
@@ -355,11 +481,11 @@ export default class Axios extends AxiosDomain {
       | Partial<Interceptor<AxiosResponse>>
     )[] = [];
 
-    this.interceptors.request.forEach((requestInterceptor) => {
+    this.#eacheRequestInterceptors((requestInterceptor) => {
       chain.unshift(requestInterceptor);
     });
     chain.push(requestHandler);
-    this.interceptors.response.forEach((responseInterceptor) => {
+    this.#eacheResponseInterceptors((responseInterceptor) => {
       chain.push(responseInterceptor);
     });
     chain.push(errorHandler);
@@ -374,4 +500,49 @@ export default class Axios extends AxiosDomain {
       Promise.resolve(config),
     ) as Promise<AxiosResponse>;
   }
+
+  #eacheRequestInterceptors(executor: InterceptorExecutor<AxiosRequestConfig>) {
+    this.interceptors.request.forEach(executor);
+    if (this.#parent) {
+      this.#parent.#eacheRequestInterceptors(executor);
+    }
+  }
+
+  #eacheResponseInterceptors(executor: InterceptorExecutor<AxiosResponse>) {
+    this.interceptors.response.forEach(executor);
+    if (this.#parent) {
+      this.#parent.#eacheResponseInterceptors(executor);
+    }
+  }
+}
+
+for (const method of PLAIN_METHODS) {
+  Axios.prototype[method] = function processRequestMethod(url, config = {}) {
+    config.method = method;
+    return this.request(url, config);
+  };
+}
+
+for (const method of WITH_PARAMS_METHODS) {
+  Axios.prototype[method] = function processRequestMethodWithParams(
+    url,
+    params = {},
+    config = {},
+  ) {
+    config.method = method;
+    config.params = deepMerge(params, config.params ?? {});
+    return this.request(url, config);
+  };
+}
+
+for (const method of WITH_DATA_METHODS) {
+  Axios.prototype[method] = function processRequestMethodWithData(
+    url,
+    data,
+    config = {},
+  ) {
+    config.method = method;
+    config.data = data;
+    return this.request(url, config);
+  };
 }

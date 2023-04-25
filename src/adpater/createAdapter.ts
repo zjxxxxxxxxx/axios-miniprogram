@@ -140,11 +140,11 @@ export interface AxiosAdapterBaseOptions extends AxiosAdapterRequestConfig {
   /**
    * 成功的回调
    */
-  success(response: AxiosAdapterResponse): void;
+  success(response: AnyObject): void;
   /**
    * 失败的回调
    */
-  fail(error: AxiosAdapterResponseError): void;
+  fail(error: AnyObject): void;
 }
 
 /**
@@ -271,11 +271,11 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     return {
       ...config,
       header: config.headers,
-      success(response) {
+      success(response: AxiosAdapterResponse) {
         transformResponse(response);
         config.success(response);
       },
-      fail(responseError) {
+      fail(responseError: AxiosAdapterResponseError) {
         responseError.data = {
           errMsg: responseError.errMsg,
           errno: responseError.errno,
@@ -284,14 +284,14 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
         config.fail(responseError);
       },
     };
+  }
 
-    function transformResponse(
-      response: AxiosAdapterResponse | AxiosAdapterResponseError,
-    ) {
-      response.status = response.status ?? response.statusCode;
-      response.headers = response.headers ?? response.header;
-      clean(response, ['statusCode', 'errMsg', 'errno', 'header']);
-    }
+  function transformResponse(
+    response: AxiosAdapterResponse | AxiosAdapterResponseError,
+  ) {
+    response.status = response.status ?? response.statusCode;
+    response.headers = response.headers ?? response.header;
+    clean(response, ['statusCode', 'errMsg', 'errno', 'header']);
   }
 
   function processRequest(

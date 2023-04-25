@@ -1,36 +1,44 @@
 import { assert } from '../helpers/error';
 import { combineURL } from '../helpers/combineURL';
-import { isFunction } from '../helpers/isTypes';
-import { AxiosRequestConfig, AxiosResponse } from './Axios';
-
-export interface MiddlewareContext {
-  req: AxiosRequestConfig;
-  res: null | AxiosResponse;
-}
+import { isFunction, isString } from '../helpers/isTypes';
 
 export interface MiddlewareNext {
   (): Promise<void>;
 }
 
-export interface MiddlewareCallback {
-  (ctx: MiddlewareContext, next: MiddlewareNext): Promise<void>;
+export interface MiddlewareCallback<Conext extends AnyObject> {
+  (ctx: Conext, next: MiddlewareNext): Promise<void>;
 }
 
-export interface MiddlewareFlush {
-  (ctx: MiddlewareContext): Promise<void>;
+export interface MiddlewareFlush<Conext extends AnyObject> {
+  (ctx: Conext): Promise<void>;
 }
 
-export default class MiddlewareManager {
-  #map = new Map<string, MiddlewareCallback[]>();
+export default class MiddlewareManager<Conext extends AnyObject = AnyObject> {
+  #map = new Map<string, MiddlewareCallback<Conext>[]>();
 
-  use(callback: MiddlewareCallback): MiddlewareManager;
-  use(path: string, callback: MiddlewareCallback): MiddlewareManager;
-  use(path: string | MiddlewareCallback, callback?: MiddlewareCallback) {
+  flush: MiddlewareFlush<Conext>;
+
+  constructor(flush: MiddlewareFlush<Conext>) {
+    this.flush = this.wrap(flush);
+  }
+
+  use(callback: MiddlewareCallback<Conext>): MiddlewareManager<Conext>;
+  use(
+    path: string,
+    callback: MiddlewareCallback<Conext>,
+  ): MiddlewareManager<Conext>;
+  use(
+    path: string | MiddlewareCallback<Conext>,
+    callback?: MiddlewareCallback<Conext>,
+  ) {
     if (isFunction(path)) {
       callback = path;
       path = '/';
     }
-    assert(!!path, 'path 不是一个非空的 string');
+    assert(isString(path), 'path 不是一个 string');
+    assert(!!path, 'path 不是一个长度大于零的 string');
+    assert(isFunction(callback), 'callback 不是一个 function');
 
     const middlewares = this.#map.get(path) ?? [];
     middlewares.push(callback!);
@@ -39,32 +47,25 @@ export default class MiddlewareManager {
     return this;
   }
 
-  wrap(flush: MiddlewareFlush): MiddlewareFlush {
-    return (ctx) => this.#performer(ctx, flush);
-  }
+  wrap(flush: MiddlewareFlush<Conext>): MiddlewareFlush<Conext> {
+    return (ctx) => {
+      const allMiddlewares: MiddlewareCallback<Conext>[] = [];
 
-  #performer(ctx: MiddlewareContext, flush: MiddlewareFlush) {
-    const middlewares = [...this.#getAllMiddlewares(ctx), flush];
+      for (const [path, middlewares] of this.#map.entries()) {
+        const url = combineURL(ctx.req.baseURL, path);
+        const checkRE = new RegExp(`^${url}([/?].*)?`);
 
-    function next(): Promise<void> {
-      return middlewares.shift()!(ctx, next);
-    }
-
-    return next();
-  }
-
-  #getAllMiddlewares(ctx: MiddlewareContext) {
-    const allMiddlewares: MiddlewareCallback[] = [];
-
-    for (const [path, middlewares] of this.#map.entries()) {
-      const url = combineURL(ctx.req.baseURL, path);
-
-      const checkRE = new RegExp(`^${url}([/?].*)?`);
-      if (checkRE.test(ctx.req.url!)) {
-        allMiddlewares.push(...middlewares);
+        if (path === '/') {
+          allMiddlewares.push(...middlewares);
+        } else if (checkRE.test(ctx.req.url!)) {
+          allMiddlewares.push(...middlewares);
+        }
       }
-    }
 
-    return allMiddlewares;
+      const tasks = [...allMiddlewares, flush];
+      return (function next(): Promise<void> {
+        return tasks.shift()!(ctx, next);
+      })();
+    };
   }
 }

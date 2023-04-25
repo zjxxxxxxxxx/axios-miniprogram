@@ -1,5 +1,5 @@
 import { getDefaultAdapter } from './adpater/getDefaultAdapter';
-import { AxiosInstanceDefaults } from './axios';
+import { AxiosInstanceDefaults } from './core/createInstance';
 
 const defaults: AxiosInstanceDefaults = {
   // 适配器，在支持的平台中有值。

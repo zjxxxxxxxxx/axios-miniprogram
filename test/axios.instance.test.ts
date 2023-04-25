@@ -1,11 +1,10 @@
-import { describe, test, expect, vi, afterEach } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 import { mockAdapter, testEachMethods } from 'scripts/test.utils';
 import {
   PLAIN_METHODS,
   WITH_DATA_METHODS,
   WITH_PARAMS_METHODS,
 } from '@/constants/methods';
-import AxiosDomain from '@/core/AxiosDomain';
 import defaults from '@/defaults';
 import axios from '@/axios';
 
@@ -162,9 +161,5 @@ describe('src/axios.ts', () => {
     expect(axios.getUri({ url: 'test', paramsSerializer: () => 'id=1' })).toBe(
       'test?id=1',
     );
-  });
-
-  test('派生的领域应该为 AxiosDomain 的实例', () => {
-    expect(axios.fork() instanceof AxiosDomain).toBeTruthy();
   });
 });

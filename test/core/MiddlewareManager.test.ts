@@ -3,14 +3,18 @@ import MiddlewareManager from '@/core/MiddlewareManager';
 
 describe('src/core/MiddlewareManager.ts', () => {
   test('应该有这些实例属性', () => {
-    const m = new MiddlewareManager();
+    const m = new MiddlewareManager(vi.fn());
 
     expect(m.use).toBeTypeOf('function');
     expect(m.wrap).toBeTypeOf('function');
   });
 
   test('应该可以添加中间件回调', async () => {
-    const m = new MiddlewareManager();
+    const flush = vi.fn(async (ctx) => {
+      expect(ctx.req.url).toBe('test');
+      ctx.res = res;
+    });
+    const m = new MiddlewareManager(flush);
     const ctx = {
       req: { url: 'https://api.com' },
       res: null,
@@ -24,20 +28,20 @@ describe('src/core/MiddlewareManager.ts', () => {
       await next();
       expect(ctx.res).toBe(res);
     });
-    const flush = vi.fn(async (ctx) => {
-      expect(ctx.req.url).toBe('test');
-      ctx.res = res;
-    });
 
     m.use(midde);
-    await m.wrap(flush)(ctx);
+    await m.flush(ctx);
 
     expect(ctx.res).toBe(res);
     expect(midde).toBeCalled();
   });
 
   test('应该可以给路径添加中间件回调', async () => {
-    const m = new MiddlewareManager();
+    const flush = vi.fn(async (ctx) => {
+      ctx.res = res;
+    });
+
+    const m = new MiddlewareManager(flush);
     const ctx1 = {
       req: {
         baseURL: 'https://api.com',
@@ -60,18 +64,15 @@ describe('src/core/MiddlewareManager.ts', () => {
       await next();
       expect(ctx.res).toBe(res);
     });
-    const flush = vi.fn(async (ctx) => {
-      ctx.res = res;
-    });
 
     m.use('/test', midde);
-    await m.wrap(flush)(ctx1);
+    await m.flush(ctx1);
 
     expect(ctx1.res).toBe(res);
     expect(midde).not.toBeCalled();
 
     m.use('/test', midde);
-    await m.wrap(flush)(ctx2);
+    await m.flush(ctx2);
 
     expect(midde).toBeCalled();
   });

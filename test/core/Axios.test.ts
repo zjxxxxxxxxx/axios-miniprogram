@@ -10,7 +10,6 @@ import {
   WITH_DATA_METHODS,
   WITH_PARAMS_METHODS,
 } from '@/constants/methods';
-import AxiosDomain from '@/core/AxiosDomain';
 import Axios from '@/core/Axios';
 import axios from '@/axios';
 
@@ -22,10 +21,6 @@ describe('src/core/Axios.ts', () => {
     baseURL: 'http://api.com',
   });
 
-  test('应该继承自 AxiosDomain', () => {
-    expect(new Axios() instanceof AxiosDomain).toBeTruthy();
-  });
-
   test('应该有这些实例属性及方法', () => {
     const c = {
       baseURL: 'http://api.com',
@@ -34,8 +29,6 @@ describe('src/core/Axios.ts', () => {
     expect(axiosObj.defaults).toEqual(c);
     expect(axiosObj.interceptors).toBeTypeOf('object');
     expect(axiosObj.request).toBeTypeOf('function');
-    expect(axiosObj.getUri).toBeTypeOf('function');
-    expect(axiosObj.fork).toBeTypeOf('function');
   });
 
   testEachMethods('%s 应该是一个函数', (k) => {
@@ -353,46 +346,5 @@ describe('src/core/Axios.ts', () => {
     expect(rej1).not.toBeCalled();
     expect(res2).not.toBeCalled();
     expect(rej2).toBeCalled();
-  });
-
-  test('应该可以获取 URI', () => {
-    expect(axiosObj.getUri({ url: 'test' })).toBe('test');
-    expect(axiosObj.getUri({ url: 'test', params: { id: 1 } })).toBe(
-      'test?id=1',
-    );
-    expect(
-      axiosObj.getUri({ url: 'test', paramsSerializer: () => 'id=1' }),
-    ).toBe('test?id=1');
-  });
-
-  test('派生的领域应该为 AxiosDomain 的实例', () => {
-    expect(axiosObj.fork() instanceof AxiosDomain).toBeTruthy();
-  });
-
-  test('应该支持 绝对路径/相对路径 派生领域', () => {
-    const a1 = axiosObj.fork({ baseURL: 'test' });
-    const a2 = new Axios().fork({ baseURL: 'test' });
-    const a3 = axiosObj.fork({ baseURL: 'https://api.com' });
-    const a4 = axiosObj.fork();
-
-    expect(a1.defaults.baseURL).toBe('http://api.com/test');
-    expect(a2.defaults.baseURL).toBe('/test');
-    expect(a3.defaults.baseURL).toBe('https://api.com');
-    expect(a4.defaults.baseURL).toBe('http://api.com');
-  });
-
-  test('派生自当前实例的领域应该可以复用当前实例的拦截器', async () => {
-    const axiosObj = new Axios();
-    const req = vi.fn((v) => v);
-    const res = vi.fn((v) => v);
-
-    axiosObj.interceptors.request.use(req);
-    axiosObj.interceptors.response.use(res);
-
-    const a = axiosObj.fork({ baseURL: 'test' });
-    await a.request('test', { adapter: mockAdapter() });
-
-    expect(req).toBeCalled();
-    expect(res).toBeCalled();
   });
 });

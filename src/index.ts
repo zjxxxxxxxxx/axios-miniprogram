@@ -15,10 +15,13 @@ export type {
   AxiosUploadProgressCallback,
 } from './core/Axios';
 export type {
-  MiddlewareContext,
   MiddlewareCallback,
   MiddlewareNext,
 } from './core/MiddlewareManager';
+export type {
+  AxiosInstanceDefaults,
+  AxiosInstance,
+} from './core/createInstance';
 export type {
   AxiosAdapter,
   AxiosAdapterRequestConfig,
@@ -35,11 +38,7 @@ export type {
   AxiosAdapterPlatform,
   AxiosAdapterPlatformTask,
 } from './adpater/createAdapter';
-export type {
-  AxiosInstanceDefaults,
-  AxiosInstance,
-  AxiosStatic,
-} from './axios';
+export type { AxiosStatic } from './axios';
 
 export { CancelToken, isCancel } from './request/cancel';
 export { isAxiosError } from './request/createError';
