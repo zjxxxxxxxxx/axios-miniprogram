@@ -6,32 +6,39 @@ export interface MiddlewareNext {
   (): Promise<void>;
 }
 
-export interface MiddlewareCallback<Conext extends AnyObject> {
-  (ctx: Conext, next: MiddlewareNext): Promise<void>;
+export interface MiddlewareCallback<Context extends AnyObject> {
+  (ctx: Context, next: MiddlewareNext): Promise<void>;
 }
 
-export interface MiddlewareFlush<Conext extends AnyObject> {
-  (ctx: Conext): Promise<void>;
-}
-
-export default class MiddlewareManager<Conext extends AnyObject = AnyObject> {
-  #map = new Map<string, MiddlewareCallback<Conext>[]>();
-
-  flush: MiddlewareFlush<Conext>;
-
-  constructor(flush: MiddlewareFlush<Conext>) {
-    this.flush = this.wrap(flush);
-  }
-
-  use(callback: MiddlewareCallback<Conext>): MiddlewareManager<Conext>;
-  use(
+export interface MiddlewareUse<Context extends AnyObject> {
+  /**
+   * 添加中间件
+   *
+   * @param path 中间件路径
+   * @param callback 中间件回调
+   */
+  (
     path: string,
-    callback: MiddlewareCallback<Conext>,
-  ): MiddlewareManager<Conext>;
-  use(
-    path: string | MiddlewareCallback<Conext>,
-    callback?: MiddlewareCallback<Conext>,
-  ) {
+    callback: MiddlewareCallback<Context>,
+  ): MiddlewareManager<Context>;
+  /**
+   * 添加中间件
+   *
+   * @param callback 中间件回调
+   */
+  (callback: MiddlewareCallback<Context>): MiddlewareManager<Context>;
+}
+
+export default class MiddlewareManager<Context extends AnyObject = AnyObject> {
+  #map = new Map<string, MiddlewareCallback<Context>[]>();
+
+  /**
+   * 添加中间件
+   */
+  use: MiddlewareUse<Context> = (
+    path: string | MiddlewareCallback<Context>,
+    callback?: MiddlewareCallback<Context>,
+  ) => {
     if (isFunction(path)) {
       callback = path;
       path = '/';
@@ -45,27 +52,25 @@ export default class MiddlewareManager<Conext extends AnyObject = AnyObject> {
     this.#map.set(path, middlewares);
 
     return this;
-  }
+  };
 
-  wrap(flush: MiddlewareFlush<Conext>): MiddlewareFlush<Conext> {
-    return (ctx) => {
-      const allMiddlewares: MiddlewareCallback<Conext>[] = [];
+  flush(ctx: Context, finish: MiddlewareNext) {
+    const allMiddlewares: MiddlewareCallback<Context>[] = [];
 
-      for (const [path, middlewares] of this.#map.entries()) {
-        const url = combineURL(ctx.req.baseURL, path);
-        const checkRE = new RegExp(`^${url}([/?].*)?`);
+    for (const [path, middlewares] of this.#map.entries()) {
+      const url = combineURL(ctx.req.baseURL, path);
+      const checkRE = new RegExp(`^${url}([/?].*)?`);
 
-        if (path === '/') {
-          allMiddlewares.push(...middlewares);
-        } else if (checkRE.test(ctx.req.url!)) {
-          allMiddlewares.push(...middlewares);
-        }
+      if (path === '/') {
+        allMiddlewares.push(...middlewares);
+      } else if (checkRE.test(ctx.req.url!)) {
+        allMiddlewares.push(...middlewares);
       }
+    }
 
-      const tasks = [...allMiddlewares, flush];
-      return (function next(): Promise<void> {
-        return tasks.shift()!(ctx, next);
-      })();
-    };
+    const tasks = [...allMiddlewares, finish];
+    return (function next(): Promise<void> {
+      return tasks.shift()!(ctx, next);
+    })();
   }
 }

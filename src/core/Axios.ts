@@ -21,7 +21,10 @@ import {
   WITH_DATA_METHODS,
   WITH_PARAMS_METHODS,
 } from '../constants/methods';
-import MiddlewareManager from './MiddlewareManager';
+import MiddlewareManager, {
+  MiddlewareNext,
+  MiddlewareUse,
+} from './MiddlewareManager';
 
 /**
  * 请求方法
@@ -379,9 +382,7 @@ export default class Axios {
   /**
    * 中间件
    */
-  #middleware = new MiddlewareManager<AxiosContext>(async (ctx) => {
-    ctx.res = await dispatchRequest(ctx.req);
-  });
+  #middleware = new MiddlewareManager<AxiosContext>();
 
   /**
    * 发送 options 请求
@@ -431,17 +432,12 @@ export default class Axios {
   /**
    * 添加中间件
    */
-  use: MiddlewareManager<AxiosContext>['use'];
+  use: MiddlewareUse<AxiosContext>;
 
   constructor(defaults: AxiosRequestConfig = {}, parent?: Axios) {
     this.defaults = defaults;
     this.#parent = parent;
-    if (this.#parent) {
-      this.#middleware.flush = this.#parent.#middleware.wrap(
-        this.#middleware.flush,
-      );
-    }
-    this.use = this.#middleware.use.bind(this.#middleware);
+    this.use = this.#middleware.use;
   }
 
   /**
@@ -463,15 +459,7 @@ export default class Axios {
 
   #processRequest(config: AxiosRequestConfig) {
     const requestHandler = {
-      resolved: async (config: AxiosRequestConfig) => {
-        config.url = combineURL(config.baseURL, config.url);
-        const ctx: AxiosContext = {
-          req: config,
-          res: null,
-        };
-        await this.#middleware.flush(ctx);
-        return ctx.res as AxiosResponse;
-      },
+      resolved: this.#requestHandler,
     };
     const errorHandler = {
       rejected: config.errorHandler,
@@ -481,11 +469,11 @@ export default class Axios {
       | Partial<Interceptor<AxiosResponse>>
     )[] = [];
 
-    this.#eacheRequestInterceptors((requestInterceptor) => {
+    this.#eachRequestInterceptors((requestInterceptor) => {
       chain.unshift(requestInterceptor);
     });
     chain.push(requestHandler);
-    this.#eacheResponseInterceptors((responseInterceptor) => {
+    this.#eachResponseInterceptors((responseInterceptor) => {
       chain.push(responseInterceptor);
     });
     chain.push(errorHandler);
@@ -501,18 +489,39 @@ export default class Axios {
     ) as Promise<AxiosResponse>;
   }
 
-  #eacheRequestInterceptors(executor: InterceptorExecutor<AxiosRequestConfig>) {
+  #eachRequestInterceptors(executor: InterceptorExecutor<AxiosRequestConfig>) {
     this.interceptors.request.forEach(executor);
     if (this.#parent) {
-      this.#parent.#eacheRequestInterceptors(executor);
+      this.#parent.#eachRequestInterceptors(executor);
     }
   }
 
-  #eacheResponseInterceptors(executor: InterceptorExecutor<AxiosResponse>) {
+  #eachResponseInterceptors(executor: InterceptorExecutor<AxiosResponse>) {
     this.interceptors.response.forEach(executor);
     if (this.#parent) {
-      this.#parent.#eacheResponseInterceptors(executor);
+      this.#parent.#eachResponseInterceptors(executor);
     }
+  }
+
+  #requestHandler = async (config: AxiosRequestConfig) => {
+    config.url = combineURL(config.baseURL, config.url);
+    const ctx: AxiosContext = {
+      req: config,
+      res: null,
+    };
+    await this.#flush(ctx, async () => {
+      ctx.res = await dispatchRequest(ctx.req);
+    });
+    return ctx.res as AxiosResponse;
+  };
+
+  #flush(ctx: AxiosContext, finish: MiddlewareNext): Promise<void> {
+    if (this.#parent) {
+      return this.#parent.#flush(ctx, () => {
+        return this.#middleware.flush(ctx, finish);
+      });
+    }
+    return this.#middleware.flush(ctx, finish);
   }
 }
 

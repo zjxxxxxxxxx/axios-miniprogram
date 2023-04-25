@@ -4,9 +4,8 @@ import {
   isCancel,
 } from './request/cancel';
 import { isAxiosError } from './request/createError';
-import Axios, { AxiosConstructor, AxiosRequestConfig } from './core/Axios';
+import Axios, { AxiosConstructor } from './core/Axios';
 import { AxiosInstance, createInstance } from './core/createInstance';
-import { mergeConfig } from './core/mergeConfig';
 import { createAdapter } from './adpater/createAdapter';
 import defaults from './defaults';
 import { version } from './version';

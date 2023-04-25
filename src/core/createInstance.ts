@@ -68,7 +68,7 @@ export function createInstance(config: AxiosRequestConfig, parent?: Axios) {
     return createInstance(mergeConfig(instance.defaults, config));
   };
   instance.extend = function extend(config: AxiosRequestConfig = {}) {
-    config.url = combineURL(instance.defaults.baseURL, config.url);
+    config.baseURL = combineURL(instance.defaults.baseURL, config.baseURL);
     return createInstance(mergeConfig(instance.defaults, config), context);
   };
   instance.fork = instance.extend;
