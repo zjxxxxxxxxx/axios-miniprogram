@@ -32,17 +32,25 @@ export interface AxiosInstance extends AxiosRequest, Axios {
    */
   getUri(config: AxiosRequestConfig): string;
   /**
-   * 派生领域
+   * 创建 axios 实例
    *
    * @param config 默认配置
    */
-  fork(config: AxiosRequestConfig): AxiosInstance;
+  create(config?: AxiosRequestConfig): AxiosInstance;
   /**
    * 扩展实例
    *
    * @param config 默认配置
    */
   extend(config: AxiosRequestConfig): AxiosInstance;
+  /**
+   * 派生领域
+   *
+   * @param config 默认配置
+   *
+   * @deprecated 请使用 extend 替换 fork
+   */
+  fork(config: AxiosRequestConfig): AxiosInstance;
 }
 
 export function createInstance(config: AxiosRequestConfig, parent?: Axios) {
@@ -55,6 +63,9 @@ export function createInstance(config: AxiosRequestConfig, parent?: Axios) {
       config,
     );
     return buildURL(url, params, paramsSerializer).replace(/^\?/, '');
+  };
+  instance.create = function create(config) {
+    return createInstance(mergeConfig(instance.defaults, config));
   };
   instance.extend = function extend(config: AxiosRequestConfig = {}) {
     config.url = combineURL(instance.defaults.baseURL, config.url);

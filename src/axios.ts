@@ -39,18 +39,9 @@ export interface AxiosStatic extends AxiosInstance {
    * 传入响应错误返回 true
    */
   isAxiosError: typeof isAxiosError;
-  /**
-   * 创建 axios 实例
-   *
-   * @param config 默认配置
-   */
-  create(config?: AxiosRequestConfig): AxiosInstance;
 }
 
 const axios = createInstance(defaults) as AxiosStatic;
-axios.create = function create(config) {
-  return createInstance(mergeConfig(axios.defaults, config));
-};
 axios.version = version;
 axios.Axios = Axios;
 axios.CancelToken = CancelToken;
