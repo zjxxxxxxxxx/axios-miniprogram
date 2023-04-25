@@ -1,3 +1,30 @@
+# [2.4.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.3.2...v2.4.0) (2023-04-25)
+
+
+### Bug Fixes
+
+* 丢失末尾自带的斜线 ([db787a2](https://github.com/zjx0905/axios-miniprogram/commit/db787a2b5f7f1188d1813ddb715ef23e653120a9)), closes [#44](https://github.com/zjx0905/axios-miniprogram/issues/44)
+
+
+### Features
+
+* 全局方法 create 改为实例方法 ([a84533a](https://github.com/zjx0905/axios-miniprogram/commit/a84533a09f493e27ba3e567549be5e534271ed22))
+* 添加扩展实例 ([9093e1b](https://github.com/zjx0905/axios-miniprogram/commit/9093e1bdffe5bd75fccfeeeeb0e2b487751c549a))
+* 添加中间件 ([6263759](https://github.com/zjx0905/axios-miniprogram/commit/6263759ba94b2269082c49a2f2a5e038f6766027))
+* 支持复用父级中间件 ([bfc012b](https://github.com/zjx0905/axios-miniprogram/commit/bfc012b4999d717629b997ab908fd411954b0323))
+
+
+### Reverts
+
+* 取消支持为路径添加中间件 ([1e5809a](https://github.com/zjx0905/axios-miniprogram/commit/1e5809aee3f1653eced0c2ca351c6e3f8616f719))
+
+
+### BREAKING CHANGES
+
+* 原派生领域替换为功能更强的扩展实例
+
+
+
 ## [2.3.2](https://github.com/zjx0905/axios-miniprogram/compare/v2.3.1...v2.3.2) (2023-04-23)
 
 
