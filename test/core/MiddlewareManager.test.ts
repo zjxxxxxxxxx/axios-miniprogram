@@ -7,7 +7,9 @@ describe('src/core/MiddlewareManager.ts', () => {
     const m = new MiddlewareManager();
 
     expect(m.use).toBeTypeOf('function');
-    expect(m.wrap).toBeTypeOf('function');
+    expect(m.createContext).toBeTypeOf('function');
+    expect(m.run).toBeTypeOf('function');
+    expect(m.enhanceRun).toBeTypeOf('function');
   });
 
   test('应该抛出异常', () => {
@@ -16,6 +18,15 @@ describe('src/core/MiddlewareManager.ts', () => {
     expect(() => m.use(undefined as any)).toThrowError(
       '[axios-miniprogram]: callback 不是一个 function',
     );
+  });
+
+  test('应该返回上下文', () => {
+    const m = new MiddlewareManager();
+    const c = {};
+    const ctx = m.createContext(c);
+
+    expect(ctx.req).toBe(c);
+    expect(ctx.res).toBe(null);
   });
 
   test('应该支持添加中间件', () => {
@@ -34,9 +45,36 @@ describe('src/core/MiddlewareManager.ts', () => {
     });
 
     m.use(cb);
-    m.wrap(c, flush);
+    m.run(c, flush);
+
+    expect(c.res).toBe(res);
+    expect(cb).toBeCalled();
+    expect(flush).toBeCalled();
+  });
+
+  test('应该支持强化运行器', () => {
+    const m = new MiddlewareManager();
+    const c: MiddlewareContext = {
+      req: {},
+      res: null,
+    };
+    const res = {} as AxiosResponse;
+
+    const cb = vi.fn(async (ctx, next) => {
+      await next();
+    });
+    const enh = vi.fn(async (ctx, next) => {
+      await next();
+    });
+    const flush = vi.fn(async () => {
+      c.res = res;
+    });
+
+    m.use(cb);
+    m.enhanceRun(enh)(c, flush);
 
     expect(cb).toBeCalled();
+    expect(enh).toBeCalled();
     expect(flush).toBeCalled();
   });
 
@@ -89,7 +127,7 @@ describe('src/core/MiddlewareManager.ts', () => {
     m.use(cb1);
     m.use(cb2);
     m.use(cb3);
-    await m.wrap(c, flush);
+    await m.run(c, flush);
 
     expect(c.req.step).toBe('flush start');
     expect(c.res!.step).toBe('cb1 end');

@@ -28,11 +28,11 @@ export interface AxiosInstance extends AxiosRequest, Axios {
   /**
    * 获取 URI
    *
-   * @param config 默认配置
+   * @param config 配置
    */
   getUri(config: AxiosRequestConfig): string;
   /**
-   * 创建 axios 实例
+   * 创建实例
    *
    * @param config 默认配置
    */

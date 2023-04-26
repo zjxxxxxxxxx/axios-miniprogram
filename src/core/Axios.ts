@@ -1,3 +1,8 @@
+import {
+  PLAIN_METHODS,
+  WITH_DATA_METHODS,
+  WITH_PARAMS_METHODS,
+} from '../constants/methods';
 import { isString } from '../helpers/isTypes';
 import { dispatchRequest } from '../request/dispatchRequest';
 import { CancelToken } from '../request/cancel';
@@ -14,17 +19,11 @@ import InterceptorManager, {
   Interceptor,
   InterceptorExecutor,
 } from './InterceptorManager';
-import { mergeConfig } from './mergeConfig';
-import {
-  PLAIN_METHODS,
-  WITH_DATA_METHODS,
-  WITH_PARAMS_METHODS,
-} from '../constants/methods';
 import MiddlewareManager, {
+  MiddlewareCallback,
   MiddlewareContext,
-  MiddlewareNext,
-  MiddlewareUse,
 } from './MiddlewareManager';
+import { mergeConfig } from './mergeConfig';
 
 /**
  * 请求方法
@@ -425,9 +424,11 @@ export default class Axios {
   connect!: AxiosRequestMethodFn;
 
   /**
-   * 添加中间件
+   * 注册中间件
+   *
+   * @param middleware 中间件
    */
-  use: MiddlewareUse;
+  use: (middleware: MiddlewareCallback) => MiddlewareManager;
 
   constructor(defaults: AxiosRequestConfig, parent?: Axios) {
     this.defaults = defaults;
@@ -449,12 +450,8 @@ export default class Axios {
     }
     config.method = config.method || 'get';
 
-    return this.#processRequest(mergeConfig(this.defaults, config));
-  };
-
-  #processRequest(config: AxiosRequestConfig) {
     const requestHandler = {
-      resolved: this.#requestHandler,
+      resolved: this.#handleRequest,
     };
     const errorHandler = {
       rejected: config.errorHandler,
@@ -480,9 +477,9 @@ export default class Axios {
           resolved,
           rejected,
         ),
-      Promise.resolve(config),
+      Promise.resolve(mergeConfig(this.defaults, config)),
     ) as Promise<AxiosResponse>;
-  }
+  };
 
   #eachRequestInterceptors(executor: InterceptorExecutor<AxiosRequestConfig>) {
     this.interceptors.request.forEach(executor);
@@ -498,25 +495,25 @@ export default class Axios {
     }
   }
 
-  #requestHandler = async (config: AxiosRequestConfig) => {
-    const ctx: MiddlewareContext = {
-      req: config,
-      res: null,
-    };
-    await this.#wrap(ctx, async () => {
-      ctx.res = await dispatchRequest(ctx.req);
-    });
+  #handleRequest = async (config: AxiosRequestConfig) => {
+    const ctx = this.#middleware.createContext(config);
+    await this.#run(ctx, this.#handleResponse);
     return ctx.res as AxiosResponse;
   };
 
-  #wrap(ctx: MiddlewareContext, flush: MiddlewareNext): Promise<void> {
-    if (this.#parent) {
-      return this.#parent.#wrap(ctx, () => {
-        return this.#middleware.wrap(ctx, flush);
-      });
+  #handleResponse = async (ctx: MiddlewareContext) => {
+    ctx.res = await dispatchRequest(ctx.req);
+  };
+
+  #run = (
+    ctx: MiddlewareContext,
+    respond: MiddlewareCallback,
+  ): Promise<void> => {
+    if (!this.#parent) {
+      return this.#middleware.run(ctx, respond);
     }
-    return this.#middleware.wrap(ctx, flush);
-  }
+    return this.#middleware.enhanceRun(this.#parent.#run)(ctx, respond);
+  };
 }
 
 for (const method of PLAIN_METHODS) {
