@@ -115,7 +115,7 @@ describe('src/request/cancel.ts', () => {
     expect(() => s.token.throwIfRequested()).toThrowError('1');
   });
 
-  test('应该可以在请求发出之前取消', async () => {
+  test('应该可以在请求发送之前取消', async () => {
     const cb = vi.fn();
     const s = CancelToken.source();
 
@@ -131,7 +131,7 @@ describe('src/request/cancel.ts', () => {
     expect(isCancel(cb.mock.calls[0][0])).toBeTruthy();
   });
 
-  test('应该可以在请求发出之后取消', async () => {
+  test('应该可以在请求发送之后取消', async () => {
     const cb = vi.fn();
     const s = CancelToken.source();
 

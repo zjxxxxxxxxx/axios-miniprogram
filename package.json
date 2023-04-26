@@ -25,6 +25,10 @@
   "homepage": "https://axios-miniprogram.com",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
   "scripts": {
     "cz": "simple-git-hooks && czg",
     "build": "esno scripts/build.ts",

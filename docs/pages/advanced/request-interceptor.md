@@ -5,7 +5,7 @@ title: 请求拦截器
 # {{ $frontmatter.title }}
 
 ::: tip {{ $frontmatter.title }}
-用于请求发出前拦截请求。
+用于请求发送前拦截请求。
 
 通常会用于转换请求配置，或实现一些自定义功能。
 :::
