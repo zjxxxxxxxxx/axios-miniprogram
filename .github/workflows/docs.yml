@@ -2,6 +2,8 @@ name: Deploy Docs
 
 on:
   push:
+    tags:
+      - v*
     branches:
       - docs
   workflow_dispatch:

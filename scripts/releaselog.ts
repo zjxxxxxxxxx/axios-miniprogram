@@ -5,7 +5,7 @@ import { getPkgJSON, resolve } from './utils';
 const changelogPath = resolve('CHANGELOG.md');
 const releaselogPath = resolve('RELEASELOG.md');
 const { version } = getPkgJSON();
-const versionRE = new RegExp(`^# \\[?${version}\\]?[ (]`);
+const versionRE = new RegExp(`^#{1,2} \\[?${version}\\]?\\(?`);
 
 main();
 
@@ -17,7 +17,7 @@ async function main() {
 
   let releaselog = '';
   for await (const line of changelog) {
-    if (line.startsWith('# ') && !versionRE.test(line)) {
+    if (/^#{1,2} /.test(line) && !versionRE.test(line)) {
       break;
     }
     releaselog += `${line}\n`;

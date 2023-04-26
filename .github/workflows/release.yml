@@ -44,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          name: Release ${{ github.ref }}
           prerelease: ${{ steps.prerelease.outputs.result }}
           body_path: 'RELEASELOG.md'
           files: 'dist/**.zip'
