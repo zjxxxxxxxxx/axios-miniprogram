@@ -1,5 +1,5 @@
 import { combineURL } from '../helpers/combineURL';
-import { buildURL } from '../helpers/buildURL';
+import { transformURL } from '../helpers/transformURL';
 import Axios, {
   AxiosRequest,
   AxiosRequestConfig,
@@ -58,11 +58,7 @@ export function createInstance(config: AxiosRequestConfig, parent?: Axios) {
   const instance = context.request as AxiosInstance;
 
   instance.getUri = function getUri(config) {
-    const { url, params, paramsSerializer } = mergeConfig(
-      instance.defaults,
-      config,
-    );
-    return buildURL(url, params, paramsSerializer).replace(/^\?/, '');
+    return transformURL(mergeConfig(instance.defaults, config));
   };
   instance.create = function create(config) {
     return createInstance(mergeConfig(instance.defaults, config));

@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import { transformURL } from '@/request/transformURL';
+import { transformURL } from '@/helpers/transformURL';
 
-describe('src/request/transformURL.ts', () => {
+describe('src/helpers/transformURL.ts', () => {
   test('应该支持空配置', () => {
     expect(transformURL({})).toBe('');
     expect(transformURL({ baseURL: 'http://api.com' })).toBe('http://api.com');

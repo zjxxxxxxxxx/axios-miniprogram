@@ -160,11 +160,15 @@ describe('src/axios.ts', () => {
   });
 
   test('应该可以获取 URI', () => {
-    expect(axios.getUri({ url: 'test' })).toBe('test');
-    expect(axios.getUri({ url: 'test', params: { id: 1 } })).toBe('test?id=1');
-    expect(axios.getUri({ url: 'test', paramsSerializer: () => 'id=1' })).toBe(
-      'test?id=1',
-    );
+    expect(
+      axios.getUri({
+        baseURL: 'https://api.com',
+        url: '/test/:id/',
+        params: {
+          id: 1,
+        },
+      }),
+    ).toBe('https://api.com/test/1/');
   });
 
   test('应该支持中间件', async () => {

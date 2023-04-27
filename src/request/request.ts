@@ -1,4 +1,5 @@
 import { isFunction, isPlainObject } from '../helpers/isTypes';
+import { transformURL } from '../helpers/transformURL';
 import {
   AxiosRequestConfig,
   AxiosResponse,
@@ -14,7 +15,6 @@ import {
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';
-import { transformURL } from './transformURL';
 
 /**
  * 开始请求

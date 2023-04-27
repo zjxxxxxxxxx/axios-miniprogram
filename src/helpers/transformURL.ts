@@ -1,8 +1,8 @@
-import { isPlainObject } from '../helpers/isTypes';
-import { buildURL } from '../helpers/buildURL';
-import { combineURL } from '../helpers/combineURL';
-import { dynamicURL } from '../helpers/dynamicURL';
 import { AxiosRequestConfig } from '../core/Axios';
+import { isPlainObject } from './isTypes';
+import { buildURL } from './buildURL';
+import { combineURL } from './combineURL';
+import { dynamicURL } from './dynamicURL';
 
 export function transformURL(config: AxiosRequestConfig) {
   let url = combineURL(config.baseURL, config.url);
