@@ -23,13 +23,6 @@ export function captureError<T = any>(fn: () => void) {
   }
 }
 
-export function checkStack(error: Error) {
-  if (error.stack) {
-    return error.stack.indexOf('at') === error.stack.indexOf('at /');
-  }
-  return true;
-}
-
 export function noop() {
   return;
 }

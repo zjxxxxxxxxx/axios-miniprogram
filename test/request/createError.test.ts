@@ -1,5 +1,4 @@
 import { describe, test, expect } from 'vitest';
-import { checkStack } from 'scripts/test.utils';
 import { createError, isAxiosError } from '@/request/createError';
 
 describe('src/request/createError.ts', () => {
@@ -11,7 +10,6 @@ describe('src/request/createError.ts', () => {
     expect(err.message).toBe('error');
     expect(err.config).toBe(c);
     expect(err.response).toBe(r);
-    expect(checkStack(err)).toBeTruthy();
   });
 
   test('应该支持传递更多参数', () => {

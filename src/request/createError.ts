@@ -1,4 +1,3 @@
-import { cleanStack } from '../helpers/error';
 import { AxiosAdapterPlatformTask } from '../adpater/createAdapter';
 import {
   AxiosRequestConfig,
@@ -35,9 +34,7 @@ export function createError(
   response: AxiosErrorResponse,
   request: AxiosAdapterPlatformTask,
 ) {
-  const axiosError = new AxiosError(message, config, response, request);
-  cleanStack(axiosError);
-  return axiosError;
+  return new AxiosError(message, config, response, request);
 }
 
 export function isAxiosError(value: unknown): value is AxiosError {
