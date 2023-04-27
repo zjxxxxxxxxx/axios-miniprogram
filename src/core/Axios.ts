@@ -448,6 +448,7 @@ export default class Axios {
     } else {
       config = urlOrConfig;
     }
+    config = mergeConfig(this.defaults, config);
     config.method = config.method || 'get';
 
     const requestHandler = {
@@ -470,7 +471,6 @@ export default class Axios {
     });
     chain.push(errorHandler);
 
-    const source = Promise.resolve(mergeConfig(this.defaults, config));
     return chain.reduce(
       (next, { resolved, rejected }) =>
         next.then(
@@ -478,7 +478,7 @@ export default class Axios {
           resolved,
           rejected,
         ),
-      source,
+      Promise.resolve(config),
     ) as Promise<AxiosResponse>;
   };
 

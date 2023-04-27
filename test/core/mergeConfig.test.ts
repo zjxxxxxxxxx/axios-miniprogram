@@ -17,7 +17,6 @@ describe('src/core/mergeConfig.ts', () => {
   test('应该只取 config2', () => {
     const c1 = {
       url: 'a',
-      method: 'get' as const,
       data: {
         v1: '1',
       },
@@ -26,7 +25,6 @@ describe('src/core/mergeConfig.ts', () => {
     };
     const c2 = {
       url: 'b',
-      method: 'post' as const,
       data: {
         v1: '2',
       },
@@ -133,6 +131,7 @@ describe('src/core/mergeConfig.ts', () => {
     const c1 = {
       adapter: vi.fn(),
       baseURL: 'https://c1.com',
+      method: 'post' as const,
       paramsSerializer: vi.fn(),
       transformRequest: vi.fn(),
       transformResponse: vi.fn(),
@@ -148,6 +147,7 @@ describe('src/core/mergeConfig.ts', () => {
     const c2 = {
       adapter: vi.fn(),
       baseURL: 'https://c2.com',
+      method: 'put' as const,
       paramsSerializer: vi.fn(),
       transformRequest: vi.fn(),
       transformResponse: vi.fn(),

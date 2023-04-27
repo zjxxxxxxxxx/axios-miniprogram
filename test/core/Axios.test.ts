@@ -271,7 +271,11 @@ describe('src/core/Axios.ts', () => {
 
   test('请求拦截器应该支持抛出异常', async () => {
     const axiosObj = new Axios({});
-    const c = { adapter: vi.fn(), url: 'test' };
+    const c = {
+      adapter: vi.fn(),
+      url: 'test',
+      method: 'get' as const,
+    };
     const body = (v: any) => {
       throw { ...v, throw: true };
     };
