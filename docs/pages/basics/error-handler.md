@@ -67,6 +67,8 @@ axios('https://api.com/test')
     } else {
       // 其他错误
     }
+
+    return Promise.reject(error);
   });
 ```
 
@@ -106,6 +108,8 @@ axios('https://api.com/test', {
     } else {
       // 其他错误
     }
+
+    return Promise.reject(error);
   },
 })
   .then((response) => {
@@ -152,5 +156,7 @@ axios.defaults.errorHandler = (error) => {
   } else {
     // 其他错误
   }
+
+  return Promise.reject(error);
 };
 ```
