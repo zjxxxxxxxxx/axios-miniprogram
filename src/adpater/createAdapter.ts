@@ -1,5 +1,6 @@
 import { isFunction, isPlainObject } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
+import { origIgnore } from '../helpers/ignore';
 import {
   AxiosProgressEvent,
   AxiosRequestFormData,
@@ -291,7 +292,8 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   ) {
     response.status = response.status ?? response.statusCode;
     response.headers = response.headers ?? response.header;
-    clean(response, ['statusCode', 'errMsg', 'errno', 'header']);
+
+    origIgnore(response, ['statusCode', 'errMsg', 'errno', 'header']);
   }
 
   function processRequest(
@@ -307,12 +309,13 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   ): AxiosAdapterPlatformTask {
     const options = baseOptions as AxiosAdapterUploadOptions;
     const { name, filePath, fileType, ...formData } = options.data as AnyObject;
-
     options.name = name;
     options.fileName = name;
     options.filePath = filePath;
     options.fileType = fileType;
     options.formData = formData;
+
+    origIgnore(options, ['params', 'data']);
 
     return upload(options);
   }
@@ -323,7 +326,6 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   ): AxiosAdapterPlatformTask {
     const options = baseOptions as AxiosAdapterDownloadOptions;
     const { params, success } = options;
-
     options.filePath = params?.filePath;
     options.success = (response) => {
       response.data = {
@@ -333,17 +335,15 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
           // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
           response.apFilePath,
       };
-      clean(response, ['tempFilePath', 'apFilePath', 'filePath']);
+
+      origIgnore(response, ['tempFilePath', 'apFilePath', 'filePath']);
+
       success(response);
     };
 
-    return download(options);
-  }
+    origIgnore(options, ['params']);
 
-  function clean(obj: AnyObject, keys: string[]) {
-    for (const key of keys) {
-      delete obj[key];
-    }
+    return download(options);
   }
 
   return adapter;

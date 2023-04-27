@@ -53,19 +53,19 @@ export interface AxiosInstance extends AxiosRequest, Axios {
   fork(config: AxiosRequestConfig): AxiosInstance;
 }
 
-export function createInstance(config: AxiosRequestConfig, parent?: Axios) {
-  const context = new Axios(config, parent);
+export function createInstance(defaults: AxiosRequestConfig, parent?: Axios) {
+  const context = new Axios(defaults, parent);
   const instance = context.request as AxiosInstance;
 
   instance.getUri = function getUri(config) {
-    return transformURL(mergeConfig(instance.defaults, config));
+    return transformURL(mergeConfig(defaults, config));
   };
   instance.create = function create(config) {
-    return createInstance(mergeConfig(instance.defaults, config));
+    return createInstance(mergeConfig(defaults, config));
   };
   instance.extend = function extend(config) {
-    config.baseURL = combineURL(instance.defaults.baseURL, config.baseURL);
-    return createInstance(mergeConfig(instance.defaults, config), context);
+    config.baseURL = combineURL(defaults.baseURL, config.baseURL);
+    return createInstance(mergeConfig(defaults, config), context);
   };
   instance.fork = instance.extend;
 

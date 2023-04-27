@@ -13,6 +13,11 @@ const deepMergeConfigMap: Record<string, boolean> = {
   params: true,
 };
 
+/**
+ * 合并配置
+ *
+ * 按照设定的优先级进行合并
+ */
 export function mergeConfig(
   config1: AxiosRequestConfig = {},
   config2: AxiosRequestConfig = {},

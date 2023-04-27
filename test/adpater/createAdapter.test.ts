@@ -56,6 +56,7 @@ describe('src/adapter/createAdapter.ts', () => {
       data: {
         name: 'file',
         filePath: '/path/file',
+        fileType: 'image',
         user: 'test',
         id: 1,
       },
@@ -78,7 +79,8 @@ describe('src/adapter/createAdapter.ts', () => {
 
     expect(p.request).not.toBeCalled();
     a(r);
-    expect(p.request.mock.calls[0][0]).toMatchInlineSnapshot(`
+    const rOpts = p.request.mock.calls[0][0];
+    expect(rOpts).toMatchInlineSnapshot(`
       {
         "fail": [Function],
         "header": {
@@ -93,21 +95,39 @@ describe('src/adapter/createAdapter.ts', () => {
         "url": "test",
       }
     `);
+    expect(rOpts.header).toEqual(r.headers);
+
+    expect(p.download).not.toBeCalled();
+    a(d);
+    const dOpts = p.download.mock.calls[0][0];
+    expect(dOpts).toMatchInlineSnapshot(`
+      {
+        "fail": [Function],
+        "filePath": "/path/file",
+        "header": {
+          "Accept": "application/json, text/plain, */*",
+        },
+        "headers": {
+          "Accept": "application/json, text/plain, */*",
+        },
+        "method": "GET",
+        "success": [Function],
+        "type": "download",
+        "url": "test",
+      }
+    `);
+    expect(dOpts.header).toEqual(d.headers);
+    expect(dOpts.filePath).toEqual(d.params.filePath);
 
     expect(p.upload).not.toBeCalled();
     a(u);
-    expect(p.upload.mock.calls[0][0]).toMatchInlineSnapshot(`
+    const uOpts = p.upload.mock.calls[0][0];
+    expect(uOpts).toMatchInlineSnapshot(`
       {
-        "data": {
-          "filePath": "/path/file",
-          "id": 1,
-          "name": "file",
-          "user": "test",
-        },
         "fail": [Function],
         "fileName": "file",
         "filePath": "/path/file",
-        "fileType": undefined,
+        "fileType": "image",
         "formData": {
           "id": 1,
           "user": "test",
@@ -125,28 +145,15 @@ describe('src/adapter/createAdapter.ts', () => {
         "url": "test",
       }
     `);
-
-    expect(p.download).not.toBeCalled();
-    a(d);
-    expect(p.download.mock.calls[0][0]).toMatchInlineSnapshot(`
-      {
-        "fail": [Function],
-        "filePath": "/path/file",
-        "header": {
-          "Accept": "application/json, text/plain, */*",
-        },
-        "headers": {
-          "Accept": "application/json, text/plain, */*",
-        },
-        "method": "GET",
-        "params": {
-          "filePath": "/path/file",
-        },
-        "success": [Function],
-        "type": "download",
-        "url": "test",
-      }
-    `);
+    expect(uOpts.header).toEqual(u.headers);
+    expect(uOpts.name).toEqual(u.data.name);
+    expect(uOpts.fileName).toEqual(u.data.name);
+    expect(uOpts.filePath).toEqual(u.data.filePath);
+    expect(uOpts.fileType).toEqual(u.data.fileType);
+    expect(uOpts.formData).toEqual({
+      id: u.data.id,
+      user: u.data.user,
+    });
   });
 
   test('应该支持转换下载数据', () => {

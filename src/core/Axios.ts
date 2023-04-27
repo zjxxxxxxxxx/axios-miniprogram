@@ -353,7 +353,11 @@ export interface AxiosConstructor {
 }
 
 export default class Axios {
+  /**
+   * 父级实例
+   */
   #parent?: Axios;
+
   /**
    * 默认请求配置
    */
@@ -430,8 +434,13 @@ export default class Axios {
    */
   use: (middleware: MiddlewareCallback) => MiddlewareManager;
 
-  constructor(defaults: AxiosRequestConfig, parent?: Axios) {
-    this.defaults = defaults;
+  /**
+   *
+   * @param config 默认配置
+   * @param parent 父级实例
+   */
+  constructor(config: AxiosRequestConfig, parent?: Axios) {
+    this.defaults = config;
     this.#parent = parent;
     this.use = this.#middleware.use;
   }
