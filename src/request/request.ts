@@ -9,6 +9,7 @@ import {
   AxiosAdapterResponse,
   AxiosAdapterResponseError,
   AxiosAdapterPlatformTask,
+  AxiosAdapterRequestMethod,
 } from '../adpater/createAdapter';
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
@@ -26,8 +27,9 @@ export function request(config: AxiosRequestConfig) {
   return new Promise<AxiosResponse>((resolve, reject) => {
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...(config as AxiosAdapterRequestConfig),
-      url: transformURL(config),
       type: generateType(config),
+      url: transformURL(config),
+      method: config.method!.toUpperCase() as AxiosAdapterRequestMethod,
       success,
       fail,
     };

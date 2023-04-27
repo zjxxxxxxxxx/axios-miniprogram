@@ -38,18 +38,6 @@ describe('src/request/dispatchRequest.ts', () => {
     ).not.toThrowError();
   });
 
-  testEachMethods('应该支持 %s 转全大写', (k) => {
-    const c = {
-      adapter: mockAdapter(),
-      url: '/',
-      method: k,
-    };
-
-    dispatchRequest(c);
-
-    expect(c.method).toBe(k.toUpperCase());
-  });
-
   test('坏的适配器应该抛出异常', () => {
     expect(
       dispatchRequest({
@@ -64,7 +52,7 @@ describe('src/request/dispatchRequest.ts', () => {
         "config": {
           "adapter": [Function],
           "headers": {},
-          "method": "GET",
+          "method": "get",
           "url": "/",
         },
         "request": undefined,
@@ -72,7 +60,7 @@ describe('src/request/dispatchRequest.ts', () => {
           "config": {
             "adapter": [Function],
             "headers": {},
-            "method": "GET",
+            "method": "get",
             "url": "/",
           },
           "data": undefined,

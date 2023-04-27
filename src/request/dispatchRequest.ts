@@ -26,7 +26,6 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   assert(isString(config.url), 'url 不是一个 string');
   assert(isString(config.method), 'method 不是一个 string');
 
-  config.method = config.method!.toUpperCase() as AxiosRequestMethod;
   config.headers = flattenHeaders(config);
 
   // 可以携带 data 的请求方法，转换 data

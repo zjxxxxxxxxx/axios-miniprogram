@@ -18,6 +18,7 @@ describe('src/request/request.ts', () => {
       },
       baseURL: 'http://api.com',
       url: 'test',
+      method: 'get' as const,
     };
     const c2 = {
       adapter(config: AnyObject) {
@@ -25,6 +26,7 @@ describe('src/request/request.ts', () => {
       },
       baseURL: 'http://api.com',
       url: 'test/:id',
+      method: 'get' as const,
       params: {
         id: 1,
       },
@@ -44,6 +46,18 @@ describe('src/request/request.ts', () => {
     request(c1);
     request(c2);
     request(c3);
+  });
+
+  testEachMethods('应该支持 %s 转全大写', (k) => {
+    const c = {
+      adapter(config: AnyObject) {
+        expect(config.method).toBe(k.toUpperCase());
+      },
+      url: '/',
+      method: k,
+    };
+
+    request(c);
   });
 
   testEachMethods('%s 方法应该返回正确的响应体结构', (k) => {
