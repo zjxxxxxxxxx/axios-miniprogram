@@ -449,7 +449,8 @@ export default class Axios {
       config = urlOrConfig;
     }
     config = mergeConfig(this.defaults, config);
-    config.method = config.method || 'get';
+    config.method = (config.method?.toLowerCase() ??
+      'get') as AxiosRequestMethod;
 
     const requestHandler = {
       resolved: this.#handleRequest,

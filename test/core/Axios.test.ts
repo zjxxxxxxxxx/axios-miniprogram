@@ -10,7 +10,7 @@ import {
   WITH_DATA_METHODS,
   WITH_PARAMS_METHODS,
 } from '@/constants/methods';
-import Axios from '@/core/Axios';
+import Axios, { AxiosRequestMethod } from '@/core/Axios';
 import axios from '@/axios';
 
 describe('src/core/Axios.ts', () => {
@@ -34,6 +34,18 @@ describe('src/core/Axios.ts', () => {
 
   testEachMethods('%s 应该是一个函数', (k) => {
     expect(axiosObj[k]).toBeTypeOf('function');
+  });
+
+  testEachMethods('应该支持 %s 转全小写', (k) => {
+    const c = {
+      adapter: mockAdapter(),
+      url: '/',
+      method: k.toUpperCase() as AxiosRequestMethod,
+    };
+
+    axiosObj.request(c).then((response) => {
+      expect(response.config.method).toBe(k);
+    });
   });
 
   test('应该可以发送普通别名请求', () => {

@@ -1,11 +1,7 @@
 import { WITH_DATA_RE } from '../constants/methods';
 import { isFunction, isString } from '../helpers/isTypes';
 import { assert } from '../helpers/error';
-import {
-  AxiosRequestConfig,
-  AxiosRequestMethod,
-  AxiosResponse,
-} from '../core/Axios';
+import { AxiosRequestConfig, AxiosResponse } from '../core/Axios';
 import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
