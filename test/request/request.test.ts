@@ -11,6 +11,41 @@ import { request } from '@/request/request';
 import axios from '@/axios';
 
 describe('src/request/request.ts', () => {
+  test('应该支持转换 URL', () => {
+    const c1 = {
+      adapter(config: AnyObject) {
+        expect(config.url).toBe('http://api.com/test');
+      },
+      baseURL: 'http://api.com',
+      url: 'test',
+    };
+    const c2 = {
+      adapter(config: AnyObject) {
+        expect(config.url).toBe('http://api.com/test/1');
+      },
+      baseURL: 'http://api.com',
+      url: 'test/:id',
+      params: {
+        id: 1,
+      },
+    };
+    const c3 = {
+      adapter(config: AnyObject) {
+        expect(config.url).toBe('http://api.com/test/1');
+      },
+      baseURL: 'http://api.com',
+      url: 'test/:id',
+      method: 'post' as const,
+      data: {
+        id: 1,
+      },
+    };
+
+    request(c1);
+    request(c2);
+    request(c3);
+  });
+
   testEachMethods('%s 方法应该返回正确的响应体结构', (k) => {
     const c = {
       adapter: mockAdapter(),

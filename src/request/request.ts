@@ -13,6 +13,7 @@ import {
 import { isCancelToken } from './cancel';
 import { AxiosErrorResponse, createError } from './createError';
 import { generateType } from './generateType';
+import { transformURL } from './transformURL';
 
 /**
  * 开始请求
@@ -25,6 +26,7 @@ export function request(config: AxiosRequestConfig) {
   return new Promise<AxiosResponse>((resolve, reject) => {
     const adapterConfig: AxiosAdapterRequestConfig = {
       ...(config as AxiosAdapterRequestConfig),
+      url: transformURL(config),
       type: generateType(config),
       success,
       fail,

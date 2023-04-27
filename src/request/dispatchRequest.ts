@@ -10,7 +10,6 @@ import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
 import { AxiosTransformer, transformData } from './transformData';
 import { request } from './request';
-import { transformURL } from './transformURL';
 import { AxiosErrorResponse } from './createError';
 
 /**
@@ -37,8 +36,6 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   } else {
     delete config.data;
   }
-
-  config.url = transformURL(config);
 
   function onSuccess(response: AxiosResponse) {
     throwIfCancellationRequested(config);

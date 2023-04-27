@@ -86,36 +86,6 @@ describe('src/request/dispatchRequest.ts', () => {
     `);
   });
 
-  test('应该支持转换 URL', () => {
-    const c1 = {
-      ...defaults,
-      url: 'test',
-    };
-    const c2 = {
-      ...defaults,
-      url: 'test/:id',
-      params: {
-        id: 1,
-      },
-    };
-    const c3 = {
-      ...defaults,
-      method: 'post' as const,
-      url: 'test/:id',
-      data: {
-        id: 1,
-      },
-    };
-
-    dispatchRequest(c1);
-    dispatchRequest(c2);
-    dispatchRequest(c3);
-
-    expect(c1.url).toBe('http://api.com/test');
-    expect(c2.url).toBe('http://api.com/test/1');
-    expect(c3.url).toBe('http://api.com/test/1');
-  });
-
   test('应该支持拉平请求头', () => {
     const c = {
       ...defaults,
