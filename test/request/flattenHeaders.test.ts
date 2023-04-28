@@ -74,7 +74,7 @@ describe('src/request/flattenHeaders.ts', () => {
       v4: `${k}2`,
     };
 
-    methods.forEach((a) => {
+    eachMethods((a) => {
       expect(flattenHeaders({ headers: h, method: a })).toEqual(
         a !== k ? h1 : h2,
       );

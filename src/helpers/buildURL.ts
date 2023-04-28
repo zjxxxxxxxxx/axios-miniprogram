@@ -2,7 +2,7 @@ import { isArray, isDate, isNull, isPlainObject, isUndefined } from './isTypes';
 
 export function buildURL(
   url = '',
-  params?: AnyObject,
+  params: AnyObject = {},
   paramsSerializer = defaultSerializer,
 ): string {
   const paramsStr = paramsSerializer(params);
@@ -12,9 +12,7 @@ export function buildURL(
   return url;
 }
 
-function defaultSerializer(params?: AnyObject): string {
-  if (!isPlainObject(params)) return '';
-
+function defaultSerializer(params: AnyObject): string {
   const parts: string[] = [];
 
   function push(key: string, value: string) {

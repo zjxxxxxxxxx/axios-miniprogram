@@ -44,7 +44,7 @@ export default class MiddlewareManager {
    * @param middleware 中间件
    */
   use = (middleware: MiddlewareCallback) => {
-    assert(isFunction(middleware), 'callback 不是一个 function');
+    assert(isFunction(middleware), 'middleware 不是一个 function');
     this.#middlewares.push(middleware);
     return this;
   };

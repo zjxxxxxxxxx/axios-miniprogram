@@ -13,6 +13,7 @@ describe('src/helpers/deepMerge.ts', () => {
     };
 
     expect(deepMerge()).toEqual({});
+    expect(deepMerge(undefined, undefined, undefined)).toEqual({});
     expect(deepMerge(o)).toEqual(o);
   });
 

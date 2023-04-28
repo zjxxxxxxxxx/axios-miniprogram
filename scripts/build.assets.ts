@@ -1,26 +1,30 @@
 import fs from 'node:fs';
+import { basename } from 'node:path';
 import fg from 'fast-glob';
 import JSZip from 'jszip';
 import consola from 'consola';
 import chalk from 'chalk';
-import { distPath, exec, getFileName } from './utils';
+import { distPath, exec } from './utils';
+import { checkSize } from './checkSize';
 
 main();
 
 async function main() {
   exec('pnpm build');
 
+  console.log('');
   consola.info('Generate assets\n');
   for (const filePath of await fg(`${distPath}/**.js`)) {
     await generateZip(filePath, filePath.replace(/\.js$/, '.zip'));
   }
+  checkSize(`${distPath}/**.zip`);
 }
 
 function generateZip(inputPath: string, outputPath: string) {
   const start = Date.now();
 
-  const inputName = getFileName(inputPath);
-  const outputName = getFileName(outputPath);
+  const inputName = basename(inputPath);
+  const outputName = basename(outputPath);
 
   console.log(chalk.cyanBright.bold(`${inputPath} → dist/${outputName}...`));
 

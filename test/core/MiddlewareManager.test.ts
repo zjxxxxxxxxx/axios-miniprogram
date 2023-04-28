@@ -16,7 +16,7 @@ describe('src/core/MiddlewareManager.ts', () => {
     const m = new MiddlewareManager();
 
     expect(() => m.use(undefined as any)).toThrowError(
-      '[axios-miniprogram]: callback 不是一个 function',
+      '[axios-miniprogram]: middleware 不是一个 function',
     );
   });
 

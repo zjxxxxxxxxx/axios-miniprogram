@@ -19,6 +19,3 @@ export const exec = (command: string, options: ExecSyncOptions = {}) =>
   });
 
 export const getPkgJSON = () => require(pkgPath);
-
-export const getFileName = (filePath: string) =>
-  filePath.match(/\/([^/]*)$/)![1];
