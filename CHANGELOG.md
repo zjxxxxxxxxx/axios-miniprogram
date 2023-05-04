@@ -1,3 +1,25 @@
+## [2.4.1](https://github.com/zjx0905/axios-miniprogram/compare/v2.4.0...v2.4.1) (2023-05-04)
+
+
+### Bug Fixes
+
+* 配置原始 URL 丢失 ([8b6eed2](https://github.com/zjx0905/axios-miniprogram/commit/8b6eed2d6df5c7aacd181f6fbcfba9eca875178c))
+* 配置原始请求方法丢失 ([c107171](https://github.com/zjx0905/axios-miniprogram/commit/c107171eba69a129eddad34861611837a0efac25))
+
+
+### Features
+
+* 请求发送前请求方法转小写 ([0b82403](https://github.com/zjx0905/axios-miniprogram/commit/0b82403c4c630676042ff390b77d5791c4ab0a6e))
+* 允许设置默认请求方法 ([4b02582](https://github.com/zjx0905/axios-miniprogram/commit/4b025821525712d7e6bb68faa9af3cf7d9ad0e0d))
+* getUri 支持 baseURL/dynamicURL ([633c920](https://github.com/zjx0905/axios-miniprogram/commit/633c92024718370e24919fcfb44b86b795248c8f))
+
+
+### Performance Improvements
+
+* 优化中间件 ([3931f23](https://github.com/zjx0905/axios-miniprogram/commit/3931f230deffbb72a70fd24798334e63a3d531f9))
+
+
+
 # [2.4.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.3.2...v2.4.0) (2023-04-25)
 
 
