@@ -50,30 +50,7 @@ import axios, {
   createAdapter,
 } from 'axios-miniprogram';
 
-const {
-  // 取消令牌
-  CancelToken,
-
-  // 判断取消请求错误
-  isCancel,
-
-  // 原始 Axios 类
-  Axios,
-
-  // 判断请求响应错误
-  isAxiosError,
-
-  // 创建平台适配器
-  createAdapter,
-
-  // 创建实例
-  create,
-
-  // 获取系列化后的 URL
-  getUri,
-} = axios;
-
-axios('test');
+axios('/test');
 ```
 
 ```ts [CommonJS]
@@ -98,28 +75,7 @@ const {
   createAdapter,
 } = require('axios-miniprogram');
 
-const {
-  // 取消令牌
-  CancelToken,
-
-  // 判断取消请求错误
-  isCancel,
-
-  // 原始 Axios 类
-  Axios,
-
-  // 判断请求响应错误
-  isAxiosError,
-
-  // 创建平台适配器
-  createAdapter,
-
-  // 创建实例
-  create,
-
-  // 获取系列化后的 URL
-  getUri,
-} = axios;
+axios('/test');
 ```
 
 ::::
