@@ -1,0 +1,18 @@
+{
+  "extends": ["../tsconfig.json"],
+  "compilerOptions": {
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "outDir": "lib",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "jsx": "preserve",
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": ["./src", "global.d.ts"]
+}
