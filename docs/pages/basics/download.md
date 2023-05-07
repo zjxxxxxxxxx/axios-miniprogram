@@ -26,7 +26,7 @@ axios('https://api.com/test', {
     const {
       // 临时文件路径 (本地路径)。没传入 filePath 指定文件存储路径时会返回，下载后的文件会存储到一个临时文件
       tempFilePath,
-    } = response;
+    } = response.data;
   })
   .catch((error) => {
     // 失败之后做些什么
@@ -50,7 +50,7 @@ axios('https://api.com/test', {
     const {
       // 指定文件下载后存储的路径 (本地路径)
       filePath,
-    } = response;
+    } = response.data;
   })
   .catch((error) => {
     // 失败之后做些什么
@@ -86,7 +86,7 @@ axios('https://api.com/test', {
     const {
       // 指定文件下载后存储的路径 (本地路径)
       filePath,
-    } = response;
+    } = response.data;
   })
   .catch((error) => {
     // 失败之后做些什么

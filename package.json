@@ -48,7 +48,7 @@
     "docs:preview": "pnpm -C docs preview",
     "docs:deploy": "esno scripts/docs.deploy.ts",
     "start": "esno scripts/start.ts",
-    "tidy": "prettier **/*.{js,json}  --write && prettier **/*.ts?(x) --parser=typescript --write"
+    "tidy-up": "prettier **/*.{js,json} --write & prettier **/*.ts --parser=typescript --write"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
@@ -94,7 +94,7 @@
     "*.{js,json}": [
       "prettier --write"
     ],
-    "*.ts?(x)": [
+    "*.ts": [
       "eslint",
       "prettier --parser=typescript --write"
     ]

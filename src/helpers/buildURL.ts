@@ -1,4 +1,4 @@
-import { isArray, isDate, isNull, isPlainObject, isUndefined } from './isTypes';
+import { isArray, isDate, isNull, isPlainObject, isUndefined } from './types';
 
 export function buildURL(
   url = '',

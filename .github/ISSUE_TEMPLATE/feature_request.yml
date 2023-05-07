@@ -17,7 +17,7 @@ body:
     id: suggested-solution
     attributes:
       label: 建议的解决方案
-      description: '在模块 [xy] 中，我们可以提供以下实现......'
+      description: '我们可以提供以下实现......'
     validations:
       required: true
   - type: textarea

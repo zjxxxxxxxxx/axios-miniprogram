@@ -1,4 +1,4 @@
-import { isFunction, isPlainObject } from '../helpers/isTypes';
+import { isFunction, isPlainObject } from '../helpers/types';
 import { transformURL } from '../helpers/transformURL';
 import {
   AxiosRequestConfig,
@@ -91,7 +91,9 @@ export function request(config: AxiosRequestConfig) {
         if (isPlainObject(adapterTask)) {
           tryToggleProgressUpdate(adapterConfig, adapterTask.offProgressUpdate);
 
-          adapterTask?.abort?.();
+          if (isFunction(adapterTask.abort)) {
+            adapterTask.abort();
+          }
         }
 
         reject(reason);
@@ -102,19 +104,19 @@ export function request(config: AxiosRequestConfig) {
 
 function tryToggleProgressUpdate(
   config: AxiosAdapterRequestConfig,
-  progress?: (cb: (event: AnyObject) => void) => void,
+  toggle?: (cb: (event: AnyObject) => void) => void,
 ) {
-  const { type, onUploadProgress, onDownloadProgress } = config;
-  if (isFunction(progress)) {
+  if (isFunction(toggle)) {
+    const { type, onUploadProgress, onDownloadProgress } = config;
     switch (type) {
       case 'upload':
         if (isFunction(onUploadProgress)) {
-          progress(onUploadProgress);
+          toggle(onUploadProgress);
         }
         break;
       case 'download':
         if (isFunction(onDownloadProgress)) {
-          progress(onDownloadProgress);
+          toggle(onDownloadProgress);
         }
         break;
     }

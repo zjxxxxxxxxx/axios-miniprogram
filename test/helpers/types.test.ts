@@ -7,9 +7,9 @@ import {
   isNull,
   isUndefined,
   isString,
-} from '@/helpers/isTypes';
+} from '@/helpers/types';
 
-describe('src/helpers/isTypes.ts', () => {
+describe('src/helpers/types.ts', () => {
   test('应该能判断是数组', () => {
     expect(isArray(new Array(1))).toBeTruthy();
     expect(isArray([])).toBeTruthy();

@@ -1,4 +1,4 @@
-import { isArray, isFunction } from '../helpers/isTypes';
+import { isArray, isFunction } from '../helpers/types';
 
 export interface AxiosTransformCallback<TData = unknown> {
   (

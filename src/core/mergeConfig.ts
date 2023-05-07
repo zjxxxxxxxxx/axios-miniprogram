@@ -1,4 +1,4 @@
-import { isUndefined, isPlainObject } from '../helpers/isTypes';
+import { isUndefined, isPlainObject } from '../helpers/types';
 import { deepMerge } from '../helpers/deepMerge';
 import { AxiosRequestConfig } from './Axios';
 

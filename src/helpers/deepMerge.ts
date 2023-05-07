@@ -1,4 +1,4 @@
-import { isPlainObject } from './isTypes';
+import { isPlainObject } from './types';
 
 export function deepMerge<T extends AnyObject>(...objs: (T | undefined)[]): T {
   const result: AnyObject = {};

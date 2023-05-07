@@ -3,7 +3,7 @@ import {
   WITH_DATA_METHODS,
   WITH_PARAMS_METHODS,
 } from '../constants/methods';
-import { isString } from '../helpers/isTypes';
+import { isString } from '../helpers/types';
 import { dispatchRequest } from '../request/dispatchRequest';
 import { CancelToken } from '../request/cancel';
 import { AxiosTransformer } from '../request/transformData';

@@ -1,5 +1,5 @@
 import { WITH_DATA_RE } from '../constants/methods';
-import { isFunction, isString } from '../helpers/isTypes';
+import { isFunction, isString } from '../helpers/types';
 import { assert } from '../helpers/error';
 import { AxiosRequestConfig, AxiosResponse } from '../core/Axios';
 import { Cancel, isCancel, isCancelToken } from './cancel';

@@ -1,4 +1,4 @@
-import { isFunction, isPlainObject } from '../helpers/isTypes';
+import { isFunction, isPlainObject } from '../helpers/types';
 import { AxiosAdapterPlatform, createAdapter } from './createAdapter';
 
 /**
