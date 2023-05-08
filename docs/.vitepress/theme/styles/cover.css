@@ -20,7 +20,6 @@
   margin-top: var(--vp-nav-height);
   padding-top: 40px !important;
   height: calc(100% - var(--vp-nav-height));
-  border-right: 1px solid var(--vp-c-gutter);
   transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1) !important;
 }
 
@@ -149,11 +148,6 @@
 }
 
 .vp-code-group .tabs {
-  border-top: 1px;
-  border-left: 1px;
-  border-right: 1px;
-  border-bottom: 0;
-  border-style: solid;
   border-color: var(--vp-c-gutter);
 }
 
@@ -211,7 +205,6 @@
   .language-bash,
   .language-ts {
     border-radius: 6px;
-    border: 1px solid var(--vp-c-gutter);
   }
 
   .prev-next {

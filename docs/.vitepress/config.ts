@@ -21,7 +21,7 @@ export default defineConfig({
       { text: '入门', link: '/basics/request', activeMatch: '/basics/' },
       {
         text: '进阶',
-        link: '/advanced/request-interceptor',
+        link: '/advanced/middleware',
         activeMatch: '/advanced/',
       },
     ],
