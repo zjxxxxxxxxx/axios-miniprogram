@@ -3,7 +3,7 @@
   "projectname": "axios-miniprogram",
   "appid": "wx48e277051b32f95b",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "enhance": false,
     "compileHotReLoad": false,

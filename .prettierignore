@@ -1,2 +1,5 @@
 CHANGELOG.md
 dist/
+
+example/dist/
+example/config/**.js

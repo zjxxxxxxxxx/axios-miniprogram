@@ -87,6 +87,7 @@ importers:
       '@tarojs/components': 3.6.6
       '@tarojs/helper': 3.6.6
       '@tarojs/plugin-framework-vue3': 3.6.6
+      '@tarojs/plugin-html': ^3.6.6
       '@tarojs/plugin-platform-alipay': 3.6.6
       '@tarojs/plugin-platform-h5': 3.6.6
       '@tarojs/plugin-platform-jd': 3.6.6
@@ -101,6 +102,7 @@ importers:
       '@types/webpack-env': ^1.13.6
       '@vue/babel-plugin-jsx': ^1.0.6
       '@vue/compiler-sfc': ^3.0.0
+      axios-miniprogram: workspace:*
       babel-preset-taro: 3.6.6
       css-loader: 3.4.2
       eslint-plugin-vue: ^8.0.0
@@ -126,10 +128,12 @@ importers:
       '@tarojs/runtime': 3.6.6
       '@tarojs/shared': 3.6.6
       '@tarojs/taro': 3.6.6_vue@3.2.47
+      axios-miniprogram: link:..
       vue: 3.2.47
     devDependencies:
       '@babel/core': 7.21.8
       '@tarojs/cli': 3.6.6_vue@3.2.47
+      '@tarojs/plugin-html': 3.6.6_vue@3.2.47
       '@tarojs/webpack5-runner': 3.6.6_ccyaxh63edqyfdgniosjbfvodu
       '@types/webpack-env': 1.18.0
       '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.21.8
@@ -2591,6 +2595,21 @@ packages:
       - '@types/webpack-dev-server'
       - supports-color
     dev: false
+
+  /@tarojs/plugin-html/3.6.6_vue@3.2.47:
+    resolution: {integrity: sha512-mkdsum+nZbwIYxuBNYRABz664wRQogYqdAjKcnjio8J4NbtM7sBhwlugNjs6MaeA0GM0Jle6Y+biw6RkGrHklA==}
+    dependencies:
+      '@babel/parser': 7.21.8
+      '@tarojs/runtime': 3.6.6
+      '@tarojs/service': 3.6.6_vue@3.2.47
+      '@tarojs/shared': 3.6.6
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/webpack'
+      - '@types/webpack-dev-server'
+      - supports-color
+      - vue
+    dev: true
 
   /@tarojs/plugin-platform-alipay/3.6.6_vue@3.2.47:
     resolution: {integrity: sha512-65SFA8Vmlwf5ZflI+jXN3W2nrh2NYM3GRAjOcZDIPE+6Je33Bi/7jNaTn3t+YwJlcVjY6djp3/dmC+xwc7skfA==}

@@ -1,1 +1,4 @@
-/dist
+dist/
+
+example/dist/
+example/config/**.js
