@@ -1,6 +1,7 @@
 import { WITH_DATA_RE } from '../constants/methods';
 import { isFunction, isString } from '../helpers/types';
 import { assert } from '../helpers/error';
+import { dynamicURL } from '../helpers/dynamicURL';
 import { AxiosRequestConfig, AxiosResponse } from '../core/Axios';
 import { Cancel, isCancel, isCancelToken } from './cancel';
 import { flattenHeaders } from './flattenHeaders';
@@ -22,6 +23,7 @@ export function dispatchRequest(config: AxiosRequestConfig) {
   assert(isString(config.url), 'url 不是一个 string');
   assert(isString(config.method), 'method 不是一个 string');
 
+  config.url = dynamicURL(config.url!, config.params, config.data);
   config.headers = flattenHeaders(config);
 
   // 可以携带 data 的请求方法，转换 data

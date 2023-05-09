@@ -32,29 +32,6 @@ describe('src/helpers/transformURL.ts', () => {
     ).toBe('http://api2.com');
   });
 
-  test('应该支持动态 URL', () => {
-    expect(
-      transformURL({
-        baseURL: 'http://api.com',
-        url: 'test/:name/:type',
-        params: {
-          name: 'axios',
-          type: 0,
-        },
-      }),
-    ).toBe('http://api.com/test/axios/0');
-    expect(
-      transformURL({
-        baseURL: 'http://api.com',
-        url: 'test/:name/:type',
-        data: {
-          name: 'axios',
-          type: 0,
-        },
-      }),
-    ).toBe('http://api.com/test/axios/0');
-  });
-
   test('应该支持自定义参数系列化器', () => {
     expect(
       transformURL({

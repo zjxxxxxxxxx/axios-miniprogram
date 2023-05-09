@@ -19,12 +19,9 @@ class AxiosError extends Error {
     request: AxiosAdapterPlatformTask,
   ) {
     super(message);
-
     this.config = config;
     this.request = request;
     this.response = response;
-
-    Object.setPrototypeOf(this, AxiosError.prototype);
   }
 }
 

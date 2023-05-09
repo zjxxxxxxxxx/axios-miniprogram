@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import { asyncNext, mockAdapter } from 'scripts/test.utils';
+import { asyncNext, mockAdapter, testEachMethods } from 'scripts/test.utils';
 import {
   PLAIN_METHODS,
   WITH_DATA_METHODS,
@@ -72,6 +72,21 @@ describe('src/request/dispatchRequest.ts', () => {
         },
       }
     `);
+  });
+
+  testEachMethods('应该支持动态地址', (k) => {
+    const c = {
+      ...defaults,
+      url: '/test/:id',
+      method: k,
+      params: {
+        id: 1,
+      },
+    };
+
+    dispatchRequest(c);
+
+    expect(c.url).toBe('/test/1');
   });
 
   test('应该支持拉平请求头', () => {

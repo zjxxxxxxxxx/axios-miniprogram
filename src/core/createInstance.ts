@@ -1,3 +1,4 @@
+import { dynamicURL } from '../helpers/dynamicURL';
 import { combineURL } from '../helpers/combineURL';
 import { transformURL } from '../helpers/transformURL';
 import Axios, {
@@ -58,6 +59,7 @@ export function createInstance(defaults: AxiosRequestConfig, parent?: Axios) {
   const instance = context.request as AxiosInstance;
 
   instance.getUri = function getUri(config) {
+    config.url = dynamicURL(config.url!, config.params, config.data);
     return transformURL(mergeConfig(defaults, config));
   };
   instance.create = function create(config) {

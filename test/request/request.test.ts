@@ -22,10 +22,10 @@ describe('src/request/request.ts', () => {
     };
     const c2 = {
       adapter(config: AnyObject) {
-        expect(config.url).toBe('http://api.com/test/1');
+        expect(config.url).toBe('http://api.com/test?id=1');
       },
       baseURL: 'http://api.com',
-      url: 'test/:id',
+      url: 'test',
       method: 'get' as const,
       params: {
         id: 1,
@@ -33,10 +33,10 @@ describe('src/request/request.ts', () => {
     };
     const c3 = {
       adapter(config: AnyObject) {
-        expect(config.url).toBe('http://api.com/test/1');
+        expect(config.url).toBe('http://api.com/test');
       },
       baseURL: 'http://api.com',
-      url: 'test/:id',
+      url: 'test',
       method: 'post' as const,
       data: {
         id: 1,
