@@ -1,3 +1,17 @@
+## [2.4.2](https://github.com/zjx0905/axios-miniprogram/compare/v2.4.1...v2.4.2) (2023-05-14)
+
+
+### Bug Fixes
+
+* axios.use 函数返回值不是当前实例 ([74856f7](https://github.com/zjx0905/axios-miniprogram/commit/74856f7fdef4f0e75b8665300960416a840f561c))
+
+
+### Features
+
+* 发出请求前进行动态地址插值 ([b6698ca](https://github.com/zjx0905/axios-miniprogram/commit/b6698ca22da3f754e21916e69d43b961e12571e6))
+
+
+
 ## [2.4.1](https://github.com/zjx0905/axios-miniprogram/compare/v2.4.0...v2.4.1) (2023-05-04)
 
 
