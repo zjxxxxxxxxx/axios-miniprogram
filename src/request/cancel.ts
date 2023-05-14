@@ -46,6 +46,9 @@ export function isCancel(value: unknown): value is Cancel {
 export class CancelToken {
   #reason?: Cancel;
 
+  /**
+   * @internal
+   */
   onCancel: Promise<Cancel>['then'];
 
   constructor(executor: CancelExecutor) {
@@ -79,6 +82,9 @@ export class CancelToken {
     };
   }
 
+  /**
+   * @internal
+   */
   throwIfRequested(): void {
     if (this.#reason) {
       throw this.#reason;

@@ -40,30 +40,6 @@ export default class MiddlewareManager {
 
   /**
    * 注册中间件
-   *
-   * 示例1：注册一个中间件
-   * ```ts
-   * axios.use(async function middleware(ctx, next) {
-   *   console.log(ctx.req);
-   *   await next();
-   *   console.log(ctx.res);
-   * });
-   * ```
-   *
-   * 示例2：链式注册多个中间件
-   * ```ts
-   * axios
-   *  .use(async function middleware1(ctx, next) {
-   *    console.log(ctx.req);
-   *    await next();
-   *    console.log(ctx.res);
-   *  })
-   *  .use(async function middleware2(ctx, next) {
-   *    console.log(ctx.req);
-   *    await next();
-   *    console.log(ctx.res);
-   *  });
-   * ```
    */
   use(middleware: MiddlewareCallback) {
     assert(isFunction(middleware), 'middleware 不是一个 function');
@@ -71,6 +47,8 @@ export default class MiddlewareManager {
   }
 
   /**
+   * @internal
+   *
    * 创建中间件上下文
    */
   createContext(config: AxiosRequestConfig): MiddlewareContext {
@@ -81,6 +59,8 @@ export default class MiddlewareManager {
   }
 
   /**
+   * @internal
+   *
    * 运行中间件
    *
    * @param ctx 中间件上下文
@@ -95,6 +75,8 @@ export default class MiddlewareManager {
   }
 
   /**
+   * @internal
+   *
    * 强化运行中间件
    *
    * @param enhancer 强化器

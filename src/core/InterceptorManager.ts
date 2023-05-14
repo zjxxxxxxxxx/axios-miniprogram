@@ -39,6 +39,8 @@ export default class InterceptorManager<T = unknown> {
   #interceptors = new Map<number, Interceptor<T>>();
 
   /**
+   * @internal
+   *
    * 拦截器数量
    */
   get size() {
@@ -81,6 +83,8 @@ export default class InterceptorManager<T = unknown> {
   }
 
   /**
+   * @internal
+   *
    * 遍历拦截器
    *
    * @param executor 执行器

@@ -7,6 +7,7 @@
     "module": "ESNext",
     "strict": true,
     "noEmit": true,
+    "stripInternal": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,

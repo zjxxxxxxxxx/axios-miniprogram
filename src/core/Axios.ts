@@ -501,7 +501,29 @@ export default class Axios {
   /**
    * 注册中间件
    *
-   * @param middleware 中间件
+   * 示例1：注册一个中间件
+   * ```ts
+   * axios.use(async function middleware(ctx, next) {
+   *   console.log(ctx.req);
+   *   await next();
+   *   console.log(ctx.res);
+   * });
+   * ```
+   *
+   * 示例2：链式注册多个中间件
+   * ```ts
+   * axios
+   *  .use(async function middleware1(ctx, next) {
+   *    console.log(ctx.req);
+   *    await next();
+   *    console.log(ctx.res);
+   *  })
+   *  .use(async function middleware2(ctx, next) {
+   *    console.log(ctx.req);
+   *    await next();
+   *    console.log(ctx.res);
+   *  });
+   * ```
    */
   use = (middleware: MiddlewareCallback) => {
     this.#middleware.use(middleware);
