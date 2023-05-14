@@ -31,6 +31,10 @@
   },
   "scripts": {
     "cz": "simple-git-hooks && czg",
+    "start": "esno scripts/start.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint --cache . --fix",
+    "format": "prettier **/*.{js,json} --write & prettier **/*.ts --parser=typescript --write",
     "build": "esno scripts/build.ts",
     "build:assets": "esno scripts/build.assets.ts",
     "watch": "pnpm build -a -w",
@@ -41,14 +45,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint --cache . --fix",
     "docs:dev": "pnpm -C docs dev",
     "docs:build": "pnpm -C docs build",
     "docs:preview": "pnpm -C docs preview",
-    "docs:deploy": "esno scripts/docs.deploy.ts",
-    "start": "esno scripts/start.ts",
-    "tidy-up": "prettier **/*.{js,json} --write & prettier **/*.ts --parser=typescript --write"
+    "docs:deploy": "esno scripts/docs.deploy.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",

@@ -3,7 +3,6 @@ node_modules
 *.log
 
 # Docs
-dist
 docs/.vitepress/cache
 docs/pages/guide/intro.md
 
@@ -11,7 +10,7 @@ docs/pages/guide/intro.md
 .DS_Store
 
 # Bundle
-lib/
+dist/
 
 # Typescript build file
 *.tsbuildinfo
