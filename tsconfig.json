@@ -18,6 +18,7 @@
   "include": [
     "./src",
     "./test",
+    "./scripts",
     "./rollup.config.ts",
     "./vitest.config.ts",
     "./global.d.ts",

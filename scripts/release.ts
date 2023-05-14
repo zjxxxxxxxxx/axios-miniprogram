@@ -1,5 +1,5 @@
 import { writeFileSync } from 'node:fs';
-import semver from 'semver';
+import semver, { ReleaseType } from 'semver';
 import enquirer from 'enquirer';
 import consola from 'consola';
 import { exec, pkgPath, getPkgJSON, resolve } from './utils';
@@ -103,7 +103,9 @@ function createReleases() {
   ];
   const releases: string[] = [];
   for (const [type, preid] of types) {
-    releases.push(`${type} (${semver.inc(currentVersion, type, preid)})`);
+    releases.push(
+      `${type} (${semver.inc(currentVersion, type as ReleaseType, preid)})`,
+    );
   }
   return releases;
 }

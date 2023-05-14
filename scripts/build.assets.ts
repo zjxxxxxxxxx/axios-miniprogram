@@ -29,7 +29,7 @@ function generateZip(inputPath: string, outputPath: string) {
   console.log(chalk.cyanBright.bold(`${inputPath} → dist/${outputName}...`));
 
   return new Promise((resolve, reject) => {
-    const finish = (result) => {
+    const finish = (result: any) => {
       console.log(
         `${chalk.green('created')} ${chalk.greenBright.bold(
           `dist/${outputName} in ${Date.now() - start}ms\n`,

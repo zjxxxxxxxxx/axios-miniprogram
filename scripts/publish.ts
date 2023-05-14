@@ -22,7 +22,7 @@ function main() {
 }
 
 function generatePublishPkg() {
-  const publishPkg = {};
+  const publishPkg: AnyObject = {};
 
   [
     'name',

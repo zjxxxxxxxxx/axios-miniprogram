@@ -7,7 +7,9 @@ importers:
       '@commitlint/cli': ^17.4.4
       '@commitlint/config-conventional': ^17.4.4
       '@rollup/plugin-typescript': ^11.1.0
+      '@types/minimist': ^1.2.2
       '@types/node': ^18.15.5
+      '@types/semver': ^7.3.13
       '@typescript-eslint/eslint-plugin': ^5.55.0
       '@typescript-eslint/parser': ^5.55.0
       '@vitest/coverage-istanbul': ^0.30.0
@@ -37,7 +39,9 @@ importers:
       '@commitlint/cli': 17.6.3
       '@commitlint/config-conventional': 17.6.3
       '@rollup/plugin-typescript': 11.1.0_jmdkjhpfvy5qmatgykiztl4txu
+      '@types/minimist': 1.2.2
       '@types/node': 18.16.3
+      '@types/semver': 7.3.13
       '@typescript-eslint/eslint-plugin': 5.59.2_n4wuahc72jbzapcoi6ni6mvcla
       '@typescript-eslint/parser': 5.59.2_iacogk7kkaymxepzhgcbytyi7q
       '@vitest/coverage-istanbul': 0.30.1_vitest@0.30.1
