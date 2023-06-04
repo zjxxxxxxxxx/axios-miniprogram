@@ -1,3 +1,17 @@
+# [2.5.0](https://github.com/zjx0905/axios-miniprogram/compare/v2.4.2...v2.5.0) (2023-06-04)
+
+
+### Features
+
+* 移除内置的 uni 适配器 ([96ea026](https://github.com/zjx0905/axios-miniprogram/commit/96ea0266dd7c0da26341d8fea4d3bdb53361ffd0)), closes [#40](https://github.com/zjx0905/axios-miniprogram/issues/40)
+
+
+### BREAKING CHANGES
+
+* uni 不再内部支持, 可以参阅文档中的自定义适配器自行适配 uni
+
+
+
 ## [2.4.2](https://github.com/zjx0905/axios-miniprogram/compare/v2.4.1...v2.4.2) (2023-05-14)
 
 
