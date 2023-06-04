@@ -2,7 +2,6 @@ import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import { getDefaultAdapter } from '@/adpater/getDefaultAdapter';
 
 const platforms = [
-  'uni',
   'wx',
   'my',
   'swan',

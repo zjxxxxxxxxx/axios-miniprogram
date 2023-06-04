@@ -62,6 +62,3 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 
 [提问点这里](https://github.com/zjx0905/axios-miniprogram/issues)
 
-## 未来计划
-
-2023 年 6 月 1 日 起该库将不再内部支持第三方框架，内置的 uni-app 即将移除，您依旧可以使用[适配器](https://axios-miniprogram.com/advanced/adapter)兼容 uni-app。

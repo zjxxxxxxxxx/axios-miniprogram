@@ -1,4 +1,3 @@
-declare const uni: any;
 declare const wx: any;
 declare const my: any;
 declare const swan: any;

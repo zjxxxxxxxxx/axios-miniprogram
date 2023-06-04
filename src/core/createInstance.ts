@@ -54,8 +54,11 @@ export interface AxiosInstance extends AxiosRequest, Axios {
   fork(config: AxiosRequestConfig): AxiosInstance;
 }
 
-export function createInstance(defaults: AxiosRequestConfig, parent?: Axios) {
-  const context = new Axios(defaults, parent);
+export function createInstance(
+  defaults: AxiosRequestConfig,
+  parentContext?: Axios,
+) {
+  const context = new Axios(defaults, parentContext);
   const instance = context.request as AxiosInstance;
 
   instance.getUri = function getUri(config) {

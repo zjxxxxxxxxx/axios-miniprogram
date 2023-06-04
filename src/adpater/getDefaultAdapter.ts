@@ -13,13 +13,7 @@ export function getDefaultAdapter() {
   function getPlatform() {
     const undef = 'undefined';
 
-    if (typeof uni !== undef) {
-      return {
-        request: uni.request,
-        downloadFile: uni.downloadFile,
-        uploadFile: uni.uploadFile,
-      };
-    } else if (typeof wx !== undef) {
+    if (typeof wx !== undef) {
       return wx;
     } else if (typeof my !== undef) {
       return my;
