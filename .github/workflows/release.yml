@@ -15,7 +15,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 8
 
       - name: Set node
         uses: actions/setup-node@v3
@@ -24,7 +24,7 @@ jobs:
           cache: pnpm
 
       - name: Install
-        run: pnpm i
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Release Assets
         run: pnpm build:assets

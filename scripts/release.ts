@@ -27,10 +27,10 @@ async function main() {
   exec(`git tag -a v${version} -m "v${version}"`);
 
   consola.info('Git push');
-  exec('git push');
+  exec('git push -f');
 
   consola.info('Git push tag');
-  exec(`git push origin v${version}`);
+  exec(`git push -f origin v${version}`);
 }
 
 function checkBranch() {
