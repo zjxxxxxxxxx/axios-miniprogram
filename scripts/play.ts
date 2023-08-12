@@ -1,4 +1,5 @@
 import enquirer from 'enquirer';
+import consola from 'consola';
 import { exec, resolve } from './utils';
 import { safeExit } from './utils';
 
@@ -15,9 +16,12 @@ async function main() {
     choices: metas(),
   });
 
+  console.log();
+  consola.info(
+    `运行${metas().find((meta) => meta.name === platform)!.message}`,
+  );
   exec(`tsc ${configTempPath}/**.ts --outDir ${configPath}`);
-
-  exec(`pnpm -C example dev:${platform}`);
+  exec(`pnpm --filter example dev:${platform}`);
 }
 
 function metas() {

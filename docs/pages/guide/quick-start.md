@@ -22,7 +22,7 @@ $ pnpm install -D axios-miniprogram
 
 ::::
 
-原生小程序也可以直接[下载源码包](https://github.com/zjx0905/axios-miniprogram/releases)，但是这样是失去类型提示和 `sourceMap` 定位功能。
+原生小程序也可以直接[下载源码包](https://github.com/zjxxxxxxxxx/axios-miniprogram/releases)，但是这样是失去类型提示和 `sourceMap` 定位功能。
 
 建议在条件允许的情况下优先使用包管理工具安装的方式，而不是使用下载源码包的方式。
 

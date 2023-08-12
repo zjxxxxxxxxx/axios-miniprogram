@@ -1,7 +1,7 @@
 import { AxiosRequestData } from '../core/Axios';
 import { ensureObject } from './ensureObject';
 
-const dynamicRE = /\/:([^/]+)/g;
+const dynamicRE = /\/:([^/?]+)/g;
 export function dynamicURL(
   url: string,
   params: AnyObject = {},

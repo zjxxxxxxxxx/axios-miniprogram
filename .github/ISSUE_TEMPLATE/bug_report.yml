@@ -37,13 +37,13 @@ body:
       label: 验证
       description: 在提交问题之前，请确保您执行以下操作
       options:
-        - label: 遵守我们的[行为准则 ](https://github.com/zjx0905/axios-miniprogram/blob/main/CODE_OF_CONDUCT.md)
+        - label: 遵守我们的[行为准则 ](https://github.com/zjxxxxxxxxx/axios-miniprogram/blob/main/CODE_OF_CONDUCT.md)
           required: true
-        - label: 阅读[贡献指南](https://github.com/zjx0905/axios-miniprogram/blob/main/CONTRIBUTING.md).
+        - label: 阅读[贡献指南](https://github.com/zjxxxxxxxxx/axios-miniprogram/blob/main/CONTRIBUTING.md).
           required: true
         - label: 阅读[文档](https://axios-miniprogram.com).
           required: true
-        - label: 检查是否还没有报告相同错误的[问题](https://github.com/zjx0905/axios-miniprogram/issues)以避免创建重复。
+        - label: 检查是否还没有报告相同错误的[问题](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues)以避免创建重复。
           required: true
         - label: 确保这是 axios-miniprogram 问题而不是特定于框架的问题。
           required: true

@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zjx0905/axios-miniprogram.git"
+    "url": "git+https://github.com/zjxxxxxxxxx/axios-miniprogram.git"
   },
   "keywords": [
     "axios",
@@ -18,9 +18,9 @@
     "mini",
     "miniprogram"
   ],
-  "author": "zjx0905 <954270063@qq.com>",
+  "author": "zjxxxxxxxxx <954270063@qq.com>",
   "bugs": {
-    "url": "https://github.com/zjx0905/axios-miniprogram/issues"
+    "url": "https://github.com/zjxxxxxxxxx/axios-miniprogram/issues"
   },
   "homepage": "https://axios-miniprogram.com",
   "license": "MIT",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "cz": "simple-git-hooks && czg",
-    "start": "esno scripts/start.ts",
+    "play": "esno scripts/play.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --cache . --fix",
     "format": "lint-staged",
@@ -45,9 +45,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
-    "docs:dev": "pnpm -C docs dev",
-    "docs:build": "pnpm -C docs build",
-    "docs:preview": "pnpm -C docs preview",
+    "docs:dev": "pnpm --filter docs dev",
+    "docs:build": "pnpm --filter docs build",
+    "docs:preview": "pnpm --filter docs preview",
     "docs:deploy": "esno scripts/docs.deploy.ts"
   },
   "devDependencies": {

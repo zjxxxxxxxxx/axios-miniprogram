@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Taro from '@tarojs/taro';
 import { ref } from 'vue';
 import axios from 'axios-miniprogram';
 
@@ -8,13 +9,22 @@ const error = ref<string>('');
 
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 axios.defaults.errorHandler = (err) => {
-  error.value = `<pre>${JSON.stringify(err, null, 4)}</pre>`;
+  error.value = `<pre>${JSON.stringify(err, null, 2)}</pre>`;
+  Taro.hideLoading();
+  Taro.showToast({
+    icon: 'none',
+    title: (err as any).response.data.errMsg,
+  });
   return Promise.reject(err);
 };
 axios.use(async (ctx, next) => {
-  config.value = `<pre>${JSON.stringify(ctx.req, null, 4)}</pre>`;
+  Taro.showLoading();
+  config.value = `<pre>${JSON.stringify(ctx.req, null, 2)}</pre>`;
+  error.value = '';
+  response.value = '';
   await next();
-  response.value = `<pre>${JSON.stringify(ctx.res, null, 4)}</pre>`;
+  response.value = `<pre>${JSON.stringify(ctx.res, null, 2)}</pre>`;
+  Taro.hideLoading();
 });
 
 function getRequest() {
@@ -24,17 +34,48 @@ function getRequest() {
 }
 
 function postRequest() {
-  axios.post(
-    '/users',
-    '{"name":"Leanne Graham","username":"Bret","email":"Sincere@april.biz","address":{"street":"Kulas Light","suite":"Apt. 556","city":"Gwenborough","zipcode":"92998-3874","geo":{"lat":"-37.3159","lng":"81.1496"}},"phone":"1-770-736-8031 x56442","website":"hildegard.org","company":{"name":"Romaguera-Crona","catchPhrase":"Multi-layered client-server neural-net","bs":"harness real-time e-markets"}}',
-  );
+  axios.post('/users', {
+    name: 'Leanne Graham',
+    username: 'Bret',
+    email: 'Sincere@april.biz',
+    address: {
+      street: 'Kulas Light',
+      suite: 'Apt. 556',
+      city: 'Gwenborough',
+      zipcode: '92998-3874',
+      geo: { lat: '-37.3159', lng: '81.1496' },
+    },
+    phone: '1-770-736-8031 x56442',
+    website: 'hildegard.org',
+    company: {
+      name: 'Romaguera-Crona',
+      catchPhrase: 'Multi-layered client-server neural-net',
+      bs: 'harness real-time e-markets',
+    },
+  });
 }
 
 function putRequest() {
-  axios.put(
-    '/users/:id',
-    '{"id":1,"name":"Leanne Graham","username":"Bret","email":"Sincere@april.biz","address":{"street":"Kulas Light","suite":"Apt. 556","city":"Gwenborough","zipcode":"92998-3874","geo":{"lat":"-37.3159","lng":"81.1496"}},"phone":"1-770-736-8031 x56442","website":"hildegard.org","company":{"name":"Romaguera-Crona","catchPhrase":"Multi-layered client-server neural-net","bs":"harness real-time e-markets"}}',
-  );
+  axios.put('/users/:id', {
+    id: 1,
+    name: 'Leanne Graham',
+    username: 'Bret',
+    email: 'Sincere@april.biz',
+    address: {
+      street: 'Kulas Light',
+      suite: 'Apt. 556',
+      city: 'Gwenborough',
+      zipcode: '92998-3874',
+      geo: { lat: '-37.3159', lng: '81.1496' },
+    },
+    phone: '1-770-736-8031 x56442',
+    website: 'hildegard.org',
+    company: {
+      name: 'Romaguera-Crona',
+      catchPhrase: 'Multi-layered client-server neural-net',
+      bs: 'harness real-time e-markets',
+    },
+  });
 }
 
 function deleteRequest() {

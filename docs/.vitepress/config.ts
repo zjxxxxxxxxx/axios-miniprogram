@@ -29,15 +29,18 @@ export default defineConfig({
     sidebar: sidebar(),
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/zjx0905/axios-miniprogram' },
+      {
+        icon: 'github',
+        link: 'https://github.com/zjxxxxxxxxx/axios-miniprogram',
+      },
     ],
 
     editLink: {
       pattern: ({ relativePath }) => {
         if (relativePath.endsWith('/intro.md')) {
-          return 'https://github.com/zjx0905/axios-miniprogram/edit/main/README.md';
+          return 'https://github.com/zjxxxxxxxxx/axios-miniprogram/edit/main/README.md';
         }
-        return `https://github.com/zjx0905/axios-miniprogram/edit/main/docs/pages/${relativePath}`;
+        return `https://github.com/zjxxxxxxxxx/axios-miniprogram/edit/main/docs/pages/${relativePath}`;
       },
       text: '在 GitHub 上编辑此页面',
     },
@@ -55,9 +58,9 @@ export default defineConfig({
     },
     footer: {
       message:
-        '根据 <a href="https://github.com/zjx0905/axios-miniprogram/blob/main/LICENSE">MIT License</a> 发布',
+        '根据 <a href="https://github.com/zjxxxxxxxxx/axios-miniprogram/blob/main/LICENSE">MIT License</a> 发布',
       copyright:
-        'Copyright © 2020-至今 <a href="https://github.com/zjx0905">zjx0905</a>',
+        'Copyright © 2020-至今 <a href="https://github.com/zjxxxxxxxxx">zjxxxxxxxxx</a>',
     },
   },
 
@@ -146,11 +149,11 @@ function sidebar() {
       items: [
         {
           text: '行为准则',
-          link: 'https://github.com/zjx0905/axios-miniprogram/blob/main/CODE_OF_CONDUCT.md',
+          link: 'https://github.com/zjxxxxxxxxx/axios-miniprogram/blob/main/CODE_OF_CONDUCT.md',
         },
         {
           text: '贡献指南',
-          link: 'https://github.com/zjx0905/axios-miniprogram/blob/main/CONTRIBUTING.md',
+          link: 'https://github.com/zjxxxxxxxxx/axios-miniprogram/blob/main/CONTRIBUTING.md',
         },
       ],
     },

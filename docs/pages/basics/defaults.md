@@ -12,7 +12,7 @@ title: 默认配置
 
 ## 默认值
 
-在不更改默认配置的情况下，它依然会存在一些默认值，在 [defaults.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/defaults.ts) 中定义，大概长下面这样。
+在不更改默认配置的情况下，它依然会存在一些默认值，在 [defaults.ts](https://github.com/zjxxxxxxxxx/axios-miniprogram/blob/main/src/defaults.ts) 中定义，大概长下面这样。
 
 ```ts
 {
@@ -174,4 +174,4 @@ axios.interceptors.response.use((response) => {
 2. `headers`、`params` 会分别进行深度合并。
 3. 其余属性则会优先从 `config` 取值。
 
-具体配置合并策略请参阅 [mergeConfig.ts](https://github.com/zjx0905/axios-miniprogram/blob/main/src/core/mergeConfig.ts) 。
+具体配置合并策略请参阅 [mergeConfig.ts](https://github.com/zjxxxxxxxxx/axios-miniprogram/blob/main/src/core/mergeConfig.ts) 。

@@ -58,4 +58,12 @@ describe('src/helpers/dynamicURL.ts', () => {
       }),
     ).toBe('http://api.com:8080/0');
   });
+
+  test('应该支持带参数的链接', () => {
+    expect(
+      dynamicURL('http://api.com/test/:id?param=1', {
+        id: 0,
+      }),
+    ).toBe('http://api.com/test/0?param=1');
+  });
 });

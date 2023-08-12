@@ -1,24 +1,24 @@
-# axios-miniprogram
+<h1 align="center">axios-miniprogram</h1>
 
-<p style="display: flex;margin-left:-5px;">
-  <a href="https://github.com/zjx0905/axios-miniprogram/actions/workflows/ci.yml">
-    <img src="https://github.com/zjx0905/axios-miniprogram/actions/workflows/ci.yml/badge.svg" alt="ci">
+<p align="center">
+  <a href="https://github.com/zjxxxxxxxxx/axios-miniprogram/actions/workflows/ci.yml">
+    <img src="https://github.com/zjxxxxxxxxx/axios-miniprogram/actions/workflows/ci.yml/badge.svg" alt="ci">
   </a>
   <a style="margin-left:5px;" href="https://www.npmjs.org/package/axios-miniprogram">
     <img src="https://img.shields.io/npm/v/axios-miniprogram" alt="npm">
   </a>
-  <a style="margin-left:5px;" href="https://codecov.io/gh/zjx0905/axios-miniprogram" > 
-    <img src="https://codecov.io/gh/zjx0905/axios-miniprogram/branch/main/graph/badge.svg?token=WIQVYX2WIK" alt="codecov"/> 
+  <a style="margin-left:5px;" href="https://codecov.io/gh/zjxxxxxxxxx/axios-miniprogram" > 
+    <img src="https://codecov.io/gh/zjxxxxxxxxx/axios-miniprogram/branch/main/graph/badge.svg?token=WIQVYX2WIK" alt="codecov"/> 
   </a>
   <a style="margin-left:5px;" href="https://www.npmjs.org/package/axios-miniprogram">
     <img src="https://img.shields.io/bundlephobia/min/axios-miniprogram" alt="npm bundle size">
   </a>  
   <a style="margin-left:5px;" href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/github/license/zjx0905/axios-miniprogram" alt="license">
+    <img src="https://img.shields.io/github/license/zjxxxxxxxxx/axios-miniprogram" alt="license">
   </a>
 </p>
 
-[中文文档](https://axios-miniprogram.com)
+<p align="center"><a href='https://axios-miniprogram.com'>中文文档</a></p>
 
 ## axios-miniprogram 是什么？
 
@@ -58,7 +58,6 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 
 答：该请求库只是对框架提供的请求 API 进行了封装，并没有使用什么黑魔法。理论上来讲，框架支持的平台，该库也必然支持。
 
-有问题欢迎反馈，请尽量把问题提到 [github issues](https://github.com/zjx0905/axios-miniprogram/issues) 中，这样更容易被我注意到。
+有问题欢迎反馈，请尽量把问题提到 [github issues](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues) 中，这样更容易被我注意到。
 
-[提问点这里](https://github.com/zjx0905/axios-miniprogram/issues)
-
+[提问点这里](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues)

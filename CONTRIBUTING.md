@@ -50,7 +50,7 @@ pnpm cz
 
 添加新功能有一些注意事项。
 
-- 在你开始工作之前，最好先开一个 [issue](https://github.com/zjx0905/axios-miniprogram/issues) 来讨论。
+- 在你开始工作之前，最好先开一个 [issue](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues) 来讨论。
 - 应该对新功能进行单元测试。
 - 应该在文档中添加相关的使用介绍及方法。
 

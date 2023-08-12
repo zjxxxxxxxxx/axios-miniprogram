@@ -278,8 +278,8 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
       },
       fail(responseError: AxiosAdapterResponseError) {
         responseError.data = {
-          errMsg: responseError.errMsg,
-          errno: responseError.errno,
+          errMsg: responseError.errMsg ?? responseError.errorMessage,
+          errno: responseError.errno ?? responseError.error,
         };
         transformResponse(responseError);
         config.fail(responseError);
@@ -293,7 +293,16 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     response.status = response.status ?? response.statusCode;
     response.headers = response.headers ?? response.header;
 
-    origIgnore(response, ['statusCode', 'errMsg', 'errno', 'header']);
+    origIgnore(response, [
+      'statusCode',
+      'errMsg',
+      'errno',
+      'header',
+      // 钉钉小程序
+      'error',
+      // 钉钉小程序
+      'errorMessage',
+    ]);
   }
 
   function processRequest(
