@@ -99,7 +99,7 @@ const child = instance.extend({
   baseURL: 'user',
 });
 
-// 请求的服务端地址 https://api2.com/uesr
+// 请求的服务端地址 https://api2.com/user
 child('/');
 ```
 

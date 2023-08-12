@@ -44,14 +44,6 @@ export interface AxiosInstance extends AxiosRequest, Axios {
    * @param config 默认配置
    */
   extend(config: AxiosRequestConfig): AxiosInstance;
-  /**
-   * 派生领域
-   *
-   * @param config 默认配置
-   *
-   * @deprecated 请使用 extend 替换 fork
-   */
-  fork(config: AxiosRequestConfig): AxiosInstance;
 }
 
 export function createInstance(
@@ -72,7 +64,6 @@ export function createInstance(
     config.baseURL = combineURL(defaults.baseURL, config.baseURL);
     return createInstance(mergeConfig(defaults, config), context);
   };
-  instance.fork = instance.extend;
 
   Object.assign(instance, context);
   Object.setPrototypeOf(instance, Axios.prototype);

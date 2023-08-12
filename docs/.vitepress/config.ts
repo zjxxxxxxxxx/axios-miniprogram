@@ -123,7 +123,6 @@ function sidebar() {
         { text: '创建实例', link: '/advanced/instance' },
         { text: '扩展实例', link: '/advanced/extend' },
         { text: '平台适配器', link: '/advanced/adapter' },
-        { text: '派生领域(即将废弃)', link: '/advanced/fork' },
       ],
       collapsed: false,
     },

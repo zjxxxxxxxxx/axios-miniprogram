@@ -1,6 +1,6 @@
 import { isFunction, isPlainObject } from '../helpers/types';
 import { assert } from '../helpers/error';
-import { origIgnore } from '../helpers/ignore';
+import { orgIgnore } from '../helpers/ignore';
 import {
   AxiosProgressEvent,
   AxiosRequestFormData,
@@ -281,6 +281,7 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
           errMsg: responseError.errMsg ?? responseError.errorMessage,
           errno: responseError.errno ?? responseError.error,
         };
+
         transformResponse(responseError);
         config.fail(responseError);
       },
@@ -293,7 +294,7 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     response.status = response.status ?? response.statusCode;
     response.headers = response.headers ?? response.header;
 
-    origIgnore(response, [
+    orgIgnore(response, [
       'statusCode',
       'errMsg',
       'errno',
@@ -324,8 +325,7 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     options.fileType = fileType;
     options.formData = formData;
 
-    origIgnore(options, ['params', 'data']);
-
+    orgIgnore(options, ['params', 'data']);
     return upload(options);
   }
 
@@ -340,18 +340,16 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
       response.data = {
         filePath: response.filePath,
         tempFilePath:
-          response.tempFilePath ||
+          response.tempFilePath ??
           // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
           response.apFilePath,
       };
 
-      origIgnore(response, ['tempFilePath', 'apFilePath', 'filePath']);
-
+      orgIgnore(response, ['tempFilePath', 'apFilePath', 'filePath']);
       success(response);
     };
 
-    origIgnore(options, ['params']);
-
+    orgIgnore(options, ['params']);
     return download(options);
   }
 

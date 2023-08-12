@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { ignore, origIgnore } from '@/helpers/ignore';
+import { ignore, orgIgnore } from '@/helpers/ignore';
 
 describe('src/helpers/ignore.ts', () => {
   test('不应该改变传递的对象', () => {
@@ -55,20 +55,20 @@ describe('src/helpers/ignore.ts', () => {
       v3: [],
     };
 
-    origIgnore(o, ['v1']);
+    orgIgnore(o, ['v1']);
 
     expect(o).toEqual({
       v2: {},
       v3: [],
     });
 
-    origIgnore(o, ['v2']);
+    orgIgnore(o, ['v2']);
 
     expect(o).toEqual({
       v3: [],
     });
 
-    origIgnore(o, ['v3']);
+    orgIgnore(o, ['v3']);
 
     expect(o).toEqual({});
   });

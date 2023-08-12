@@ -20,7 +20,7 @@ import axios from 'axios-miniprogram';
 axios.defaults.baseURL = 'https://api.com';
 
 // 相对地址会进行组合
-// baseURL 最终结果为 https://api.com/uesr
+// baseURL 最终结果为 https://api.com/user
 const instance = axios.extend({
   baseURL: 'user',
   headers: {

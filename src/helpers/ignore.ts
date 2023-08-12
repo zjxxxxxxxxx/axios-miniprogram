@@ -9,7 +9,7 @@ export function ignore<T extends AnyObject, K extends keyof T>(
   ...keys: K[]
 ): Omit<T, K> {
   const res = { ...obj };
-  origIgnore(res, keys);
+  orgIgnore(res, keys);
   return res;
 }
 
@@ -19,7 +19,7 @@ export function ignore<T extends AnyObject, K extends keyof T>(
  * @param obj 源对象
  * @param keys 忽略的键
  */
-export function origIgnore(obj: AnyObject, keys: PropertyKey[]) {
+export function orgIgnore(obj: AnyObject, keys: PropertyKey[]) {
   for (const key of keys) {
     delete obj[key as string | number];
   }

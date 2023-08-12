@@ -27,7 +27,6 @@ describe('src/axios.ts', () => {
     });
     expect(instance.interceptors).toBeTypeOf('object');
     expect(instance.getUri).toBeTypeOf('function');
-    expect(instance.fork).toBeTypeOf('function');
     expect(instance.request).toBeTypeOf('function');
 
     eachMethods((k) => {

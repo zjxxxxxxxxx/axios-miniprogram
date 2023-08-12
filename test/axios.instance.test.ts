@@ -19,7 +19,6 @@ describe('src/axios.ts', () => {
     expect(axios.create).toBeTypeOf('function');
     expect(axios.extend).toBeTypeOf('function');
     expect(axios.use).toBeTypeOf('function');
-    expect(axios.fork).toBeTypeOf('function');
     expect(axios.request).toBeTypeOf('function');
   });
 

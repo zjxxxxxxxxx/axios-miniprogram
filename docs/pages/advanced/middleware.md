@@ -11,9 +11,10 @@ title: 中间件
 ## 前言
 
 如果您了解或者使用过[koa](https://github.com/koajs/koa)，相信您一定十分了解什么是洋葱模型，中间件该怎么写。
+
 中间件是一个异步函数，接收 `context` 和 `next` 两个参数。
 
-`context` 是一个对象，提供了 `req` 对象和 `res` 对象作为其做成部分。
+`context` 是一个对象，提供了 `req` 对象和 `res` 对象作为其组成部分。
 
 - `context.req`：请求配置。
 - `context.res`：请求完成后服务端返回的响应体，它的初始值是 `null`，请求完成之后才能对其进行操作。
@@ -117,6 +118,6 @@ instance.use(async (ctx, next) => {
 });
 
 // 复用父级中间件
-// axios request -> instance request -> https://api.com/test/uesr -> instance response -> axios response
+// axios request -> instance request -> https://api.com/test/user -> instance response -> axios response
 instance('/user');
 ```

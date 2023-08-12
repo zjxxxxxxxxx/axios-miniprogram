@@ -12,7 +12,6 @@ describe('src/core/createInstance.ts', () => {
     expect(i.getUri).toBeTypeOf('function');
     expect(i.create).toBeTypeOf('function');
     expect(i.extend).toBeTypeOf('function');
-    expect(i.fork).toBeTypeOf('function');
     expect(i.use).toBeTypeOf('function');
     expect(i.request).toBeTypeOf('function');
 
