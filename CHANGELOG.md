@@ -1,3 +1,17 @@
+# [2.6.0](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.5.0...v2.6.0) (2023-08-13)
+
+
+### Features
+
+* 废弃 fork API ([a04f833](https://github.com/zjxxxxxxxxx/axios-miniprogram/commit/a04f833d917cb07c3bd95678260971194179def0))
+
+
+### BREAKING CHANGES
+
+* axios.fork() 已废弃
+
+
+
 # [2.5.0](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.4.2...v2.5.0) (2023-06-04)
 
 
