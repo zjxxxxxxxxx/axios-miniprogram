@@ -7,18 +7,28 @@ const config = ref<string>('');
 const response = ref<string>('');
 const error = ref<string>('');
 
+axios.defaults.adapter = axios.createAdapter({
+  request: Taro.request as any,
+  download: Taro.downloadFile as any,
+  upload: Taro.uploadFile as any,
+});
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 axios.defaults.errorHandler = (err) => {
+  console.log('[debug]', (err as any).response);
   error.value = `<pre>${JSON.stringify(err, null, 2)}</pre>`;
   Taro.hideLoading();
   Taro.showToast({
     icon: 'none',
-    title: (err as any).response.data.errMsg,
+    title: (err as any).response.data?.errMsg ?? '未知错误',
   });
   return Promise.reject(err);
 };
+
 axios.use(async (ctx, next) => {
-  Taro.showLoading();
+  console.log('[debug]', ctx);
+  Taro.showLoading({
+    title: 'Loading...',
+  });
   config.value = `<pre>${JSON.stringify(ctx.req, null, 2)}</pre>`;
   error.value = '';
   response.value = '';
@@ -84,6 +94,52 @@ function deleteRequest() {
   });
 }
 
+function downloadRequest() {
+  axios.get(
+    '/users/:id',
+    {
+      id: 1,
+    },
+    {
+      download: true,
+    },
+  );
+}
+
+function uploadRequest() {
+  Taro.chooseImage({
+    count: 1,
+    success({ tempFilePaths }) {
+      axios.post(
+        '/users',
+        {
+          name: 'filename',
+          filePath: tempFilePaths[0],
+        },
+        {
+          upload: true,
+        },
+      );
+    },
+  });
+}
+
+function errorRequest() {
+  axios.get('/users/:id', {
+    id: Infinity,
+  });
+}
+
+function failRequest() {
+  axios.post(
+    '/users',
+    {},
+    {
+      upload: true,
+    },
+  );
+}
+
 defineExpose({
   getRequest,
   postRequest,
@@ -104,6 +160,18 @@ defineExpose({
     <button class="button" type="primary" @click="putRequest">PUT 请求</button>
     <button class="button" type="primary" @click="deleteRequest">
       DELETE 请求
+    </button>
+    <button class="button" type="primary" @click="downloadRequest">
+      DOWNLOAD 请求
+    </button>
+    <button class="button" type="primary" @click="uploadRequest">
+      UPLOAD 请求
+    </button>
+    <button class="button" type="primary" @click="errorRequest">
+      ERROR 请求
+    </button>
+    <button class="button" type="primary" @click="failRequest">
+      FAIL 请求
     </button>
 
     config:

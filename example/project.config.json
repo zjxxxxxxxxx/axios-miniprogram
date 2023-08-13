@@ -1,7 +1,5 @@
 {
-  "miniprogramRoot": "./dist",
   "projectname": "axios-miniprogram",
-  "appid": "wx48e277051b32f95b",
   "setting": {
     "urlCheck": false,
     "es6": false,

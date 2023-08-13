@@ -1,6 +1,6 @@
 import { isFunction, isPlainObject } from '../helpers/types';
 import { assert } from '../helpers/error';
-import { orgIgnore } from '../helpers/ignore';
+import { ignore, orgIgnore } from '../helpers/ignore';
 import {
   AxiosProgressEvent,
   AxiosRequestFormData,
@@ -170,11 +170,11 @@ export interface AxiosAdapterUploadOptions
   extends AxiosAdapterBaseOptions,
     AxiosRequestFormData {
   /**
-   * [钉钉小程序用 fileName 代替 name](https://open.dingtalk.com/document/orgapp/dd-upload-objects#title-ngk-rr1-eow)
+   * [钉钉用 fileName 代替 name](https://open.dingtalk.com/document/orgapp/dd-upload-objects#title-ngk-rr1-eow)
    */
   fileName: string;
   /**
-   * 钉钉小程序|支付宝小程序特有参数
+   * 钉钉 | 支付宝 特有参数
    */
   fileType?: 'image' | 'video' | 'audie';
   /**
@@ -272,38 +272,63 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     return {
       ...config,
       header: config.headers,
-      success(response: AxiosAdapterResponse) {
-        transformResponse(response);
+      success(_response: AxiosAdapterResponse) {
+        const response = transformResponse(_response) as AxiosAdapterResponse;
+
         config.success(response);
       },
-      fail(responseError: AxiosAdapterResponseError) {
-        responseError.data = {
-          errMsg: responseError.errMsg ?? responseError.errorMessage,
-          errno: responseError.errno ?? responseError.error,
-        };
+      fail(_responseError: AxiosAdapterResponseError) {
+        const responseError = Object.assign(transformResponse(_responseError), {
+          data: {
+            errno:
+              // 微信 | 飞书新规范
+              _responseError.errno ??
+              // 支付宝 | 钉钉
+              _responseError.error ??
+              // 百度 | 360 | 飞书
+              _responseError.errCode ??
+              // 抖音
+              _responseError.errNo,
+            errMsg:
+              // 飞书新规范
+              _responseError.errString ??
+              // 微信 | 支付宝 | 百度 | 抖音 | QQ | 360 | 飞书
+              _responseError.errMsg ??
+              // 钉钉
+              _responseError.errorMessage,
+          },
+        });
 
-        transformResponse(responseError);
         config.fail(responseError);
       },
     };
   }
 
   function transformResponse(
-    response: AxiosAdapterResponse | AxiosAdapterResponseError,
+    _response: AxiosAdapterResponse | AxiosAdapterResponseError,
   ) {
-    response.status = response.status ?? response.statusCode;
-    response.headers = response.headers ?? response.header;
+    return Object.assign(
+      ignore(
+        _response,
+        'statusCode',
+        'header',
 
-    orgIgnore(response, [
-      'statusCode',
-      'errMsg',
-      'errno',
-      'header',
-      // 钉钉小程序
-      'error',
-      // 钉钉小程序
-      'errorMessage',
-    ]);
+        // 错误码
+        'errno',
+        'error',
+        'errCode',
+        'errNo',
+
+        // 错误消息
+        'errMsg',
+        'errorMessage',
+        'errString',
+      ),
+      {
+        status: _response.status ?? _response.statusCode,
+        headers: _response.headers ?? _response.header,
+      },
+    );
   }
 
   function processRequest(
@@ -336,16 +361,20 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     const options = baseOptions as AxiosAdapterDownloadOptions;
     const { params, success } = options;
     options.filePath = params?.filePath;
-    options.success = (response) => {
-      response.data = {
-        filePath: response.filePath,
-        tempFilePath:
-          response.tempFilePath ??
-          // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
-          response.apFilePath,
-      };
+    options.success = (_response) => {
+      const response = Object.assign(
+        ignore(_response, 'tempFilePath', 'apFilePath', 'filePath'),
+        {
+          data: {
+            filePath: _response.filePath,
+            tempFilePath:
+              _response.tempFilePath ??
+              // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
+              _response.apFilePath,
+          },
+        },
+      );
 
-      orgIgnore(response, ['tempFilePath', 'apFilePath', 'filePath']);
       success(response);
     };
 

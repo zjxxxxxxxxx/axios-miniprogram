@@ -11,6 +11,8 @@
     "build:qq": "taro build --type qq",
     "build:jd": "taro build --type jd",
     "build:dd": "taro build --type dd",
+    "build:lark": "taro build --type lark",
+    "build:kwai": "taro build --type kwai",
     "build:quickapp": "taro build --type quickapp",
     "dev:weapp": "npm run build:weapp -- --watch",
     "dev:swan": "npm run build:swan -- --watch",
@@ -21,6 +23,8 @@
     "dev:qq": "npm run build:qq -- --watch",
     "dev:jd": "npm run build:jd -- --watch",
     "dev:dd": "npm run build:dd -- --watch",
+    "dev:lark": "npm run build:lark -- --watch",
+    "dev:kwai": "npm run build:kwai -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch"
   },
   "dependencies": {
