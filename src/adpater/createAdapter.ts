@@ -111,11 +111,11 @@ export interface AxiosAdapterRequestConfig extends AnyObject {
   /**
    * 返回的数据格式
    */
-  dataType?: 'json' | '其他';
+  dataType?: string;
   /**
    * 响应的数据类型
    */
-  responseType?: 'text' | 'arraybuffer';
+  responseType?: string;
   /**
    * 超时时间，单位为毫秒。默认值为 60000
    */
@@ -338,22 +338,6 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     return request(baseOptions);
   }
 
-  function processUpload(
-    upload: AxiosAdapterUpload,
-    baseOptions: AxiosAdapterBaseOptions,
-  ): AxiosAdapterPlatformTask {
-    const options = baseOptions as AxiosAdapterUploadOptions;
-    const { name, filePath, fileType, ...formData } = options.data as AnyObject;
-    options.name = name;
-    options.fileName = name;
-    options.filePath = filePath;
-    options.fileType = fileType;
-    options.formData = formData;
-
-    orgIgnore(options, ['params', 'data']);
-    return upload(options);
-  }
-
   function processDownload(
     download: AxiosAdapterDownload,
     baseOptions: AxiosAdapterBaseOptions,
@@ -363,14 +347,17 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     options.filePath = params?.filePath;
     options.success = (_response) => {
       const response = Object.assign(
-        ignore(_response, 'tempFilePath', 'apFilePath', 'filePath'),
+        ignore(_response, 'tempFilePath', 'apFilePath', 'filePath', 'fileSize'),
         {
           data: {
             filePath: _response.filePath,
             tempFilePath:
               _response.tempFilePath ??
-              // response.apFilePath 为支付宝小程序基础库小于 2.7.23 的特有属性。
+              // 支付宝
               _response.apFilePath,
+            fileSize:
+              // 飞书
+              _response.fileSize,
           },
         },
       );
@@ -380,6 +367,25 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
 
     orgIgnore(options, ['params']);
     return download(options);
+  }
+
+  function processUpload(
+    upload: AxiosAdapterUpload,
+    baseOptions: AxiosAdapterBaseOptions,
+  ): AxiosAdapterPlatformTask {
+    const options = baseOptions as AxiosAdapterUploadOptions;
+    const { name, filePath, fileType, ...formData } = options.data as AnyObject;
+    options.name = name;
+    options.filePath = filePath;
+    options.formData = formData;
+
+    // 支付宝 | 钉钉
+    options.fileName = name;
+    // 支付宝 | 钉钉
+    options.fileType = fileType;
+
+    orgIgnore(options, ['params', 'data']);
+    return upload(options);
   }
 
   return adapter;

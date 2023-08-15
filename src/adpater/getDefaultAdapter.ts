@@ -14,24 +14,45 @@ export function getDefaultAdapter() {
 function getPlatform() {
   const undef = 'undefined';
 
+  // 微信小程序
   if (typeof wx !== undef) {
     return wx;
-  } else if (typeof my !== undef) {
+  }
+  // 支付宝小程序
+  else if (typeof my !== undef) {
     return my;
-  } else if (typeof swan !== undef) {
+  }
+  // 百度小程序
+  else if (typeof swan !== undef) {
     return swan;
-  } else if (typeof tt !== undef) {
+  }
+  // 抖音小程序 | 飞书小程序
+  else if (typeof tt !== undef) {
     return tt;
-  } else if (typeof qq !== undef) {
+  }
+  // QQ 小程序
+  else if (typeof qq !== undef) {
     return qq;
-  } else if (typeof qh !== undef) {
+  }
+  // 360 小程序
+  else if (typeof qh !== undef) {
     return qh;
-  } else if (typeof ks !== undef) {
+  }
+  // 快手小程序
+  else if (typeof ks !== undef) {
     return ks;
-  } else if (typeof dd !== undef) {
+  }
+  // 钉钉小程序
+  else if (typeof dd !== undef) {
     return dd;
-  } else if (typeof jd !== undef) {
+  }
+  // 京东小程序
+  else if (typeof jd !== undef) {
     return jd;
+  }
+  // 小红书小程序
+  else if (typeof xhs !== undef) {
+    return xhs;
   }
 }
 

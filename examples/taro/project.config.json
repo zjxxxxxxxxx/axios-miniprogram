@@ -1,4 +1,5 @@
 {
+  "miniprogramRoot": "./",
   "projectname": "axios-miniprogram",
   "setting": {
     "urlCheck": false,

@@ -51,6 +51,7 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 - [飞书小程序](https://open.feishu.cn/document/uYjL24iN/uMjNzUjLzYzM14yM2MTN?from=axios-miniprogram)
 - [快手小程序](https://mp.kuaishou.com/docs/introduction/quickStart.html?from=axios-miniprogram)
 - [360 小程序](https://mp.360.cn/doc/miniprogram/dev/#/f4b41f0cc5683bce78dfadfa7f3c73e7?from=axios-miniprogram)
+- [小红书小程序](https://miniapp.xiaohongshu.com/docs/guide/miniIntroduce?from=axios-miniprogram)
 
 ## 关于在跨端框架中使用时的支持度
 

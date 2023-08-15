@@ -1,0 +1,10 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "axios-miniprogram",
+  "appid": "ks739467354825138594",
+  "libVersion": "0.2.0",
+  "setting": {
+    "urlCheck": false
+  },
+  "compileType": "miniprogram"
+}

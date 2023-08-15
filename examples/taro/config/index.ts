@@ -19,7 +19,12 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: `dist/${process.env.TARO_ENV}`,
-  plugins: ['@tarojs/plugin-html', '@tarojs/plugin-platform-alipay-dd'],
+  plugins: [
+    '@tarojs/plugin-html',
+    '@tarojs/plugin-platform-alipay-dd',
+    '@tarojs/plugin-platform-lark',
+    '@tarojs/plugin-platform-kwai',
+  ],
   defineConstants: {},
   copy: {
     patterns: [],

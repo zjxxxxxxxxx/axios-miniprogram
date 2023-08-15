@@ -1,0 +1,9 @@
+{
+  "pages": [{ "path": "home", "style": {} }],
+  "globalStyle": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "axios-miniprogram",
+    "navigationBarTextStyle": "black"
+  }
+}

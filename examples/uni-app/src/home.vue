@@ -1,32 +1,32 @@
 <script lang="ts" setup>
-import Taro from '@tarojs/taro';
 import { ref } from 'vue';
 import axios from 'axios-miniprogram';
+import consola from 'consola';
 
 const config = ref<string>('');
 const response = ref<string>('');
 const error = ref<string>('');
 
 axios.defaults.adapter = axios.createAdapter({
-  request: Taro.request as any,
-  download: Taro.downloadFile as any,
-  upload: Taro.uploadFile as any,
+  request: uni.request as any,
+  download: uni.downloadFile,
+  upload: uni.uploadFile as any,
 });
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 axios.defaults.errorHandler = (err) => {
-  console.log('[debug]', (err as any).response);
+  consola.info('[debug]', (err as any).response);
   error.value = `<pre>${JSON.stringify(err, null, 2)}</pre>`;
-  Taro.hideLoading();
-  Taro.showToast({
+  uni.hideLoading();
+  uni.showToast({
     icon: 'none',
-    title: (err as any).response.data?.errMsg ?? '未知错误',
+    title: (err as any).response.data?.errMsg || '未知错误',
   });
   return Promise.reject(err);
 };
 
 axios.use(async (ctx, next) => {
-  console.log('[debug]', ctx);
-  Taro.showLoading({
+  consola.info('[debug]', ctx);
+  uni.showLoading({
     title: 'Loading...',
   });
   config.value = `<pre>${JSON.stringify(ctx.req, null, 2)}</pre>`;
@@ -34,7 +34,7 @@ axios.use(async (ctx, next) => {
   response.value = '';
   await next();
   response.value = `<pre>${JSON.stringify(ctx.res, null, 2)}</pre>`;
-  Taro.hideLoading();
+  uni.hideLoading();
 });
 
 function getRequest() {
@@ -107,7 +107,7 @@ function downloadRequest() {
 }
 
 function uploadRequest() {
-  Taro.chooseImage({
+  uni.chooseImage({
     count: 1,
     success({ tempFilePaths }) {
       axios.post(
@@ -115,8 +115,12 @@ function uploadRequest() {
         {
           name: 'filename',
           filePath: tempFilePaths[0],
+          fileType: 'image',
         },
         {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
           upload: true,
         },
       );

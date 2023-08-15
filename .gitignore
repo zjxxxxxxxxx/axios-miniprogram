@@ -11,6 +11,7 @@ docs/pages/guide/intro.md
 
 # Bundle
 dist/
+.swc
 
 # Typescript build file
 *.tsbuildinfo

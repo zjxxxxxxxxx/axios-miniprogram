@@ -200,6 +200,7 @@ describe('src/adapter/createAdapter.ts', () => {
         expect(response.data).toMatchInlineSnapshot(`
           {
             "filePath": undefined,
+            "fileSize": undefined,
             "tempFilePath": "/path/temp/file",
           }
         `);
@@ -212,6 +213,7 @@ describe('src/adapter/createAdapter.ts', () => {
         expect(response.data).toMatchInlineSnapshot(`
           {
             "filePath": undefined,
+            "fileSize": undefined,
             "tempFilePath": "/path/temp/file",
           }
         `);
@@ -226,6 +228,7 @@ describe('src/adapter/createAdapter.ts', () => {
         expect(response.data).toMatchInlineSnapshot(`
           {
             "filePath": "/user/path",
+            "fileSize": undefined,
             "tempFilePath": "/path/temp/file",
           }
         `);
@@ -240,6 +243,7 @@ describe('src/adapter/createAdapter.ts', () => {
         expect(response.data).toMatchInlineSnapshot(`
           {
             "filePath": "/user/path",
+            "fileSize": undefined,
             "tempFilePath": "/path/temp/file",
           }
         `);

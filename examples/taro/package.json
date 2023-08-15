@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "@examples/taro",
   "private": true,
   "scripts": {
     "build:weapp": "taro build --type weapp",
@@ -50,6 +50,8 @@
     "@tarojs/cli": "3.6.6",
     "@tarojs/plugin-html": "^3.6.6",
     "@tarojs/plugin-platform-alipay-dd": "^0.3.0",
+    "@tarojs/plugin-platform-kwai": "^6.0.0",
+    "@tarojs/plugin-platform-lark": "^1.1.4",
     "@tarojs/webpack5-runner": "3.6.6",
     "@types/webpack-env": "^1.13.6",
     "@vue/babel-plugin-jsx": "^1.0.6",
