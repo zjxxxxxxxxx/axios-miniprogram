@@ -1,6 +1,6 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "axios-miniprogram",
+  "projectname": "taro",
   "appid": "testAppId",
   "setting": {
     "es6": false,

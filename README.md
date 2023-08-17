@@ -55,10 +55,25 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 
 ## 关于在跨端框架中使用时的支持度
 
-问：在 uni-app 或者 Taro 等等这类跨端框架中使用时，该请求库支持 h5，APP，vue3，react 等等吗？
+问：在 uni-app 或者 Taro 等等这类跨端框架中使用时，该请求库支持 h5，APP，vue3，taro 等等吗？
 
 答：该请求库只是对框架提供的请求 API 进行了封装，并没有使用什么黑魔法。理论上来讲，框架支持的平台，该库也必然支持。
 
 有问题欢迎反馈，请尽量把问题提到 [github issues](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues) 中，这样更容易被我注意到。
 
 [提问点这里](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues)
+
+
+## 跨端框架示例
+
+### Taro
+
+- [源代码](https://github.com/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/taro)
+- [CodeSandbox](https://codesandbox.io/p/sandbox/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/taro)
+- [Stackblitz](https://stackblitz.com/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/taro)
+
+### uni-app
+
+- [源代码](https://github.com/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/uni-app)
+- [CodeSandbox](https://codesandbox.io/p/sandbox/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/uni-app)
+- [Stackblitz](https://stackblitz.com/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/uni-app)

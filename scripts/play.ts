@@ -10,7 +10,7 @@ async function main() {
     type: 'select',
     name: 'framework',
     message: '请选择多端框架',
-    choices: readdirSync(resolve('examples')),
+    choices: readdirSync(resolve('examples')).filter((i) => i !== '.DS_Store'),
   });
 
   const metas = framework === 'taro' ? taroMetas() : uniAppMetas();
@@ -25,7 +25,6 @@ async function main() {
   consola.info(
     `启动${metas.find((meta) => meta.name === platform)!.message}...`,
   );
-
   exec(`pnpm --filter @examples/${framework} dev:${platform}`);
 }
 

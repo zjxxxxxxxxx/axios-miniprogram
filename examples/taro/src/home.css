@@ -1,0 +1,13 @@
+.page {
+  padding: 20px;
+}
+
+.button {
+  margin: 20px 0;
+}
+
+.code {
+  padding: 20px;
+  overflow-x: scroll;
+  white-space: pre;
+}

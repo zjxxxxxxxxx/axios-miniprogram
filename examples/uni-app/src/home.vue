@@ -14,18 +14,18 @@ axios.defaults.adapter = axios.createAdapter({
 });
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 axios.defaults.errorHandler = (err) => {
-  consola.info('[debug]', (err as any).response);
+  consola.info('[debug err]', (err as any).response);
   error.value = `<pre>${JSON.stringify(err, null, 2)}</pre>`;
   uni.hideLoading();
   uni.showToast({
     icon: 'none',
-    title: (err as any).response.data?.errMsg || '未知错误',
+    title: (err as any).response?.data?.errMsg || '未知错误',
   });
   return Promise.reject(err);
 };
 
 axios.use(async (ctx, next) => {
-  consola.info('[debug]', ctx);
+  consola.info('[debug req]', ctx.req);
   uni.showLoading({
     title: 'Loading...',
   });
@@ -33,6 +33,7 @@ axios.use(async (ctx, next) => {
   error.value = '';
   response.value = '';
   await next();
+  consola.info('[debug res]', ctx.res);
   response.value = `<pre>${JSON.stringify(ctx.res, null, 2)}</pre>`;
   uni.hideLoading();
 });
@@ -130,16 +131,16 @@ function uploadRequest() {
 
 function errorRequest() {
   axios.get('/users/:id', {
-    id: Infinity,
+    id: -1,
   });
 }
 
 function failRequest() {
-  axios.post(
+  axios.get(
     '/users',
     {},
     {
-      upload: true,
+      timeout: 0,
     },
   );
 }
@@ -156,7 +157,7 @@ defineExpose({
 </script>
 
 <template>
-  <view>
+  <view class="page">
     <button class="button" type="primary" @click="getRequest">GET 请求</button>
     <button class="button" type="primary" @click="postRequest">
       POST 请求
@@ -190,8 +191,12 @@ defineExpose({
 </template>
 
 <style>
+.page {
+  padding: 20px;
+}
+
 .button {
-  margin: 20px;
+  margin: 20px 0;
 }
 
 .code {

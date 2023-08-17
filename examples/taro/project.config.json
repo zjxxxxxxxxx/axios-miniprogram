@@ -1,8 +1,10 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "axios-miniprogram",
+  "miniprogramRoot": "./dist",
+  "projectname": "taro",
+  "description": "",
+  "appid": "touristappid",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "es6": false,
     "enhance": false,
     "compileHotReLoad": false,

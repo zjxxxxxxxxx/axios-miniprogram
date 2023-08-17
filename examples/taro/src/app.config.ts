@@ -3,7 +3,7 @@ export default defineAppConfig({
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'axios-miniprogram',
+    navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
   },
 });

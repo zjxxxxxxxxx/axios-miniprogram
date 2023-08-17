@@ -1,3 +1,5 @@
-import { createApp } from 'vue';
+import { PropsWithChildren } from 'react';
 
-export default createApp({});
+export default function App({ children }: PropsWithChildren<any>) {
+  return children;
+}

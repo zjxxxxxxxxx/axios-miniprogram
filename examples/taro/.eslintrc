@@ -1,11 +1,8 @@
 {
-	"extends": ["plugin:vue/vue3-essential"],
-	"parser": "vue-eslint-parser",
-	"parserOptions": {
-		"parser": "@typescript-eslint/parser",
-		"sourceType": "module"
-	},
-	"rules": {
-		"vue/multi-word-component-names": "off"
-	}
+  "extends": ["taro/react"],
+  "rules": {
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "jsx-quotes": "off"
+  }
 }

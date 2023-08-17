@@ -1,11 +1,11 @@
 {
-	"presets": [
-		[
-			"taro",
-			{
-				"framework": "vue3",
-				"ts": true
-			}
-		]
-	]
+  "presets": [
+    [
+      "taro",
+      {
+        "framework": "react",
+        "ts": true
+      }
+    ]
+  ]
 }
