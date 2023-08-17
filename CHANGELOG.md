@@ -1,3 +1,17 @@
+# [2.7.0](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.6.0...v2.7.0) (2023-08-17)
+
+
+### Bug Fixes
+
+* 修复 errno 和 errMsg 丢失 ([71e3007](https://github.com/zjxxxxxxxxx/axios-miniprogram/commit/71e30073890974f54461134620dfbda58cc36af0))
+
+
+### Features
+
+* 新增支持小红书小程序 ([53f0432](https://github.com/zjxxxxxxxxx/axios-miniprogram/commit/53f043275ced79c7204d791c62721e36db512f24))
+
+
+
 # [2.6.0](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.5.0...v2.6.0) (2023-08-13)
 
 
