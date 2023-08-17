@@ -9,6 +9,7 @@ export default {
   h5: {
     devServer: {
       port: 3000,
+      allowedHosts: 'all',
     },
   },
 } satisfies UserConfigExport;
