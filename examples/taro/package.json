@@ -74,6 +74,6 @@
   },
   "stackblitz": {
     "installDependencies": false,
-    "startCommand": "pnpm install && pnpm dev:h5"
+    "startCommand": "pnpm i && pnpm dev:h5"
   }
 }
