@@ -70,10 +70,10 @@ axios-miniprogram 是一款为小程序平台量身定制的轻量级请求库�
 
 - [源代码](https://github.com/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/taro)
 - [CodeSandbox](https://codesandbox.io/p/sandbox/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/taro)
-- [Stackblitz](https://stackblitz.com/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/taro)
+- [StackBlitz](https://stackblitz.com/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/taro)
 
 ### uni-app
 
 - [源代码](https://github.com/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/uni-app)
 - [CodeSandbox](https://codesandbox.io/p/sandbox/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/uni-app)
-- [Stackblitz](https://stackblitz.com/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/uni-app)
+- [StackBlitz](https://stackblitz.com/github/zjxxxxxxxxx/axios-miniprogram/tree/main/examples/uni-app)

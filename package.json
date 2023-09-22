@@ -34,7 +34,7 @@
     "play": "esno scripts/play.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --cache . --fix",
-    "format": "lint-staged",
+    "format": "prettier -w {src,test,scripts}/**/*.{ts,tsx,js,jsx}",
     "build": "esno scripts/build.ts",
     "build:assets": "esno scripts/build.assets.ts",
     "watch": "pnpm build -a -w",
