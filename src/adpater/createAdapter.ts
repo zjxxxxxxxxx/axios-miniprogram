@@ -45,10 +45,6 @@ export interface AxiosAdapterResponse extends AnyObject {
    */
   status?: number;
   /**
-   * 状态字符
-   */
-  statusText?: string;
-  /**
    * 响应头
    */
   headers?: AnyObject;
@@ -66,10 +62,6 @@ export interface AxiosAdapterResponseError extends AnyObject {
    * 状态码
    */
   status?: number;
-  /**
-   * 状态字符
-   */
-  statusText?: string;
   /**
    * 响应头
    */
@@ -344,6 +336,7 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   ): AxiosAdapterPlatformTask {
     const options = baseOptions as AxiosAdapterDownloadOptions;
     const { params, success } = options;
+
     options.filePath = params?.filePath;
     options.success = (_response) => {
       const response = Object.assign(
@@ -375,6 +368,7 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   ): AxiosAdapterPlatformTask {
     const options = baseOptions as AxiosAdapterUploadOptions;
     const { name, filePath, fileType, ...formData } = options.data as AnyObject;
+
     options.name = name;
     options.filePath = filePath;
     options.formData = formData;

@@ -29,13 +29,11 @@ export function noop() {
 
 export function mockResponse(
   status = 200,
-  statusText = 'OK',
   headers: AnyObject = {},
   data: AnyObject = {},
 ) {
   return {
     status,
-    statusText,
     headers,
     data,
   };
@@ -72,13 +70,13 @@ function mockAdapterBase(
       if (!canceled) {
         switch (type) {
           case 'success':
-            config.success(mockResponse(200, 'OK', headers, data));
+            config.success(mockResponse(200, headers, data));
             break;
           case 'error':
-            config.success(mockResponse(500, 'ERROR', headers, data));
+            config.success(mockResponse(500, headers, data));
             break;
           case 'fail':
-            config.fail(mockResponse(400, 'FAIL', headers, data));
+            config.fail(mockResponse(400, headers, data));
             break;
         }
 

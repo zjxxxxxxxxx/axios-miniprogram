@@ -9,7 +9,7 @@ async function main() {
   const { framework } = await enquirer.prompt<{ framework: string }>({
     type: 'select',
     name: 'framework',
-    message: '请选择多端框架',
+    message: '请选择跨端框架',
     choices: readdirSync(resolve('examples')).filter((i) => i !== '.DS_Store'),
   });
 
