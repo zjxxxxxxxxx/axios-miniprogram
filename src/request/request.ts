@@ -1,5 +1,6 @@
 import { isFunction, isPlainObject } from '../helpers/types';
 import { transformURL } from '../helpers/transformURL';
+import { getHttpStatusText } from '../helpers/getHttpStatusText';
 import {
   AxiosRequestConfig,
   AxiosResponse,
@@ -46,11 +47,11 @@ export function request(config: AxiosRequestConfig) {
       console.error(err);
     }
 
-    function success(baseResponse: AxiosAdapterResponse): void {
-      const response = baseResponse as AxiosResponse;
-      response.status = response.status ?? 200;
-      response.statusText = response.statusText ?? 'OK';
-      response.headers = response.headers ?? {};
+    function success(rawResponse: AxiosAdapterResponse): void {
+      const response = rawResponse as AxiosResponse;
+      response.status ||= 200;
+      response.statusText ||= getHttpStatusText(response.status);
+      response.headers ||= {};
       response.config = config;
       response.request = adapterTask;
 
@@ -62,12 +63,12 @@ export function request(config: AxiosRequestConfig) {
       }
     }
 
-    function fail(baseResponseError: AxiosAdapterResponseError): void {
-      const responseError = baseResponseError as AxiosResponseError;
+    function fail(rawResponseError: AxiosAdapterResponseError): void {
+      const responseError = rawResponseError as AxiosResponseError;
       responseError.isFail = true;
-      responseError.status = responseError.status ?? 400;
-      responseError.statusText = responseError.statusText ?? 'Fail';
-      responseError.headers = responseError.headers ?? {};
+      responseError.status ||= 400;
+      responseError.statusText ||= getHttpStatusText(responseError.status);
+      responseError.headers ||= {};
       responseError.config = config;
       responseError.request = adapterTask;
 

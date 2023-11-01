@@ -125,10 +125,6 @@ axios.defaults.adapter = (config) => {
             // 默认值：200
             status: response.statusCode,
 
-            // 状态文本
-            // 默认值：'OK'
-            statusText: 'OK',
-
             // 响应头
             // 默认值：{}
             headers: response.header,
@@ -145,10 +141,6 @@ axios.defaults.adapter = (config) => {
             // 状态码
             // 默认值：400
             status: 400,
-
-            // 状态文本
-            // 默认值：'Fail'
-            statusText: 'Fail',
 
             // 响应头
             // 默认值：{}
@@ -180,10 +172,6 @@ axios.defaults.adapter = (config) => {
             // 默认值：200
             status: response.statusCode,
 
-            // 状态文本
-            // 默认值：'OK'
-            statusText: 'OK',
-
             // 响应头
             // 默认值：{}
             headers: response.header,
@@ -197,10 +185,6 @@ axios.defaults.adapter = (config) => {
             // 状态码
             // 默认值：400
             status: 400,
-
-            // 状态文本
-            // 默认值：'Fail'
-            statusText: 'Fail',
 
             // 响应头
             // 默认值：{}
@@ -225,10 +209,6 @@ axios.defaults.adapter = (config) => {
             // 默认值：200
             status: response.statusCode,
 
-            // 状态文本
-            // 默认值：'OK'
-            statusText: 'OK',
-
             // 响应头
             // 默认值：{}
             headers: response.header,
@@ -245,10 +225,6 @@ axios.defaults.adapter = (config) => {
             // 状态码
             // 默认值：400
             status: 400,
-
-            // 状态文本
-            // 默认值：'Fail'
-            statusText: 'Fail',
 
             // 响应头
             // 默认值：{}
