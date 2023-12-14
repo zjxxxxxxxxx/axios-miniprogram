@@ -261,47 +261,48 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
   function transformOptions(
     config: AxiosAdapterRequestConfig,
   ): AxiosAdapterBaseOptions {
+    const { success, fail } = config;
+
     return {
       ...config,
       header: config.headers,
-      success(_response: AxiosAdapterResponse) {
-        const response = transformResponse(_response) as AxiosAdapterResponse;
-
-        config.success(response);
+      success(rawRes: AxiosAdapterResponse) {
+        const response = transformResponse(rawRes) as AxiosAdapterResponse;
+        success(response);
       },
-      fail(_responseError: AxiosAdapterResponseError) {
-        const responseError = Object.assign(transformResponse(_responseError), {
+      fail(rawErr: AxiosAdapterResponseError) {
+        const responseError = {
+          ...transformResponse(rawErr),
           data: {
             errno:
               // 微信 | 飞书新规范
-              _responseError.errno ??
+              rawErr.errno ??
               // 支付宝 | 钉钉
-              _responseError.error ??
+              rawErr.error ??
               // 百度 | 360 | 飞书
-              _responseError.errCode ??
+              rawErr.errCode ??
               // 抖音
-              _responseError.errNo,
+              rawErr.errNo,
             errMsg:
               // 飞书新规范
-              _responseError.errString ??
+              rawErr.errString ??
               // 微信 | 支付宝 | 百度 | 抖音 | QQ | 360 | 飞书
-              _responseError.errMsg ??
+              rawErr.errMsg ??
               // 钉钉
-              _responseError.errorMessage,
+              rawErr.errorMessage,
           },
-        });
-
-        config.fail(responseError);
+        };
+        fail(responseError);
       },
     };
   }
 
   function transformResponse(
-    _response: AxiosAdapterResponse | AxiosAdapterResponseError,
+    rawRes: AxiosAdapterResponse | AxiosAdapterResponseError,
   ) {
-    return Object.assign(
-      ignore(
-        _response,
+    return {
+      ...ignore(
+        rawRes,
         'statusCode',
         'header',
 
@@ -316,45 +317,40 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
         'errorMessage',
         'errString',
       ),
-      {
-        status: _response.status ?? _response.statusCode,
-        headers: _response.headers ?? _response.header,
-      },
-    );
+      status: rawRes.status ?? rawRes.statusCode,
+      headers: rawRes.headers ?? rawRes.header,
+    };
   }
 
   function processRequest(
     request: AxiosAdapterRequest,
-    baseOptions: AxiosAdapterBaseOptions,
+    rawOpts: AxiosAdapterBaseOptions,
   ): AxiosAdapterPlatformTask {
-    return request(baseOptions);
+    return request(rawOpts);
   }
 
   function processDownload(
     download: AxiosAdapterDownload,
-    baseOptions: AxiosAdapterBaseOptions,
+    rawOpts: AxiosAdapterBaseOptions,
   ): AxiosAdapterPlatformTask {
-    const options = baseOptions as AxiosAdapterDownloadOptions;
+    const options = rawOpts as AxiosAdapterDownloadOptions;
     const { params, success } = options;
 
     options.filePath = params?.filePath;
-    options.success = (_response) => {
-      const response = Object.assign(
-        ignore(_response, 'tempFilePath', 'apFilePath', 'filePath', 'fileSize'),
-        {
-          data: {
-            filePath: _response.filePath,
-            tempFilePath:
-              _response.tempFilePath ??
-              // 支付宝
-              _response.apFilePath,
-            fileSize:
-              // 飞书
-              _response.fileSize,
-          },
+    options.success = (rawRes) => {
+      const response = {
+        ...ignore(rawRes, 'tempFilePath', 'apFilePath', 'filePath', 'fileSize'),
+        data: {
+          filePath: rawRes.filePath,
+          tempFilePath:
+            rawRes.tempFilePath ??
+            // 支付宝
+            rawRes.apFilePath,
+          fileSize:
+            // 飞书
+            rawRes.fileSize,
         },
-      );
-
+      };
       success(response);
     };
 
@@ -364,10 +360,11 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
 
   function processUpload(
     upload: AxiosAdapterUpload,
-    baseOptions: AxiosAdapterBaseOptions,
+    rawOpts: AxiosAdapterBaseOptions,
   ): AxiosAdapterPlatformTask {
-    const options = baseOptions as AxiosAdapterUploadOptions;
-    const { name, filePath, fileType, ...formData } = options.data as AnyObject;
+    const options = rawOpts as AxiosAdapterUploadOptions;
+    const { data, success } = options;
+    const { name, filePath, fileType, ...formData } = data as AnyObject;
 
     options.name = name;
     options.filePath = filePath;
@@ -377,6 +374,17 @@ export function createAdapter(platform: AxiosAdapterPlatform) {
     options.fileName = name;
     // 支付宝 | 钉钉
     options.fileType = fileType;
+    options.success = (rawRes) => {
+      const response = { ...rawRes };
+      if (options.responseType === 'text' && options.dataType === 'json') {
+        try {
+          response.data = JSON.parse(rawRes.data);
+        } catch {
+          //
+        }
+      }
+      success(response);
+    };
 
     orgIgnore(options, ['params', 'data']);
     return upload(options);

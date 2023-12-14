@@ -327,4 +327,33 @@ describe('src/adapter/createAdapter.ts', () => {
     createAdapter(p2)(c2);
     createAdapter(p3)(c3);
   });
+
+  test('响应数据应该进行JSON.parse', async () => {
+    const a = createAdapter({
+      request: vi.fn(),
+      upload: (options) => {
+        options.success({
+          data: '{"id":1}',
+        });
+      },
+      download: vi.fn(),
+    });
+
+    a({
+      type: 'upload',
+      url: 'test',
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      data: {},
+      success(res) {
+        expect(res.data).toBeTypeOf('object');
+        // @ts-ignore
+        expect(res.data.id).toBe(1);
+      },
+      fail() {
+        //
+      },
+    });
+  });
 });

@@ -37,7 +37,7 @@
     "format": "prettier -w {src,test,scripts}/**/*.{ts,tsx,js,jsx}",
     "build": "esno scripts/build.ts",
     "build:assets": "esno scripts/build.assets.ts",
-    "watch": "pnpm build -a -w",
+    "dev": "pnpm build -a -w",
     "release": "esno scripts/release.ts",
     "publish:ci": "esno scripts/publish.ts",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
