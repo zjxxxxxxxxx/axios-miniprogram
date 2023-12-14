@@ -34,7 +34,7 @@ pnpm cz
 脚本列表
 
 - `pnpm build` 打包源代码
-- `pnpm watch` 监听文件变更并运行 `build`
+- `pnpm dev` 监听文件变更并运行 `build`
 - `pnpm test` 单元测试
 - `pnpm test:watch` 监听文件变更并运行 `test`
 - `pnpm test:cov` 运行 `test` 并输出测试覆盖率
