@@ -1,3 +1,17 @@
+## [2.7.1](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.7.0...v2.7.1) (2023-12-16)
+
+
+### Bug Fixes
+
+* 对上传文件响应数据JSON.parse ([#54](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues/54)) ([df42674](https://github.com/zjxxxxxxxxx/axios-miniprogram/commit/df4267489508f6d1851f52d78e9d9179709a562a)), closes [#53](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues/53)
+
+
+### Features
+
+* 添加符合 HTTP 规范的 statusText ([#49](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues/49)) ([3848fdd](https://github.com/zjxxxxxxxxx/axios-miniprogram/commit/3848fdd81bf8fb1f5e373ca4e117adb653969acf))
+
+
+
 # [2.7.0](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.6.0...v2.7.0) (2023-08-17)
 
 
