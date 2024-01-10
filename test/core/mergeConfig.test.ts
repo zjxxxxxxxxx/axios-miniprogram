@@ -127,6 +127,25 @@ describe('src/core/mergeConfig.ts', () => {
     expect(mergeConfig(c1 as any, c2 as any)).toEqual({});
   });
 
+  test('深度合并应该返回新的对象', () => {
+    const c1 = {
+      headers: { t: 1 },
+      params: {},
+    };
+    const c2 = {
+      headers: {},
+      params: { t: 1 },
+    };
+    const c3 = mergeConfig(c1 as any, c2 as any);
+
+    expect(c3.headers === c1.headers).toBeFalsy();
+    expect(c3.params === c1.params).toBeFalsy();
+    expect(c3.headers === c2.headers).toBeFalsy();
+    expect(c3.params === c2.params).toBeFalsy();
+    expect(c3.headers).toEqual(c1.headers);
+    expect(c3.params).toEqual(c2.params);
+  });
+
   test('应该优先取 config2', () => {
     const c1 = {
       adapter: vi.fn(),

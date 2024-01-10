@@ -1,24 +1,26 @@
 <h1 align="center">axios-miniprogram</h1>
 
-<p align="center">
-  <a href="https://github.com/zjxxxxxxxxx/axios-miniprogram/actions/workflows/ci.yml">
+<p style="text-align: center;" align="center">
+  <a style="display: inline-block;margin-left: 5px;" href="https://github.com/zjxxxxxxxxx/axios-miniprogram/actions/workflows/ci.yml">
     <img src="https://github.com/zjxxxxxxxxx/axios-miniprogram/actions/workflows/ci.yml/badge.svg" alt="ci"/>
   </a>
-  <a style="margin-left:5px;" href="https://codecov.io/gh/zjxxxxxxxxx/axios-miniprogram" > 
+  <a style="display: inline-block;margin-left: 5px;" href="https://codecov.io/gh/zjxxxxxxxxx/axios-miniprogram" > 
     <img src="https://codecov.io/gh/zjxxxxxxxxx/axios-miniprogram/branch/main/graph/badge.svg?token=WIQVYX2WIK" alt="codecov"/> 
   </a>
-  <a style="margin-left:5px;" href="https://opensource.org/licenses/MIT">
+  <a style="display: inline-block;margin-left: 5px;" href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/github/license/zjxxxxxxxxx/axios-miniprogram" alt="license"/>
   </a>
-  <a style="margin-left:5px;" href="https://www.npmjs.org/package/axios-miniprogram">
+  <a style="display: inline-block;margin-left: 5px;" href="https://www.npmjs.org/package/axios-miniprogram">
     <img src="https://img.shields.io/bundlephobia/min/axios-miniprogram" alt="npm bundle size"/>
   </a> 
-  <a style="margin-left:5px;" href="https://www.npmjs.org/package/axios-miniprogram">
+  <a style="display: inline-block;" href="https://www.npmjs.org/package/axios-miniprogram">
     <img alt="npm" src="https://img.shields.io/npm/dt/axios-miniprogram"/>
   </a>
 </p>
 
-<p align="center"><a href='https://axios-miniprogram.com'>中文文档</a></p>
+<p style="text-align: center;" align="center">
+  <a href='https://axios-miniprogram.com'>中文文档</a>
+</p>
 
 ## axios-miniprogram 是什么？
 

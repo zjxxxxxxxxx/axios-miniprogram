@@ -34,16 +34,18 @@ export interface MiddlewareCallback {
  */
 export default class MiddlewareManager {
   /**
+   * @internal
+   *
    * 中间件缓存池
    */
-  #middlewares: MiddlewareCallback[] = [];
+  private middlewares: MiddlewareCallback[] = [];
 
   /**
    * 注册中间件
    */
   use(middleware: MiddlewareCallback) {
     assert(isFunction(middleware), 'middleware 不是一个 function');
-    this.#middlewares.push(middleware);
+    this.middlewares.push(middleware);
   }
 
   /**
@@ -67,7 +69,7 @@ export default class MiddlewareManager {
    * @param respond 目标函数
    */
   run(ctx: MiddlewareContext, respond: MiddlewareCallback) {
-    const middlewares = [...this.#middlewares, respond];
+    const middlewares = [...this.middlewares, respond];
     async function next() {
       await middlewares.shift()!(ctx, next);
     }

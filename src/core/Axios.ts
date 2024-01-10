@@ -354,14 +354,16 @@ export interface AxiosConstructor {
 
 export default class Axios {
   /**
+   * @internal
+   *
    * 父级实例
    */
-  #parent?: Axios;
+  private declare parent?: Axios;
 
   /**
    * 默认请求配置
    */
-  defaults: AxiosRequestConfig;
+  declare defaults: AxiosRequestConfig;
 
   /**
    * 拦截器
@@ -378,54 +380,56 @@ export default class Axios {
   };
 
   /**
+   * @internal
+   *
    * 中间件
    */
-  #middleware = new MiddlewareManager();
+  private middleware = new MiddlewareManager();
 
   /**
    * 发送 options 请求
    */
-  options!: AxiosRequestMethodFn;
+  declare options: AxiosRequestMethodFn;
 
   /**
    * 发送 get 请求
    */
-  get!: AxiosRequestMethodFnWithParams;
+  declare get: AxiosRequestMethodFnWithParams;
 
   /**
    * 发送 head 请求
    */
-  head!: AxiosRequestMethodFnWithParams;
+  declare head: AxiosRequestMethodFnWithParams;
 
   /**
    * 发送 post 请求
    */
-  post!: AxiosRequestMethodFnWithData;
+  declare post: AxiosRequestMethodFnWithData;
 
   /**
    * 发送 put 请求
    */
-  put!: AxiosRequestMethodFnWithData;
+  declare put: AxiosRequestMethodFnWithData;
 
   /**
    * 发送 patch 请求
    */
-  patch!: AxiosRequestMethodFnWithData;
+  declare patch: AxiosRequestMethodFnWithData;
 
   /**
    * 发送 delete 请求
    */
-  delete!: AxiosRequestMethodFnWithParams;
+  declare delete: AxiosRequestMethodFnWithParams;
 
   /**
    * 发送 trace 请求
    */
-  trace!: AxiosRequestMethodFn;
+  declare trace: AxiosRequestMethodFn;
 
   /**
    * 发送 connect 请求
    */
-  connect!: AxiosRequestMethodFn;
+  declare connect: AxiosRequestMethodFn;
 
   /**
    *
@@ -434,7 +438,7 @@ export default class Axios {
    */
   constructor(config: AxiosRequestConfig, parent?: Axios) {
     this.defaults = config;
-    this.#parent = parent;
+    this.parent = parent;
   }
 
   /**
@@ -454,7 +458,7 @@ export default class Axios {
       'get') as AxiosRequestMethod;
 
     const requestHandler = {
-      resolved: this.#handleRequest,
+      resolved: this.handleRequest,
     };
     const errorHandler = {
       rejected: config.errorHandler,
@@ -464,11 +468,11 @@ export default class Axios {
       | Partial<Interceptor<AxiosResponse>>
     )[] = [];
 
-    this.#eachRequestInterceptors((requestInterceptor) => {
+    this.eachRequestInterceptors((requestInterceptor) => {
       chain.unshift(requestInterceptor);
     });
     chain.push(requestHandler);
-    this.#eachResponseInterceptors((responseInterceptor) => {
+    this.eachResponseInterceptors((responseInterceptor) => {
       chain.push(responseInterceptor);
     });
     chain.push(errorHandler);
@@ -484,17 +488,27 @@ export default class Axios {
     ) as Promise<AxiosResponse>;
   };
 
-  #eachRequestInterceptors(executor: InterceptorExecutor<AxiosRequestConfig>) {
+  /**
+   * @internal
+   */
+  private eachRequestInterceptors(
+    executor: InterceptorExecutor<AxiosRequestConfig>,
+  ) {
     this.interceptors.request.forEach(executor);
-    if (this.#parent) {
-      this.#parent.#eachRequestInterceptors(executor);
+    if (this.parent) {
+      this.parent.eachRequestInterceptors(executor);
     }
   }
 
-  #eachResponseInterceptors(executor: InterceptorExecutor<AxiosResponse>) {
+  /**
+   * @internal
+   */
+  private eachResponseInterceptors(
+    executor: InterceptorExecutor<AxiosResponse>,
+  ) {
     this.interceptors.response.forEach(executor);
-    if (this.#parent) {
-      this.#parent.#eachResponseInterceptors(executor);
+    if (this.parent) {
+      this.parent.eachResponseInterceptors(executor);
     }
   }
 
@@ -526,28 +540,37 @@ export default class Axios {
    * ```
    */
   use = (middleware: MiddlewareCallback) => {
-    this.#middleware.use(middleware);
+    this.middleware.use(middleware);
     return this;
   };
 
-  #handleRequest = async (config: AxiosRequestConfig) => {
-    const ctx = this.#middleware.createContext(config);
-    await this.#run(ctx, this.#handleResponse);
+  /**
+   * @internal
+   */
+  private handleRequest = async (config: AxiosRequestConfig) => {
+    const ctx = this.middleware.createContext(config);
+    await this.run(ctx, this.handleResponse);
     return ctx.res as AxiosResponse;
   };
 
-  #handleResponse = async (ctx: MiddlewareContext) => {
+  /**
+   * @internal
+   */
+  private async handleResponse(ctx: MiddlewareContext) {
     ctx.res = await dispatchRequest(ctx.req);
-  };
+  }
 
-  #run = (
+  /**
+   * @internal
+   */
+  private run = (
     ctx: MiddlewareContext,
     respond: MiddlewareCallback,
   ): Promise<void> => {
-    if (!this.#parent) {
-      return this.#middleware.run(ctx, respond);
+    if (!this.parent) {
+      return this.middleware.run(ctx, respond);
     }
-    return this.#middleware.enhanceRun(this.#parent.#run)(ctx, respond);
+    return this.middleware.enhanceRun(this.parent.run)(ctx, respond);
   };
 }
 

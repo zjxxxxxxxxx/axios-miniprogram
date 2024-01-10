@@ -44,24 +44,27 @@ export function isCancel(value: unknown): value is Cancel {
 }
 
 export class CancelToken {
-  #reason?: Cancel;
+  /**
+   * @internal
+   */
+  private declare reason?: Cancel;
 
   /**
    * @internal
    */
-  onCancel: Promise<Cancel>['then'];
+  declare onCancel: Promise<Cancel>['then'];
 
   constructor(executor: CancelExecutor) {
     let action!: CancelAction;
     const promise = new Promise<Cancel>((resolve) => {
       action = (message) => {
-        if (this.#reason) {
+        if (this.reason) {
           return;
         }
 
-        this.#reason = new Cancel(message);
+        this.reason = new Cancel(message);
 
-        resolve(this.#reason);
+        resolve(this.reason);
       };
     });
 
@@ -86,8 +89,8 @@ export class CancelToken {
    * @internal
    */
   throwIfRequested(): void {
-    if (this.#reason) {
-      throw this.#reason;
+    if (this.reason) {
+      throw this.reason;
     }
   }
 }
