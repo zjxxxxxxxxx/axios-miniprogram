@@ -29,14 +29,18 @@ export interface InterceptorExecutor<T = unknown> {
  */
 export default class InterceptorManager<T = unknown> {
   /**
+   * @internal
+   *
    * 生成拦截器标识符
    */
-  #id = 0;
+  private id = 0;
 
   /**
+   * @internal
+   *
    * 拦截器缓存池
    */
-  #interceptors = new Map<number, Interceptor<T>>();
+  private interceptors = new Map<number, Interceptor<T>>();
 
   /**
    * @internal
@@ -44,7 +48,7 @@ export default class InterceptorManager<T = unknown> {
    * 拦截器数量
    */
   get size() {
-    return this.#interceptors.size;
+    return this.interceptors.size;
   }
 
   /**
@@ -58,12 +62,12 @@ export default class InterceptorManager<T = unknown> {
     resolved: InterceptorResolved<T>,
     rejected?: InterceptorRejected<T>,
   ): number {
-    this.#interceptors.set(++this.#id, {
+    this.interceptors.set(++this.id, {
       resolved,
       rejected,
     });
 
-    return this.#id;
+    return this.id;
   }
 
   /**
@@ -72,14 +76,14 @@ export default class InterceptorManager<T = unknown> {
    * @param id 拦截器标识符
    */
   eject(id: number): boolean {
-    return this.#interceptors.delete(id);
+    return this.interceptors.delete(id);
   }
 
   /**
    * 清空拦截器
    */
   clear() {
-    this.#interceptors.clear();
+    this.interceptors.clear();
   }
 
   /**
@@ -90,6 +94,6 @@ export default class InterceptorManager<T = unknown> {
    * @param executor 执行器
    */
   forEach(executor: InterceptorExecutor<T>): void {
-    this.#interceptors.forEach(executor);
+    this.interceptors.forEach(executor);
   }
 }
