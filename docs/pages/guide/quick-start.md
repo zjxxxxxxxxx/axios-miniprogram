@@ -9,15 +9,15 @@ title: 开始
 :::: code-group
 
 ```bash [NPM]
-$ npm install -D axios-miniprogram
+$ npm install axios-miniprogram
 ```
 
 ```bash [YARN]
-$ yarn add -D axios-miniprogram
+$ yarn add axios-miniprogram
 ```
 
 ```bash [PNPM]
-$ pnpm install -D axios-miniprogram
+$ pnpm install axios-miniprogram
 ```
 
 ::::
