@@ -432,7 +432,6 @@ export default class Axios {
   declare connect: AxiosRequestMethodFn;
 
   /**
-   *
    * @param config 默认配置
    * @param parent 父级实例
    */
@@ -468,12 +467,12 @@ export default class Axios {
       | Partial<Interceptor<AxiosResponse>>
     )[] = [];
 
-    this.eachRequestInterceptors((requestInterceptor) => {
-      chain.unshift(requestInterceptor);
+    this.eachInterceptors('request', (interceptor) => {
+      chain.unshift(interceptor);
     });
     chain.push(requestHandler);
-    this.eachResponseInterceptors((responseInterceptor) => {
-      chain.push(responseInterceptor);
+    this.eachInterceptors('response', (interceptor) => {
+      chain.push(interceptor);
     });
     chain.push(errorHandler);
 
@@ -491,24 +490,16 @@ export default class Axios {
   /**
    * @internal
    */
-  private eachRequestInterceptors(
-    executor: InterceptorExecutor<AxiosRequestConfig>,
+  private eachInterceptors<T extends 'request' | 'response'>(
+    type: T,
+    executor: InterceptorExecutor<
+      T extends 'request' ? AxiosRequestConfig : AxiosResponse
+    >,
   ) {
-    this.interceptors.request.forEach(executor);
+    // @ts-ignore
+    this.interceptors[type].forEach(executor);
     if (this.parent) {
-      this.parent.eachRequestInterceptors(executor);
-    }
-  }
-
-  /**
-   * @internal
-   */
-  private eachResponseInterceptors(
-    executor: InterceptorExecutor<AxiosResponse>,
-  ) {
-    this.interceptors.response.forEach(executor);
-    if (this.parent) {
-      this.parent.eachResponseInterceptors(executor);
+      this.parent.eachInterceptors(type, executor);
     }
   }
 
