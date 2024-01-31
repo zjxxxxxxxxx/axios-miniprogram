@@ -1,3 +1,12 @@
+## [2.7.2](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.7.1...v2.7.2) (2024-01-31)
+
+
+### Bug Fixes
+
+* 修复设置请求 headers 影响了全局配置 ([#56](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues/56)) ([5d45cd9](https://github.com/zjxxxxxxxxx/axios-miniprogram/commit/5d45cd9670c3bc8b58437d2defc58753ebc6392e)), closes [#55](https://github.com/zjxxxxxxxxx/axios-miniprogram/issues/55)
+
+
+
 ## [2.7.1](https://github.com/zjxxxxxxxxx/axios-miniprogram/compare/v2.7.0...v2.7.1) (2023-12-16)
 
 
